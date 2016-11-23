@@ -28,3 +28,5 @@ E:\Project\VNPT\VNPT_BSC\VNPT_BCS\bin\DotNetOpenAuth.AspNet.xml
 E:\Project\VNPT\VNPT_BSC\VNPT_BCS\obj\Debug\VNPT_BSC.csprojResolveAssemblyReference.cache
 E:\Project\VNPT\VNPT_BSC\VNPT_BCS\obj\Debug\VNPT_BCS.dll
 E:\Project\VNPT\VNPT_BSC\VNPT_BCS\obj\Debug\VNPT_BCS.pdb
+G:\VNPT_BSC\VNPT_BSC\VNPT_BCS\obj\Debug\VNPT_BSC.csprojResolveAssemblyReference.cache
+G:\VNPT_BSC\VNPT_BSC\VNPT_BCS\obj\Debug\VNPT_BCS.dll.licenses

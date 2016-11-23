@@ -1,0 +1,151 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="VNPT.MasterPage" %>
+
+<%@ Register Assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+    Namespace="DevExpress.Web.ASPxNavBar" TagPrefix="dx" %>
+
+<%@ Register Assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+    Namespace="DevExpress.Web.ASPxRoundPanel" TagPrefix="dx" %>
+
+<%@ Register assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+    namespace="DevExpress.Web.ASPxPanel" tagprefix="dx" %>
+
+<%@ Register assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxTreeView" tagprefix="dx" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Cổng thông tin Viễn thông An Giang</title>
+    
+    <link rel="icon" href="~/Images/vnpt.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="~/Images/vnpt.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="Styles/Site.css" media="all" />
+    
+    <meta http-equiv="refresh" content="900" />
+    
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style type="text/css">
+        .auto-style2
+        {
+            height: 100%;
+            width: 250px;
+        }
+        .auto-style4
+        {
+            width: 1253px;
+        }
+        .auto-style5
+        {
+            width: 941px;
+            height: 671px;
+        }
+        </style>
+</head>
+<body>
+    <form id="form1" runat="server" method="post">
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+    </asp:ScriptManager>
+    
+    <div>
+        <table style="width:100%;height:100%; background-color:#809FFF;" cellpadding="0px" cellspacing="0px">
+          
+            <tr>
+            <td style="width:15%; background-color: #FFFFFF;">
+            </td>
+            <td class="auto-style4" >
+            <table style="width:1338px; min-height:1024px; background-color:#dfeef5;" cellspacing="0" cellpadding="0" >
+                <tr>
+                            <td colspan="2">
+                                <asp:Image Width="100%" ID="Image1" runat="server" ImageUrl="~/Images/baner_moi.PNG"/>
+
+                        </tr>
+                
+                <tr>
+                    <td  style="min-width:260px; " valign="top" class="auto-style2" >
+                        <div style="width: 302px" >
+                            <%--<asp:Panel ID="pnlThongtin" runat="server" Visible="true" CssClass="box-menu">
+                                
+                                <label class="bar-c">Thông tin đăng nhập</label>
+                                
+                                &nbsp;&nbsp;
+                                <asp:Label ID="lblUser" runat="server" Text="" Font-Size="9pt" ForeColor="Red"></asp:Label > <br />
+                                &nbsp;&nbsp;
+                                <asp:Label ID="lblThongtin" runat="server" Text="" Font-Size="8pt"></asp:Label> <br />
+                                &nbsp;&nbsp;
+                                <b><asp:LinkButton ID="lbtnThoat" runat="server" onclick="lbtnThoat_Click">Thoát</asp:LinkButton></b>
+                                
+                            </asp:Panel>
+
+                            <asp:Panel ID="pnlMenu" runat="server" Visible="true">
+                                
+                            </asp:Panel>--%>
+
+                            <div style="margin-left:5px; margin-top:10px; width:287px; height: 141px;"> 
+                                <dx:ASPxRoundPanel ID="rpnlThongtin" runat="server" HeaderText="Thông tin đăng nhập" Width="288px" Theme="Office2003Blue" BackColor="White" EnableTheming="True">
+                                    <PanelCollection>
+                                        <dx:PanelContent runat="server" SupportsDisabledAttribute="True">
+                                            <%--<label class="bar-c">Thông tin đăng nhập</label>--%>
+                                        <%-- &nbsp;&nbsp;--%>
+                                        <%-- &nbsp;&nbsp;--%>
+                                        <%-- &nbsp;&nbsp;--%>
+                                        </dx:PanelContent>
+                                    </PanelCollection>
+                                    <Border BorderColor="#8B8B8B" BorderStyle="Solid" BorderWidth="1px" />
+                                </dx:ASPxRoundPanel>
+                                <br />
+                                <dx:ASPxTreeView ID="ASPxTreeView1" runat="server" EnableTheming="True" Theme="Aqua">
+                                    <Nodes>
+                                        <dx:TreeViewNode Text="Quản Lý">
+                                            <TextStyle>
+                                                <Border BorderColor="#0000CC" />
+                                            </TextStyle>
+                                            <Nodes>
+                                                <dx:TreeViewNode NavigateUrl="~/Test.aspx" Text="Chức Danh">
+                                                </dx:TreeViewNode>
+                                                <dx:TreeViewNode Text="Chức Vụ">
+                                                </dx:TreeViewNode>
+                                            </Nodes>
+                                        </dx:TreeViewNode>
+                                    </Nodes>
+                                </dx:ASPxTreeView>
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                            </div>
+
+                            
+                        </div>
+                       <%--</b>--%>
+                    </td>
+                    <td valign="top" style="min-width:980px; min-height:1024px;" class="auto-style5">
+                        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center" valign="middle"  style="background-color:#3366FF" >
+                       <br />
+                       <strong style="color:White; line-height:26px"> Trung Tâm Kinh Doanh VNPT An Giang</strong><br />
+                       <strong style="color:White"> Số 02 Lê Lợi, Phường Mỹ Bình, Tp. Long Xuyên, An Giang - Điện thoại: (076) 3855990</strong>
+                       <br />
+                       <br />
+                    </td>
+                </tr>
+            </table>
+            </td>
+            <td style="width:15%; background-color: #FFFFFF;" >  <%--background:#3366FF"--%>
+            </td>
+           </tr>
+            <tr>
+                <td colspan="3" style="width:100%; height:50px; background-color: #FFFFFF;">
+                </td>
+            </tr>
+           
+      </table>  
+    </div>
+    
+    </form>
+</body>
+</html>

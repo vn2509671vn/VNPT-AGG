@@ -89,18 +89,6 @@
                                 <dx:ASPxRoundPanel ID="ASPxRoundPanel1" runat="server" Height="76px" Theme="Youthful" Width="293px" HeaderText="Thông Tin Login">
                                 </dx:ASPxRoundPanel>
                                 <br />
-                                <dx:ASPxNavBar ID="ASPxNavBar1" runat="server" RenderMode="Lightweight" Theme="Youthful" Width="296px" EnableTheming="True">
-                                    <Groups>
-                                        <dx:NavBarGroup Text="Quản Lý">
-                                            <Items>
-                                                <dx:NavBarItem Text="Chức Danh">
-                                                </dx:NavBarItem>
-                                                <dx:NavBarItem Text="Chức Vụ">
-                                                </dx:NavBarItem>
-                                            </Items>
-                                        </dx:NavBarGroup>
-                                    </Groups>
-                                </dx:ASPxNavBar>
                                 <br />
                                 <br />
                                 <br />

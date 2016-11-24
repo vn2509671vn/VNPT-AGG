@@ -133,6 +133,7 @@
     <Content Include="Account\OpenAuthProviders.ascx" />
     <Content Include="Account\Register.aspx" />
     <Content Include="Account\RegisterExternalLogin.aspx" />
+    <Content Include="BSC\PhanPhoiBSCDonVi.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -286,6 +287,13 @@
     </Compile>
     <Compile Include="Account\RegisterExternalLogin.aspx.designer.cs">
       <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\PhanPhoiBSCDonVi.aspx.cs">
+      <DependentUpon>PhanPhoiBSCDonVi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\PhanPhoiBSCDonVi.aspx.designer.cs">
+      <DependentUpon>PhanPhoiBSCDonVi.aspx</DependentUpon>
     </Compile>
     <Compile Include="Connection.cs" />
     <Compile Include="Contact.aspx.cs">

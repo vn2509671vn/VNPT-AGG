@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VNPT_BSC
+namespace VNPT_BCS
 {
 
 

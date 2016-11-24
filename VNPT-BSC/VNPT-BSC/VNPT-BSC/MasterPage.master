@@ -11,6 +11,9 @@
 
 <%@ Register assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxTreeView" tagprefix="dx" %>
 
+<%@ Register assembly="DevExpress.Web.ASPxTreeList.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxTreeList" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxEditors" tagprefix="dx" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -38,7 +41,7 @@
         .auto-style5
         {
             width: 941px;
-            height: 671px;
+            height: 457px;
         }
         </style>
 </head>
@@ -82,33 +85,22 @@
                             </asp:Panel>--%>
 
                             <div style="margin-left:5px; margin-top:10px; width:287px; height: 141px;"> 
-                                <dx:ASPxRoundPanel ID="rpnlThongtin" runat="server" HeaderText="Thông tin đăng nhập" Width="288px" Theme="Office2003Blue" BackColor="White" EnableTheming="True">
-                                    <PanelCollection>
-                                        <dx:PanelContent runat="server" SupportsDisabledAttribute="True">
-                                            <%--<label class="bar-c">Thông tin đăng nhập</label>--%>
-                                        <%-- &nbsp;&nbsp;--%>
-                                        <%-- &nbsp;&nbsp;--%>
-                                        <%-- &nbsp;&nbsp;--%>
-                                        </dx:PanelContent>
-                                    </PanelCollection>
-                                    <Border BorderColor="#8B8B8B" BorderStyle="Solid" BorderWidth="1px" />
+                                <br />
+                                <dx:ASPxRoundPanel ID="ASPxRoundPanel1" runat="server" Height="76px" Theme="Youthful" Width="293px" HeaderText="Thông Tin Login">
                                 </dx:ASPxRoundPanel>
                                 <br />
-                                <dx:ASPxTreeView ID="ASPxTreeView1" runat="server" EnableTheming="True" Theme="Aqua">
-                                    <Nodes>
-                                        <dx:TreeViewNode Text="Quản Lý">
-                                            <TextStyle>
-                                                <Border BorderColor="#0000CC" />
-                                            </TextStyle>
-                                            <Nodes>
-                                                <dx:TreeViewNode NavigateUrl="~/Test.aspx" Text="Chức Danh">
-                                                </dx:TreeViewNode>
-                                                <dx:TreeViewNode Text="Chức Vụ">
-                                                </dx:TreeViewNode>
-                                            </Nodes>
-                                        </dx:TreeViewNode>
-                                    </Nodes>
-                                </dx:ASPxTreeView>
+                                <dx:ASPxNavBar ID="ASPxNavBar1" runat="server" RenderMode="Lightweight" Theme="Youthful" Width="296px" EnableTheming="True">
+                                    <Groups>
+                                        <dx:NavBarGroup Text="Quản Lý">
+                                            <Items>
+                                                <dx:NavBarItem Text="Chức Danh">
+                                                </dx:NavBarItem>
+                                                <dx:NavBarItem Text="Chức Vụ">
+                                                </dx:NavBarItem>
+                                            </Items>
+                                        </dx:NavBarGroup>
+                                    </Groups>
+                                </dx:ASPxNavBar>
                                 <br />
                                 <br />
                                 <br />
@@ -138,10 +130,7 @@
             <td style="width:15%; background-color: #FFFFFF;" >  <%--background:#3366FF"--%>
             </td>
            </tr>
-            <tr>
-                <td colspan="3" style="width:100%; height:50px; background-color: #FFFFFF;">
-                </td>
-            </tr>
+            
            
       </table>  
     </div>

@@ -135,6 +135,8 @@
     <Content Include="Account\RegisterExternalLogin.aspx" />
     <Content Include="Bootstrap\bootstrap.css" />
     <Content Include="Bootstrap\bootstrap.js" />
+    <Content Include="Bootstrap\jquery.js" />
+    <Content Include="BSC\MauBSC.aspx" />
     <Content Include="BSC\PhanPhoiBSCDonVi.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\Site.css" />
@@ -195,6 +197,15 @@
     <Content Include="Default.aspx" />
     <Content Include="Home.aspx" />
     <Content Include="Images\accent.png" />
+    <Content Include="Images\ASPxRoundPanel\1531691351\BottomLeftCorner.png" />
+    <Content Include="Images\ASPxRoundPanel\1531691351\BottomRightCorner.png" />
+    <Content Include="Images\ASPxRoundPanel\1531691351\HeaderContent.png" />
+    <Content Include="Images\ASPxRoundPanel\1531691351\HeaderLeftEdge.png" />
+    <Content Include="Images\ASPxRoundPanel\1531691351\HeaderRightEdge.png" />
+    <Content Include="Images\ASPxRoundPanel\1531691351\NoHeaderTopLeftCorner.png" />
+    <Content Include="Images\ASPxRoundPanel\1531691351\NoHeaderTopRightCorner.png" />
+    <Content Include="Images\ASPxRoundPanel\1531691351\TopLeftCorner.png" />
+    <Content Include="Images\ASPxRoundPanel\1531691351\TopRightCorner.png" />
     <Content Include="Images\baner_moi.PNG" />
     <Content Include="Images\bullet.png" />
     <Content Include="Images\heroAccent.png" />
@@ -289,6 +300,13 @@
     </Compile>
     <Compile Include="Account\RegisterExternalLogin.aspx.designer.cs">
       <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\MauBSC.aspx.cs">
+      <DependentUpon>MauBSC.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\MauBSC.aspx.designer.cs">
+      <DependentUpon>MauBSC.aspx</DependentUpon>
     </Compile>
     <Compile Include="BSC\PhanPhoiBSCDonVi.aspx.cs">
       <DependentUpon>PhanPhoiBSCDonVi.aspx</DependentUpon>

@@ -5,6 +5,7 @@
     <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
     <script src="../Bootstrap/jquery.js"></script>
     <script src="../Bootstrap/bootstrap.js"></script>
+    <script src="../Bootstrap/function.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="col-md-12 margin-top-30">
@@ -13,57 +14,39 @@
             <h3 class="panel-title">MẪU CHỈ TIÊU BSC/KPI</h3>
           </div>
           <div class="panel-body">
-            <div class="form-horizontal">
-                <div class="form-group">
-                    <label class="control-label col-sm-3">Đơn vị tạo:</label>
-                    <div class="col-sm-8">
-                      <asp:TextBox ID="donvi" runat="server" class="form-control" ReadOnly="True"></asp:TextBox>
-                    </div>
+            <div class="col-sm-2">
+                <div class="list-group">
+                <% for(int i = 0; i < dtBSC.Rows.Count; i++){ %>
+                    <%
+                        string month =  dtBSC.Rows[i][0].ToString();
+                        string year =  dtBSC.Rows[i][1].ToString();
+                    %>
+                    <a href="#" onclick="fillData(<%=month %>, <%=year %>)" class="list-group-item list-group-item-info text-center"><%= month +"/"+ year%></a>
+                <% } %>
                 </div>
+            </div>
+            <div class="col-sm-10 form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-3">Thời gian áp dụng:</label>
-                    <div class="col-sm-1">
-                        <asp:DropDownList ID="dropMonth" runat="server" class="form-control">
-                            <asp:ListItem Selected="True">1</asp:ListItem>
-                            <asp:ListItem>2</asp:ListItem>
-                            <asp:ListItem>3</asp:ListItem>
-                            <asp:ListItem>4</asp:ListItem>
-                            <asp:ListItem>5</asp:ListItem>
-                            <asp:ListItem>6</asp:ListItem>
-                            <asp:ListItem>7</asp:ListItem>
-                            <asp:ListItem>8</asp:ListItem>
-                            <asp:ListItem>9</asp:ListItem>
-                            <asp:ListItem>10</asp:ListItem>
-                            <asp:ListItem>11</asp:ListItem>
-                            <asp:ListItem>12</asp:ListItem>
-                        </asp:DropDownList>
-                    </div>
-                    <div class="col-sm-1">
-                        <asp:DropDownList ID="dropYear" runat="server" class="form-control">
-                        </asp:DropDownList>
+                    <div class="col-sm-4 form-inline">
+                        <input type="text" class="form-control number" id="month" name="month" maxlength="2" size="2"/>
+                        <input type="text" class="form-control number" id="year" name="year" maxlength="4" size="4"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-3">KPO:</label>
+                    <label class="control-label col-sm-3">Danh sách KPI:</label>
                     <div class="col-sm-8">
-                      <asp:DropDownList ID="dropKPO" runat="server" class="form-control" OnSelectedIndexChanged="dropKPO_SelectedIndexChanged" AutoPostBack="True">
-                        </asp:DropDownList>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-3">KPI:</label>
-                    <div class="col-sm-8">
-                        <asp:CheckBoxList ID="checkboxKPI" runat="server" class="form-control">
-                        </asp:CheckBoxList>
+                        <% for(int i = 0; i < dtKPI.Rows.Count; i++){ %>
+                            <div class="checkbox">
+                              <label><input type="checkbox" value="<%=dtKPI.Rows[i]["kpi_id"].ToString() %>" /><%=dtKPI.Rows[i]["name"].ToString() %></label>
+                            </div>
+                        <% } %>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
                         <div class="col-sm-8 col-sm-offset-3">
-                            <asp:Button ID="btnAdd" runat="server" Text="Thêm" class="btn btn-primary" OnClick="btnAdd_Click"/>
-                            <asp:Button ID="btnEdit" runat="server" Text="Sửa" class="btn btn-warning"/>
-                            <asp:Button ID="btnDel" runat="server" Text="Xóa" class="btn btn-danger"/>
-                            <asp:Button ID="btnSave" runat="server" Text="Lưu" class="btn btn-success"/>
+                            <button type="button" class="btn btn-success" id="btnSave">Lưu</button>
                         </div>
                     </div>
                 </div>
@@ -76,4 +59,41 @@
           </div>
         </div>
     </div>
+<script type="text/javascript">
+    function fillData(month, year) {
+        $("#month").val(month);
+        $("#year").val(year);
+        $.ajax({
+            method: "post",
+            url: "",
+            data: {
+                month: month,
+                year: year
+            },
+            dataType:"text",  
+            success: function (data) {
+                
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $("#month").keydown(function () {
+            $(this).keypress(function (e) {
+                if (String.fromCharCode(e.keyCode).match(/[^0-9]/g)) return false;
+            });
+        });
+
+        $("#year").keydown(function () {
+            $(this).keypress(function (e) {
+                if (String.fromCharCode(e.keyCode).match(/[^0-9]/g)) return false;
+            });
+        });
+
+        $("#btnSave").click(function () {
+            alert("Test");
+        });
+    });
+</script>
+
 </asp:Content>

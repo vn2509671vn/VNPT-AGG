@@ -135,6 +135,7 @@
     <Content Include="Account\RegisterExternalLogin.aspx" />
     <Content Include="Bootstrap\bootstrap.css" />
     <Content Include="Bootstrap\bootstrap.js" />
+    <Content Include="Bootstrap\function.js" />
     <Content Include="Bootstrap\jquery.js" />
     <Content Include="BSC\MauBSC.aspx" />
     <Content Include="BSC\PhanPhoiBSCDonVi.aspx" />
@@ -355,6 +356,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Ajax\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>

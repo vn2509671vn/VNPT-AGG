@@ -258,6 +258,7 @@
     <Content Include="Bundle.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ajax\ajaxBSC.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="About.aspx.cs">
@@ -356,7 +357,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Ajax\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>

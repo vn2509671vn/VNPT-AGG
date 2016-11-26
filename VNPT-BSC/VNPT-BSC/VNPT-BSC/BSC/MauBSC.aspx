@@ -50,11 +50,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        
-                    </div>
-                </div>
             </div>
           </div>
         </div>
@@ -63,17 +58,27 @@
     function fillData(month, year) {
         $("#month").val(month);
         $("#year").val(year);
+        var requestData = {
+            monthAprove : month,
+            yearAprove : year
+        };
+        var szRequest = JSON.stringify(requestData);
         $.ajax({
-            method: "post",
-            url: "",
-            data: {
-                month: month,
-                year: year
+            type: "POST",
+            url: "MauBSC.aspx/BindingCheckBox",
+            data: szRequest,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                $("input[type=checkbox]").attr("checked", false);
+                var arrKPI = new Array();
+                arrKPI = result.d;
+                for (var i = 0; i < arrKPI.length; i++) {
+                    var KPI_ID = arrKPI[i];
+                    $(":checkbox[value='" + KPI_ID + "']").prop("checked", "true");
+                }
             },
-            dataType:"text",  
-            success: function (data) {
-                
-            }
+            error: function (msg) { alert(msg.d);}
         });
     }
 
@@ -91,7 +96,36 @@
         });
 
         $("#btnSave").click(function () {
-            alert("Test");
+            var month = $("#month").val();
+            var year = $("#year").val();
+            var arrKPI = new Array();
+            $("input[type=checkbox]:checked").each(function () {
+                arrKPI.push($(this).val());
+            });
+
+            var requestData = {
+                monthAprove: month,
+                yearAprove: year,
+                arrKPI_ID: arrKPI
+            };
+
+            var szRequest = JSON.stringify(requestData);
+            $.ajax({
+                type: "POST",
+                url: "MauBSC.aspx/SaveData",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result) {
+                        window.location.reload();
+                    }
+                    else {
+                        alert("Vui lòng check lại!!!!");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
         });
     });
 </script>

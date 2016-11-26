@@ -8,6 +8,8 @@ using System.Data;
 using System.Data.Sql;
 using DevExpress.Web.ASPxEditors;
 using System.Text;
+using System.Web.Services;
+using System.Web.Script.Services;
 
 namespace VNPT_BSC.BSC
 {
@@ -43,6 +45,31 @@ namespace VNPT_BSC.BSC
             return dtBSC;
         }
 
+        [WebMethod]
+        public static string[] BindingCheckBox(int monthAprove, int yearAprove)
+        {
+            //return monthAprove + "@@" + yearAprove;
+            //return DateTime.Now.ToString();
+            DataTable dtKPI = new DataTable();
+            Connection cnDanhSachBSC = new Connection();
+            string[] arrKPI = {};
+            string sql = "select * from danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "'";
+            dtKPI = cnDanhSachBSC.XemDL(sql);
+            if (dtKPI.Rows.Count > 0) {
+                arrKPI = new string[dtKPI.Rows.Count];
+                for (int i = 0; i < dtKPI.Rows.Count; i++) {
+                    arrKPI[i] = dtKPI.Rows[i]["kpi_id"].ToString();
+                }
+            }
+            return arrKPI;
+        }
+
+        [WebMethod]
+        public static bool SaveData(int monthAprove, int yearAprove, string[] arrKPI_ID)
+        {
+            
+            return true;
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             

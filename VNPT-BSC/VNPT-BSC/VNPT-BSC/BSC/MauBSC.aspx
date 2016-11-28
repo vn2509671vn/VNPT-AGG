@@ -6,6 +6,12 @@
     <script src="../Bootstrap/jquery.js"></script>
     <script src="../Bootstrap/bootstrap.js"></script>
     <script src="../Bootstrap/function.js"></script>
+
+    <!-- Plugin for datatable-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
+    <script src="../Bootstrap/dataTables.bootstrap.js"></script>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="col-md-12 margin-top-30">
@@ -118,7 +124,8 @@
                 dataType: "json",
                 success: function (result) {
                     if (result) {
-                        window.location.reload();
+                        //window.location.reload();
+                        alert(result.d);
                     }
                     else {
                         alert("Vui lòng check lại!!!!");

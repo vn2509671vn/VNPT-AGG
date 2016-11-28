@@ -135,6 +135,7 @@
     <Content Include="Account\RegisterExternalLogin.aspx" />
     <Content Include="Bootstrap\bootstrap.css" />
     <Content Include="Bootstrap\bootstrap.js" />
+    <Content Include="Bootstrap\dataTables.bootstrap.js" />
     <Content Include="Bootstrap\function.js" />
     <Content Include="Bootstrap\jquery.js" />
     <Content Include="BSC\MauBSC.aspx" />

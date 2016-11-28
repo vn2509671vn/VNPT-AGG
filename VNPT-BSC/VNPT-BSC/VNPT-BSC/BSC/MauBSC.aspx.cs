@@ -65,10 +65,10 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static bool SaveData(int monthAprove, int yearAprove, string[] arrKPI_ID)
+        public static string[] SaveData(int monthAprove, int yearAprove, string[] arrKPI_ID)
         {
-            
-            return true;
+
+            return arrKPI_ID;
         }
         protected void Page_Load(object sender, EventArgs e)
         {

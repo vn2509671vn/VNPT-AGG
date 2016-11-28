@@ -34,7 +34,7 @@ namespace VNPT_BSC.BSC
         }
 
         private DataTable getBSCList() {
-            string sqlBSC = "select thang,nam from danhsachbsc group by thang, nam";
+            string sqlBSC = "select thang,nam from danhsachbsc group by thang, nam order by nam,thang";
             DataTable dtBSC = new DataTable();
             try {
                 dtBSC = cn.XemDL(sqlBSC);
@@ -48,8 +48,6 @@ namespace VNPT_BSC.BSC
         [WebMethod]
         public static string[] BindingCheckBox(int monthAprove, int yearAprove)
         {
-            //return monthAprove + "@@" + yearAprove;
-            //return DateTime.Now.ToString();
             DataTable dtKPI = new DataTable();
             Connection cnDanhSachBSC = new Connection();
             string[] arrKPI = {};
@@ -65,10 +63,32 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static string[] SaveData(int monthAprove, int yearAprove, string[] arrKPI_ID)
+        public static bool SaveData(int monthAprove, int yearAprove, string[] arrKPI_ID)
         {
-
-            return arrKPI_ID;
+            Connection cnDanhSachBSC = new Connection();
+            bool output = false;
+            string sqlDelOldData = "delete danhsachbsc where thang = '"+monthAprove+"' and nam = '"+yearAprove+"'";
+            string sqlInsertNewData = "";
+            try
+            {
+                cnDanhSachBSC.ThucThiDL(sqlDelOldData);
+                for (int i = 0; i < arrKPI_ID.Length; i++) {
+                    int kpi_id = Convert.ToInt32(arrKPI_ID[i].ToString());
+                    string curDate = DateTime.Now.ToString("yyyy-MM-dd");
+                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, ngaytao) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '" + curDate + "')";
+                    try {
+                        cnDanhSachBSC.ThucThiDL(sqlInsertNewData);
+                    }
+                    catch {
+                        output = false;
+                    }
+                }
+                output = true;
+            }
+            catch {
+                output = false;
+            }
+            return output;
         }
         protected void Page_Load(object sender, EventArgs e)
         {

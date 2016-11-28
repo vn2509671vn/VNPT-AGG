@@ -20,23 +20,28 @@
             <h3 class="panel-title">MẪU CHỈ TIÊU BSC/KPI</h3>
           </div>
           <div class="panel-body">
-            <div class="col-sm-2">
-                <div class="list-group">
-                <% for(int i = 0; i < dtBSC.Rows.Count; i++){ %>
-                    <%
-                        string month =  dtBSC.Rows[i][0].ToString();
-                        string year =  dtBSC.Rows[i][1].ToString();
-                    %>
-                    <a href="#" onclick="fillData(<%=month %>, <%=year %>)" class="list-group-item list-group-item-info text-center"><%= month +"/"+ year%></a>
-                <% } %>
+            <div class="col-sm-3">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Danh Sách KPI</h3>
+                    </div>
+                    <ul class="list-group">
+                        <% for(int i = 0; i < dtBSC.Rows.Count; i++){ %>
+                            <%
+                                string month =  dtBSC.Rows[i][0].ToString();
+                                string year =  dtBSC.Rows[i][1].ToString();
+                            %>
+                            <a href="#" onclick="fillData(<%=month %>, <%=year %>)" class="list-group-item list-group-item-info text-center"><%= month +"/"+ year%></a>
+                        <% } %>
+                    </ul>
                 </div>
             </div>
-            <div class="col-sm-10 form-horizontal">
+            <div class="col-sm-9 form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-3">Thời gian áp dụng:</label>
                     <div class="col-sm-4 form-inline">
-                        <input type="text" class="form-control number" id="month" name="month" maxlength="2" size="2"/>
-                        <input type="text" class="form-control number" id="year" name="year" maxlength="4" size="4"/>
+                        <input type="text" class="form-control number" id="month" name="month" maxlength="2" size="2" placeholder="Tháng"/>
+                        <input type="text" class="form-control number" id="year" name="year" maxlength="4" size="4" placeholder="Năm"/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -53,6 +58,7 @@
                     <div class="col-sm-12">
                         <div class="col-sm-8 col-sm-offset-3">
                             <button type="button" class="btn btn-success" id="btnSave">Lưu</button>
+                            <button type="button" class="btn btn-default" id="btnClean" onclick="clearInputs()">Reset</button>
                         </div>
                     </div>
                 </div>
@@ -64,6 +70,11 @@
     function fillData(month, year) {
         $("#month").val(month);
         $("#year").val(year);
+
+        /*Remove red border*/
+        $("#month").css("border-color", "#ccc");
+        $("#year").css("border-color", "#ccc");
+
         var requestData = {
             monthAprove : month,
             yearAprove : year
@@ -89,21 +100,18 @@
     }
 
     $(document).ready(function () {
-        $("#month").keydown(function () {
-            $(this).keypress(function (e) {
-                if (String.fromCharCode(e.keyCode).match(/[^0-9]/g)) return false;
-            });
-        });
-
-        $("#year").keydown(function () {
-            $(this).keypress(function (e) {
-                if (String.fromCharCode(e.keyCode).match(/[^0-9]/g)) return false;
-            });
-        });
+        validateNumber("month");
+        validateNumber("year");
 
         $("#btnSave").click(function () {
             var month = $("#month").val();
             var year = $("#year").val();
+            var isMonth = validateMonth("month");
+            var isYear = validateYear("year");
+            if (!isMonth || !isYear) {
+                alert("Vui lòng nhập đúng vào trường bất buộc!!!");
+                return false;
+            }
             var arrKPI = new Array();
             $("input[type=checkbox]:checked").each(function () {
                 arrKPI.push($(this).val());
@@ -123,12 +131,12 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
-                    if (result) {
-                        //window.location.reload();
-                        alert(result.d);
+                    if (result.d) {
+                        alert("Lưu dữ liệu thành công!!!");
+                        window.location.reload();
                     }
                     else {
-                        alert("Vui lòng check lại!!!!");
+                        alert("Vui lòng check lại!!!");
                     }
                 },
                 error: function (msg) { alert(msg.d); }

@@ -142,6 +142,7 @@
     <Content Include="Bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Bootstrap\function.js" />
     <Content Include="Bootstrap\jquery.js" />
+    <Content Include="Bootstrap\thangtgm_custom.css" />
     <Content Include="BSC\MauBSC.aspx" />
     <Content Include="BSC\PhanPhoiBSCDonVi.aspx" />
     <Content Include="Contact.aspx" />
@@ -397,7 +398,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Bootstrap\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Web.config" />

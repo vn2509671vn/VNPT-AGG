@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="PhanPhoiBSCDonVi.aspx.cs" Inherits="VNPT_BSC.BSC.PhanPhoiBSCDonVi" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
-    <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 
     <!-- Customize css -->
     <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
@@ -84,7 +84,7 @@
                         <a href="#" class="btn btn-success btn-xs" id="updateKTStatus">Kết thúc</a>
                     </div>
                 </div>
-                <div class="col-sm-12">
+                <div class="row">
                       <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-bar-chart-o fa-fw"></i> Danh sách KPI
@@ -140,7 +140,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
         /*Get current date when user click Now buttion*/
         $("#getCurrentDate").click(function () {
             var curMonth = "<%= DateTime.Now.ToString("MM") %>";
@@ -164,8 +163,12 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
-                    var arrKPI = result.d;
-                    
+                    var kpiHTML = result.d;
+                    $("#gridBSC").html(kpiHTML);
+                    $("#table-kpi").DataTable({
+                        "searching": true,
+                        "info": true,
+                    });
                 },
                 error: function (msg) { alert(msg.d); }
             });

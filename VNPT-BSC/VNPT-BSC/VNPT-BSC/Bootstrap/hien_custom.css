@@ -1,0 +1,20 @@
+﻿.fix-border-table
+{
+    overflow-x: initial !important;
+}
+.form-group-edit {
+    margin-bottom: 30px;
+}
+
+.fix-label-margin-top
+{
+    margin-bottom: 20px !important;
+}
+.fix-font-size
+{
+    font-size:200px;
+}
+.fix-font-color
+{
+    color:red !important;
+}

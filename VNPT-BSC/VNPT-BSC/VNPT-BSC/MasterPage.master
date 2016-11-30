@@ -1,19 +1,5 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="VNPT.MasterPage" %>
 
-<%@ Register Assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
-    Namespace="DevExpress.Web.ASPxNavBar" TagPrefix="dx" %>
-
-<%@ Register Assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
-    Namespace="DevExpress.Web.ASPxRoundPanel" TagPrefix="dx" %>
-
-<%@ Register assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
-    namespace="DevExpress.Web.ASPxPanel" tagprefix="dx" %>
-
-<%@ Register assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxTreeView" tagprefix="dx" %>
-
-<%@ Register assembly="DevExpress.Web.ASPxTreeList.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxTreeList" tagprefix="dx" %>
-<%@ Register assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxEditors" tagprefix="dx" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -22,8 +8,12 @@
     
     <link rel="icon" href="~/Images/vnpt.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="~/Images/vnpt.ico" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="Styles/Site.css" media="all" />
     
+    <link href="Bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="Bootstrap/menu.css" rel="stylesheet" />
+    <script src="Bootstrap/jquery.js"></script>
+    <script src="Bootstrap/bootstrap.js"></script>
     <meta http-equiv="refresh" content="900" />
     
     <asp:ContentPlaceHolder id="head" runat="server">
@@ -32,7 +22,7 @@
         .auto-style2
         {
             height: 100%;
-            width: 250px;
+            width: 205px;
         }
         .auto-style4
         {
@@ -42,6 +32,10 @@
         {
             width: 941px;
             height: 457px;
+        }
+        .panel-title
+        {
+            margin-top: 0px;
         }
         </style>
 </head>
@@ -66,36 +60,57 @@
                 
                 <tr>
                     <td  style="min-width:260px; " valign="top" class="auto-style2" >
-                        <div style="width: 302px" >
-                            <%--<asp:Panel ID="pnlThongtin" runat="server" Visible="true" CssClass="box-menu">
-                                
-                                <label class="bar-c">Thông tin đăng nhập</label>
-                                
-                                &nbsp;&nbsp;
-                                <asp:Label ID="lblUser" runat="server" Text="" Font-Size="9pt" ForeColor="Red"></asp:Label > <br />
-                                &nbsp;&nbsp;
-                                <asp:Label ID="lblThongtin" runat="server" Text="" Font-Size="8pt"></asp:Label> <br />
-                                &nbsp;&nbsp;
-                                <b><asp:LinkButton ID="lbtnThoat" runat="server" onclick="lbtnThoat_Click">Thoát</asp:LinkButton></b>
-                                
-                            </asp:Panel>
-
-                            <asp:Panel ID="pnlMenu" runat="server" Visible="true">
-                                
-                            </asp:Panel>--%>
-
-                            <div style="margin-left:5px; margin-top:10px; width:287px; height: 141px;"> 
-                                <br />
-                                <dx:ASPxRoundPanel ID="ASPxRoundPanel1" runat="server" Height="76px" Theme="Youthful" Width="293px" HeaderText="Thông Tin Login">
-                                </dx:ASPxRoundPanel>
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                            </div>
-
+                        
+                           <div class="col-md-12 margin-top-30">
+                              <div class="panel-primary panel">
+                                  <div class="panel-heading">
+                                    <h3 class="panel-title ">THÔNG TIN LOGIN</h3>
+                                  </div>
+                                  <div class="panel-body">
+                                  </div>
+                                </div>
+                             </div>
+                           
+                        <div class="col-sm-12">
+                           
                             
+                            <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                              <div class="panel-heading color">
+                                <h4 class="panel-title"><a href="">Trang Chủ</a> </h4>
+                              </div>
+                            </div>
+                                <div class="panel panel-default">
+                              <div class="panel-heading color" >
+                                <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span> </span>Quản Lý Người Dùng<span class="caret"></span></a> </h4>
+                              </div>
+                              <!-- Note: By adding "in" after "collapse", it starts with that particular panel open by default; remove if you want them all collapsed by default --> 
+                              <div id="collapseOne" class="panel-collapse collapse off">
+                                  
+                                <ul class="list-group">
+                                  
+                                  <li><a href="/Chucdanh.aspx" class="navlink">Danh Mục Chức Danh</a></li>
+                                  <li><a href="/Chucvu.aspx" class="navlink">Danh Mục Chức Vụ</a></li>
+                                  <li><a href="" class="navlink">Nhân Viên</a></li>
+                                </ul>
+                              </div>
+                            </div>
+                                <div class="panel panel-default">
+                              <div class="panel-heading color" >
+                                <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#Div1"><span> </span>Quản Lý BSC<span class="caret"></span></a> </h4>
+                              </div>
+                              <!-- Note: By adding "in" after "collapse", it starts with that particular panel open by default; remove if you want them all collapsed by default --> 
+                              <div id="Div1" class="panel-collapse collapse off">
+                                <ul class="list-group">
+                                  <li><a href="/BSC/MauBSC.aspx" class="navlink">Mẫu BSC</a></li>
+                                  <li><a href="/BSC/PhanPhoiBSCDonVi.aspx" class="navlink">Phân phối BSC cho đơn vị</a></li>
+                                  <li><a href="" class="navlink">Link 4</a></li>
+                                </ul>
+                              </div>
+                            </div>
+                              
+                             </div>
+                        
                         </div>
                        <%--</b>--%>
                     </td>

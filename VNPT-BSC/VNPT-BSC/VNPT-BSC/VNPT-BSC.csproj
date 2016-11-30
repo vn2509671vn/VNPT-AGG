@@ -127,12 +127,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="About.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Manage.aspx" />
     <Content Include="Account\OpenAuthProviders.ascx" />
     <Content Include="Account\Register.aspx" />
     <Content Include="Account\RegisterExternalLogin.aspx" />
+    <Content Include="Bootstrap\Alert.js" />
     <Content Include="Bootstrap\bootstrap.css" />
     <Content Include="Bootstrap\bootstrap.js" />
     <Content Include="Bootstrap\dataTables.bootstrap.js" />
@@ -141,13 +141,13 @@
     <Content Include="Bootstrap\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="Bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Bootstrap\function.js" />
+    <Content Include="Bootstrap\hien_custom.css" />
     <Content Include="Bootstrap\jquery.js" />
-    <Content Include="Bootstrap\sweetalert-dev.js" />
-    <Content Include="Bootstrap\sweetalert.css" />
-    <Content Include="Bootstrap\sweetalert.min.js" />
+    <Content Include="Bootstrap\menu.css" />
     <Content Include="Bootstrap\thangtgm_custom.css" />
     <Content Include="BSC\MauBSC.aspx" />
     <Content Include="BSC\PhanPhoiBSCDonVi.aspx" />
+    <Content Include="Chucvu.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -204,9 +204,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
-    <Content Include="Default.aspx" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Home.aspx" />
+    <Content Include="Chucdanh.aspx" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\ASPxRoundPanel\1531691351\BottomLeftCorner.png" />
     <Content Include="Images\ASPxRoundPanel\1531691351\BottomRightCorner.png" />
@@ -230,6 +228,7 @@
     <Content Include="Images\orderedList7.png" />
     <Content Include="Images\orderedList8.png" />
     <Content Include="Images\orderedList9.png" />
+    <Content Include="Login.aspx" />
     <Content Include="packages.config" />
     <Content Include="MasterPage.master">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -268,10 +267,10 @@
     <Content Include="Bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Bootstrap\fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\FontAwesome.otf" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -309,13 +308,6 @@
     <Compile Include="Ajax\ajaxBSC.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\AuthConfig.cs" />
-    <Compile Include="About.aspx.cs">
-      <DependentUpon>About.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="About.aspx.designer.cs">
-      <DependentUpon>About.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Account\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -365,6 +357,13 @@
     <Compile Include="BSC\PhanPhoiBSCDonVi.aspx.designer.cs">
       <DependentUpon>PhanPhoiBSCDonVi.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Chucvu.aspx.cs">
+      <DependentUpon>Chucvu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Chucvu.aspx.designer.cs">
+      <DependentUpon>Chucvu.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Connection.cs" />
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
@@ -373,22 +372,22 @@
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="Chucdanh.aspx.cs">
+      <DependentUpon>Chucdanh.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="Chucdanh.aspx.designer.cs">
+      <DependentUpon>Chucdanh.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Home.aspx.cs">
-      <DependentUpon>Home.aspx</DependentUpon>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Home.aspx.designer.cs">
-      <DependentUpon>Home.aspx</DependentUpon>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="MasterPage.master.cs">
       <DependentUpon>MasterPage.master</DependentUpon>

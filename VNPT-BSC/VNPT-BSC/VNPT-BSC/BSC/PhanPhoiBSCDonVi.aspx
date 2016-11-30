@@ -14,6 +14,12 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
+
+    <!-- Plugin for swal alert -->
+    <script src="../Bootstrap/sweetalert-dev.js"></script>
+    <link href="../Bootstrap/sweetalert.css" rel="stylesheet" />
+    <script src="../Bootstrap/sweetalert.min.js"></script>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="col-md-12 margin-top-30">
@@ -33,7 +39,7 @@
                                     string donvi_id =  dtDonvi.Rows[i]["donvi_id"].ToString();
                                     string donvi_ten =  dtDonvi.Rows[i]["donvi_ten"].ToString();
                                 %>
-                                <a href="#" class="list-group-item list-group-item-info text-left"><%= donvi_ten%></a>
+                                <a href="#" class="list-group-item list-group-item-info text-left" onclick="fillDataBSC('<%= donvi_ten%>','<%= donvi_id%>')"><%= donvi_ten%></a>
                             <% } %>
                         </ul>
                     </div>
@@ -42,46 +48,64 @@
                 <div class="form-group">
                     <label class="control-label col-sm-3">Đơn vị nhận:</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" data-val="5" value="ABC" size="50" id="donvi"/>
+                        <input type="text" class="form-control" readonly data-val="" size="50" id="donvi"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Đơn vị thẩm định:</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="donvithamdinh">
+                            <% for(int i = 0; i < dtFullDV.Rows.Count; i++){ %>
+                                <%
+                                    string donvi_id =  dtFullDV.Rows[i]["donvi_id"].ToString();
+                                    string donvi_ten =  dtFullDV.Rows[i]["donvi_ten"].ToString();
+                                %>
+                                <option value="<%= donvi_id%>"><%= donvi_ten%></option>
+                            <% } %>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3">Thời gian:</label>
                     <div class="col-sm-6 form-inline">
-                        <select class="form-control" id="month">
+                        <select class="form-control" id="month" onchange="changeDate()">
                             <% for(int nMonth = 1; nMonth <= 12; nMonth++){ %>
                                 <option><%= nMonth %></option>
                             <% } %>
                         </select>
-                        <select class="form-control" id="year">
+                        <select class="form-control" id="year" onchange="changeDate()">
                             <% for(int nYear = 1900; nYear <= 2100; nYear++){ %>
                                 <option><%= nYear %></option>
                             <% } %>
                         </select>
-                        <a href="#" class="btn btn-success" id="getCurrentDate">Hiện tại</a>
+                        <a class="btn btn-warning" id="getCurrentDate">Hiện tại</a>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3">Trạng thái giao:</label>
                     <div class="col-sm-8 form-inline">
-                        <% string clsGiao = "label-default"; %>
-                        <span class="label <%=clsGiao %>">Chưa giao</span>
-                        <a href="#" class="btn btn-success btn-xs" id="updateGiaoStatus">Giao</a>
+                        <span class="label label-default" id="giaoLabel">Chưa giao</span>
+                        <a class="btn btn-success btn-xs" id="updateGiaoStatus">Giao</a>
+                        <a class="btn btn-danger btn-xs" id="updateHuyGiaoStatus">Hủy</a>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3">Trạng thái nhận:</label>
                     <div class="col-sm-8 form-inline">
-                        <% string clsNhan = "label-default"; %>
-                        <span class="label <%=clsNhan %>">Chưa nhận</span>
+                        <span id="nhanLabel" class="label label-default">Chưa nhận</span>
+                    </div>
+                </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-3">Trạng thái kiểm định:</label>
+                    <div class="col-sm-8 form-inline">
+                        <span id="kiemdinhLabel" class="label label-default">Chưa kiểm định</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3">Trạng thái kết thúc:</label>
                     <div class="col-sm-8 form-inline">
-                        <% string clsKetThuc = "label-default"; %>
-                        <span class="label <%=clsKetThuc %>">Chưa kết thúc</span>
-                        <a href="#" class="btn btn-success btn-xs" id="updateKTStatus">Kết thúc</a>
+                        <span id="ketthucLabel" class="label label-default">Chưa kết thúc</span>
+                        <a class="btn btn-success btn-xs" id="updateKTStatus">Kết thúc</a>
                     </div>
                 </div>
                 <div class="row">
@@ -90,7 +114,7 @@
                             <i class="fa fa-bar-chart-o fa-fw"></i> Danh sách KPI
                             <div class="pull-right">
                                 <div class="btn-group">
-                                    <a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#listBSC">
+                                    <a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#listBSC" id="btnMauBSC">
                                         Mẫu BSC
                                     </a>
                                     <!-- Modal for BSC list -->
@@ -133,19 +157,164 @@
                         <!-- /.panel-body -->
                     </div>
                 </div>
+                <div class="col-sm-12 text-center">
+                    <a class="btn btn-success" id="saveData">Save</a>
+                </div>
              </div>
           </div>
         </div>
     </div>
 
 <script type="text/javascript">
+    function getCurrentDate() {
+        var curMonth = "<%= DateTime.Now.ToString("MM") %>";
+        var curYear = "<%= DateTime.Now.ToString("yyyy") %>";
+        $("#month").val(curMonth);
+        $("#year").val(curYear);
+        var donvigiao = 1;
+        var donvinhan = $("#donvi").attr("data-val");
+        getBSCByCondition(donvigiao, donvinhan, curMonth, curYear);
+    }
+
+    function getBSCByCondition(id_dv_giao, id_dv_nhan, thang, nam) {
+        /*Hide button*/
+        $("#updateGiaoStatus").hide();
+        $("#updateHuyGiaoStatus").hide();
+        $("#updateKTStatus").hide();
+
+        var requestData = {
+            id_dv_giao: id_dv_giao,
+            id_dv_nhan: id_dv_nhan,
+            thang: thang,
+            nam: nam
+        };
+        var szRequest = JSON.stringify(requestData);
+        $.ajax({
+            type: "POST",
+            url: "PhanPhoiBSCDonVi.aspx/loadBSCByCondition",
+            data: szRequest,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var output = result.d;
+                var gridBSC = output.gridBSC;
+                var donvigiao = output.donvigiao;
+                var donvinhan = output.donvinhan;
+                var donvithamdinh = output.donvithamdinh;
+                var trangthaigiao = output.trangthaigiao;
+                var trangthainhan = output.trangthainhan;
+                var trangthaithamdinh = output.trangthaithamdinh;
+                var trangthaiketthuc = output.trangthaiketthuc;
+
+                /*Fill data*/
+                $("#gridBSC").html(gridBSC);    // Fill to table
+                $("#donvithamdinh").val(donvithamdinh); // Fill to đơn vị thẩm định
+                // Cập nhật trạng thái giao
+                if (trangthaigiao == "True") {
+                    $("#giaoLabel").removeClass("label-default");
+                    $("#giaoLabel").addClass("label-success");
+                    $("#giaoLabel").text("Đã giao");
+                    $("#updateGiaoStatus").hide();
+                    $("#btnMauBSC").hide();
+                    $("#saveData").hide();
+                    if (trangthainhan != "True") {
+                        $("#updateHuyGiaoStatus").show();
+                    }
+                    else {
+                        $("#updateHuyGiaoStatus").hide();
+                    }
+                }
+                else {
+                    $("#giaoLabel").removeClass("label-success");
+                    $("#giaoLabel").addClass("label-default");
+                    $("#giaoLabel").text("Chưa giao");
+                    $("#updateGiaoStatus").show();
+                    $("#btnMauBSC").show();
+                    $("#saveData").show();
+                    $("#updateHuyGiaoStatus").hide();
+                }
+
+                // Cập nhật trạng thái nhận
+                if (trangthainhan == "True") {
+                    $("#nhanLabel").removeClass("label-default");
+                    $("#nhanLabel").addClass("label-success");
+                    $("#nhanLabel").text("Đã nhận");
+                }
+                else {
+                    $("#nhanLabel").removeClass("label-success");
+                    $("#nhanLabel").addClass("label-default");
+                    $("#nhanLabel").text("Chưa nhận");
+                }
+                
+                // Cập nhật trạng thái kiểm định
+                if (trangthaithamdinh == "True") {
+                    $("#kiemdinhLabel").removeClass("label-default");
+                    $("#kiemdinhLabel").addClass("label-success");
+                    $("#kiemdinhLabel").text("Đã kiểm định");
+                }
+                else {
+                    $("#kiemdinhLabel").removeClass("label-success");
+                    $("#kiemdinhLabel").addClass("label-default");
+                    $("#kiemdinhLabel").text("Chưa kiểm định");
+                }
+
+                // Cập nhật trạng thái kết thúc
+                if (trangthaiketthuc == "True") {
+                    $("#ketthucLabel").removeClass("label-default");
+                    $("#ketthucLabel").addClass("label-success");
+                    $("#ketthucLabel").text("Đã kết thúc");
+                    $("#updateKTStatus").hide();
+                }
+                else {
+                    $("#ketthucLabel").removeClass("label-success");
+                    $("#ketthucLabel").addClass("label-default");
+                    $("#ketthucLabel").text("Chưa kết thúc");
+                    if (trangthaithamdinh == "True") {
+                        $("#updateKTStatus").show();
+                    }
+                    else {
+                        $("#updateKTStatus").hide();
+                    }
+                }
+
+                $("#table-kpi").DataTable({
+                    "searching": true,
+                    "info": true,
+                });
+            },
+            error: function (msg) { alert(msg.d); }
+        });
+    }
+
+    function fillDataBSC(ten_dv, id_dv) {
+        $("#donvi").val(ten_dv);
+        $("#donvi").attr("data-val", id_dv);
+        getCurrentDate();
+        var thang = $("#month").val();
+        var nam = $("#year").val();
+        getBSCByCondition(1, id_dv, thang, nam);
+    }
+
+    function changeDate() {
+        var thang = $("#month").val();
+        var nam = $("#year").val();
+        var donvigiao = 1;
+        var donvinhan = $("#donvi").attr("data-val");
+        getBSCByCondition(donvigiao, donvinhan, thang, nam);
+    }
+
+    function onlyNumbers(e) {
+        if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
+    }
+
     $(document).ready(function () {
+        /*Hide button*/
+        $("#updateGiaoStatus").hide();
+        $("#updateHuyGiaoStatus").hide();
+        $("#updateKTStatus").hide();
         /*Get current date when user click Now buttion*/
         $("#getCurrentDate").click(function () {
-            var curMonth = "<%= DateTime.Now.ToString("MM") %>";
-            var curYear = "<%= DateTime.Now.ToString("yyyy") %>";
-            $("#month").val(curMonth);
-            $("#year").val(curYear);
+            getCurrentDate();
         });
 
         $("#loadBSC").click(function () {
@@ -169,6 +338,133 @@
                         "searching": true,
                         "info": true,
                     });
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        });
+
+        $("#saveData").click(function () {
+            var donvigiao = 1;
+            var donvinhan = $("#donvi").attr("data-val");
+            var donvithamdinh = $("#donvithamdinh").val();
+            var thang = $("#month").val();
+            var nam = $("#year").val();
+            if (donvithamdinh == null || donvinhan == "") {
+                swal("Error!", "Vui lòng nhập các trường bắt buộc!!!", "error");
+                return false;
+            }
+
+            var kpi_detail = [];
+            $("#table-kpi > tbody > tr").each(function () {
+                var kpi_id = $(this).attr("data-id");
+                var tytrong = $("#tytrong_" + kpi_id).val();
+                var dvt = $("#dvt_" + kpi_id).val();
+                var kehoach = $("#kehoach_" + kpi_id).val();
+                kpi_detail.push({
+                    kpi_id: kpi_id,
+                    tytrong: tytrong,
+                    dvt: dvt,
+                    kehoach: kehoach
+                });
+            });
+
+            var requestData = {
+                donvigiao: donvigiao,
+                donvinhan: donvinhan,
+                donvithamdinh: donvithamdinh,
+                thang: thang,
+                nam: nam,
+                kpi_detail: kpi_detail
+            };
+            var szRequest = JSON.stringify(requestData);
+            $.ajax({
+                type: "POST",
+                url: "PhanPhoiBSCDonVi.aspx/saveData",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var isSuccess = result.d;
+                    if (isSuccess) {
+                        swal("Lưu thành công!!", "", "success");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        });
+
+        $("#updateGiaoStatus").click(function () {
+            var donvigiao = 1;
+            var donvinhan = $("#donvi").attr("data-val");
+            var thang = $("#month").val();
+            var nam = $("#year").val();
+
+            var requestData = {
+                donvigiao: donvigiao,
+                donvinhan: donvinhan,
+                thang: thang,
+                nam: nam
+            };
+            var szRequest = JSON.stringify(requestData);
+
+            $.ajax({
+                type: "POST",
+                url: "PhanPhoiBSCDonVi.aspx/giaoBSC",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var isSuccess = result.d;
+                    if (isSuccess) {
+                        swal({
+                            title: "Giao BSC thành công!!",
+                            text: "",
+                            type: "success"
+                        },
+                        function () {
+                            getBSCByCondition(donvigiao, donvinhan, thang, nam);
+                        });
+                    }
+                    else {
+                        swal("Error!!!", "Giao BSC không thành công!!!", "error");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        });
+
+        $("#updateHuyGiaoStatus").click(function () {
+            var donvigiao = 1;
+            var donvinhan = $("#donvi").attr("data-val");
+            var thang = $("#month").val();
+            var nam = $("#year").val();
+
+            var requestData = {
+                donvigiao: donvigiao,
+                donvinhan: donvinhan,
+                thang: thang,
+                nam: nam
+            };
+            var szRequest = JSON.stringify(requestData);
+
+            $.ajax({
+                type: "POST",
+                url: "PhanPhoiBSCDonVi.aspx/huygiaoBSC",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var isSuccess = result.d;
+                    if (isSuccess) {
+                        swal({
+                            title: "Hủy BSC thành công!!",
+                            text: "",
+                            type: "success"
+                        },
+                        function () {
+                            getBSCByCondition(donvigiao, donvinhan, thang, nam);
+                        });
+                    }
                 },
                 error: function (msg) { alert(msg.d); }
             });

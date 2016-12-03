@@ -95,7 +95,7 @@
                         <span id="nhanLabel" class="label label-default">Chưa nhận</span>
                     </div>
                 </div>
-                  <div class="form-group">
+                <div class="form-group">
                     <label class="control-label col-sm-3">Trạng thái kiểm định:</label>
                     <div class="col-sm-8 form-inline">
                         <span id="kiemdinhLabel" class="label label-default">Chưa kiểm định</span>
@@ -105,7 +105,6 @@
                     <label class="control-label col-sm-3">Trạng thái kết thúc:</label>
                     <div class="col-sm-8 form-inline">
                         <span id="ketthucLabel" class="label label-default">Chưa kết thúc</span>
-                        <a class="btn btn-success btn-xs" id="updateKTStatus">Kết thúc</a>
                     </div>
                 </div>
                 <div class="row">
@@ -387,6 +386,9 @@
                     var isSuccess = result.d;
                     if (isSuccess) {
                         swal("Lưu thành công!!", "", "success");
+                    }
+                    else {
+                        swal("Error!!!", "Lưu không thành công!!!", "error");
                     }
                 },
                 error: function (msg) { alert(msg.d); }

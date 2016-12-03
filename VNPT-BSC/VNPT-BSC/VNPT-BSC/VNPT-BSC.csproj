@@ -144,8 +144,17 @@
     <Content Include="Bootstrap\hien_custom.css" />
     <Content Include="Bootstrap\jquery.js" />
     <Content Include="Bootstrap\menu.css" />
+    <Content Include="Bootstrap\sweetalert-dev.js" />
+    <Content Include="Bootstrap\sweetalert.css" />
+    <Content Include="Bootstrap\sweetalert.min.js" />
     <Content Include="Bootstrap\thangtgm_custom.css" />
+    <Content Include="BSC\ChiTietBSCKiemDinh.aspx" />
+    <Content Include="BSC\ChiTietBSCNghiemThu.aspx" />
+    <Content Include="BSC\ChiTietBSCNhan.aspx" />
+    <Content Include="BSC\KiemDinhBSCDonVi.aspx" />
     <Content Include="BSC\MauBSC.aspx" />
+    <Content Include="BSC\NghiemThuBSCDonVi.aspx" />
+    <Content Include="BSC\NhanBSCDonVi.aspx" />
     <Content Include="BSC\PhanPhoiBSCDonVi.aspx" />
     <Content Include="Chucvu.aspx" />
     <Content Include="Contact.aspx" />
@@ -205,6 +214,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Chucdanh.aspx" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\ASPxRoundPanel\1531691351\BottomLeftCorner.png" />
     <Content Include="Images\ASPxRoundPanel\1531691351\BottomRightCorner.png" />
@@ -267,10 +277,10 @@
     <Content Include="Bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Bootstrap\fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\fontawesome-webfont.eot" />
-    <Content Include="fonts\fontawesome-webfont.ttf" />
-    <Content Include="fonts\fontawesome-webfont.woff" />
-    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -343,12 +353,54 @@
     <Compile Include="Account\RegisterExternalLogin.aspx.designer.cs">
       <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="BSC\ChiTietBSCKiemDinh.aspx.cs">
+      <DependentUpon>ChiTietBSCKiemDinh.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\ChiTietBSCKiemDinh.aspx.designer.cs">
+      <DependentUpon>ChiTietBSCKiemDinh.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\ChiTietBSCNghiemThu.aspx.cs">
+      <DependentUpon>ChiTietBSCNghiemThu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\ChiTietBSCNghiemThu.aspx.designer.cs">
+      <DependentUpon>ChiTietBSCNghiemThu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\ChiTietBSCNhan.aspx.cs">
+      <DependentUpon>ChiTietBSCNhan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\ChiTietBSCNhan.aspx.designer.cs">
+      <DependentUpon>ChiTietBSCNhan.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\KiemDinhBSCDonVi.aspx.cs">
+      <DependentUpon>KiemDinhBSCDonVi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\KiemDinhBSCDonVi.aspx.designer.cs">
+      <DependentUpon>KiemDinhBSCDonVi.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BSC\MauBSC.aspx.cs">
       <DependentUpon>MauBSC.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="BSC\MauBSC.aspx.designer.cs">
       <DependentUpon>MauBSC.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\NghiemThuBSCDonVi.aspx.cs">
+      <DependentUpon>NghiemThuBSCDonVi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\NghiemThuBSCDonVi.aspx.designer.cs">
+      <DependentUpon>NghiemThuBSCDonVi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\NhanBSCDonVi.aspx.cs">
+      <DependentUpon>NhanBSCDonVi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\NhanBSCDonVi.aspx.designer.cs">
+      <DependentUpon>NhanBSCDonVi.aspx</DependentUpon>
     </Compile>
     <Compile Include="BSC\PhanPhoiBSCDonVi.aspx.cs">
       <DependentUpon>PhanPhoiBSCDonVi.aspx</DependentUpon>
@@ -391,8 +443,8 @@
     </Compile>
     <Compile Include="MasterPage.master.cs">
       <DependentUpon>MasterPage.master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">

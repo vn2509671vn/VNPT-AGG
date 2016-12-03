@@ -80,7 +80,6 @@ namespace VNPT_BSC.BSC
             //string[] arrOutput = {};
             Dictionary<String, String> dicOutput = new Dictionary<String, String>(); // Lưu bảng BSC (gridBSC), đơn vị thẩm định, trạng thái giao, trạng thái nhận, trạng thái thẩm định
             Connection cnBSC = new Connection();
-            CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
             /*Lấy danh sách BSC từ bảng bsc_donvi*/
             DataTable gridData = new DataTable();
             string outputHTML = "";
@@ -189,7 +188,7 @@ namespace VNPT_BSC.BSC
                     cnData.ThucThiDL(sqlDeleteBSCDV);
                     cnData.ThucThiDL(sqlDeleteGiaoBSCDV);
 
-                    string sqlInsertGiaoBSC = "insert into giaobscdonvi(donvigiao, donvinhan, donvithamdinh, thang, nam, trangthaigiao, trangthainhan, trangthaithamdinh, trangthaiketthuc) ";
+                    string sqlInsertGiaoBSC = "insert into giaobscdonvi(donvigiao, donvinhan, donvithamdinh, thang, nam, trangthaigiao, trangthainhan, trangthaicham, trangthaithamdinh, trangthaiketthuc) ";
                     sqlInsertGiaoBSC += "values('" + donvigiao + "', '" + donvinhan + "', '" + donvithamdinh + "', '" + thang + "', '" + nam + "', 0, 0, 0, 0)";
                     cnData.ThucThiDL(sqlInsertGiaoBSC);
                     for (int i = 0; i < kpi_detail.Length; i++)
@@ -213,8 +212,8 @@ namespace VNPT_BSC.BSC
                 }
             }
             else {
-                string sqlInsertGiaoBSC = "insert into giaobscdonvi(donvigiao, donvinhan, donvithamdinh, thang, nam, trangthaigiao, trangthainhan, trangthaithamdinh, trangthaiketthuc) ";
-                sqlInsertGiaoBSC += "values('" + donvigiao + "', '" + donvinhan + "', '" + donvithamdinh + "', '" + thang + "', '" + nam + "', 0, 0, 0, 0)";
+                string sqlInsertGiaoBSC = "insert into giaobscdonvi(donvigiao, donvinhan, donvithamdinh, thang, nam, trangthaigiao, trangthainhan, trangthaicham, trangthaithamdinh, trangthaiketthuc) ";
+                sqlInsertGiaoBSC += "values('" + donvigiao + "', '" + donvinhan + "', '" + donvithamdinh + "', '" + thang + "', '" + nam + "', 0, 0, 0, 0, 0)";
                 cnData.ThucThiDL(sqlInsertGiaoBSC);
                 for (int i = 0; i < kpi_detail.Length; i++)
                 {
@@ -262,6 +261,30 @@ namespace VNPT_BSC.BSC
             Connection cnGiaoBSC = new Connection();
             bool isSuccess = false;
             string sqlGiaoBSC = "update giaobscdonvi set trangthaigiao = 0 where donvigiao = '" + donvigiao + "' and donvinhan = '" + donvinhan + "' and thang = '" + thang + "' and nam = '" + nam + "'";
+            try
+            {
+                cnGiaoBSC.ThucThiDL(sqlGiaoBSC);
+                isSuccess = true;
+            }
+            catch
+            {
+                isSuccess = false;
+            }
+            return isSuccess;
+        }
+
+        [WebMethod]
+        public static bool ketthucBSC(int donvigiao, int donvinhan, int thang, int nam)
+        {
+            Connection cnGiaoBSC = new Connection();
+            bool isSuccess = false;
+            bool isExist = isExistGiaoBSC_DV(donvigiao, donvinhan, thang, nam);
+            if (!isExist)
+            {
+                return false;
+            }
+
+            string sqlGiaoBSC = "update giaobscdonvi set trangthaiketthuc = 1 where donvigiao = '" + donvigiao + "' and donvinhan = '" + donvinhan + "' and thang = '" + thang + "' and nam = '" + nam + "'";
             try
             {
                 cnGiaoBSC.ThucThiDL(sqlGiaoBSC);

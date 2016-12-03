@@ -12,6 +12,10 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
 
+    <!-- Plugin for swal alert -->
+    <script src="../Bootstrap/sweetalert-dev.js"></script>
+    <link href="../Bootstrap/sweetalert.css" rel="stylesheet" />
+    <script src="../Bootstrap/sweetalert.min.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="col-md-12 margin-top-30">
@@ -23,7 +27,7 @@
             <div class="col-sm-3">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Danh Sách KPI</h3>
+                        <h3 class="panel-title">Danh Sách Mẫu BSC</h3>
                     </div>
                     <ul class="list-group">
                         <% for(int i = 0; i < dtBSC.Rows.Count; i++){ %>
@@ -67,6 +71,7 @@
         </div>
     </div>
 <script type="text/javascript">
+    var nguoitao = '<%= nguoitao%>';
     function fillData(month, year) {
         $("#month").val(month);
         $("#year").val(year);
@@ -77,7 +82,8 @@
 
         var requestData = {
             monthAprove : month,
-            yearAprove : year
+            yearAprove: year,
+            nguoitao: nguoitao
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
@@ -109,7 +115,7 @@
             var isMonth = validateMonth("month");
             var isYear = validateYear("year");
             if (!isMonth || !isYear) {
-                alert("Vui lòng nhập đúng vào trường bất buộc!!!");
+                swal("Error","Vui lòng nhập đúng vào trường bất buộc!!!","error");
                 return false;
             }
             var arrKPI = new Array();
@@ -120,7 +126,8 @@
             var requestData = {
                 monthAprove: month,
                 yearAprove: year,
-                arrKPI_ID: arrKPI
+                arrKPI_ID: arrKPI,
+                nguoitao: nguoitao
             };
 
             var szRequest = JSON.stringify(requestData);
@@ -132,11 +139,19 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.d) {
-                        alert("Lưu dữ liệu thành công!!!");
-                        window.location.reload();
+                        swal({
+                            title: "Lưu dữ liệu thành công!!!",
+                            text: "",
+                            type: "success"
+                        },
+                        function () {
+                            window.location.reload();
+                        });
+                        //alert("Lưu dữ liệu thành công!!!");
+                        //window.location.reload();
                     }
                     else {
-                        alert("Vui lòng check lại!!!");
+                        swal("Error","Vui lòng check lại!!!","error");
                     }
                 },
                 error: function (msg) { alert(msg.d); }

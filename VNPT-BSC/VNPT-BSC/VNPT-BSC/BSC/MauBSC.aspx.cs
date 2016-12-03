@@ -18,6 +18,7 @@ namespace VNPT_BSC.BSC
         Connection cn = new Connection();
         public DataTable dtBSC;
         public DataTable dtKPI;
+        public static int nguoitao;
         /*Get KPO list*/
         private DataTable getKPIList()
         {
@@ -33,8 +34,8 @@ namespace VNPT_BSC.BSC
             return dtKPI;
         }
 
-        private DataTable getBSCList() {
-            string sqlBSC = "select thang,nam from danhsachbsc group by thang, nam order by nam,thang";
+        private DataTable getBSCList(int nguoitao) {
+            string sqlBSC = "select thang,nam from danhsachbsc where nguoitao = '" + nguoitao + "' group by thang, nam order by nam,thang";
             DataTable dtBSC = new DataTable();
             try {
                 dtBSC = cn.XemDL(sqlBSC);
@@ -46,12 +47,12 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static string[] BindingCheckBox(int monthAprove, int yearAprove)
+        public static string[] BindingCheckBox(int monthAprove, int yearAprove, int nguoitao)
         {
             DataTable dtKPI = new DataTable();
             Connection cnDanhSachBSC = new Connection();
             string[] arrKPI = {};
-            string sql = "select * from danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "'";
+            string sql = "select * from danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao = '" + nguoitao + "'";
             dtKPI = cnDanhSachBSC.XemDL(sql);
             if (dtKPI.Rows.Count > 0) {
                 arrKPI = new string[dtKPI.Rows.Count];
@@ -63,11 +64,11 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static bool SaveData(int monthAprove, int yearAprove, string[] arrKPI_ID)
+        public static bool SaveData(int monthAprove, int yearAprove, string[] arrKPI_ID, int nguoitao)
         {
             Connection cnDanhSachBSC = new Connection();
             bool output = false;
-            string sqlDelOldData = "delete danhsachbsc where thang = '"+monthAprove+"' and nam = '"+yearAprove+"'";
+            string sqlDelOldData = "delete danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao = '" + nguoitao + "'";
             string sqlInsertNewData = "";
             try
             {
@@ -75,7 +76,7 @@ namespace VNPT_BSC.BSC
                 for (int i = 0; i < arrKPI_ID.Length; i++) {
                     int kpi_id = Convert.ToInt32(arrKPI_ID[i].ToString());
                     string curDate = DateTime.Now.ToString("yyyy-MM-dd");
-                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, ngaytao) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '" + curDate + "')";
+                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, nguoitao, ngaytao) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '"+nguoitao+"','" + curDate + "')";
                     try {
                         cnDanhSachBSC.ThucThiDL(sqlInsertNewData);
                     }
@@ -92,11 +93,11 @@ namespace VNPT_BSC.BSC
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            nguoitao = 1;
             if (!IsPostBack) {
                 /*Get list BSC*/
                 dtBSC = new DataTable();
-                dtBSC = getBSCList();
+                dtBSC = getBSCList(nguoitao);
 
                 /*Get list KPI*/
                 dtKPI = new DataTable();

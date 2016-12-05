@@ -18,3 +18,62 @@
 {
     color:red !important;
 }
+.fix-padding-left
+{
+    padding-left:0px !important;
+}
+
+.fix-padding-right
+{
+    padding-right:0px !important;
+}
+.fix-table
+{
+    width:70px !important;
+}
+.fix-table-edit
+{
+    width:190px !important;
+}
+
+.fix-modal
+{
+    width:800px !important;
+}
+
+.list-nhanvien {
+    max-height: 720px !important;
+    overflow: auto;
+}
+
+.fix-textboxx
+{
+    width:250px !important;
+}
+.fix-checkbox
+{
+    margin-top:10px !important;
+}
+
+.fix-day
+{
+    width:196px !important;
+}
+
+.fix-table-edit-edit
+{
+    width:125px !important;
+}
+.fix-table-edit-edit1
+{
+    width:100px !important;
+}
+.fix-width-350
+{
+    width: 350px !important;
+}
+
+.fix-height-34
+{
+    height: 34px !important;
+}

@@ -156,7 +156,8 @@
     <Content Include="BSC\NghiemThuBSCDonVi.aspx" />
     <Content Include="BSC\NhanBSCDonVi.aspx" />
     <Content Include="BSC\PhanPhoiBSCDonVi.aspx" />
-    <Content Include="Chucvu.aspx" />
+    <Content Include="DanhMuc\KPI.aspx" />
+    <Content Include="DanhMuc\Chucvu.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -213,7 +214,9 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
-    <Content Include="Chucdanh.aspx" />
+    <Content Include="DanhMuc\Chucdanh.aspx" />
+    <Content Include="DanhMuc\Donvi.aspx" />
+    <Content Include="DanhMuc\KPO.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\ASPxRoundPanel\1531691351\BottomLeftCorner.png" />
@@ -277,6 +280,9 @@
     <Content Include="Bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="MasterPage.Master" />
+    <Content Include="WebForm1.aspx" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -409,11 +415,18 @@
     <Compile Include="BSC\PhanPhoiBSCDonVi.aspx.designer.cs">
       <DependentUpon>PhanPhoiBSCDonVi.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Chucvu.aspx.cs">
+    <Compile Include="DanhMuc\KPI.aspx.cs">
+      <DependentUpon>KPI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\KPI.aspx.designer.cs">
+      <DependentUpon>KPI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DanhMuc\Chucvu.aspx.cs">
       <DependentUpon>Chucvu.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Chucvu.aspx.designer.cs">
+    <Compile Include="DanhMuc\Chucvu.aspx.designer.cs">
       <DependentUpon>Chucvu.aspx</DependentUpon>
     </Compile>
     <Compile Include="Connection.cs" />
@@ -424,12 +437,26 @@
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Chucdanh.aspx.cs">
+    <Compile Include="DanhMuc\Chucdanh.aspx.cs">
       <DependentUpon>Chucdanh.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Chucdanh.aspx.designer.cs">
+    <Compile Include="DanhMuc\Chucdanh.aspx.designer.cs">
       <DependentUpon>Chucdanh.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DanhMuc\Donvi.aspx.cs">
+      <DependentUpon>Donvi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\Donvi.aspx.designer.cs">
+      <DependentUpon>Donvi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DanhMuc\KPO.aspx.cs">
+      <DependentUpon>KPO.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\KPO.aspx.designer.cs">
+      <DependentUpon>KPO.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -441,11 +468,15 @@
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MasterPage.master.cs">
-      <DependentUpon>MasterPage.master</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Compile Include="MasterPage.Master.cs">
+      <DependentUpon>MasterPage.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="MasterPage.Master.designer.cs">
+      <DependentUpon>MasterPage.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Nhanvien.cs" />
+    <Compile Include="NhanvienSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

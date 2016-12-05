@@ -7,15 +7,17 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace VNPT
+namespace VNPT_BSC
 {
-    public partial class MasterPage : System.Web.UI.MasterPage
+    public partial class MasterPageEdit : System.Web.UI.MasterPage
     {
-
-
+        
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Nhanvien nhanvien = Session.GetCurrentUser();
+            lblUser.Text = "Chào: <b>" + nhanvien.nhanvien_hoten + "</b>";
+            lblDonvi.Text = nhanvien.nhanvien_donvi;
+            lblChucvu.Text = nhanvien.nhanvien_chucvu;
         }
-}
+    }
 }

@@ -1,143 +1,108 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="VNPT.MasterPage" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.Master.cs" Inherits="VNPT_BSC.MasterPageEdit" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Cổng thông tin Viễn thông An Giang</title>
-    
-    <link rel="icon" href="~/Images/vnpt.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="~/Images/vnpt.ico" type="image/x-icon" />
-    
+    <title></title>
+    <link href="Bootstrap/hien_custom.css" rel="stylesheet" />
     <link href="Bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="Bootstrap/menu.css" rel="stylesheet" />
     <script src="Bootstrap/jquery.js"></script>
     <script src="Bootstrap/bootstrap.js"></script>
-    <meta http-equiv="refresh" content="900" />
-    
-    <asp:ContentPlaceHolder id="head" runat="server">
+    <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
-    <style type="text/css">
-        .auto-style2
-        {
-            height: 100%;
-            width: 205px;
-        }
-        .auto-style4
-        {
-            width: 1253px;
-        }
-        .auto-style5
-        {
-            width: 941px;
-            height: 457px;
-        }
-        .panel-title
-        {
-            margin-top: 0px;
-        }
-        </style>
 </head>
 <body>
-    <form id="form1" runat="server" method="post">
-    <asp:ScriptManager ID="ScriptManager1" runat="server">
-    </asp:ScriptManager>
-    
-    <div>
-        <table style="width:100%;height:100%; background-color:#809FFF;" cellpadding="0px" cellspacing="0px">
-          
-            <tr>
-            <td style="width:15%; background-color: #FFFFFF;">
-            </td>
-            <td class="auto-style4" >
-            <table style="width:1338px; min-height:1024px; background-color:#dfeef5;" cellspacing="0" cellpadding="0" >
-                <tr>
-                            <td colspan="2">
-                                <asp:Image Width="100%" ID="Image1" runat="server" ImageUrl="~/Images/baner_moi.PNG"/>
+    <form id="form1" runat="server" >
+        <div class="container" >
+            <!-- Header -->
+            <div class="row">
+                <img class="img-responsive" src="/Images/baner_moi.PNG" />
+            </div>
 
-                        </tr>
-                
-                <tr>
-                    <td  style="min-width:260px; " valign="top" class="auto-style2" >
-                        
-                           <div class="col-md-12 margin-top-30">
-                              <div class="panel-primary panel">
-                                  <div class="panel-heading">
-                                    <h3 class="panel-title ">THÔNG TIN LOGIN</h3>
-                                  </div>
-                                  <div class="panel-body">
-                                  </div>
-                                </div>
-                             </div>
-                           
-                        <div class="col-sm-12">
-                           
-                            
-                            <div class="panel-group" id="accordion">
-                            <div class="panel panel-default">
-                              <div class="panel-heading color">
-                                <h4 class="panel-title"><a href="">Trang Chủ</a> </h4>
-                              </div>
+            <!-- Body -->
+            <div class="row">
+                <!-- Left menu -->
+                <div class="col-sm-3 margin-top-30 ">
+                    <div class="row">
+                        <div class="panel-primary panel">
+                            <div class="panel-heading">
+                                <h3 class="panel-title ">THÔNG TIN LOGIN</h3>
                             </div>
-                                <div class="panel panel-default">
-                              <div class="panel-heading color" >
-                                <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span> </span>Quản Lý Người Dùng<span class="caret"></span></a> </h4>
-                              </div>
-                              <!-- Note: By adding "in" after "collapse", it starts with that particular panel open by default; remove if you want them all collapsed by default --> 
-                              <div id="collapseOne" class="panel-collapse collapse off">
-                                  
-                                <ul class="list-group">
-                                  
-                                  <li><a href="/Chucdanh.aspx" class="navlink">Danh Mục Chức Danh</a></li>
-                                  <li><a href="/Chucvu.aspx" class="navlink">Danh Mục Chức Vụ</a></li>
-                                  <li><a href="" class="navlink">Nhân Viên</a></li>
-                                </ul>
-                              </div>
+                            <div class="panel-body">
+                                <asp:Label ID="lblUser" runat="server" Text="" Font-Size="9pt" ForeColor="Red" style="line-height:24px"></asp:Label >
+                                <br />
+                                <asp:Label ID="Label2" runat="server" Text="" Font-Size="9pt" ForeColor="Red" style="line-height:24px">Đơn vị:</asp:Label ><asp:Label ID="lblDonvi" runat="server" Text="" Font-Size="9pt" style="line-height:24px"></asp:Label >
+                                <br />
+                                <asp:Label ID="Label1" runat="server" Text="" Font-Size="9pt" ForeColor="Red" style="line-height:24px">Chức vụ:</asp:Label ><asp:Label ID="lblChucvu" runat="server" Text="" Font-Size="9pt" style="line-height:24px"></asp:Label >
                             </div>
-                                <div class="panel panel-default">
-                              <div class="panel-heading color" >
-                                <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#Div1"><span> </span>Quản Lý BSC<span class="caret"></span></a> </h4>
-                              </div>
-                              <!-- Note: By adding "in" after "collapse", it starts with that particular panel open by default; remove if you want them all collapsed by default --> 
-                              <div id="Div1" class="panel-collapse collapse off">
-                                <ul class="list-group">
-                                  <li><a href="/BSC/MauBSC.aspx" class="navlink">Mẫu BSC</a></li>
-                                  <li><a href="/BSC/PhanPhoiBSCDonVi.aspx" class="navlink">Phân phối BSC cho đơn vị</a></li>
-                                  <li><a href="" class="navlink">Link 4</a></li>
-                                </ul>
-                              </div>
-                            </div>
-                              
-                             </div>
-                        
                         </div>
-                       <%--</b>--%>
-                    </td>
-                    <td valign="top" style="min-width:980px; min-height:1024px;" class="auto-style5">
-                        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+                    </div>
+                    <div class="row">
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading color">
+                                    <h4 class="panel-title"><a href="">Trang Chủ</a> </h4>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading color">
+                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span></span>Danh Mục Quản Lý<span class="caret"></span></a> </h4>
+                                </div>
+                                <!-- Note: By adding "in" after "collapse", it starts with that particular panel open by default; remove if you want them all collapsed by default -->
+                                <div id="collapseOne" class="panel-collapse collapse off">
+                                    <ul class="list-group">
+                                        <li><a href="/DanhMuc/Donvi.aspx" class="navlink">Danh Mục Đơn Vị</a></li>
+                                        <li><a href="/DanhMuc/Nhanvien.aspx" class="navlink">Danh Mục Nhân Viên</a></li>
+                                        <li><a href="/DanhMuc/Chucdanh.aspx" class="navlink">Danh Mục Chức Danh</a></li>
+                                        <li><a href="/DanhMuc/Chucvu.aspx" class="navlink">Danh Mục Chức Vụ</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading color">
+                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span></span>Danh Mục BSC<span class="caret"></span></a> </h4>
+                                </div>
+                                <!-- Note: By adding "in" after "collapse", it starts with that particular panel open by default; remove if you want them all collapsed by default -->
+                                <div id="collapseTwo" class="panel-collapse collapse off">
+                                    <ul class="list-group">
+                                        <li><a href="/DanhMuc/KPI.aspx" class="navlink">Danh Mục KPI</a></li>
+                                        <li><a href="/DanhMuc/KPO.aspx" class="navlink">Danh Mục KPO</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading color">
+                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span></span>Quản Lý BSC<span class="caret"></span></a> </h4>
+                                </div>
+                                <!-- Note: By adding "in" after "collapse", it starts with that particular panel open by default; remove if you want them all collapsed by default -->
+                                <div id="collapseThree" class="panel-collapse collapse off">
+                                    <ul class="list-group">
+                                        <li><a href="/BSC/MauBSC.aspx" class="navlink">Mẫu BSC</a></li>
+                                        <li><a href="/BSC/PhanPhoiBSCDonVi.aspx" class="navlink">Phân Phối BSC - Đơn Vị</a></li>
+                                        <li><a href="/BSC/NhanBSCDonVi.aspx" class="navlink">Nhận BSC - Đơn Vị</a></li>
+                                        <li><a href="/BSC/KiemDinhBSCDonVi.aspx" class="navlink">Kiểm Định BSC - Đơn Vị</a></li>
+                                        <li><a href="/BSC/NghiemThuBSCDonVi.aspx" class="navlink">Nghiệm thu BSC - Đơn Vị</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- right menu -->
+                <div class="col-sm-9">
+                    <div class="row ">
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
                         </asp:ContentPlaceHolder>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center" valign="middle"  style="background-color:#3366FF" >
-                       <br />
-                       <strong style="color:White; line-height:26px"> Trung Tâm Kinh Doanh VNPT An Giang</strong><br />
-                       <strong style="color:White"> Số 02 Lê Lợi, Phường Mỹ Bình, Tp. Long Xuyên, An Giang - Điện thoại: (076) 3855990</strong>
-                       <br />
-                       <br />
-                    </td>
-                </tr>
-            </table>
-            </td>
-            <td style="width:15%; background-color: #FFFFFF;" >  <%--background:#3366FF"--%>
-            </td>
-           </tr>
-            
+                    </div>
+                </div>
+            </div>
+
            
-      </table>  
-    </div>
-    
+        </div>
     </form>
 </body>
 </html>

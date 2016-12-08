@@ -80,16 +80,16 @@
                                 <!-- Note: By adding "in" after "collapse", it starts with that particular panel open by default; remove if you want them all collapsed by default -->
                                 <div id="collapseThree" class="panel-collapse collapse off">
                                     <ul class="list-group">
-                                        <li id="maubsc_donvi"><a href="/BSC/MauBSC.aspx" class="navlink">Mẫu BSC</a></li>
-                                        <li id="maubsc_nhanvien"><a href="/BSC/MauBSCNhanVien.aspx" class="navlink">Mẫu BSC</a></li>
-                                        <li id="phanphoibsc_donvi"><a href="/BSC/PhanPhoiBSCDonVi.aspx" class="navlink">Phân Phối BSC - Đơn Vị</a></li>
-                                        <li id="phanphoibsc_nhanvien"><a href="/BSC/PhanPhoiBSCNhanVien.aspx" class="navlink">Phân Phối BSC - Nhân Viên</a></li>
-                                        <li id="nhanbsc_donvi"><a href="/BSC/NhanBSCDonVi.aspx" class="navlink">Nhận BSC - Đơn Vị</a></li>
-                                        <li id="nhanbsc_nhanvien"><a href="/BSC/NhanBSCNhanVien.aspx" class="navlink">Nhận BSC - Nhân Viên</a></li>
-                                        <li id="kiemdinhbsc_donvi"><a href="/BSC/KiemDinhBSCDonVi.aspx" class="navlink">Kiểm Định BSC - Đơn Vị</a></li>
-                                        <li id="kiemdinhbsc_nhanvien"><a href="/BSC/KiemDinhBSCNhanVien.aspx" class="navlink">Kiểm Định BSC - Nhân Viên</a></li>
-                                        <li id="nghiemthubsc_donvi"><a href="/BSC/NghiemThuBSCDonVi.aspx" class="navlink">Nghiệm thu BSC - Đơn Vị</a></li>
-                                        <li id="nghiemthubsc_nhanvien"><a href="/BSC/NghiemThuBSCNhanVien.aspx" class="navlink">Nghiệm thu BSC - Nhân Viên</a></li>
+                                        <li class="cls-bsc" id="maubsc_donvi"><a href="/BSC/MauBSC.aspx" class="navlink">Mẫu BSC</a></li>
+                                        <li class="cls-bsc" id="maubsc_nhanvien"><a href="/BSC/MauBSCNhanVien.aspx" class="navlink">Mẫu BSC</a></li>
+                                        <li class="cls-bsc" id="phanphoibsc_donvi"><a href="/BSC/PhanPhoiBSCDonVi.aspx" class="navlink">Phân Phối BSC - Đơn Vị</a></li>
+                                        <li class="cls-bsc" id="phanphoibsc_nhanvien"><a href="/BSC/PhanPhoiBSCNhanVien.aspx" class="navlink">Phân Phối BSC - Nhân Viên</a></li>
+                                        <li class="cls-bsc" id="nhanbsc_donvi"><a href="/BSC/NhanBSCDonVi.aspx" class="navlink">Nhận BSC - Đơn Vị</a></li>
+                                        <li class="cls-bsc" id="nhanbsc_nhanvien"><a href="/BSC/NhanBSCNhanVien.aspx" class="navlink">Nhận BSC - Nhân Viên</a></li>
+                                        <li class="cls-bsc" id="kiemdinhbsc_donvi"><a href="/BSC/KiemDinhBSCDonVi.aspx" class="navlink">Kiểm Định BSC - Đơn Vị</a></li>
+                                        <li class="cls-bsc" id="kiemdinhbsc_nhanvien"><a href="/BSC/KiemDinhBSCNhanVien.aspx" class="navlink">Kiểm Định BSC - Nhân Viên</a></li>
+                                        <li class="cls-bsc" id="nghiemthubsc_donvi"><a href="/BSC/NghiemThuBSCDonVi.aspx" class="navlink">Nghiệm thu BSC - Đơn Vị</a></li>
+                                        <li class="cls-bsc" id="nghiemthubsc_nhanvien"><a href="/BSC/NghiemThuBSCNhanVien.aspx" class="navlink">Nghiệm thu BSC - Nhân Viên</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -111,3 +111,30 @@
     </form>
 </body>
 </html>
+<script type="text/javascript">
+    var chucvu = "<%=chucvu%>";
+    $(document).ready(function () {
+        $(".cls-bsc").hide();
+
+        // Chuyên viên bsc
+        if (chucvu == 10) {
+            $("#maubsc_donvi").show();
+            $("#phanphoibsc_donvi").show();
+            $("#nghiemthubsc_donvi").show();
+            $("#nhanbsc_nhanvien").show();
+            $("#kiemdinhbsc_nhanvien").show();
+        }
+        else if (chucvu == 2 || chucvu == 4) {
+            $("#nhanbsc_donvi").show();
+            $("#maubsc_nhanvien").show();
+            $("#phanphoibsc_nhanvien").show();
+            $("#nhanbsc_nhanvien").show();
+            $("#kiemdinhbsc_nhanvien").show();
+            $("#nghiemthubsc_nhanvien").show();
+        }
+        else {
+            $("#nhanbsc_nhanvien").show();
+            $("#kiemdinhbsc_nhanvien").show();
+        }
+    });
+</script>

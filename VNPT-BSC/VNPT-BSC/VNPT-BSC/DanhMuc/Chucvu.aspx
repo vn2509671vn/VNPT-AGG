@@ -150,7 +150,9 @@
             var cd_ma = $('#txtmachucvu').val();
             if (cd_ten == "" || cd_ma == "") {
                 swal({
-                    title: "Nhập thiếu trường dữ liệu!!",
+                    title: "Lỗi Dữ Liệu",
+                    text: "Nhập thiếu trường dữ liệu!!!!",
+                    type: "error",
                     timer: 1000,
                     showConfirmButton: false
                 });
@@ -166,7 +168,9 @@
             var cd_ma = $('#txtmachucvu_sua').val();
             if (cd_ten == "" || cd_ma == "") {
                 swal({
-                    title: "Dữ liệu không được bỏ trống!!",
+                    title: "Lỗi Dữ Liệu",
+                    text: "Nhập thiếu trường dữ liệu!!!!",
+                    type: "error",
                     timer: 1000,
                     showConfirmButton: false
                 });

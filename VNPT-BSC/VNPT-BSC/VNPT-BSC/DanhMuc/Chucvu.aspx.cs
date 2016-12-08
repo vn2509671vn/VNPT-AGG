@@ -44,7 +44,7 @@ namespace VNPT_BSC
             {
 
 
-                sqlInsertNewData = "insert into chucvu(chucvu_ten,chucvu_mota, chucvu_ma) values('" + cv_tenAprove + "','" + cv_motaAprove + "', '" + cv_maAprove + "')";
+                sqlInsertNewData = "insert into chucvu(chucvu_ten,chucvu_mota, chucvu_ma) values(N'" + cv_tenAprove + "',N'" + cv_motaAprove + "', N'" + cv_maAprove + "')";
                 try
                 {
                     them_chucvu.ThucThiDL(sqlInsertNewData);
@@ -69,7 +69,7 @@ namespace VNPT_BSC
             string sqlUpdateData = "";
             try
             {
-                sqlUpdateData = "Update chucvu set chucvu_ten = '" + cv_ten_suaAprove + "',chucvu_mota = '" + cv_mota_suaAprove + "', chucvu_ma = '" + cv_ma_suaAprove + "' where chucvu_id = '" + cv_id_suaAprove + "'";
+                sqlUpdateData = "Update chucvu set chucvu_ten = N'" + cv_ten_suaAprove + "',chucvu_mota = N'" + cv_mota_suaAprove + "', chucvu_ma = N'" + cv_ma_suaAprove + "' where chucvu_id = '" + cv_id_suaAprove + "'";
                 try
                 {
                     chucvu_edit.ThucThiDL(sqlUpdateData);

@@ -187,7 +187,9 @@
             var kpi_ngay = $("#txtngay").val();
             if (kpi_ten == "" || kpi_mota == "" || kpi_ngay == "") {
                 swal({
-                    title: "Nhập thiếu trường dữ liệu!!",
+                    title: "Lỗi Dữ Liệu",
+                    text: "Nhập thiếu trường dữ liệu!!!!",
+                    type: "error",
                     timer: 1000,
                     showConfirmButton: false
                 });
@@ -236,7 +238,7 @@
                    function (isConfirm) {
                        if (isConfirm) {
                            var requestData = {
-                               cd_id_xoaAprove: cd_id,
+                               kpi_id_xoaAprove: kpi_id,
                            };
                            var szRequest = JSON.stringify(requestData);
                            $.ajax({

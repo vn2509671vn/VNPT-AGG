@@ -55,7 +55,7 @@
                                 <div id="collapseOne" class="panel-collapse collapse off">
                                     <ul class="list-group">
                                         <li><a href="/DanhMuc/Donvi.aspx" class="navlink">Danh Mục Đơn Vị</a></li>
-                                        <li><a href="/DanhMuc/Nhanvien.aspx" class="navlink">Danh Mục Nhân Viên</a></li>
+                                        <li><a href="/DanhMuc/QL_NhanVien.aspx" class="navlink">Danh Mục Nhân Viên</a></li>
                                         <li><a href="/DanhMuc/Chucdanh.aspx" class="navlink">Danh Mục Chức Danh</a></li>
                                         <li><a href="/DanhMuc/Chucvu.aspx" class="navlink">Danh Mục Chức Vụ</a></li>
                                     </ul>

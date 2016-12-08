@@ -225,6 +225,7 @@
     <Content Include="DanhMuc\Chucdanh.aspx" />
     <Content Include="DanhMuc\Donvi.aspx" />
     <Content Include="DanhMuc\KPO.aspx" />
+    <Content Include="DanhMuc\QL_NhanVien.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\ASPxRoundPanel\1531691351\BottomLeftCorner.png" />
@@ -249,6 +250,7 @@
     <Content Include="Images\orderedList7.png" />
     <Content Include="Images\orderedList8.png" />
     <Content Include="Images\orderedList9.png" />
+    <Content Include="index.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="packages.config" />
     <Content Include="MasterPage.master">
@@ -292,6 +294,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -519,8 +522,22 @@
     <Compile Include="DanhMuc\KPO.aspx.designer.cs">
       <DependentUpon>KPO.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DanhMuc\QL_NhanVien.aspx.cs">
+      <DependentUpon>QL_NhanVien.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\QL_NhanVien.aspx.designer.cs">
+      <DependentUpon>QL_NhanVien.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

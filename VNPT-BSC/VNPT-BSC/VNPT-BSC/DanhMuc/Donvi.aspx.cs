@@ -43,7 +43,7 @@ namespace VNPT_BSC.DanhMuc
             {
 
 
-                sqlInsertNewData = "insert into donvi(donvi_ten,donvi_mota, donvi_ma) values('" + dv_tenAprove + "','" + dv_motaAprove + "', '" + dv_maAprove + "')";
+                sqlInsertNewData = "insert into donvi(donvi_ten,donvi_mota, donvi_ma) values(N'" + dv_tenAprove + "',N'" + dv_motaAprove + "', '" + dv_maAprove + "')";
                 try
                 {
                     donvi.ThucThiDL(sqlInsertNewData);
@@ -69,7 +69,7 @@ namespace VNPT_BSC.DanhMuc
             string sqlUpdateData = "";
             try
             {
-                sqlUpdateData = "Update donvi set donvi_ten = '" + dv_ten_suaAprove + "',donvi_mota = '" + dv_mota_suaAprove + "', donvi_ma = '" + dv_ma_suaAprove + "' where donvi_id = '" + dv_id_suaAprove + "'";
+                sqlUpdateData = "Update donvi set donvi_ten = N'" + dv_ten_suaAprove + "',donvi_mota = N'" + dv_mota_suaAprove + "', donvi_ma = N'" + dv_ma_suaAprove + "' where donvi_id = '" + dv_id_suaAprove + "'";
                 try
                 {
                     donvi_edit.ThucThiDL(sqlUpdateData);

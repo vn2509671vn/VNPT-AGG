@@ -45,7 +45,7 @@ namespace VNPT_BSC
             {
 
 
-                sqlInsertNewData = "insert into chucdanh(chucdanh_ten,chucdanh_mota, chucdanh_ma) values('" + cd_tenAprove + "','" + cd_motaAprove + "', '" + cd_maAprove + "')";
+                sqlInsertNewData = "insert into chucdanh(chucdanh_ten,chucdanh_mota, chucdanh_ma) values(N'" + cd_tenAprove + "',N'" + cd_motaAprove + "', N'" + cd_maAprove + "')";
                 try
                 {
                     chucdanh.ThucThiDL(sqlInsertNewData);
@@ -71,7 +71,7 @@ namespace VNPT_BSC
             string sqlUpdateData = "";
             try
             {
-                sqlUpdateData = "Update chucdanh set chucdanh_ten = '" + cd_ten_suaAprove + "',chucdanh_mota = '" + cd_mota_suaAprove + "', chucdanh_ma = '" + cd_ma_suaAprove + "' where chucdanh_id = '" + cd_id_suaAprove + "'";
+                sqlUpdateData = "Update chucdanh set chucdanh_ten = N'" + cd_ten_suaAprove + "',chucdanh_mota = N'" + cd_mota_suaAprove + "', chucdanh_ma = N'" + cd_ma_suaAprove + "' where chucdanh_id = '" + cd_id_suaAprove + "'";
                 try
                 {
                     chucdanh_edit.ThucThiDL(sqlUpdateData);

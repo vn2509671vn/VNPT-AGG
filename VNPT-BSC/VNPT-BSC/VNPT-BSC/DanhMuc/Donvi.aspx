@@ -154,7 +154,9 @@
             var dv_ma = $('#txtmadv').val();
             if (dv_ten == "" || dv_ma == "") {
                 swal({
-                    title: "Nhập thiếu trường dữ liệu!!",
+                    title: "Lỗi Dữ Liệu",
+                    text: "Nhập thiếu trường dữ liệu!!!!",
+                    type: "error",
                     timer: 1000,
                     showConfirmButton: false
                 });
@@ -169,7 +171,9 @@
             var dv_ma = $('#txtmadv_sua').val();
             if (dv_ten == "" || dv_ma == "") {
                 swal({
-                    title: "Dữ liệu không được bỏ trống!!",
+                    title: "Lỗi Dữ Liệu",
+                    text: "Nhập thiếu trường dữ liệu!!!!",
+                    type: "error",
                     timer: 1000,
                     showConfirmButton: false
                 });

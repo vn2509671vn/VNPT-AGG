@@ -62,7 +62,7 @@
                                     <td><%=  cd_ma%></td>
                                     <td>
                                         <a class="btn btn-primary btn-xs" type="button" data-target="#Editchucdanh" data-toggle="modal" onclick="editdata('<%=cd_id %>','<%=cd_ten%>','<%=cd_mota%>','<%=cd_ma%>')">Chỉnh sửa</a>
-                                        <a class="btn btn-danger btn-xs" type="button" id="btnXoa" onclick="deletedata('<%=cd_id %>')">Xóa</a>
+                                        <a class="btn btn-danger btn-xs" type="button" onclick="deletedata('<%=cd_id %>')">Xóa</a>
 
                                     </td>
                                 </tr>
@@ -185,7 +185,9 @@
             var cd_ma = $('#txtmachucdanh').val();
             if (cd_ten == "" || cd_ma == "") {
                 swal({
-                    title: "Nhập thiếu trường dữ liệu!!",
+                    title: "Lỗi Dữ Liệu",
+                    text: "Nhập thiếu trường dữ liệu!!!!",
+                    type: "error",
                     timer: 1000,
                     showConfirmButton: false
                 });
@@ -201,7 +203,9 @@
             var cd_ma = $('#txtmachucdanh_sua').val();
             if (cd_ten == "" || cd_ma == "") {
                 swal({
-                    title: "Dữ liệu không được bỏ trống!!",
+                    title: "Lỗi Dữ Liệu",
+                    text: "Nhập thiếu trường dữ liệu!!!!",
+                    type: "error",
                     timer: 1000,
                     showConfirmButton: false
                 });
@@ -364,13 +368,6 @@
                     error: function (msg) { alert(msg.d); }
                 });
             });
-
-            $('#btnXoa').click(function () {
-                var cd_id_xoa = $("#txtidchucdanh_xoa").val();
-
-            });
-
-
         });
 
 

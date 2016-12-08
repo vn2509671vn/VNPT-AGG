@@ -18,7 +18,7 @@
         <div class="col-md-4 col-md-offset-4 margin-top-120">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">ĐĂNG NHẬP HỆ THỐNG</h3>
+                    <h3 class="panel-title" style="text-align:center">ĐĂNG NHẬP HỆ THỐNG</h3>
                 </div>
                 <div class="panel-body">
                     <div style="margin-bottom: 10px" class="input-group">
@@ -42,7 +42,9 @@
                  var pass = $('#login-password').val();
                  if (id == "" || pass == "") {
                      swal({
-                         title: "Nhập thiếu trường dữ liệu!!",
+                         title: "Lỗi Dữ Liệu",
+                         text: "Nhập thiếu trường dữ liệu!!!!",
+                         type: "error",
                          timer: 1000,
                          showConfirmButton: false
                      });
@@ -54,6 +56,13 @@
              };
 
              $(document).ready(function () {
+                 $(document).keyup(function (event) {
+                     if (event.keyCode == 13) {
+                         $("#btn-login").click();
+                     }
+                 });
+
+
                  $("#btn-login").click(function () {
                      var id = $("#login-username").val();
                      var pass = $('#login-password').val();
@@ -75,7 +84,7 @@
                          dataType: "json",
                          success: function (result) {
                              if (result.d) {
-                                 window.location.replace("/DanhMuc/Chucvu.aspx");
+                                 window.location.replace("/index.aspx");
                              }
                              else {
                                  swal({

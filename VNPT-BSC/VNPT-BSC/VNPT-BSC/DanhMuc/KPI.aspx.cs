@@ -50,7 +50,7 @@ namespace VNPT_BSC.DanhMuc
             {
 
 
-                sqlInsertNewData = "insert into kpi(kpi_ten,kpi_mota, kpi_ngaytao,kpi_nguoitao,kpi_thuoc_kpo) values('" + kpi_tenAprove + "','" + kpi_motaAprove + "', '" + kpi_ngayAprove + "','" + nhanvien.nhanvien_id + "','" + kpi_kpoAprove + "')";
+                sqlInsertNewData = "insert into kpi(kpi_ten,kpi_mota, kpi_ngaytao,kpi_nguoitao,kpi_thuoc_kpo) values(N'" + kpi_tenAprove + "',N'" + kpi_motaAprove + "', '" + kpi_ngayAprove + "','" + nhanvien.nhanvien_id + "','" + kpi_kpoAprove + "')";
                 try
                 {
                     kpi.ThucThiDL(sqlInsertNewData);
@@ -78,10 +78,38 @@ namespace VNPT_BSC.DanhMuc
             string sqlUpdateData = "";
             try
             {
-                sqlUpdateData = "Update kpi set kpi_ten = '" + kpi_ten_suaAprove + "',kpi_mota = '" + kpi_mota_suaAprove + "', kpi_nguoitao = '" + nhanvien.nhanvien_id + "', kpi_thuoc_kpo = '" + kpi_kpo_suaAprove + "' where kpi_id = '" + kpi_id_suaAprove + "'";
+                sqlUpdateData = "Update kpi set kpi_ten = N'" + kpi_ten_suaAprove + "',kpi_mota = N'" + kpi_mota_suaAprove + "', kpi_nguoitao = '" + nhanvien.nhanvien_id + "', kpi_thuoc_kpo = '" + kpi_kpo_suaAprove + "' where kpi_id = '" + kpi_id_suaAprove + "'";
                 try
                 {
                     kpi_edit.ThucThiDL(sqlUpdateData);
+                }
+                catch
+                {
+                    output = false;
+                }
+                output = true;
+            }
+            catch
+            {
+                output = false;
+            }
+            return output;
+        }
+
+        [WebMethod]
+        public static bool DeleteData(int kpi_id_xoaAprove)
+        {
+            Connection kpi_delete = new Connection();
+            bool output = false;
+            string sqldeleteData = "";
+            try
+            {
+
+
+                sqldeleteData = "delete kpi where kpi_id = '" + kpi_id_xoaAprove + "'";
+                try
+                {
+                    kpi_delete.ThucThiDL(sqldeleteData);
                 }
                 catch
                 {
@@ -101,7 +129,6 @@ namespace VNPT_BSC.DanhMuc
             
             if (!IsPostBack)
             {
-                Nhanvien nhanvien = Session.GetCurrentUser();
                 dtkpi = new DataTable();
                 dtkpi = getkpiList();
                 try

@@ -188,15 +188,16 @@ namespace VNPT_BSC.BSC
         {
             if (!IsPostBack)
             {
-                //Session["user"] = 3;
-                //string donvinhan_id = Session["user"].ToString();
+                Nhanvien nhanvien = new Nhanvien();
+                nhanvien = Session.GetCurrentUser();
+
                 donvigiao = Request.QueryString["donvigiao"];
                 donvinhan = Request.QueryString["donvinhan"];
                 donvithamdinh = Request.QueryString["donvithamdinh"];
                 thang = Request.QueryString["thang"];
                 nam = Request.QueryString["nam"];
 
-                if (donvigiao == null || donvinhan == null || thang == null || nam == null || donvithamdinh == null)
+                if (donvigiao == null || donvinhan == null || thang == null || nam == null || donvithamdinh == null || nhanvien.nhanvien_donvi_id != Convert.ToInt32(donvithamdinh))
                 {
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");

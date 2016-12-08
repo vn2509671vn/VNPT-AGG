@@ -34,6 +34,8 @@ namespace VNPT_BSC
                     nv.nhanvien_hoten = dt.Rows[0][1].ToString();
                     nv.nhanvien_donvi = dt.Rows[0]["donvi_ten"].ToString();
                     nv.nhanvien_chucvu = dt.Rows[0]["chucvu_ten"].ToString();
+                    nv.nhanvien_donvi_id = Convert.ToInt32(dt.Rows[0]["nhanvien_donvi"].ToString());
+                    nv.nhanvien_chucvu_id = Convert.ToInt32(dt.Rows[0]["nhanvien_chucvu"].ToString());
                     objp.Session.SetCurrentUser(nv);
                     
                 }

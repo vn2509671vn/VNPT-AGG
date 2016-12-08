@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="PhanPhoiBSCDonVi.aspx.cs" Inherits="VNPT_BSC.BSC.PhanPhoiBSCDonVi" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="PhanPhoiBSCNhanVien.aspx.cs" Inherits="VNPT_BSC.BSC.PhanPhoiBSCNhanVien" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
@@ -19,58 +19,43 @@
     <script src="../Bootstrap/sweetalert-dev.js"></script>
     <link href="../Bootstrap/sweetalert.css" rel="stylesheet" />
     <script src="../Bootstrap/sweetalert.min.js"></script>
-
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="col-md-12 margin-top-30">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">GIAO BSC CHO ĐƠN VỊ</h3>
+            <h3 class="panel-title">GIAO BSC CHO NHÂN VIÊN</h3>
           </div>
           <div class="panel-body">
-              <%--<div class="col-sm-3">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Danh Sách Đơn Vị</h3>
-                        </div>
-                        <ul class="list-group">
-                            <% for(int i = 0; i < dtDonvi.Rows.Count; i++){ %>
-                                <%
-                                    string donvi_id =  dtDonvi.Rows[i]["donvi_id"].ToString();
-                                    string donvi_ten =  dtDonvi.Rows[i]["donvi_ten"].ToString();
-                                %>
-                                <a href="#" class="list-group-item list-group-item-info text-left" onclick="fillDataBSC('<%= donvi_ten%>','<%= donvi_id%>')"><%= donvi_ten%></a>
-                            <% } %>
-                        </ul>
-                    </div>
-              </div>--%>
               <div class="col-sm-12 form-horizontal">
                 <div class="form-group">
-                    <label class="control-label col-sm-3">Đơn vị nhận:</label>
+                    <label class="control-label col-sm-3">Nhân viên nhận:</label>
                     <div class="col-sm-8">
-                        <select class="form-control" id="donvi" onchange="changeInputData()">
-                        <% for(int i = 0; i < dtDonvi.Rows.Count; i++){ %>
-                            <%
-                                string donvi_id =  dtDonvi.Rows[i]["donvi_id"].ToString();
-                                string donvi_ten =  dtDonvi.Rows[i]["donvi_ten"].ToString();
-                            %>
-                            <option value="<%= donvi_id%>"><%= donvi_ten%></option>
-                        <% } %>
-                        </select>
+                        <input type="text" class="form-control" list="danhsachnhanvien" size="50" id="nhanviennhan"/>
+                        <datalist id="danhsachnhanvien">
+                            <% for(int i = 0; i < dtNhanVien.Rows.Count; i++){ %>
+                                <%
+                                    string nhanvien_taikhoan =  dtNhanVien.Rows[i]["nhanvien_taikhoan"].ToString();
+                                    string nhanvien_hoten =  dtNhanVien.Rows[i]["nhanvien_hoten"].ToString();
+                                %>
+                                <option value="<%= nhanvien_taikhoan%>"><%= nhanvien_hoten%></option>
+                            <% } %>
+                        </datalist>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-3">Đơn vị thẩm định:</label>
+                    <label class="control-label col-sm-3">Nhân viên thẩm định:</label>
                     <div class="col-sm-8">
-                        <select class="form-control" id="donvithamdinh">
-                            <% for(int i = 0; i < dtFullDV.Rows.Count; i++){ %>
-                                <%
-                                    string donvi_id =  dtFullDV.Rows[i]["donvi_id"].ToString();
-                                    string donvi_ten =  dtFullDV.Rows[i]["donvi_ten"].ToString();
-                                %>
-                                <option value="<%= donvi_id%>"><%= donvi_ten%></option>
-                            <% } %>
-                        </select>
+                        <input type="text" class="form-control" list="danhsachnhanvienthamdinh" size="50" id="nhanvienthamdinh"/>
+                        <datalist id="danhsachnhanvienthamdinh">
+                        <% for(int i = 0; i < dtFullNV.Rows.Count; i++){ %>
+                            <%
+                                string nhanvien_taikhoan =  dtFullNV.Rows[i]["nhanvien_taikhoan"].ToString();
+                                string nhanvien_hoten =  dtFullNV.Rows[i]["nhanvien_hoten"].ToString();
+                            %>
+                            <option value="<%= nhanvien_taikhoan%>"><%= nhanvien_hoten%></option>
+                        <% } %>
+                        </datalist>
                     </div>
                 </div>
                 <div class="form-group">
@@ -173,42 +158,40 @@
     </div>
 
 <script type="text/javascript">
-    var nguoitao = "<%= nguoitao%>";
-    var donvigiao = "<%= donvichuquan%>";
+    var nhanviengiao = "<%=nhanvienquanly%>";
     function getCurrentDate() {
         var curMonth = "<%= DateTime.Now.ToString("MM") %>";
         var curYear = "<%= DateTime.Now.ToString("yyyy") %>";
         $("#month").val(curMonth);
         $("#year").val(curYear);
-        var donvinhan = $("#donvi").val();
-        getBSCByCondition(donvigiao, donvinhan, curMonth, curYear);
+        var nhanviennhan = $("#nhanviennhan").val();
+        getBSCByCondition(nhanviengiao, nhanviennhan, curMonth, curYear);
     }
 
-    function getBSCByCondition(id_dv_giao, id_dv_nhan, thang, nam) {
+    function getBSCByCondition(id_nv_giao, nv_nhan, thang, nam) {
         /*Hide button*/
         $("#updateGiaoStatus").hide();
         $("#updateHuyGiaoStatus").hide();
-        $("#updateKTStatus").hide();
 
         var requestData = {
-            id_dv_giao: id_dv_giao,
-            id_dv_nhan: id_dv_nhan,
+            id_nv_giao: id_nv_giao,
+            nv_nhan: nv_nhan,
             thang: thang,
             nam: nam
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
             type: "POST",
-            url: "PhanPhoiBSCDonVi.aspx/loadBSCByCondition",
+            url: "PhanPhoiBSCNhanVien.aspx/loadBSCByCondition",
             data: szRequest,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (result) {
                 var output = result.d;
                 var gridBSC = output.gridBSC;
-                var donvigiao = output.donvigiao;
-                var donvinhan = output.donvinhan;
-                var donvithamdinh = output.donvithamdinh;
+                var nhanviengiao = output.nhanviengiao;
+                var nhanviennhan = output.nhanviennhan;
+                var nhanvienthamdinh = output.nhanvienthamdinh;
                 var trangthaigiao = output.trangthaigiao;
                 var trangthainhan = output.trangthainhan;
                 var trangthaithamdinh = output.trangthaithamdinh;
@@ -216,7 +199,7 @@
 
                 /*Fill data*/
                 $("#gridBSC").html(gridBSC);    // Fill to table
-                $("#donvithamdinh").val(donvithamdinh); // Fill to đơn vị thẩm định
+                $("#nhanvienthamdinh").val(nhanvienthamdinh); // Fill to đơn vị thẩm định
                 // Cập nhật trạng thái giao
                 if (trangthaigiao == "True") {
                     $("#giaoLabel").removeClass("label-default");
@@ -253,7 +236,7 @@
                     $("#nhanLabel").addClass("label-default");
                     $("#nhanLabel").text("Chưa nhận");
                 }
-                
+
                 // Cập nhật trạng thái kiểm định
                 if (trangthaithamdinh == "True") {
                     $("#kiemdinhLabel").removeClass("label-default");
@@ -271,18 +254,11 @@
                     $("#ketthucLabel").removeClass("label-default");
                     $("#ketthucLabel").addClass("label-success");
                     $("#ketthucLabel").text("Đã kết thúc");
-                    $("#updateKTStatus").hide();
                 }
                 else {
                     $("#ketthucLabel").removeClass("label-success");
                     $("#ketthucLabel").addClass("label-default");
                     $("#ketthucLabel").text("Chưa kết thúc");
-                    if (trangthaithamdinh == "True") {
-                        $("#updateKTStatus").show();
-                    }
-                    else {
-                        $("#updateKTStatus").hide();
-                    }
                 }
 
                 $("#table-kpi").DataTable({
@@ -294,11 +270,16 @@
         });
     }
 
+    function fillDataBSC() {
+        var nhanviennhan = $("#nhanviennhan").val();
+        getBSCByCondition(nhanviengiao, nhanviennhan, thang, nam);
+    }
+
     function changeInputData() {
         var thang = $("#month").val();
         var nam = $("#year").val();
-        var donvinhan = $("#donvi").val();
-        getBSCByCondition(donvigiao, donvinhan, thang, nam);
+        var nhanviennhan = $("#nhanviennhan").val();
+        getBSCByCondition(nhanviengiao, nhanviennhan, thang, nam);
     }
 
     function onlyNumbers(e) {
@@ -309,10 +290,14 @@
         /*Hide button*/
         $("#updateGiaoStatus").hide();
         $("#updateHuyGiaoStatus").hide();
-        $("#updateKTStatus").hide();
+
         /*Get current date when user click Now buttion*/
         $("#getCurrentDate").click(function () {
             getCurrentDate();
+        });
+
+        $("#nhanviennhan").focusout(function () {
+            changeInputData();
         });
 
         $("#loadBSC").click(function () {
@@ -321,12 +306,12 @@
             var requestData = {
                 thang: thang,
                 nam: nam,
-                nguoitao: nguoitao
+                nguoitao: nhanviengiao
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({
                 type: "POST",
-                url: "PhanPhoiBSCDonVi.aspx/loadBSC",
+                url: "PhanPhoiBSCNhanVien.aspx/loadBSC",
                 data: szRequest,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -343,11 +328,11 @@
         });
 
         $("#saveData").click(function () {
-            var donvinhan = $("#donvi").val();
-            var donvithamdinh = $("#donvithamdinh").val();
+            var nhanviennhan = $("#nhanviennhan").val();
+            var nhanvienthamdinh = $("#nhanvienthamdinh").val();
             var thang = $("#month").val();
             var nam = $("#year").val();
-            if (donvithamdinh == null || donvinhan == "") {
+            if (nhanviennhan == null || nhanviennhan == "" || nhanvienthamdinh == null || nhanvienthamdinh == "") {
                 swal("Error!", "Vui lòng nhập các trường bắt buộc!!!", "error");
                 return false;
             }
@@ -367,9 +352,9 @@
             });
 
             var requestData = {
-                donvigiao: donvigiao,
-                donvinhan: donvinhan,
-                donvithamdinh: donvithamdinh,
+                nhanviengiao: nhanviengiao,
+                nhanviennhan: nhanviennhan,
+                nhanvienthamdinh: nhanvienthamdinh,
                 thang: thang,
                 nam: nam,
                 kpi_detail: kpi_detail
@@ -377,7 +362,7 @@
             var szRequest = JSON.stringify(requestData);
             $.ajax({
                 type: "POST",
-                url: "PhanPhoiBSCDonVi.aspx/saveData",
+                url: "PhanPhoiBSCNhanVien.aspx/saveData",
                 data: szRequest,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -395,13 +380,13 @@
         });
 
         $("#updateGiaoStatus").click(function () {
-            var donvinhan = $("#donvi").val();
+            var nhanviennhan = $("#nhanviennhan").val();
             var thang = $("#month").val();
             var nam = $("#year").val();
 
             var requestData = {
-                donvigiao: donvigiao,
-                donvinhan: donvinhan,
+                nhanviengiao: nhanviengiao,
+                nhanviennhan: nhanviennhan,
                 thang: thang,
                 nam: nam
             };
@@ -409,7 +394,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "PhanPhoiBSCDonVi.aspx/giaoBSC",
+                url: "PhanPhoiBSCNhanVien.aspx/giaoBSC",
                 data: szRequest,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -422,7 +407,7 @@
                             type: "success"
                         },
                         function () {
-                            getBSCByCondition(donvigiao, donvinhan, thang, nam);
+                            getBSCByCondition(nhanviengiao, nhanviennhan, thang, nam);
                         });
                     }
                     else {
@@ -434,13 +419,13 @@
         });
 
         $("#updateHuyGiaoStatus").click(function () {
-            var donvinhan = $("#donvi").val();
+            var nhanviennhan = $("#nhanviennhan").val();
             var thang = $("#month").val();
             var nam = $("#year").val();
 
             var requestData = {
-                donvigiao: donvigiao,
-                donvinhan: donvinhan,
+                nhanviengiao: nhanviengiao,
+                nhanviennhan: nhanviennhan,
                 thang: thang,
                 nam: nam
             };
@@ -448,7 +433,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "PhanPhoiBSCDonVi.aspx/huygiaoBSC",
+                url: "PhanPhoiBSCNhanVien.aspx/huygiaoBSC",
                 data: szRequest,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -461,7 +446,7 @@
                             type: "success"
                         },
                         function () {
-                            getBSCByCondition(donvigiao, donvinhan, thang, nam);
+                            getBSCByCondition(nhanviengiao, nhanviennhan, thang, nam);
                         });
                     }
                 },

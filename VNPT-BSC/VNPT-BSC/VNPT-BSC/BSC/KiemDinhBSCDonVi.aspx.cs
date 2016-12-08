@@ -121,8 +121,15 @@ namespace VNPT_BSC.BSC
         {
             if (!IsPostBack)
             {
-                Session["donvikiemdinh"] = 1;
-                donvikiemdinh = Session["donvikiemdinh"].ToString();
+                Nhanvien nhanvien = new Nhanvien();
+                nhanvien = Session.GetCurrentUser();
+                /*Nếu không tồn tại session hoặc chức vụ của nhân viên không phải Trưởng phòng hoặc GĐ phòng bán hàng thì trở về trang login*/
+                if (nhanvien == null || nhanvien.nhanvien_chucvu_id != 2 && nhanvien.nhanvien_chucvu_id != 4)
+                {
+                    Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                }
+                donvikiemdinh = nhanvien.nhanvien_donvi_id.ToString();
             }
         }
     }

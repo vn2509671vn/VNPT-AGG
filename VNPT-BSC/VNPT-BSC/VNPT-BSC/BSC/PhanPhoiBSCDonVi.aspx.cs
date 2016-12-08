@@ -15,6 +15,9 @@ namespace VNPT_BSC.BSC
     public partial class PhanPhoiBSCDonVi : System.Web.UI.Page
     {
         Connection cn = new Connection();
+        public static int donvichuquan;
+        public static int nguoitao;
+        public static int chucvu;
         public static DataTable dtDonvi = new DataTable();
         public static DataTable dtFullDV = new DataTable();
         public static DataTable dtBSC = new DataTable();
@@ -25,14 +28,14 @@ namespace VNPT_BSC.BSC
             public decimal kehoach { get; set; }
         }
         [WebMethod]
-        public static string loadBSC(int thang, int nam) {
+        public static string loadBSC(int thang, int nam, int nguoitao) {
             Connection cnBSC = new Connection();
             DataTable gridData = new DataTable();
             string sqlBSC = "select bsc.thang, bsc.nam, bsc.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten ";
             sqlBSC += "from danhsachbsc bsc, kpi, kpo ";
             sqlBSC += "where bsc.kpi_id = kpi.kpi_id ";
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
-            sqlBSC += "and bsc.thang = '"+thang+"' and bsc.nam = '"+nam+"'";
+            sqlBSC += "and bsc.thang = '"+thang+"' and bsc.nam = '"+nam+"' and bsc.nguoitao = '"+nguoitao+"'";
             try{
                 gridData = cnBSC.XemDL(sqlBSC);
             }
@@ -189,7 +192,7 @@ namespace VNPT_BSC.BSC
                     cnData.ThucThiDL(sqlDeleteGiaoBSCDV);
 
                     string sqlInsertGiaoBSC = "insert into giaobscdonvi(donvigiao, donvinhan, donvithamdinh, thang, nam, trangthaigiao, trangthainhan, trangthaicham, trangthaithamdinh, trangthaiketthuc) ";
-                    sqlInsertGiaoBSC += "values('" + donvigiao + "', '" + donvinhan + "', '" + donvithamdinh + "', '" + thang + "', '" + nam + "', 0, 0, 0, 0)";
+                    sqlInsertGiaoBSC += "values('" + donvigiao + "', '" + donvinhan + "', '" + donvithamdinh + "', '" + thang + "', '" + nam + "', 0, 0, 0, 0, 0)";
                     cnData.ThucThiDL(sqlInsertGiaoBSC);
                     for (int i = 0; i < kpi_detail.Length; i++)
                     {
@@ -327,10 +330,22 @@ namespace VNPT_BSC.BSC
             if (!IsPostBack) {
                 try
                 {
-                    int donvichuquan = 1;
-                    string sqlDanhSachDonVi = "select * from donvi where donvi_id not in ('" + donvichuquan + "')";
+                    Nhanvien nhanvien = new Nhanvien();
+                    nhanvien = Session.GetCurrentUser();
+                    /*Kiểm tra nếu không phải là chuyên viên BSC (id của chuyên viên BSC là 10) thì đẩy ra trang đăng nhập*/
+                    if (nhanvien == null || nhanvien.nhanvien_chucvu_id != 10)
+                    {
+                        Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    }
+
+                    donvichuquan = nhanvien.nhanvien_donvi_id;
+                    nguoitao = nhanvien.nhanvien_id;
+                    chucvu = nhanvien.nhanvien_chucvu_id;
+
+                    string sqlDanhSachDonVi = "select * from donvi";
                     string sqlDanhSachFullDV = "select * from donvi";
-                    string sqlDanhSachKPI = "select thang, nam, CONVERT(varchar(4), thang) + '/' + CONVERT(varchar(4), nam) AS content from DANHSACHBSC group by nam, thang order by nam, thang ASC";
+                    string sqlDanhSachKPI = "select thang, nam, CONVERT(varchar(4), thang) + '/' + CONVERT(varchar(4), nam) AS content from DANHSACHBSC where nguoitao = '" + nguoitao + "' group by nam, thang order by nam, thang ASC";
                     dtDonvi = cn.XemDL(sqlDanhSachDonVi);
                     dtBSC = cn.XemDL(sqlDanhSachKPI);
                     dtFullDV = cn.XemDL(sqlDanhSachFullDV);

@@ -1,6 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="MauBSC.aspx.cs" Inherits="VNPT_BSC.BSC.MauBSC" %>
-<%@ Register assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxGridView" tagprefix="dx" %>
-<%@ Register assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxEditors" tagprefix="dx" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="MauBSCNhanVien.aspx.cs" Inherits="VNPT_BSC.BSC.MauBSCNhanVien" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
     <script src="../Bootstrap/jquery.js"></script>
@@ -21,7 +19,7 @@
     <div class="col-md-12 margin-top-30">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">MẪU CHỈ TIÊU BSC/KPI</h3>
+            <h3 class="panel-title">MẪU CHỈ TIÊU BSC/KPI CHO NHÂN VIÊN</h3>
           </div>
           <div class="panel-body">
             <div class="col-sm-3">
@@ -49,6 +47,19 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-sm-3">KPI được giao:</label>
+                    <div class="col-sm-8">
+                        <!-- Load 10 BSC được giao gần nhất -->
+                        <select class="form-control" id="bscduocgiao">
+                            <% for(int i = 0; i < dsBSCDV.Rows.Count; i++){ %>
+                            <option value="<%= dsBSCDV.Rows[i]["thang"] + "-" + dsBSCDV.Rows[i]["nam"] + "-" + donvinhan%>"><%= dsBSCDV.Rows[i]["thang"] + "/" + dsBSCDV.Rows[i]["nam"] %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="col-sm-8 col-sm-offset-3" id="kpiduocgiao">
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-sm-3">Danh sách KPI:</label>
                     <div class="col-sm-8">
                         <% for(int i = 0; i < dtKPI.Rows.Count; i++){ %>
@@ -71,7 +82,10 @@
         </div>
     </div>
 <script type="text/javascript">
-    var nguoitao = '<%= nguoitao%>';
+    var donvinhan = "<%=donvinhan%>";
+    var nguoitao = "<%= nguoitao%>";
+
+    // Fill data khi click danh sách mẫu bsc
     function fillData(month, year, nguoitao) {
         $("#month").val(month);
         $("#year").val(year);
@@ -80,28 +94,66 @@
         $("#month").css("border-color", "#ccc");
         $("#year").css("border-color", "#ccc");
 
+        // BSC được giao
+        var dsKPIDuocGiao = month + "-" + year + "-" + donvinhan;
+        $("#bscduocgiao").val(dsKPIDuocGiao);
+        loadKPIDuocGiao(month, year, donvinhan);
+
         var requestData = {
-            monthAprove : month,
+            monthAprove: month,
             yearAprove: year,
             nguoitao: nguoitao
         };
+
+        var szRequest = JSON.stringify(requestData);
+        
+        swal({
+            title: "Tải dữ liệu!",
+            text: "Vui lòng chờ trong giây lát.",
+            timer: 2000,
+            showConfirmButton: false
+        });
+
+        setTimeout(function () {
+            $.ajax({
+                type: "POST",
+                url: "MauBSCNhanVien.aspx/BindingCheckBox",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    $("input[type=checkbox]").attr("checked", false);
+                    var arrKPI = new Array();
+                    arrKPI = result.d;
+                    for (var i = 0; i < arrKPI.length; i++) {
+                        var KPI_ID = arrKPI[i];
+                        $(":checkbox[value='" + KPI_ID + "']").prop("checked", "true");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        },2000);
+    }
+
+    // Load KPI dua theo BSC duoc giao
+    function loadKPIDuocGiao(thang, nam, donvinhan) {
+        var requestData = {
+            thang: thang,
+            nam: nam,
+            donvinhan: donvinhan,
+        };
+
         var szRequest = JSON.stringify(requestData);
         $.ajax({
             type: "POST",
-            url: "MauBSC.aspx/BindingCheckBox",
+            url: "MauBSCNhanVien.aspx/loadKPIDuocGiao",
             data: szRequest,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (result) {
-                $("input[type=checkbox]").attr("checked", false);
-                var arrKPI = new Array();
-                arrKPI = result.d;
-                for (var i = 0; i < arrKPI.length; i++) {
-                    var KPI_ID = arrKPI[i];
-                    $(":checkbox[value='" + KPI_ID + "']").prop("checked", "true");
-                }
+                $("#kpiduocgiao").html(result.d);
             },
-            error: function (msg) { alert(msg.d);}
+            error: function (msg) { alert(msg.d); }
         });
     }
 
@@ -109,18 +161,38 @@
         validateNumber("month");
         validateNumber("year");
 
+        // Set thời gian hiện tại
+        var curTime = new Date();
+        var month = curTime.getMonth() + 1;
+        var year = curTime.getFullYear();
+        loadKPIDuocGiao(month, year, donvinhan);
+
+        // Khi thay đổi bsc được giao
+        $("#bscduocgiao").change(function () {
+            var data = $(this).val();
+            var arrDate = data.split("-");
+            var thang = arrDate[0];
+            var nam = arrDate[1];
+            var donvinhan = arrDate[2];
+            loadKPIDuocGiao(thang, nam, donvinhan);
+        });
+
+        // Khi click save
         $("#btnSave").click(function () {
             var month = $("#month").val();
             var year = $("#year").val();
             var isMonth = validateMonth("month");
             var isYear = validateYear("year");
             if (!isMonth || !isYear) {
-                swal("Error","Vui lòng nhập đúng vào trường bất buộc!!!","error");
+                swal("Error", "Vui lòng nhập đúng vào trường bất buộc!!!", "error");
                 return false;
             }
             var arrKPI = new Array();
             $("input[type=checkbox]:checked").each(function () {
-                arrKPI.push($(this).val());
+                var exist = $.inArray($(this).val(), arrKPI);
+                if (exist == -1) {
+                    arrKPI.push($(this).val());
+                }
             });
 
             if (arrKPI.length == 0) {
@@ -138,7 +210,7 @@
             var szRequest = JSON.stringify(requestData);
             $.ajax({
                 type: "POST",
-                url: "MauBSC.aspx/SaveData",
+                url: "MauBSCNhanVien.aspx/SaveData",
                 data: szRequest,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -154,7 +226,7 @@
                         });
                     }
                     else {
-                        swal("Error","Vui lòng check lại!!!","error");
+                        swal("Error", "Vui lòng check lại!!!", "error");
                     }
                 },
                 error: function (msg) { alert(msg.d); }
@@ -162,5 +234,4 @@
         });
     });
 </script>
-
 </asp:Content>

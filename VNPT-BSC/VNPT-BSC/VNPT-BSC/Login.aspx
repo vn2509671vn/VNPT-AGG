@@ -8,13 +8,14 @@
     <script src="Bootstrap/jquery.js"></script>
     <script src="Bootstrap/bootstrap.js"></script>
     <link href="Bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="Bootstrap/hien_custom.css" rel="stylesheet" />
     <script src="../Bootstrap/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../Bootstrap/sweetalert.css">
 
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="col-md-2 col-md-offset-5 margin-top-120">
+        <div class="col-md-4 col-md-offset-4 margin-top-120">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">ĐĂNG NHẬP HỆ THỐNG</h3>

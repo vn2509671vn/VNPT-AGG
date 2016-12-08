@@ -12,17 +12,17 @@ using System.Globalization;
 
 namespace VNPT_BSC.BSC
 {
-    public partial class ChiTietBSCNhan : System.Web.UI.Page
+    public partial class ChiTietBSCNVKiemDinh : System.Web.UI.Page
     {
-        public static string donvigiao, donvinhan, thang, nam;
+        public static string nhanviengiao, nhanviennhan, nhanvienthamdinh, thang, nam;
         public class kpiDetail
         {
             public int kpi_id { get; set; }
-            public decimal thuchien { get; set; }
+            public decimal thamdinh { get; set; }
         }
 
         [WebMethod]
-        public static Dictionary<String, String> loadBSCByCondition(int donvigiao, int donvinhan, int thang, int nam)
+        public static Dictionary<String, String> loadBSCByCondition(int nhanviengiao, int nhanviennhan, int thang, int nam)
         {
             //string[] arrOutput = {};
             Dictionary<String, String> dicOutput = new Dictionary<String, String>(); // Lưu bảng BSC (gridBSC), đơn vị thẩm định, trạng thái giao, trạng thái nhận, trạng thái thẩm định
@@ -31,12 +31,12 @@ namespace VNPT_BSC.BSC
             DataTable gridData = new DataTable();
             string outputHTML = "";
             string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, bsc.donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh ";
-            sqlBSC += "from bsc_donvi bsc, kpi, kpo, donvi dvgiao, donvi dvnhan ";
+            sqlBSC += "from bsc_nhanvien bsc, kpi, kpo, nhanvien nvgiao, nhanvien nvnhan ";
             sqlBSC += "where bsc.kpi = kpi.kpi_id ";
-            sqlBSC += "and bsc.donvigiao = dvgiao.donvi_id ";
-            sqlBSC += "and bsc.donvinhan = dvnhan.donvi_id ";
-            sqlBSC += "and bsc.donvinhan = '" + donvinhan + "' ";
-            sqlBSC += "and bsc.donvigiao = '" + donvigiao + "' ";
+            sqlBSC += "and bsc.nhanviengiao = nvgiao.nhanvien_id ";
+            sqlBSC += "and bsc.nhanviennhan = nvnhan.nhanvien_id ";
+            sqlBSC += "and bsc.nhanviengiao = '" + nhanviengiao + "' ";
+            sqlBSC += "and bsc.nhanviennhan = '" + nhanviennhan + "' ";
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
             sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "'";
             try
@@ -64,7 +64,7 @@ namespace VNPT_BSC.BSC
             outputHTML += "<tbody>";
             if (gridData.Rows.Count <= 0)
             {
-                outputHTML += "<tr><td colspan='5' class='text-center'>No item</td></tr>";
+                outputHTML += "<tr><td colspan='7' class='text-center'>No item</td></tr>";
             }
             else
             {
@@ -76,8 +76,8 @@ namespace VNPT_BSC.BSC
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["trongso"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["donvitinh"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["kehoach"].ToString() + "</strong></td>";
-                    outputHTML += "<td class='text-center'><input type='text' class='form-control' name='thuchien' id='thuchien_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["thuchien"].ToString() + "' onkeypress='return onlyNumbers(event)'/></td>";
-                    outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["thamdinh"].ToString() + "</strong></td>";
+                    outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["thuchien"].ToString() + "</strong></td>";
+                    outputHTML += "<td class='text-center'><input type='text' class='form-control' name='thamdinh' id='thamdinh_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["thamdinh"].ToString() + "' onkeypress='return onlyNumbers(event)'/></td>";
                     outputHTML += "</tr>";
                 }
             }
@@ -87,9 +87,9 @@ namespace VNPT_BSC.BSC
 
             /*Lấy danh sách các thông tin còn lại ở bảng giaobscdonvi*/
             DataTable dtGiaoBSCDV = new DataTable();
-            string sqlGiaoBSCDV = "select * from giaobscdonvi ";
-            sqlGiaoBSCDV += "where donvigiao = '" + donvigiao + "' ";
-            sqlGiaoBSCDV += "and donvinhan = '" + donvinhan + "'";
+            string sqlGiaoBSCDV = "select * from giaobscnhanvien ";
+            sqlGiaoBSCDV += "where nhanviengiao = '" + nhanviengiao + "' ";
+            sqlGiaoBSCDV += "and nhanviennhan = '" + nhanviennhan + "'";
             sqlGiaoBSCDV += "and thang = '" + thang + "'";
             sqlGiaoBSCDV += "and nam = '" + nam + "'";
             try
@@ -103,11 +103,11 @@ namespace VNPT_BSC.BSC
 
             if (dtGiaoBSCDV.Rows.Count > 0)
             {
-                dicOutput.Add("donvigiao", dtGiaoBSCDV.Rows[0]["donvigiao"].ToString());
-                dicOutput.Add("donvinhan", dtGiaoBSCDV.Rows[0]["donvinhan"].ToString());
+                dicOutput.Add("nhanviengiao", dtGiaoBSCDV.Rows[0]["nhanviengiao"].ToString());
+                dicOutput.Add("nhanviennhan", dtGiaoBSCDV.Rows[0]["nhanviennhan"].ToString());
                 dicOutput.Add("thang", dtGiaoBSCDV.Rows[0]["thang"].ToString());
                 dicOutput.Add("nam", dtGiaoBSCDV.Rows[0]["nam"].ToString());
-                dicOutput.Add("donvithamdinh", dtGiaoBSCDV.Rows[0]["donvithamdinh"].ToString());
+                dicOutput.Add("nhanvienthamdinh", dtGiaoBSCDV.Rows[0]["nhanvienthamdinh"].ToString());
                 dicOutput.Add("trangthaigiao", dtGiaoBSCDV.Rows[0]["trangthaigiao"].ToString());
                 dicOutput.Add("trangthainhan", dtGiaoBSCDV.Rows[0]["trangthainhan"].ToString());
                 dicOutput.Add("trangthaicham", dtGiaoBSCDV.Rows[0]["trangthaicham"].ToString());
@@ -116,8 +116,8 @@ namespace VNPT_BSC.BSC
             }
             else
             {
-                dicOutput.Add("donvigiao", donvigiao.ToString());
-                dicOutput.Add("donvinhan", donvinhan.ToString());
+                dicOutput.Add("nhanviengiao", nhanviengiao.ToString());
+                dicOutput.Add("nhanviennhan", nhanviennhan.ToString());
                 dicOutput.Add("thang", "0");
                 dicOutput.Add("nam", "0");
                 dicOutput.Add("donvithamdinh", "");
@@ -132,12 +132,12 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static bool updateNhanStatus(int donvigiao, int donvinhan, int thang, int nam)
+        public static bool updateKiemDinhStatus(int nhanviengiao, int nhanviennhan, int thang, int nam)
         {
             Connection cnNhanBSC = new Connection();
             bool isSuccess = false;
 
-            string sqlGiaoBSC = "update giaobscdonvi set trangthainhan = 1 where donvigiao = '" + donvigiao + "' and donvinhan = '" + donvinhan + "' and thang = '" + thang + "' and nam = '" + nam + "'";
+            string sqlGiaoBSC = "update giaobscnhanvien set trangthaithamdinh = 1 where nhanviengiao = '" + nhanviengiao + "' and nhanviennhan = '" + nhanviennhan + "' and thang = '" + thang + "' and nam = '" + nam + "'";
             try
             {
                 cnNhanBSC.ThucThiDL(sqlGiaoBSC);
@@ -151,26 +151,7 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static bool updateChamStatus(int donvigiao, int donvinhan, int thang, int nam)
-        {
-            Connection cnNhanBSC = new Connection();
-            bool isSuccess = false;
-
-            string sqlGiaoBSC = "update giaobscdonvi set trangthaicham = 1 where donvigiao = '" + donvigiao + "' and donvinhan = '" + donvinhan + "' and thang = '" + thang + "' and nam = '" + nam + "'";
-            try
-            {
-                cnNhanBSC.ThucThiDL(sqlGiaoBSC);
-                isSuccess = true;
-            }
-            catch
-            {
-                isSuccess = false;
-            }
-            return isSuccess;
-        }
-
-        [WebMethod]
-        public static bool saveData(int donvigiao, int donvinhan, int thang, int nam, kpiDetail[] kpi_detail)
+        public static bool saveData(int nhanviengiao, int nhanviennhan, int thang, int nam, kpiDetail[] kpi_detail)
         {
             bool isSuccess = false;
             Connection cnData = new Connection();
@@ -178,9 +159,9 @@ namespace VNPT_BSC.BSC
             {
                 for (int i = 0; i < kpi_detail.Length; i++)
                 {
-                    string sqlInsertBSCDV = "update bsc_donvi set thuchien = '" + kpi_detail[i].thuchien + "' ";
-                    sqlInsertBSCDV += "where donvigiao = '"+donvigiao+"' ";
-                    sqlInsertBSCDV += "and donvinhan = '"+donvinhan+"' ";
+                    string sqlInsertBSCDV = "update bsc_nhanvien set thamdinh = '" + kpi_detail[i].thamdinh + "' ";
+                    sqlInsertBSCDV += "where nhanviengiao = '" + nhanviengiao + "' ";
+                    sqlInsertBSCDV += "and nhanviennhan = '" + nhanviennhan + "' ";
                     sqlInsertBSCDV += "and thang = '" + thang + "' ";
                     sqlInsertBSCDV += "and nam = '" + nam + "' ";
                     sqlInsertBSCDV += "and kpi = '" + kpi_detail[i].kpi_id + "'";
@@ -205,16 +186,18 @@ namespace VNPT_BSC.BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack) {
+            if (!IsPostBack)
+            {
                 Nhanvien nhanvien = new Nhanvien();
                 nhanvien = Session.GetCurrentUser();
 
-                donvigiao = Request.QueryString["donvigiao"];
-                donvinhan = Request.QueryString["donvinhan"];
+                nhanviengiao = Request.QueryString["nhanviengiao"];
+                nhanviennhan = Request.QueryString["nhanviennhan"];
+                nhanvienthamdinh = Request.QueryString["nhanvienthamdinh"];
                 thang = Request.QueryString["thang"];
                 nam = Request.QueryString["nam"];
 
-                if (donvigiao == null || donvinhan == null || thang == null || nam == null || nhanvien.nhanvien_donvi_id != Convert.ToInt32(donvinhan))
+                if (nhanviengiao == null || nhanviennhan == null || thang == null || nam == null || nhanvienthamdinh == null || nhanvien.nhanvien_id != Convert.ToInt32(nhanvienthamdinh))
                 {
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");

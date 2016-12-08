@@ -288,6 +288,7 @@
                 $("#table-kpi").DataTable({
                     "searching": true,
                     "info": true,
+                    "pageLength": 50
                 });
             },
             error: function (msg) { alert(msg.d); }
@@ -336,6 +337,7 @@
                     $("#table-kpi").DataTable({
                         "searching": true,
                         "info": true,
+                        "pageLength": 50
                     });
                 },
                 error: function (msg) { alert(msg.d); }

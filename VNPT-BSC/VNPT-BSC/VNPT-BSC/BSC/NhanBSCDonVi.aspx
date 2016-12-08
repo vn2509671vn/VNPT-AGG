@@ -76,6 +76,7 @@
                 $("#table-bsclist").DataTable({
                     "searching": true,
                     "info": true,
+                    "pageLength": 50
                 });
             },
             error: function (msg) { alert(msg.d); }

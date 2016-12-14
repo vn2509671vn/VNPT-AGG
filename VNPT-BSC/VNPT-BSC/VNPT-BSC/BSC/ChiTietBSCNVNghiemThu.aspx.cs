@@ -30,8 +30,8 @@ namespace VNPT_BSC.BSC
             sqlBSC += "where bsc.kpi = kpi.kpi_id ";
             sqlBSC += "and bsc.nhanviengiao = nvgiao.nhanvien_id ";
             sqlBSC += "and bsc.nhanviennhan = nvnhan.nhanvien_id ";
-            sqlBSC += "and bsc.nhanviennhan = '" + nhanviengiao + "' ";
-            sqlBSC += "and bsc.nhanviengiao = '" + nhanviennhan + "' ";
+            sqlBSC += "and bsc.nhanviennhan = '" + nhanviennhan + "' ";
+            sqlBSC += "and bsc.nhanviengiao = '" + nhanviengiao + "' ";
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
             sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "'";
             try

@@ -23,11 +23,10 @@ namespace VNPT_BSC.BSC
             Connection cnBSC = new Connection();
             DataTable gridData = new DataTable();
             string outputHTML = "";
-            string sqlBSC = "select giaobsc.*, dvnhan.donvi_ten as tendvn, dvthamdinh.donvi_ten as tendvtd ";
-            sqlBSC += "from giaobscdonvi giaobsc, donvi dvgiao, donvi dvnhan, donvi dvthamdinh ";
+            string sqlBSC = "select giaobsc.*, dvnhan.donvi_ten as tendvn ";
+            sqlBSC += "from giaobscdonvi giaobsc, donvi dvgiao, donvi dvnhan ";
             sqlBSC += "where giaobsc.donvigiao = dvgiao.donvi_id ";
             sqlBSC += "and giaobsc.donvinhan = dvnhan.donvi_id ";
-            sqlBSC += "and giaobsc.donvithamdinh = dvthamdinh.donvi_id ";
             sqlBSC += "and giaobsc.thang = '" + thang + "' ";
             sqlBSC += "and giaobsc.nam = '" + nam + "' ";
             sqlBSC += "and giaobsc.donvigiao = '" + donvigiao + "' ";
@@ -47,11 +46,10 @@ namespace VNPT_BSC.BSC
             outputHTML += "<tr>";
             outputHTML += "<th>STT</th>";
             outputHTML += "<th>Đơn vị nhận</th>";
-            outputHTML += "<th>Đơn vị thẩm định</th>";
             outputHTML += "<th>Ngày áp dụng</th>";
             outputHTML += "<th>Trạng thái nhận</th>";
             outputHTML += "<th>Trạng thái nộp</th>";
-            outputHTML += "<th>Trạng thái thẩm định</th>";
+            outputHTML += "<th>Trạng thái đồng ý KQTĐ</th>";
             outputHTML += "<th>Trạng thái kết thúc</th>";
             outputHTML += "<th></th>";
             outputHTML += "</tr>";
@@ -60,7 +58,7 @@ namespace VNPT_BSC.BSC
 
             if (gridData.Rows.Count <= 0)
             {
-                outputHTML += "<tr><td colspan='9' class='text-center'>No item</td></tr>";
+                outputHTML += "<tr><td colspan='8' class='text-center'>No item</td></tr>";
             }
             else
             {
@@ -72,15 +70,15 @@ namespace VNPT_BSC.BSC
                     string szNam = gridData.Rows[nIndex]["nam"].ToString();
                     string trangthainhan = gridData.Rows[nIndex]["trangthainhan"].ToString();
                     string trangthaicham = gridData.Rows[nIndex]["trangthaicham"].ToString();
-                    string trangthaithamdinh = gridData.Rows[nIndex]["trangthaithamdinh"].ToString();
+                    string trangthaidongy_kqtd = gridData.Rows[nIndex]["trangthaidongy_kqtd"].ToString();
                     string trangthaiketthuc = gridData.Rows[nIndex]["trangthaiketthuc"].ToString();
                     string txtTrangThaiNhan = "Chưa nhận";
                     string txtTrangThaiCham = "Chưa nộp";
-                    string txtTrangThaiThamDinh = "Chưa thẩm định";
+                    string txtTrangThaiDongY = "Chưa đồng ý";
                     string txtTrangThaiKetThuc = "Chưa kết thúc";
                     string clsTrangThaiNhan = "label-default";
                     string clsTrangThaiCham = "label-default";
-                    string clsTrangThaiThamDinh = "label-default";
+                    string clsTrangThaiDongY = "label-default";
                     string clsTrangThaiKetThuc = "label-default";
 
                     if (trangthainhan == "True")
@@ -95,10 +93,10 @@ namespace VNPT_BSC.BSC
                         clsTrangThaiCham = "label-success";
                     }
 
-                    if (trangthaithamdinh == "True")
+                    if (trangthaidongy_kqtd == "True")
                     {
-                        txtTrangThaiThamDinh = "Đã thẩm định";
-                        clsTrangThaiThamDinh = "label-success";
+                        txtTrangThaiDongY = "Đã đồng ý";
+                        clsTrangThaiDongY = "label-success";
                     }
 
                     if (trangthaiketthuc == "True")
@@ -110,11 +108,10 @@ namespace VNPT_BSC.BSC
                     outputHTML += "<tr>";
                     outputHTML += "<td class='text-center'>" + (nIndex + 1) + "</td>";
                     outputHTML += "<td class='text-center'>" + gridData.Rows[nIndex]["tendvn"].ToString() + "</td>";
-                    outputHTML += "<td class='text-center'>" + gridData.Rows[nIndex]["tendvtd"].ToString() + "</td>";
                     outputHTML += "<td class='text-center'><strong>" + szThang + "/" + szNam + "</strong></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiNhan + "'>" + txtTrangThaiNhan + "</span></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiCham + "'>" + txtTrangThaiCham + "</span></td>";
-                    outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiThamDinh + "'>" + txtTrangThaiThamDinh + "</span></td>";
+                    outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiDongY + "'>" + txtTrangThaiDongY + "</span></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiKetThuc + "'>" + txtTrangThaiKetThuc + "</span></td>";
                     outputHTML += "<td class='text-center'><a class='" + "btn btn-primary detail" + "' onclick='xemChiTiet(" + szThang + ", " + szNam + ", " + szDonvigiao + ", " + szDonvinhan + ")'>Chi tiết</a></td>";
                     outputHTML += "</tr>";

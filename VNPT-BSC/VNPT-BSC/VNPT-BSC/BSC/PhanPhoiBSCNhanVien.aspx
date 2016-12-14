@@ -29,6 +29,22 @@
           <div class="panel-body">
               <div class="col-sm-12 form-horizontal">
                 <div class="form-group">
+                    <label class="control-label col-sm-3">Thời gian:</label>
+                    <div class="col-sm-6 form-inline">
+                        <select class="form-control" id="month" onchange="changeInputData()">
+                            <% for(int nMonth = 1; nMonth <= 12; nMonth++){ %>
+                                <option><%= nMonth %></option>
+                            <% } %>
+                        </select>
+                        <select class="form-control" id="year" onchange="changeInputData()">
+                            <% for(int nYear = 1900; nYear <= 2100; nYear++){ %>
+                                <option><%= nYear %></option>
+                            <% } %>
+                        </select>
+                        <a class="btn btn-warning" id="getCurrentDate">Hiện tại</a>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-sm-3">Nhân viên nhận:</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" list="danhsachnhanvien" size="50" id="nhanviennhan"/>
@@ -56,22 +72,6 @@
                             <option value="<%= nhanvien_taikhoan%>"><%= nhanvien_hoten%></option>
                         <% } %>
                         </datalist>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-3">Thời gian:</label>
-                    <div class="col-sm-6 form-inline">
-                        <select class="form-control" id="month" onchange="changeInputData()">
-                            <% for(int nMonth = 1; nMonth <= 12; nMonth++){ %>
-                                <option><%= nMonth %></option>
-                            <% } %>
-                        </select>
-                        <select class="form-control" id="year" onchange="changeInputData()">
-                            <% for(int nYear = 1900; nYear <= 2100; nYear++){ %>
-                                <option><%= nYear %></option>
-                            <% } %>
-                        </select>
-                        <a class="btn btn-warning" id="getCurrentDate">Hiện tại</a>
                     </div>
                 </div>
                 <div class="form-group">

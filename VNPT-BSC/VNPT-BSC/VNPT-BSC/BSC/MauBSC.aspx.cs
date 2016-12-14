@@ -6,7 +6,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.Sql;
-using DevExpress.Web.ASPxEditors;
 using System.Text;
 using System.Web.Services;
 using System.Web.Script.Services;
@@ -18,7 +17,49 @@ namespace VNPT_BSC.BSC
         Connection cn = new Connection();
         public DataTable dtBSC;
         public DataTable dtKPI;
+        public DataTable dtBSCNam;
+        public DataTable dtDVT;
         public static int nguoitao;
+        public class kpiDetail
+        {
+            public int kpi_id { get; set; }
+            public int tytrong { get; set; }
+            public string dvt { get; set; }
+        }
+
+        /*List đơn vị tính*/
+        private DataTable dsDVT() {
+            DataTable dsDonvitinh = new DataTable();
+            string sqlDVT = "select * from donvitinh";
+            try
+            {
+                dsDonvitinh = cn.XemDL(sqlDVT);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dsDonvitinh;
+        }
+
+        /*List BSC theo năm*/
+        private DataTable dsBSCNam(int nguoitao)
+        {
+            DataTable dsBSC = new DataTable();
+            string sqlBSCDuocGiao = "select nam from danhsachbsc where nguoitao = '" + nguoitao + "' group by nam order by nam DESC";
+            try
+            {
+                dsBSC = cn.XemDL(sqlBSCDuocGiao);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dsBSC;
+        }
+
         /*Get KPI list*/
         private DataTable getKPIList(int nguoitao)
         {
@@ -35,7 +76,7 @@ namespace VNPT_BSC.BSC
         }
 
         private DataTable getBSCList(int nguoitao) {
-            string sqlBSC = "select thang,nam from danhsachbsc where nguoitao = '" + nguoitao + "' group by thang, nam order by nam,thang";
+            string sqlBSC = "select thang,nam from danhsachbsc where nguoitao = '" + nguoitao + "' group by thang, nam order by nam,thang DESC";
             DataTable dtBSC = new DataTable();
             try {
                 dtBSC = cn.XemDL(sqlBSC);
@@ -47,24 +88,29 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static string[] BindingCheckBox(int monthAprove, int yearAprove, int nguoitao)
+        public static Dictionary<String, String>[] BindingCheckBox(int monthAprove, int yearAprove, int nguoitao)
         {
             DataTable dtKPI = new DataTable();
             Connection cnDanhSachBSC = new Connection();
-            string[] arrKPI = {};
+            Dictionary<String, String>[] arrKPI = { };
             string sql = "select * from danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao = '" + nguoitao + "'";
             dtKPI = cnDanhSachBSC.XemDL(sql);
-            if (dtKPI.Rows.Count > 0) {
-                arrKPI = new string[dtKPI.Rows.Count];
-                for (int i = 0; i < dtKPI.Rows.Count; i++) {
-                    arrKPI[i] = dtKPI.Rows[i]["kpi_id"].ToString();
+            if (dtKPI.Rows.Count > 0)
+            {
+                arrKPI = new Dictionary<String, String>[dtKPI.Rows.Count];
+                for (int i = 0; i < dtKPI.Rows.Count; i++)
+                {
+                    arrKPI[i] = new Dictionary<string, string>();
+                    arrKPI[i].Add("kpi_id", dtKPI.Rows[i]["kpi_id"].ToString());
+                    arrKPI[i].Add("tytrong", dtKPI.Rows[i]["tytrong"].ToString());
+                    arrKPI[i].Add("donvitinh", dtKPI.Rows[i]["donvitinh"].ToString());
                 }
             }
             return arrKPI;
         }
 
         [WebMethod]
-        public static bool SaveData(int monthAprove, int yearAprove, string[] arrKPI_ID, int nguoitao)
+        public static bool SaveData(int monthAprove, int yearAprove, kpiDetail[] arrKPI_ID, int nguoitao)
         {
             Connection cnDanhSachBSC = new Connection();
             bool output = false;
@@ -73,20 +119,26 @@ namespace VNPT_BSC.BSC
             try
             {
                 cnDanhSachBSC.ThucThiDL(sqlDelOldData);
-                for (int i = 0; i < arrKPI_ID.Length; i++) {
-                    int kpi_id = Convert.ToInt32(arrKPI_ID[i].ToString());
+                for (int i = 0; i < arrKPI_ID.Length; i++)
+                {
+                    int kpi_id = arrKPI_ID[i].kpi_id;
+                    int tytrong = arrKPI_ID[i].tytrong;
+                    string dvt = arrKPI_ID[i].dvt;
                     string curDate = DateTime.Now.ToString("yyyy-MM-dd");
-                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, nguoitao, ngaytao) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '"+nguoitao+"','" + curDate + "')";
-                    try {
+                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, nguoitao, bscduocgiao, ngaytao, donvitinh, tytrong) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '" + nguoitao + "', '" + "" + "', '" + curDate + "', N'" + dvt + "', '" + tytrong + "')";
+                    try
+                    {
                         cnDanhSachBSC.ThucThiDL(sqlInsertNewData);
                     }
-                    catch {
+                    catch (Exception ex)
+                    {
                         output = false;
                     }
                 }
                 output = true;
             }
-            catch {
+            catch
+            {
                 output = false;
             }
             return output;
@@ -113,6 +165,14 @@ namespace VNPT_BSC.BSC
                 /*Get list KPI*/
                 dtKPI = new DataTable();
                 dtKPI = getKPIList(nguoitao);
+
+                /*Get list các năm của BSC*/
+                dtBSCNam = new DataTable();
+                dtBSCNam = dsBSCNam(nguoitao);
+
+                /*Get list DVT*/
+                dtDVT = new DataTable();
+                dtDVT = dsDVT();
             }
         }
     }

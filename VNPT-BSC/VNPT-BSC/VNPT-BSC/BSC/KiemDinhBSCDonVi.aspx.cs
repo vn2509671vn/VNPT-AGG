@@ -23,13 +23,19 @@ namespace VNPT_BSC.BSC
             Connection cnBSC = new Connection();
             DataTable gridData = new DataTable();
             string outputHTML = "";
-            string sqlBSC = "select giaobsc.*, dvgiao.donvi_ten as tendvg, dvnhan.donvi_ten as tendvn ";
-            sqlBSC += "from giaobscdonvi giaobsc, donvi dvgiao, donvi dvnhan, donvi dvthamdinh ";
-            sqlBSC += "where giaobsc.donvigiao = dvgiao.donvi_id ";
+
+            string sqlBSC = "select dvgiao.donvi_id as donvigiao, dvgiao.donvi_ten as tendvg, dvnhan.donvi_id as donvinhan, dvnhan.donvi_ten as tendvn, giaobsc.nam, giaobsc.thang, giaobsc.trangthaicham, giaobsc.trangthaidongy_kqtd, giaobsc.trangthaiketthuc,  ";
+            sqlBSC += "(select COUNT(*) from bsc_donvi where bsc_donvi.donvithamdinh = '" + donvikiemdinh + "' and bsc_donvi.trangthaithamdinh = 0 and bsc_donvi.nam = '" + nam + "' and bsc_donvi.thang = giaobsc.thang) as sl_chuatd ";
+            sqlBSC += "from giaobscdonvi giaobsc, bsc_donvi giaobsc_dv, donvi dvgiao, donvi dvnhan ";
+            sqlBSC += "where giaobsc.thang = giaobsc_dv.thang ";
+            sqlBSC += "and giaobsc.nam = giaobsc_dv.nam ";
+            sqlBSC += "and giaobsc.donvigiao = giaobsc_dv.donvigiao ";
+            sqlBSC += "and giaobsc.donvinhan = giaobsc_dv.donvinhan ";
+            sqlBSC += "and giaobsc.donvigiao = dvgiao.donvi_id ";
             sqlBSC += "and giaobsc.donvinhan = dvnhan.donvi_id ";
-            sqlBSC += "and giaobsc.donvithamdinh = dvthamdinh.donvi_id ";
             sqlBSC += "and giaobsc.nam = '" + nam + "' ";
-            sqlBSC += "and giaobsc.donvithamdinh = '" + donvikiemdinh + "' ";
+            sqlBSC += "and giaobsc_dv.donvithamdinh = '" + donvikiemdinh + "' ";
+            sqlBSC += "group by dvgiao.donvi_id, dvgiao.donvi_ten, dvnhan.donvi_id, dvnhan.donvi_ten, giaobsc.nam, giaobsc.thang, giaobsc.trangthaicham, giaobsc.trangthaidongy_kqtd, giaobsc.trangthaiketthuc";
 
             try
             {
@@ -66,12 +72,11 @@ namespace VNPT_BSC.BSC
                 {
                     string donvigiao = gridData.Rows[nIndex]["donvigiao"].ToString();
                     string szDonvinhan = gridData.Rows[nIndex]["donvinhan"].ToString();
-                    string szDonvithamdinh = gridData.Rows[nIndex]["donvithamdinh"].ToString();
+                    string szDonvithamdinh = donvikiemdinh.ToString();
                     string thang = gridData.Rows[nIndex]["thang"].ToString();
                     string nNam = gridData.Rows[nIndex]["nam"].ToString();
-                    string trangthainhan = gridData.Rows[nIndex]["trangthainhan"].ToString();
+                    string sl_chuathamdinh = gridData.Rows[nIndex]["sl_chuatd"].ToString();
                     string trangthaicham = gridData.Rows[nIndex]["trangthaicham"].ToString();
-                    string trangthaithamdinh = gridData.Rows[nIndex]["trangthaithamdinh"].ToString();
                     string trangthaiketthuc = gridData.Rows[nIndex]["trangthaiketthuc"].ToString();
                     string txtTrangThaiCham = "Chưa nộp";
                     string txtTrangThaiThamDinh = "Chưa thẩm định";
@@ -86,7 +91,7 @@ namespace VNPT_BSC.BSC
                         clsTrangThaiCham = "label-success";
                     }
 
-                    if (trangthaithamdinh == "True")
+                    if (Convert.ToInt32(sl_chuathamdinh) == 0)
                     {
                         txtTrangThaiThamDinh = "Đã thẩm định";
                         clsTrangThaiThamDinh = "label-success";

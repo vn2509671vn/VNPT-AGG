@@ -130,8 +130,17 @@ namespace VNPT_BSC.BSC
         {
             if (!IsPostBack)
             {
-                Session["nhanviennhan"] = 3;
-                nhanviennhan = Session["nhanviennhan"].ToString();
+                Nhanvien nhanvien = new Nhanvien();
+                nhanvien = Session.GetCurrentUser();
+
+                /*Không tồn tại sess*/
+                if (nhanvien == null)
+                {
+                    Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                }
+
+                nhanviennhan = nhanvien.nhanvien_id.ToString();
             }
         }
     }

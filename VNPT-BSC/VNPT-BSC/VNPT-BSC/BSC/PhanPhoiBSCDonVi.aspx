@@ -46,34 +46,6 @@
               </div>--%>
               <div class="col-sm-12 form-horizontal">
                 <div class="form-group">
-                    <label class="control-label col-sm-3">Đơn vị nhận:</label>
-                    <div class="col-sm-8">
-                        <select class="form-control" id="donvi" onchange="changeInputData()">
-                        <% for(int i = 0; i < dtDonvi.Rows.Count; i++){ %>
-                            <%
-                                string donvi_id =  dtDonvi.Rows[i]["donvi_id"].ToString();
-                                string donvi_ten =  dtDonvi.Rows[i]["donvi_ten"].ToString();
-                            %>
-                            <option value="<%= donvi_id%>"><%= donvi_ten%></option>
-                        <% } %>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-3">Đơn vị thẩm định:</label>
-                    <div class="col-sm-8">
-                        <select class="form-control" id="donvithamdinh">
-                            <% for(int i = 0; i < dtFullDV.Rows.Count; i++){ %>
-                                <%
-                                    string donvi_id =  dtFullDV.Rows[i]["donvi_id"].ToString();
-                                    string donvi_ten =  dtFullDV.Rows[i]["donvi_ten"].ToString();
-                                %>
-                                <option value="<%= donvi_id%>"><%= donvi_ten%></option>
-                            <% } %>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label class="control-label col-sm-3">Thời gian:</label>
                     <div class="col-sm-6 form-inline">
                         <select class="form-control" id="month" onchange="changeInputData()">
@@ -89,6 +61,36 @@
                         <a class="btn btn-warning" id="getCurrentDate">Hiện tại</a>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Đơn vị nhận:</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="donvi" onchange="changeInputData()">
+                        <% for(int i = 0; i < dtDonvi.Rows.Count; i++){ %>
+                            <%
+                                string donvi_id =  dtDonvi.Rows[i]["donvi_id"].ToString();
+                                string donvi_ten =  dtDonvi.Rows[i]["donvi_ten"].ToString();
+                            %>
+                            <option value="<%= donvi_id%>"><%= donvi_ten%></option>
+                        <% } %>
+                        </select>
+                    </div>
+                </div>
+                <%--<div class="form-group">
+                    <label class="control-label col-sm-3">Đơn vị thẩm định:</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="donvithamdinh">
+                            <% for(int i = 0; i < dtFullDV.Rows.Count; i++){ %>
+                                <%
+                                    string donvi_id =  dtFullDV.Rows[i]["donvi_id"].ToString();
+                                    string donvi_ten =  dtFullDV.Rows[i]["donvi_ten"].ToString();
+                                %>
+                                <option value="<%= donvi_id%>"><%= donvi_ten%></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>--%>
+                
                 <div class="form-group">
                     <label class="control-label col-sm-3">Trạng thái giao:</label>
                     <div class="col-sm-8 form-inline">
@@ -346,10 +348,9 @@
 
         $("#saveData").click(function () {
             var donvinhan = $("#donvi").val();
-            var donvithamdinh = $("#donvithamdinh").val();
             var thang = $("#month").val();
             var nam = $("#year").val();
-            if (donvithamdinh == null || donvinhan == "") {
+            if (donvinhan == "") {
                 swal("Error!", "Vui lòng nhập các trường bắt buộc!!!", "error");
                 return false;
             }
@@ -360,18 +361,19 @@
                 var tytrong = $("#tytrong_" + kpi_id).val();
                 var dvt = $("#dvt_" + kpi_id).val();
                 var kehoach = $("#kehoach_" + kpi_id).val();
+                var donvithamdinh = $("#dvtd_" + kpi_id).val();
                 kpi_detail.push({
                     kpi_id: kpi_id,
                     tytrong: tytrong,
                     dvt: dvt,
-                    kehoach: kehoach
+                    kehoach: kehoach,
+                    donvithamdinh: donvithamdinh
                 });
             });
 
             var requestData = {
                 donvigiao: donvigiao,
                 donvinhan: donvinhan,
-                donvithamdinh: donvithamdinh,
                 thang: thang,
                 nam: nam,
                 kpi_detail: kpi_detail

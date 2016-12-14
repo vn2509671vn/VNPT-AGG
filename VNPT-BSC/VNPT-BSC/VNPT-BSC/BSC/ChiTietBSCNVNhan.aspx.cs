@@ -178,7 +178,7 @@ namespace VNPT_BSC.BSC
             {
                 for (int i = 0; i < kpi_detail.Length; i++)
                 {
-                    string sqlInsertBSCDV = "update bsc_nhanvien set thuchien = '" + kpi_detail[i].thuchien + "' ";
+                    string sqlInsertBSCDV = "update bsc_nhanvien set thuchien = '" + kpi_detail[i].thuchien + "', thamdinh = '" + kpi_detail[i].thuchien + "' ";
                     sqlInsertBSCDV += "where nhanviengiao = '" + nhanviengiao + "' ";
                     sqlInsertBSCDV += "and nhanviennhan = '" + nhanviennhan + "' ";
                     sqlInsertBSCDV += "and thang = '" + thang + "' ";

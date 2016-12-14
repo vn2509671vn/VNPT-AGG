@@ -126,6 +126,7 @@
         }
         else if (chucvu == 2 || chucvu == 4) {
             $("#nhanbsc_donvi").show();
+            $("#kiemdinhbsc_donvi").show();
             $("#maubsc_nhanvien").show();
             $("#phanphoibsc_nhanvien").show();
             $("#nhanbsc_nhanvien").show();

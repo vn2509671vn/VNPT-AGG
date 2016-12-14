@@ -24,7 +24,7 @@ namespace VNPT_BSC.BSC
             Connection cnBSC = new Connection();
             DataTable gridData = new DataTable();
             string outputHTML = "";
-            string sqlBSC = "select giaobsc.*, dvnhan.donvi_ten as tendvn, dvthamdinh.donvi_ten as tendvtd ";
+            string sqlBSC = "select giaobsc.*, nvnhan.nhanvien_hoten as tendvn, nvthamdinh.nhanvien_hoten as tendvtd ";
             sqlBSC += "from giaobscnhanvien giaobsc, nhanvien nvgiao, nhanvien nvnhan, nhanvien nvthamdinh ";
             sqlBSC += "where giaobsc.nhanviengiao = nvgiao.nhanvien_id ";
             sqlBSC += "and giaobsc.nhanviennhan = nvnhan.nhanvien_id ";

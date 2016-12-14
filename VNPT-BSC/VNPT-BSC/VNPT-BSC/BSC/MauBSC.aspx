@@ -1,8 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="MauBSC.aspx.cs" Inherits="VNPT_BSC.BSC.MauBSC" %>
-<%@ Register assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxGridView" tagprefix="dx" %>
-<%@ Register assembly="DevExpress.Web.v13.1, Version=13.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxEditors" tagprefix="dx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
     <script src="../Bootstrap/jquery.js"></script>
     <script src="../Bootstrap/bootstrap.js"></script>
     <script src="../Bootstrap/function.js"></script>
@@ -26,10 +25,10 @@
           <div class="panel-body">
             <div class="col-sm-3">
                 <div class="panel panel-primary">
-                    <div class="panel-heading">
+                    <%--<div class="panel-heading">
                         <h3 class="panel-title">Danh Sách Mẫu BSC</h3>
-                    </div>
-                    <ul class="list-group">
+                    </div>--%>
+                    <%--<ul class="list-group">
                         <% for(int i = 0; i < dtBSC.Rows.Count; i++){ %>
                             <%
                                 string month =  dtBSC.Rows[i][0].ToString();
@@ -37,7 +36,29 @@
                             %>
                             <a href="#" onclick="fillData(<%=month %>, <%=year %>, <%=nguoitao %>)" class="list-group-item list-group-item-info text-center"><%= month +"/"+ year%></a>
                         <% } %>
-                    </ul>
+                    </ul>--%>
+                    <div class="panel list-group">
+                        <% for(int nIndex = 0; nIndex < dtBSCNam.Rows.Count; nIndex++){ %>
+                            <%
+                                string BSCyear =  dtBSCNam.Rows[nIndex]["nam"].ToString();
+                            %>
+                            <strong><a href="#" class="list-group-item list-group-item-success" data-toggle="collapse" data-target="#<%=BSCyear %>"><%=BSCyear%></a></strong>
+                            <div id="<%=BSCyear %>" class="sublinks collapse">
+                                <ul class="list-group">
+                                    <% for(int i = 0; i < dtBSC.Rows.Count; i++){ %>
+                                        <%
+                                            string month =  dtBSC.Rows[i][0].ToString();
+                                            string year =  dtBSC.Rows[i][1].ToString();
+                                            if(year != BSCyear){
+                                                continue;
+                                            }
+                                        %>
+                                        <a href="#" class="list-group-item list-group-item-info text-center" onclick="fillData(<%=month %>, <%=year %>, <%=nguoitao %>)"><%= month +"/"+ year%></a>
+                                    <% } %>
+                                </ul>
+                            </div>
+                        <% } %>
+                    </div>
                 </div>
             </div>
             <div class="col-sm-9 form-horizontal">
@@ -50,12 +71,43 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3">Danh sách KPI:</label>
-                    <div class="col-sm-8">
+                    <%--<div class="col-sm-8">
                         <% for(int i = 0; i < dtKPI.Rows.Count; i++){ %>
                             <div class="checkbox">
                               <label><input type="checkbox" value="<%=dtKPI.Rows[i]["kpi_id"].ToString() %>" /><%=dtKPI.Rows[i]["name"].ToString() %></label>
                             </div>
                         <% } %>
+                    </div>--%>
+                    <div class="col-sm-12">
+                        <div class='table-responsive'>
+                            <table class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%' id="danhsachKPI">
+                                <thead>
+                                  <tr>
+                                    <th><input type="checkbox" id="checkall-kpi"/></th>
+                                    <th>KPI</th>
+                                    <th>ĐVT</th>
+                                    <th>Tỷ trọng (%)</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(int i = 0; i < dtKPI.Rows.Count; i++){ %>
+                                        <tr data-id="<%=dtKPI.Rows[i]["kpi_id"].ToString() %>">
+                                          <td><input name="checkbox-kpi" id='kpi_id_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' type="checkbox" value="<%=dtKPI.Rows[i]["kpi_id"].ToString() %>" /></td>
+                                          <td><%=dtKPI.Rows[i]["name"].ToString() %></td>
+                                          <%--<td class='text-center'><input type="text" class='form-control' id='dvt_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' size="5"/></td>--%>
+                                          <td class='text-center'>
+                                              <select class='form-control' id='dvt_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>'>
+                                                  <% for (int nDVT = 0; nDVT < dtDVT.Rows.Count; nDVT++){ %>
+                                                  <option value="<% =dtDVT.Rows[nDVT]["dvt_id"].ToString() %>"><% =dtDVT.Rows[nDVT]["dvt_ten"].ToString() %></option>
+                                                  <% } %>
+                                              </select>
+                                          </td>
+                                          <td class='text-center'><input type="text" class='form-control' onkeypress='return onlyNumbers(event)' id='tytrong_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' size="2"/></td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -73,6 +125,9 @@
 <script type="text/javascript">
     var nguoitao = '<%= nguoitao%>';
     function fillData(month, year, nguoitao) {
+        $("input[type=text]").each(function () {
+            $(this).val("");
+        });
         $("#month").val(month);
         $("#year").val(year);
 
@@ -81,28 +136,43 @@
         $("#year").css("border-color", "#ccc");
 
         var requestData = {
-            monthAprove : month,
+            monthAprove: month,
             yearAprove: year,
             nguoitao: nguoitao
         };
+
         var szRequest = JSON.stringify(requestData);
-        $.ajax({
-            type: "POST",
-            url: "MauBSC.aspx/BindingCheckBox",
-            data: szRequest,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (result) {
-                $("input[type=checkbox]").attr("checked", false);
-                var arrKPI = new Array();
-                arrKPI = result.d;
-                for (var i = 0; i < arrKPI.length; i++) {
-                    var KPI_ID = arrKPI[i];
-                    $(":checkbox[value='" + KPI_ID + "']").prop("checked", "true");
-                }
-            },
-            error: function (msg) { alert(msg.d);}
+
+        swal({
+            title: "Tải dữ liệu!",
+            text: "Vui lòng chờ trong giây lát.",
+            timer: 2000,
+            showConfirmButton: false
         });
+
+        setTimeout(function () {
+            $.ajax({
+                type: "POST",
+                url: "MauBSC.aspx/BindingCheckBox",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    $("input[type=checkbox]").attr("checked", false);
+                    var arrKPI = new Array();
+                    arrKPI = result.d;
+                    for (var i = 0; i < arrKPI.length; i++) {
+                        var KPI_ID = arrKPI[i].kpi_id;
+                        var tytrong = arrKPI[i].tytrong;
+                        var donvitinh = arrKPI[i].donvitinh;
+                        $(":checkbox[value='" + KPI_ID + "']").prop("checked", "true");
+                        $("#dvt_" + KPI_ID).val(donvitinh);
+                        $("#tytrong_" + KPI_ID).val(tytrong);
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        }, 2000);
     }
 
     $(document).ready(function () {
@@ -118,9 +188,22 @@
                 swal("Error","Vui lòng nhập đúng vào trường bất buộc!!!","error");
                 return false;
             }
+
             var arrKPI = new Array();
-            $("input[type=checkbox]:checked").each(function () {
-                arrKPI.push($(this).val());
+            $("#danhsachKPI > tbody > tr").each(function () {
+                var kpi_id = $(this).attr("data-id");
+                //var tytrong = $("#tytrong_" + kpi_id).val();
+                //var dvt = $("#dvt_" + kpi_id).val();
+                var tytrong = $("#tytrong_" + kpi_id).val();
+                var dvt = $("#dvt_" + kpi_id).val();
+                var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
+                if (isChecked == true) {
+                    arrKPI.push({
+                        kpi_id: kpi_id,
+                        tytrong: tytrong,
+                        dvt: dvt
+                    });
+                }
             });
 
             if (arrKPI.length == 0) {
@@ -159,6 +242,21 @@
                 },
                 error: function (msg) { alert(msg.d); }
             });
+        });
+
+        // Check all kpi của bản thân
+        $("#checkall-kpi").click(function () {
+            if (this.checked) {
+                // Iterate each checkbox
+                $('input[name=checkbox-kpi]').each(function () {
+                    this.checked = true;
+                });
+            }
+            else {
+                $('input[name=checkbox-kpi]').each(function () {
+                    this.checked = false;
+                });
+            }
         });
     });
 </script>

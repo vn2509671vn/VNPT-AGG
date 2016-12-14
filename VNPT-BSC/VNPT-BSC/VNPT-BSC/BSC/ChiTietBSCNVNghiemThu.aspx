@@ -190,7 +190,7 @@
                         type: "success"
                     },
                     function () {
-                        loadDataToPage(donvigiao, donvinhan, thang, nam);
+                        loadDataToPage(nhanviengiao, nhanviennhan, thang, nam);
                     });
                 }
                 else {

@@ -14,7 +14,7 @@ namespace VNPT_BSC.BSC
 {
     public partial class ChiTietBSCNghiemThu : System.Web.UI.Page
     {
-        public static string donvigiao, donvinhan, donvithamdinh, thang, nam;
+        public static string donvigiao, donvinhan, thang, nam;
 
         [WebMethod]
         public static Dictionary<String, String> loadBSCByCondition(int donvigiao, int donvinhan, int thang, int nam)
@@ -25,9 +25,10 @@ namespace VNPT_BSC.BSC
             /*Lấy danh sách BSC từ bảng bsc_donvi*/
             DataTable gridData = new DataTable();
             string outputHTML = "";
-            string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, bsc.donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh ";
-            sqlBSC += "from bsc_donvi bsc, kpi, kpo, donvi dvgiao, donvi dvnhan ";
+            string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, dvt.dvt_ten as donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh ";
+            sqlBSC += "from bsc_donvi bsc, kpi, kpo, donvi dvgiao, donvi dvnhan, donvitinh dvt ";
             sqlBSC += "where bsc.kpi = kpi.kpi_id ";
+            sqlBSC += "and bsc.donvitinh = dvt.dvt_id ";
             sqlBSC += "and bsc.donvigiao = dvgiao.donvi_id ";
             sqlBSC += "and bsc.donvinhan = dvnhan.donvi_id ";
             sqlBSC += "and bsc.donvinhan = '" + donvinhan + "' ";
@@ -108,11 +109,10 @@ namespace VNPT_BSC.BSC
                 dicOutput.Add("donvinhan", dtGiaoBSCDV.Rows[0]["donvinhan"].ToString());
                 dicOutput.Add("thang", dtGiaoBSCDV.Rows[0]["thang"].ToString());
                 dicOutput.Add("nam", dtGiaoBSCDV.Rows[0]["nam"].ToString());
-                dicOutput.Add("donvithamdinh", dtGiaoBSCDV.Rows[0]["donvithamdinh"].ToString());
                 dicOutput.Add("trangthaigiao", dtGiaoBSCDV.Rows[0]["trangthaigiao"].ToString());
                 dicOutput.Add("trangthainhan", dtGiaoBSCDV.Rows[0]["trangthainhan"].ToString());
                 dicOutput.Add("trangthaicham", dtGiaoBSCDV.Rows[0]["trangthaicham"].ToString());
-                dicOutput.Add("trangthaithamdinh", dtGiaoBSCDV.Rows[0]["trangthaithamdinh"].ToString());
+                dicOutput.Add("trangthaidongy_kqtd", dtGiaoBSCDV.Rows[0]["trangthaidongy_kqtd"].ToString());
                 dicOutput.Add("trangthaiketthuc", dtGiaoBSCDV.Rows[0]["trangthaiketthuc"].ToString());
             }
             else
@@ -121,11 +121,10 @@ namespace VNPT_BSC.BSC
                 dicOutput.Add("donvinhan", donvinhan.ToString());
                 dicOutput.Add("thang", "0");
                 dicOutput.Add("nam", "0");
-                dicOutput.Add("donvithamdinh", "");
                 dicOutput.Add("trangthaigiao", "0");
                 dicOutput.Add("trangthainhan", "0");
                 dicOutput.Add("trangthaicham", "0");
-                dicOutput.Add("trangthaithamdinh", "0");
+                dicOutput.Add("trangthaidongy_kqtd", "0");
                 dicOutput.Add("trangthaiketthuc", "0");
             }
 

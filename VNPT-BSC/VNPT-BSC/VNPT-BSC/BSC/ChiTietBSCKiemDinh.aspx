@@ -80,7 +80,7 @@
     var thang = "<%= thang %>";
     var nam = "<%= nam %>";
 
-    function loadDataToPage(donvigiao, donvinhan, thang, nam) {
+    function loadDataToPage(donvigiao, donvinhan, thang, nam, donvithamdinh) {
         /*Hide button*/
         $("#updateThamDinhStatus").hide();
         $("#saveData").hide();
@@ -89,7 +89,8 @@
             donvigiao: donvigiao,
             donvinhan: donvinhan,
             thang: thang,
-            nam: nam
+            nam: nam,
+            donvithamdinh: donvithamdinh
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
@@ -105,11 +106,11 @@
                 var donvinhan = output.donvinhan;
                 var thang = output.thang;
                 var nam = output.nam;
-                var donvithamdinh = output.donvithamdinh;
+                var soluong_kpi_dathamdinh = output.soluong_kpi_dathamdinh;
+                var soluong_dathamdinh = soluong_kpi_dathamdinh.split("/");
                 var trangthaigiao = output.trangthaigiao;
                 var trangthainhan = output.trangthainhan;
                 var trangthaicham = output.trangthaicham;
-                var trangthaithamdinh = output.trangthaithamdinh;
                 var trangthaiketthuc = output.trangthaiketthuc;
 
                 /*Fill data*/
@@ -130,7 +131,7 @@
                 }
 
                 // Cập nhật trạng thái kiểm định
-                if (trangthaithamdinh == "True") {
+                if (soluong_dathamdinh[0] == soluong_dathamdinh[1]) {
                     $("#kiemdinhLabel").removeClass("label-default");
                     $("#kiemdinhLabel").addClass("label-success");
                     $("#kiemdinhLabel").text("Đã kiểm định");
@@ -172,12 +173,13 @@
         });
     }
 
-    function updateKiemDinhStatus(donvigiao, donvinhan, thang, nam) {
+    function updateKiemDinhStatus(donvigiao, donvinhan, thang, nam, donvithamdinh) {
         var requestData = {
             donvigiao: donvigiao,
             donvinhan: donvinhan,
             thang: thang,
-            nam: nam
+            nam: nam,
+            donvithamdinh: donvithamdinh
         };
 
         var szRequest = JSON.stringify(requestData);
@@ -196,7 +198,7 @@
                         type: "success"
                     },
                     function () {
-                        loadDataToPage(donvigiao, donvinhan, thang, nam);
+                        loadDataToPage(donvigiao, donvinhan, thang, nam, donvithamdinh);
                     });
                 }
                 else {
@@ -212,10 +214,10 @@
     }
 
     $(document).ready(function () {
-        loadDataToPage(donvigiao, donvinhan, thang, nam);
+        loadDataToPage(donvigiao, donvinhan, thang, nam, donvithamdinh);
 
         $("#updateThamDinhStatus").click(function () {
-            updateKiemDinhStatus(donvigiao, donvinhan, thang, nam);
+            updateKiemDinhStatus(donvigiao, donvinhan, thang, nam, donvithamdinh);
         });
 
         $("#saveData").click(function () {
@@ -255,7 +257,7 @@
                             type: "success"
                         },
                         function () {
-                            loadDataToPage(donvigiao, donvinhan, thang, nam);
+                            loadDataToPage(donvigiao, donvinhan, thang, nam, donvithamdinh);
                         });
                     }
                     else {

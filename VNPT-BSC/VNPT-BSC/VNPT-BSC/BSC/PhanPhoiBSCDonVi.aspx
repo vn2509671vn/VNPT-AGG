@@ -105,12 +105,12 @@
                         <span id="nhanLabel" class="label label-default">Chưa nhận</span>
                     </div>
                 </div>
-                <div class="form-group">
+                <%--<div class="form-group">
                     <label class="control-label col-sm-3">Trạng thái kiểm định:</label>
                     <div class="col-sm-8 form-inline">
                         <span id="kiemdinhLabel" class="label label-default">Chưa kiểm định</span>
                     </div>
-                </div>
+                </div>--%>
                 <div class="form-group">
                     <label class="control-label col-sm-3">Trạng thái kết thúc:</label>
                     <div class="col-sm-8 form-inline">
@@ -257,16 +257,16 @@
                 }
                 
                 // Cập nhật trạng thái kiểm định
-                if (trangthaithamdinh == "True") {
-                    $("#kiemdinhLabel").removeClass("label-default");
-                    $("#kiemdinhLabel").addClass("label-success");
-                    $("#kiemdinhLabel").text("Đã kiểm định");
-                }
-                else {
-                    $("#kiemdinhLabel").removeClass("label-success");
-                    $("#kiemdinhLabel").addClass("label-default");
-                    $("#kiemdinhLabel").text("Chưa kiểm định");
-                }
+                //if (trangthaithamdinh == "True") {
+                //    $("#kiemdinhLabel").removeClass("label-default");
+                //    $("#kiemdinhLabel").addClass("label-success");
+                //    $("#kiemdinhLabel").text("Đã kiểm định");
+                //}
+                //else {
+                //    $("#kiemdinhLabel").removeClass("label-success");
+                //    $("#kiemdinhLabel").addClass("label-default");
+                //    $("#kiemdinhLabel").text("Chưa kiểm định");
+                //}
 
                 // Cập nhật trạng thái kết thúc
                 if (trangthaiketthuc == "True") {

@@ -50,6 +50,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -159,6 +160,7 @@
     <Content Include="BSC\NhanBSCNhanVien.aspx" />
     <Content Include="BSC\PhanPhoiBSCDonVi.aspx" />
     <Content Include="BSC\PhanPhoiBSCNhanVien.aspx" />
+    <Content Include="DanhMuc\Donvitinh.aspx" />
     <Content Include="DanhMuc\KPI.aspx" />
     <Content Include="DanhMuc\Chucvu.aspx" />
     <Content Include="Contact.aspx" />
@@ -247,6 +249,7 @@
     <Content Include="Images\orderedList9.png" />
     <Content Include="index.aspx" />
     <Content Include="Login.aspx" />
+    <Content Include="logout.aspx" />
     <Content Include="packages.config" />
     <Content Include="MasterPage.master">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -439,6 +442,13 @@
     <Compile Include="BSC\PhanPhoiBSCNhanVien.aspx.designer.cs">
       <DependentUpon>PhanPhoiBSCNhanVien.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DanhMuc\Donvitinh.aspx.cs">
+      <DependentUpon>Donvitinh.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\Donvitinh.aspx.designer.cs">
+      <DependentUpon>Donvitinh.aspx</DependentUpon>
+    </Compile>
     <Compile Include="DanhMuc\KPI.aspx.cs">
       <DependentUpon>KPI.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -505,6 +515,13 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="logout.aspx.cs">
+      <DependentUpon>logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="logout.aspx.designer.cs">
+      <DependentUpon>logout.aspx</DependentUpon>
     </Compile>
     <Compile Include="MasterPage.Master.cs">
       <DependentUpon>MasterPage.Master</DependentUpon>

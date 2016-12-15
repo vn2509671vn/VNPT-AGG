@@ -39,6 +39,34 @@ namespace VNPT_BSC.DanhMuc
             }
             return dtnhanvien;
         }
+
+        [WebMethod]
+        public static bool SaveData(string nv_tenA, string cd_motaAprove, string cd_maAprove)
+        {
+            Connection chucdanh = new Connection();
+            bool output = false;
+            string sqlInsertNewData = "";
+            try
+            {
+
+
+                sqlInsertNewData = "insert into chucdanh(chucdanh_ten,chucdanh_mota, chucdanh_ma) values(N'" + nv_tenA + "',N'" + cd_motaAprove + "', N'" + cd_maAprove + "')";
+                try
+                {
+                    chucdanh.ThucThiDL(sqlInsertNewData);
+                }
+                catch
+                {
+                    output = false;
+                }
+                output = true;
+            }
+            catch
+            {
+                output = false;
+            }
+            return output;
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)

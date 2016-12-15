@@ -70,7 +70,7 @@
                             <% } %>
                         </tbody>
                         </table>
-                         <!-- EDIT-->
+                         <!-- ADD-->
                     <div id="themKPO" class="modal fade" role="dialog">
                         <div class="modal-dialog">
 
@@ -107,7 +107,7 @@
                             </div>
                         </div>
                     </div>
-
+                        <!-- EDIT-->
                         <div id="Editkpo" class="modal fade" role="dialog">
                         <div class="modal-dialog">
 
@@ -247,6 +247,16 @@
         }
 
         $(document).ready(function () {
+
+            var now = new Date();
+            var month = (now.getMonth() + 1);
+            var day = now.getDate();
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            var today = now.getFullYear() + '-' + month + '-' + day;
+            $('#txtngay').val(today);
 
             $("#btnSave").click(function () {
                 var kpo_ten = $("#txtten").val();

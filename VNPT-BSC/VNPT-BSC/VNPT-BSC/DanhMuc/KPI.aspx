@@ -32,31 +32,41 @@
                                 <th>Tên KPI</th>
                                 <th>Mô tả KPI</th>
                                 <th>Ngày tạo KPI</th>
-                                <th class="fix-table-edit-edit1">Người tạo KPI</th>
-                                <th class="fix-table-edit-edit1">Thuộc nhóm KPO</th>
-                                <th class="fix-table-edit-edit1">Chỉnh sửa</th>
+                                <th >Người tạo KPI</th>
+                                <th>Thuộc nhóm KPO</th>
+                                <th class="fix-table-edit-edit">Chỉnh sửa</th>
+                            </tr>
+                            <tr id="filterSection">
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th id="filter_kpo">KPO</th>
+                                <th></th>
                             </tr>
                         </thead>
+                       
                         <tbody>
                             <% if (dtkpi.Rows.Count == 0)
-                                { %>
+                               { %>
                             <tr>
                                 <td colspan="7" class="text-center">No item</td>
                             </tr>
                             <% }
-                                else
-                                { %>
+                               else
+                               { %>
                             <% for (int i = 0; i < dtkpi.Rows.Count; i++)
-                                { %>
+                               { %>
                             <%
-                                string kpi_id = dtkpi.Rows[i][0].ToString();
-                                string kpi_ten = dtkpi.Rows[i][1].ToString();
-                                string kpi_mota = dtkpi.Rows[i][2].ToString();
-                                string kpi_ngaytao = String.Format("{0:MM/dd/yyyy}",dtkpi.Rows[i][3].ToString());
-                                string kpi_nguoitao = dtkpi.Rows[i]["nhanvien_hoten"].ToString();
-                                string kpi_thuockpo = dtkpi.Rows[i]["kpo_ten"].ToString();
-                                string kpo_id = dtkpi.Rows[i]["kpo_id"].ToString();
-                                string nhanvien_id = dtkpi.Rows[i]["nhanvien_id"].ToString();
+                                    string kpi_id = dtkpi.Rows[i][0].ToString();
+                                    string kpi_ten = dtkpi.Rows[i][1].ToString();
+                                    string kpi_mota = dtkpi.Rows[i][2].ToString();
+                                    string kpi_ngaytao = String.Format("{0:MM/dd/yyyy}", dtkpi.Rows[i][3].ToString());
+                                    string kpi_nguoitao = dtkpi.Rows[i]["nhanvien_hoten"].ToString();
+                                    string kpi_thuockpo = dtkpi.Rows[i]["kpo_ten"].ToString();
+                                    string kpo_id = dtkpi.Rows[i]["kpo_id"].ToString();
+                                    string nhanvien_id = dtkpi.Rows[i]["nhanvien_id"].ToString();
 
                             %>
                             <tr>
@@ -84,25 +94,25 @@
                             <div class="modal-content col-md-12">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title"  style="text-align:center">THÊM KPI</h4>
+                                    <h4 class="modal-title" style="text-align: center">THÊM KPI</h4>
                                 </div>
                                 <div class="modal-body list-BSC form-horizontal">
                                     <div class="form-group">
                                         <label class="control-label col-sm-4">Tên KPI:</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control fix-width-350"  id="txtten" />
+                                            <input type="text" class="form-control fix-width-350" id="txtten" />
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-4">Mô tả KPI:</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control fix-width-350"  id="txtmota" />
+                                            <input type="text" class="form-control fix-width-350" id="txtmota" />
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-4 ">Ngày tạo KPI:</label>
                                         <div class="col-sm-8">
-                                            <input type="date" class="form-control fix-width-350 fix-height-34"  id="txtngay" />
+                                            <input type="date" class="form-control fix-width-350 fix-height-34" id="txtngay" />
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -110,10 +120,10 @@
                                         <div class="col-sm-8">
                                             <select class="form-control fix-day" id="kpo">
                                                 <% for (int i = 0; i < dtkpi_kpo.Rows.Count; i++)
-                                                    { %>
+                                                   { %>
                                                 <%
-                                                    string kpo_id = dtkpi_kpo.Rows[i]["kpo_id"].ToString();
-                                                    string kpo_ten = dtkpi_kpo.Rows[i]["kpo_ten"].ToString();
+                                                        string kpo_id = dtkpi_kpo.Rows[i]["kpo_id"].ToString();
+                                                        string kpo_ten = dtkpi_kpo.Rows[i]["kpo_ten"].ToString();
                                                 %>
                                                 <option value="<%= kpo_id%>"><%= kpo_ten%></option>
                                                 <% } %>
@@ -136,12 +146,12 @@
                             <div class="modal-content col-md-12">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title" style="text-align:center">CHỈNH SỬA KPI</h4>
+                                    <h4 class="modal-title" style="text-align: center">CHỈNH SỬA KPI</h4>
                                 </div>
                                 <input type="hidden" id="txtidkpi_sua" />
                                 <div class="modal-body list-BSC form-horizontal">
                                     <div class="form-group">
-                                        <label class="control-label col-sm-4" >Tên KPI:</label>
+                                        <label class="control-label col-sm-4">Tên KPI:</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control fix-width-350" id="txtten_sua" />
                                         </div>
@@ -158,10 +168,10 @@
                                             <%--<input type="text" class="form-control fix-width-350 fix-height-34"  id="txtthuockpo_sua" />--%>
                                             <select class="form-control fix-day" id="kpo_edit">
                                                 <% for (int i = 0; i < dtkpi_kpo.Rows.Count; i++)
-                                                    { %>
+                                                   { %>
                                                 <%
-                                                    string kpo_id = dtkpi_kpo.Rows[i]["kpo_id"].ToString();
-                                                    string kpo_ten = dtkpi_kpo.Rows[i]["kpo_ten"].ToString();
+                                                        string kpo_id = dtkpi_kpo.Rows[i]["kpo_id"].ToString();
+                                                        string kpo_ten = dtkpi_kpo.Rows[i]["kpo_ten"].ToString();
                                                 %>
                                                 <option value="<%= kpo_id%>"><%= kpo_ten%></option>
                                                 <% } %>
@@ -215,7 +225,7 @@
             }
         }
 
-        function editdata(kpi_id, kpi_ten, kpi_mota, kpi_ngaytao,  kpi_thuockpo) {
+        function editdata(kpi_id, kpi_ten, kpi_mota, kpi_ngaytao, kpi_thuockpo) {
             $('#txtidkpi_sua').val(kpi_id);
             $('#txtten_sua').val(kpi_ten);
             $('#txtmota_sua').val(kpi_mota);
@@ -278,7 +288,47 @@
         }
 
         $(document).ready(function () {
-            
+
+
+            // Setup - add a text input to each footer cell
+            $('#table-kpi thead tr#filterSection th').each(function () {
+                if ($(this).attr("id") == "filter_kpo") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" placeholder="Search ' + title + '"/>');
+                }
+            });
+
+            // DataTable
+            var table = $('#table-kpi').DataTable({
+                "bSort": false
+            });
+
+            // Apply the search
+            table.columns().every(function () {
+                var that = this;
+
+                $('input', this.header()).on('keyup change', function () {
+                    if (that.search() !== this.value) {
+                        that
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+
+
+            var now = new Date();
+            var month = (now.getMonth() + 1);
+            var day = now.getDate();
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            var today = now.getFullYear() + '-' + month + '-' + day;
+            $('#txtngay').val(today);
+
+
+
             $("#btnSave").click(function () {
                 var kpi_ten = $("#txtten").val();
                 var kpi_mota = $('#txtmota').val();
@@ -365,11 +415,6 @@
                     },
                     error: function (msg) { alert(msg.d); }
                 });
-            });
-
-            $("#table-kpi").DataTable({
-                "searching": true,
-                "info": true,
             });
         });
     </script>

@@ -25,7 +25,7 @@
             <!-- Body -->
             <div class="row">
                 <!-- Left menu -->
-                <div class="col-sm-3 margin-top-30 ">
+                <div class="col-sm-2 margin-top-30 ">
                     <div class="row">
                         <div class="panel-primary panel">
                             <div class="panel-heading">
@@ -37,6 +37,8 @@
                                 <asp:Label ID="Label2" runat="server" Text="" Font-Size="9pt" ForeColor="Red" style="line-height:24px">Đơn vị:</asp:Label ><asp:Label ID="lblDonvi" runat="server" Text="" Font-Size="9pt" style="line-height:24px"></asp:Label >
                                 <br />
                                 <asp:Label ID="Label1" runat="server" Text="" Font-Size="9pt" ForeColor="Red" style="line-height:24px">Chức vụ:</asp:Label ><asp:Label ID="lblChucvu" runat="server" Text="" Font-Size="9pt" style="line-height:24px"></asp:Label >
+
+                                <a  class="btn btn-danger btn-xs" id="logout" type="button" >Đăng xuất</a>
                             </div>
                         </div>
                     </div>
@@ -70,6 +72,7 @@
                                     <ul class="list-group">
                                         <li><a href="/DanhMuc/KPI.aspx" class="navlink">Danh Mục KPI</a></li>
                                         <li><a href="/DanhMuc/KPO.aspx" class="navlink">Danh Mục KPO</a></li>
+                                        <li><a href="/DanhMuc/Donvitinh.aspx" class="navlink">Danh Mục đơn vị tính</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -98,7 +101,7 @@
                 </div>
 
                 <!-- right menu -->
-                <div class="col-sm-9">
+                <div class="col-sm-10">
                     <div class="row ">
                         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
                         </asp:ContentPlaceHolder>
@@ -137,5 +140,20 @@
             $("#nhanbsc_nhanvien").show();
             $("#kiemdinhbsc_nhanvien").show();
         }
+
+        $("#logout").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "logout.aspx/thoat",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result.d) {
+                        window.location.replace("/Login.aspx");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        });
     });
 </script>

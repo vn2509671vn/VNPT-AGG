@@ -118,7 +118,7 @@
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Chức vụ:</label>
                                                 <div class="col-sm-8">
-                                                    <select class="form-control fix-day col-sm-8" id="chucvu">
+                                                    <select  class="form-control fix-day col-sm-8" id="chucvu">
                                                         <% for (int i = 0; i < dtchucvu_nv.Rows.Count; i++)
                                                            { %>
                                                         <%
@@ -135,7 +135,7 @@
                                                 <label class="control-label col-sm-4">Chức danh:</label>
                                                 <div class="col-sm-8">
                                                     <select class="form-control fix-day col-sm-8" id="chucdanh">
-                                                        <% for (int i = 0; i < dtchucvu_nv.Rows.Count; i++)
+                                                        <% for (int i = 0; i < dtchucdanh_nv.Rows.Count; i++)
                                                            { %>
                                                         <%
                                                                string chucdanh_id = dtchucdanh_nv.Rows[i]["chucdanh_id"].ToString();
@@ -150,7 +150,17 @@
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Đơn vị:</label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" class="form-control" data-val="" id="donvi" />
+                                                    <select class="form-control fix-day col-sm-8" id="Select1">
+                                                        <% for (int i = 0; i < dtdonvi_nv.Rows.Count; i++)
+                                                           { %>
+                                                        <%
+                                                               string donvi_id = dtdonvi_nv.Rows[i]["donvi_id"].ToString();
+                                                               string donvi_ten = dtdonvi_nv.Rows[i]["donvi_ten"].ToString();
+                                                        %>
+                                                        <option value="<%= donvi_id%>"><%= donvi_ten%></option>
+
+                                                        <% } %>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -458,10 +468,10 @@
 
 
 
-        function chitietdata(nv_id, nv_ten, resultdate, nv_donvi) {
+        function chitietdata(nv_id, nv_ten, datengaysinh, nv_donvi) {
             $('#txtid_sua').val(nv_id);
             $('#txtten').val(nv_ten);
-            $('#datengaysinh').val(resultdate);
+            $('#datengaysinh').val(datengaysinh);
             $('#txtdonvi').val(nv_donvi);
         }
 
@@ -525,7 +535,7 @@
                 var szRequest = JSON.stringify(requestData);
                 $.ajax({
                     type: "POST",
-                    url: "KPI.aspx/SaveData",
+                    url: "QL_NhanVien.aspx/SaveData",
                     data: szRequest,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",

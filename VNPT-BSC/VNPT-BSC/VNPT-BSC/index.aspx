@@ -90,14 +90,12 @@
                     <tr>
                         <th>Nhân viên giao</th>
                         <th>Nhân viên nhận</th>
-                        <th>Nhân viên thẩm định</th>
-                        <th>Tháng</th>
                         <th>Năm</th>
-                        <th>Trạng thái giao</th>
-                        <th>Trạng thái nhận</th>
+                        <th>Tháng</th>
                         <th>Trạng thái chấm</th>
-                        <th>Trạng thái thẩm định</th>
-                        <th>Hết thúc</th>
+                        <th>Trạng thái đồng ý KQTĐ</th>
+                        <th>Trạng thái kết thúc</th>
+                        <th>Số lượng KPI chưa thẩm định</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -112,29 +110,25 @@
                     <% for (int i = 0; i < dtthamdinhindex.Rows.Count; i++)
                        { %>
                     <%
-                           string nv_giao = dtthamdinhindex.Rows[i]["giao"].ToString();
-                           string nv_nhan = dtthamdinhindex.Rows[i]["nhan"].ToString();
-                           string nv_thamdinh = dtthamdinhindex.Rows[i]["thamdinh"].ToString();
-                           string nv_thang = dtthamdinhindex.Rows[i]["thang"].ToString();
+                           string nv_giao = dtthamdinhindex.Rows[i]["tennvg"].ToString();
+                           string nv_nhan = dtthamdinhindex.Rows[i]["tennvn"].ToString();
                            string nv_nam = dtthamdinhindex.Rows[i]["nam"].ToString();
-                           string nv_ttgiao = dtthamdinhindex.Rows[i]["trangthaigiao"].ToString();
-                           string nv_ttnhan = dtthamdinhindex.Rows[i]["trangthainhan"].ToString();
-                           string nv_cham = dtthamdinhindex.Rows[i]["trangthaicham"].ToString();
-                           string nv_ttthamdinh = dtthamdinhindex.Rows[i]["trangthaithamdinh"].ToString();
+                           string nv_thang = dtthamdinhindex.Rows[i]["thang"].ToString();
+                           string nv_ttcham = dtthamdinhindex.Rows[i]["trangthaicham"].ToString();
+                           string nv_ttdongy = dtthamdinhindex.Rows[i]["trangthaidongy_kqtd"].ToString();
                            string nv_ttketthuc = dtthamdinhindex.Rows[i]["trangthaiketthuc"].ToString();
+                           string nv_soluong = dtthamdinhindex.Rows[i]["sl_chuatd"].ToString();
                                      
                     %>
                     <tr>
                         <td><%= nv_giao %></td>
                         <td><%=  nv_nhan%></td>
-                        <td><%=  nv_thamdinh%></td>
-                        <td><%=  nv_thang%></td>
                         <td><%=  nv_nam%></td>
-                        <td><%=  nv_ttgiao%></td>
-                        <td><%= nv_ttnhan %></td>
-                        <td><%=  nv_cham%></td>
-                        <td><%=  nv_ttthamdinh%></td>
+                        <td><%=  nv_thang%></td>
+                        <td><%=  nv_ttcham%></td>
+                        <td><%= nv_ttdongy %></td>
                         <td><%=  nv_ttketthuc%></td>
+                        <td><%=  nv_soluong%></td>
                     </tr>
                     <% } %>
                     <% } %>
@@ -154,5 +148,8 @@
            { %>
         $('#thamdinh').hide();
         <% } %>
+
+
+       
     </script>
 </asp:Content>

@@ -77,7 +77,7 @@
                                        string nv_didong = dtnhanvien.Rows[i][18].ToString();
                                        string nv_email = dtnhanvien.Rows[i][19].ToString();
                                        string nv_chucvu = dtnhanvien.Rows[i]["chucvu_ten"].ToString();
-                                       string nv_chucdanh = dtnhanvien.Rows[i][21].ToString();
+                                       string nv_chucdanh = dtnhanvien.Rows[i]["chucdanh_ten"].ToString();
                                        string nv_taikhoan = dtnhanvien.Rows[i][22].ToString();
                                        string nv_matkhau = dtnhanvien.Rows[i][23].ToString();
                                      
@@ -91,7 +91,9 @@
                                     <td><%=  nv_chucdanh%></td>
                                     <td><%=  nv_taikhoan%></td>
                                     <td>
-                                        <a class="btn btn-primary btn-xs" type="button" data-target="#chitiet" data-toggle="modal" onclick="chitietdata('<%=nv_id %>','<%=nv_ten %>','<%=nv_ngaysinh %>','<%=nv_donvi %>')">Thông tin chi tiết</a>
+                                        <a class="btn btn-primary btn-xs" type="button" data-target="#chitiet" data-toggle="modal" onclick="chitietdata('<%=nv_id %>','<%=nv_ten %>','<%=nv_ngaysinh %>','<%=nv_donvi %>'
+                                            ,'<%=nv_dantoc %>','<%=nv_tongiao %>','<%=nv_trinhdo %>','<%=nv_gioitinh %>','<%=nv_quequan %>','<%=nv_noisinh %>','<%=nv_diachi %>','<%=nv_cmnd %>','<%=nv_ngaycap %>','<%=nv_noicap %>','<%=nv_doanvien %>','<%=nv_dangvien %>'
+                                            ,'<%=nv_ngayvaodang %>','<%=nv_ngayvaonganh %>','<%=nv_didong %>','<%=nv_email %>','<%=nv_chucvu %>','<%=nv_chucdanh %>','<%=nv_taikhoan %>')">Thông tin chi tiết</a>
 
                                     </td>
                                 </tr>
@@ -150,7 +152,7 @@
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Đơn vị:</label>
                                                 <div class="col-sm-8">
-                                                    <select class="form-control fix-day col-sm-8" id="Select1">
+                                                    <select class="form-control fix-day col-sm-8" id="donvi">
                                                         <% for (int i = 0; i < dtdonvi_nv.Rows.Count; i++)
                                                            { %>
                                                         <%
@@ -289,7 +291,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <a class="btn btn-success" id="btnSave">Thêm đơn vị</a>
+                                        <a class="btn btn-success" id="btnSave">Thêm nhân viên</a>
                                         <a class="btn btn-default" data-dismiss="modal">Đóng</a>
                                     </div>
                                 </div>
@@ -468,11 +470,33 @@
 
 
 
-        function chitietdata(nv_id, nv_ten, datengaysinh, nv_donvi) {
+        function chitietdata(nv_id, nv_ten, datengaysinh, nv_donvi, nv_dantoc, nv_tongiao, nv_trinhdo, nv_gioitinh, nv_quequan,nv_noisinh, nv_diachi, nv_cmnd, nv_ngaycap, nv_noicap, nv_doanvien, nv_dangvien,
+            nv_ngayvaodang, nv_ngayvaonganh, nv_didong, nv_email, nv_chucvu, nv_chucdanh, nv_taikhoan) {
             $('#txtid_sua').val(nv_id);
             $('#txtten').val(nv_ten);
             $('#datengaysinh').val(datengaysinh);
             $('#txtdonvi').val(nv_donvi);
+            $('#txtchucdanh').val(nv_chucdanh);
+            $('#txtchucvu').val(nv_chucvu);
+            if (nv_dangvien == "True") {
+                $('#cbdang').attr("checked", "true");
+            }
+            $('#cbngaydang').val(nv_ngayvaodang);
+            $('#txtdidong').val(nv_didong);
+            $('#txtemail').val(nv_email);
+            $('#txtcm').val(nv_diachi);
+            $('#txttaikhoan').val(nv_taikhoan);
+            $('#txtdantoc').val(nv_dantoc);
+            $('#txttongiao').val(nv_tongiao);
+            $('#txttrinhdo').val(nv_trinhdo);
+            $('#txtgioitinh').val(nv_gioitinh);
+            $('#datenganh').val(nv_ngayvaonganh);
+            $('#checkdoan').val(nv_doanvien);
+            $('#txtcmnd').val(nv_cmnd);
+            $('#datengaycmnd').val(nv_ngaycap);
+            $('#txtnoicap').val(nv_noicap);
+            $('#txtnoisinh').val(nv_noisinh);
+            $('#txtquequan').val(nv_quequan);
         }
 
 
@@ -492,8 +516,8 @@
                 var nv_cmnd = $("#cmnd").val();
                 var nv_ngaycap = $("#ngaycmnd").val();
                 var nv_noicap = $("#noicmnd").val();
-                var nv_doanvien = $('#doan').val();
-                var nv_dangvien = $("#dang").val();
+                var nv_doanvien = $("#doan").is(":checked");
+                var nv_dangvien = $("#dang").is(":checked");
                 var nv_ngayvaodang = $("#ngaydang").val();
                 var nv_ngayvaonganh = $("#ngaynganh").val();
                 var nv_didong = $('#didong').val();

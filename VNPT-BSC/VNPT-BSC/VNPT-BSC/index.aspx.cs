@@ -42,10 +42,19 @@ namespace VNPT_BSC
 
         private DataTable getthamdinhindexList(int nhanvien_id)
         {
-            
-            string sqlBSC = "Select giao.nhanvien_hoten as giao ,nhan.nhanvien_hoten as nhan,thamdinh.nhanvien_hoten as thamdinh,thang,nam,trangthaigiao,trangthainhan,trangthaicham,trangthaithamdinh,trangthaiketthuc " +
-                            "from giaobscnhanvien a, nhanvien giao,nhanvien nhan,nhanvien thamdinh " +
-                            "where giao.nhanvien_id = a.nhanviengiao and nhan.nhanvien_id = a.nhanviengiao and thamdinh.nhanvien_id = a.nhanvienthamdinh and a.thang = datepart(MM ,GETDATE()) and nhanvienthamdinh = '" + nhanvien_id + "'";
+
+            string sqlBSC = "select nvgiao.nhanvien_id as nhanviengiao, nvgiao.nhanvien_hoten as tennvg, nvnhan.nhanvien_id as nhanviennhan, nvnhan.nhanvien_hoten as tennvn, giaobsc.nam, giaobsc.thang, giaobsc.trangthaicham, giaobsc.trangthaidongy_kqtd, giaobsc.trangthaiketthuc,  ";
+            sqlBSC += "(select COUNT(*) from bsc_nhanvien where bsc_nhanvien.nhanvienthamdinh = '" + nhanvien_id + "' and bsc_nhanvien.trangthaithamdinh = 0 and bsc_nhanvien.nam = datepart(YYYY ,GETDATE()) and bsc_nhanvien.thang = giaobsc.thang) as sl_chuatd ";
+            sqlBSC += "from giaobscnhanvien giaobsc, bsc_nhanvien giaobsc_nv, nhanvien nvgiao, nhanvien nvnhan ";
+            sqlBSC += "where giaobsc.thang = giaobsc_nv.thang ";
+            sqlBSC += "and giaobsc.nam = giaobsc_nv.nam ";
+            sqlBSC += "and giaobsc.nhanviengiao = giaobsc_nv.nhanviengiao ";
+            sqlBSC += "and giaobsc.nhanviennhan = giaobsc_nv.nhanviennhan ";
+            sqlBSC += "and giaobsc.nhanviengiao = nvgiao.nhanvien_id ";
+            sqlBSC += "and giaobsc.nhanviennhan = nvnhan.nhanvien_id ";
+            sqlBSC += "and giaobsc.nam = datepart(YYYY ,GETDATE()) ";
+            sqlBSC += "and giaobsc_nv.nhanvienthamdinh = '" + nhanvien_id + "' ";
+            sqlBSC += "group by nvgiao.nhanvien_id, nvgiao.nhanvien_hoten, nvnhan.nhanvien_id, nvnhan.nhanvien_hoten, giaobsc.nam, giaobsc.thang, giaobsc.trangthaicham, giaobsc.trangthaidongy_kqtd, giaobsc.trangthaiketthuc";
             DataTable dtthamdinhindex = new DataTable();
             try
             {

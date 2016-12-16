@@ -25,9 +25,9 @@ namespace VNPT_BSC.DanhMuc
             string sqlBSC =
             "SELECT a.nhanvien_id,a.nhanvien_hoten,a.nhanvien_ngaysinh,b.donvi_ten,a.nhanvien_dantoc,a.nhanvien_tongiao,a.nhanvien_trinhdo,a.nhanvien_gioitinh,a.nhanvien_noisinh, "
             + "a.nhanvien_quequan,a.nhanvien_diachi,a.nhanvien_cmnd,a.nhanvien_ngaycapcmnd,a.nhanvien_noicapcmnd,a.nhanvien_doanvien,a.nhanvien_dangvien,a.nhanvien_ngayvaodang,a.nhanvien_ngayvaonganh,a.nhanvien_didong,"
-            + "a.nhanvien_email,c.chucvu_ten,a.nhanvien_chucdanh,a.nhanvien_taikhoan,a.nhanvien_matkhau"
-            + " FROM nhanvien a, donvi b, chucvu c "
-            + "WHERE a.nhanvien_donvi = b.donvi_id and c.chucvu_id = a.nhanvien_chucvu ";
+            + "a.nhanvien_email,c.chucvu_ten,d.chucdanh_ten,a.nhanvien_taikhoan,a.nhanvien_matkhau"
+            + " FROM nhanvien a, donvi b, chucvu c, chucdanh d "
+            + "WHERE a.nhanvien_donvi = b.donvi_id and c.chucvu_id = a.nhanvien_chucvu and a.nhanvien_chucdanh = d.chucdanh_id ";
             dtnhanvien = new DataTable();
             try
             {
@@ -41,19 +41,19 @@ namespace VNPT_BSC.DanhMuc
         }
 
         [WebMethod]
-        public static bool SaveData(string nv_tenA, string cd_motaAprove, string cd_maAprove)
+        public static bool SaveData(string nv_tenA, string nv_ngaysinhA, int nv_donviA, string nv_dantocA, string nv_tongiaoA, string nv_trinhdoA, string nv_gioitinhA, string nv_noisinhA, string nv_quequanA, string nv_diachiA, string nv_cmndA, string nv_ngaycapA, string nv_noicapA, string nv_doanvienA, string nv_dangvienA, string nv_ngayvaodangA, string nv_ngayvaonganhA, string nv_didongA, string nv_emailA, int nv_chucvuA, int nv_chucdanhA, string nv_taikhoanA, string nv_matkhauA)
         {
-            Connection chucdanh = new Connection();
+            Connection nv = new Connection();
             bool output = false;
             string sqlInsertNewData = "";
             try
             {
 
 
-                sqlInsertNewData = "insert into chucdanh(chucdanh_ten,chucdanh_mota, chucdanh_ma) values(N'" + nv_tenA + "',N'" + cd_motaAprove + "', N'" + cd_maAprove + "')";
+                sqlInsertNewData = "insert into nhanvien(nhanvien_hoten,nhanvien_ngaysinh, nhanvien_donvi,nhanvien_dantoc,nhanvien_tongiao,nhanvien_trinhdo,nhanvien_gioitinh,nhanvien_noisinh,nhanvien_quequan,nhanvien_diachi,nhanvien_cmnd,nhanvien_ngaycapcmnd,nhanvien_noicapcmnd,nhanvien_doanvien,nhanvien_dangvien,nhanvien_ngayvaodang,nhanvien_ngayvaonganh,nhanvien_didong,nhanvien_email,nhanvien_chucvu,nhanvien_chucdanh,nhanvien_taikhoan,nhanvien_matkhau) values(N'" + nv_tenA + "',N'" + nv_ngaysinhA + "', '" + nv_donviA + "',N'" + nv_dantocA + "',N'" + nv_tongiaoA + "',N'" + nv_trinhdoA + "',N'" + nv_gioitinhA + "',N'" + nv_noisinhA + "',N'" + nv_quequanA + "',N'" + nv_diachiA + "',N'" + nv_cmndA + "',N'" + nv_ngaycapA + "',N'" + nv_noicapA + "',N'" + nv_doanvienA + "',N'" + nv_dangvienA + "',N'" + nv_ngayvaodangA + "',N'" + nv_ngayvaonganhA + "',N'" + nv_didongA + "',N'" + nv_emailA + "',N'" + nv_chucvuA + "',N'" + nv_chucdanhA + "',N'" + nv_taikhoanA + "',N'" + nv_matkhauA + "')";
                 try
                 {
-                    chucdanh.ThucThiDL(sqlInsertNewData);
+                    nv.ThucThiDL(sqlInsertNewData);
                 }
                 catch
                 {

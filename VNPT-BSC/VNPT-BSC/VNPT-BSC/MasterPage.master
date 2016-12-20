@@ -46,7 +46,7 @@
                         <div class="panel-group" id="accordion">
                             <div class="panel panel-default">
                                 <div class="panel-heading color">
-                                    <h4 class="panel-title"><a href="">Trang Chủ</a> </h4>
+                                    <h4 class="panel-title"><a href="/index.aspx">Trang Chủ</a> </h4>
                                 </div>
                             </div>
                             <div class="panel panel-default admin">

@@ -288,35 +288,6 @@
         }
 
         $(document).ready(function () {
-
-
-            // Setup - add a text input to each footer cell
-            $('#table-kpi thead tr#filterSection th').each(function () {
-                if ($(this).attr("id") == "filter_kpo") {
-                    var title = $(this).text();
-                    $(this).html('<input type="text" placeholder="Search ' + title + '"/>');
-                }
-            });
-
-            // DataTable
-            var table = $('#table-kpi').DataTable({
-                "bSort": false
-            });
-
-            // Apply the search
-            table.columns().every(function () {
-                var that = this;
-
-                $('input', this.header()).on('keyup change', function () {
-                    if (that.search() !== this.value) {
-                        that
-                            .search(this.value)
-                            .draw();
-                    }
-                });
-            });
-
-
             var now = new Date();
             var month = (now.getMonth() + 1);
             var day = now.getDate();
@@ -327,7 +298,38 @@
             var today = now.getFullYear() + '-' + month + '-' + day;
             $('#txtngay').val(today);
 
+            var numRows = $("#table-kpi tbody tr").length;
+            if (numRows > 1) {
+                $("#filterSection").show();
+                // Setup - add a text input to each footer cell
+                $('#table-kpi thead tr#filterSection th').each(function () {
+                    if ($(this).attr("id") == "filter_kpo") {
+                        var title = $(this).text();
+                        $(this).html('<input type="text" placeholder="Search ' + title + '"/>');
+                    }
+                });
 
+                // DataTable
+                var table = $('#table-kpi').DataTable({
+                    "bSort": false
+                });
+
+                // Apply the search
+                table.columns().every(function () {
+                    var that = this;
+
+                    $('input', this.header()).on('keyup change', function () {
+                        if (that.search() !== this.value) {
+                            that
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
+            }
+            else {
+                $("#filterSection").hide();
+            }
 
             $("#btnSave").click(function () {
                 var kpi_ten = $("#txtten").val();

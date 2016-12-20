@@ -22,21 +22,26 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static Dictionary<String, String> loadBSCByCondition(int nhanviengiao, int nhanviennhan, int thang, int nam)
+        public static Dictionary<String, String> loadBSCByCondition(int nhanviengiao, int nhanviennhan, int thang, int nam, int nhanvienthamdinh)
         {
             //string[] arrOutput = {};
             Dictionary<String, String> dicOutput = new Dictionary<String, String>(); // Lưu bảng BSC (gridBSC), đơn vị thẩm định, trạng thái giao, trạng thái nhận, trạng thái thẩm định
             Connection cnBSC = new Connection();
-            /*Lấy danh sách BSC từ bảng bsc_donvi*/
+            int soluong_kpi_dathamdinh = 0;
+            string szSL_kpi_dathamdinh = "";
+
+            /*Lấy danh sách BSC từ bảng bsc_nhanvien*/
             DataTable gridData = new DataTable();
             string outputHTML = "";
-            string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, bsc.donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh ";
-            sqlBSC += "from bsc_nhanvien bsc, kpi, kpo, nhanvien nvgiao, nhanvien nvnhan ";
+            string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, dvt.dvt_ten as donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh, bsc.trangthaithamdinh ";
+            sqlBSC += "from bsc_nhanvien bsc, kpi, kpo, nhanvien nvgiao, nhanvien nvnhan, donvitinh dvt ";
             sqlBSC += "where bsc.kpi = kpi.kpi_id ";
+            sqlBSC += "and bsc.donvitinh = dvt.dvt_id ";
             sqlBSC += "and bsc.nhanviengiao = nvgiao.nhanvien_id ";
             sqlBSC += "and bsc.nhanviennhan = nvnhan.nhanvien_id ";
             sqlBSC += "and bsc.nhanviengiao = '" + nhanviengiao + "' ";
             sqlBSC += "and bsc.nhanviennhan = '" + nhanviennhan + "' ";
+            sqlBSC += "and bsc.nhanvienthamdinh = '" + nhanvienthamdinh + "' ";
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
             sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "'";
             try
@@ -70,6 +75,11 @@ namespace VNPT_BSC.BSC
             {
                 for (int nKPI = 0; nKPI < gridData.Rows.Count; nKPI++)
                 {
+                    if (gridData.Rows[nKPI]["trangthaithamdinh"].ToString() == "True")
+                    {
+                        soluong_kpi_dathamdinh += 1;
+                    }
+
                     outputHTML += "<tr data-id='" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>";
                     outputHTML += "<td>" + (nKPI + 1) + "</td>";
                     outputHTML += "<td>" + gridData.Rows[nKPI]["kpi_ten"].ToString() + " (" + gridData.Rows[nKPI]["kpo_ten"].ToString() + ")" + "</td>";
@@ -85,7 +95,10 @@ namespace VNPT_BSC.BSC
             outputHTML += "</table>";
             dicOutput.Add("gridBSC", outputHTML);
 
-            /*Lấy danh sách các thông tin còn lại ở bảng giaobscdonvi*/
+            szSL_kpi_dathamdinh = soluong_kpi_dathamdinh.ToString() + "/" + gridData.Rows.Count.ToString();
+            dicOutput.Add("soluong_kpi_dathamdinh", szSL_kpi_dathamdinh);
+
+            /*Lấy danh sách các thông tin còn lại ở bảng giaobscnhanvien*/
             DataTable dtGiaoBSCDV = new DataTable();
             string sqlGiaoBSCDV = "select * from giaobscnhanvien ";
             sqlGiaoBSCDV += "where nhanviengiao = '" + nhanviengiao + "' ";
@@ -107,11 +120,9 @@ namespace VNPT_BSC.BSC
                 dicOutput.Add("nhanviennhan", dtGiaoBSCDV.Rows[0]["nhanviennhan"].ToString());
                 dicOutput.Add("thang", dtGiaoBSCDV.Rows[0]["thang"].ToString());
                 dicOutput.Add("nam", dtGiaoBSCDV.Rows[0]["nam"].ToString());
-                dicOutput.Add("nhanvienthamdinh", dtGiaoBSCDV.Rows[0]["nhanvienthamdinh"].ToString());
                 dicOutput.Add("trangthaigiao", dtGiaoBSCDV.Rows[0]["trangthaigiao"].ToString());
                 dicOutput.Add("trangthainhan", dtGiaoBSCDV.Rows[0]["trangthainhan"].ToString());
                 dicOutput.Add("trangthaicham", dtGiaoBSCDV.Rows[0]["trangthaicham"].ToString());
-                dicOutput.Add("trangthaithamdinh", dtGiaoBSCDV.Rows[0]["trangthaithamdinh"].ToString());
                 dicOutput.Add("trangthaiketthuc", dtGiaoBSCDV.Rows[0]["trangthaiketthuc"].ToString());
             }
             else
@@ -120,11 +131,9 @@ namespace VNPT_BSC.BSC
                 dicOutput.Add("nhanviennhan", nhanviennhan.ToString());
                 dicOutput.Add("thang", "0");
                 dicOutput.Add("nam", "0");
-                dicOutput.Add("donvithamdinh", "");
                 dicOutput.Add("trangthaigiao", "0");
                 dicOutput.Add("trangthainhan", "0");
                 dicOutput.Add("trangthaicham", "0");
-                dicOutput.Add("trangthaithamdinh", "0");
                 dicOutput.Add("trangthaiketthuc", "0");
             }
 
@@ -132,12 +141,12 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static bool updateKiemDinhStatus(int nhanviengiao, int nhanviennhan, int thang, int nam)
+        public static bool updateKiemDinhStatus(int nhanviengiao, int nhanviennhan, int thang, int nam, int nhanvienthamdinh)
         {
             Connection cnNhanBSC = new Connection();
             bool isSuccess = false;
 
-            string sqlGiaoBSC = "update giaobscnhanvien set trangthaithamdinh = 1 where nhanviengiao = '" + nhanviengiao + "' and nhanviennhan = '" + nhanviennhan + "' and thang = '" + thang + "' and nam = '" + nam + "'";
+            string sqlGiaoBSC = "update bsc_nhanvien set trangthaithamdinh = 1 where nhanviengiao = '" + nhanviengiao + "' and nhanviennhan = '" + nhanviennhan + "' and thang = '" + thang + "' and nam = '" + nam + "' and nhanvienthamdinh = '" + nhanvienthamdinh + "'";
             try
             {
                 cnNhanBSC.ThucThiDL(sqlGiaoBSC);
@@ -188,18 +197,24 @@ namespace VNPT_BSC.BSC
         {
             if (!IsPostBack)
             {
-                Nhanvien nhanvien = new Nhanvien();
-                nhanvien = Session.GetCurrentUser();
-
-                nhanviengiao = Request.QueryString["nhanviengiao"];
-                nhanviennhan = Request.QueryString["nhanviennhan"];
-                nhanvienthamdinh = Request.QueryString["nhanvienthamdinh"];
-                thang = Request.QueryString["thang"];
-                nam = Request.QueryString["nam"];
-
-                if (nhanviengiao == null || nhanviennhan == null || thang == null || nam == null || nhanvienthamdinh == null || nhanvien.nhanvien_id != Convert.ToInt32(nhanvienthamdinh))
+                try
                 {
-                    Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                    Nhanvien nhanvien = new Nhanvien();
+                    nhanvien = Session.GetCurrentUser();
+
+                    nhanviengiao = Request.QueryString["nhanviengiao"];
+                    nhanviennhan = Request.QueryString["nhanviennhan"];
+                    nhanvienthamdinh = Request.QueryString["nhanvienthamdinh"];
+                    thang = Request.QueryString["thang"];
+                    nam = Request.QueryString["nam"];
+
+                    if (nhanviengiao == null || nhanviennhan == null || thang == null || nam == null || nhanvienthamdinh == null || nhanvien.nhanvien_id != Convert.ToInt32(nhanvienthamdinh))
+                    {
+                        Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    }
+                }
+                catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
             }

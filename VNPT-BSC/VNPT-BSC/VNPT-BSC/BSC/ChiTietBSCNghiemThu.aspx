@@ -14,6 +14,15 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
+    <!-- Add for export data of datatable-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
 
     <!-- Plugin for swal alert -->
     <script src="../Bootstrap/sweetalert-dev.js"></script>
@@ -43,7 +52,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-6">Đồng ý kết quả thẩm định:</label>
                     <div class="col-sm-6 form-inline">
-                        <span id="dongyLabel" class="label label-default">Chưa thẩm định</span>
+                        <span id="dongyLabel" class="label label-default">Chưa đồng ý</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -98,6 +107,7 @@
                 var gridBSC = output.gridBSC;
                 var donvigiao = output.donvigiao;
                 var donvinhan = output.donvinhan;
+                var ten_dvn = output.ten_dvn;
                 var thang = output.thang;
                 var nam = output.nam;
                 var trangthaigiao = output.trangthaigiao;
@@ -127,13 +137,12 @@
                 if (trangthaidongy_kqtd == "True") {
                     $("#dongyLabel").removeClass("label-default");
                     $("#dongyLabel").addClass("label-success");
-                    $("#dongyLabel").text("Đã kiểm định");
-                    $("#saveData").hide();
+                    $("#dongyLabel").text("Đã đồng ý");
                 }
                 else {
                     $("#dongyLabel").removeClass("label-success");
                     $("#dongyLabel").addClass("label-default");
-                    $("#dongyLabel").text("Chưa kiểm định");
+                    $("#dongyLabel").text("Chưa đồng ý");
                 }
 
                 // Cập nhật trạng thái kết thúc
@@ -157,7 +166,18 @@
                 $("#table-kpi").DataTable({
                     "searching": true,
                     "info": true,
-                    "pageLength": 50
+                    "pageLength": 50,
+                    "dom": 'Bfrtip',
+                    "buttons": [
+                        {
+                            extend: 'excelHtml5',
+                            title: 'Nghiệm thu đơn vị ' + ten_dvn
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            title: 'Nghiệm thu đơn vị ' + ten_dvn
+                        }
+                    ]
                 });
             },
             error: function (msg) { alert(msg.d); }

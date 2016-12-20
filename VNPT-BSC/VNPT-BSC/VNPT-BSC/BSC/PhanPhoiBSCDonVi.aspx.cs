@@ -85,7 +85,7 @@ namespace VNPT_BSC.BSC
                 arrOutput += "<tbody>";
                 if (gridData.Rows.Count <= 0)
                 {
-                    arrOutput += "<tr><td colspan='5' class='text-center'>No item</td></tr>";
+                    arrOutput += "<tr><td colspan='6' class='text-center'>No item</td></tr>";
                 }
                 else {
                     for (int nKPI = 0; nKPI < gridData.Rows.Count; nKPI++) {
@@ -178,7 +178,7 @@ namespace VNPT_BSC.BSC
             outputHTML += "<tbody>";
             if (gridData.Rows.Count <= 0)
             {
-                outputHTML += "<tr><td colspan='5' class='text-center'>No item</td></tr>";
+                outputHTML += "<tr><td colspan='6' class='text-center'>No item</td></tr>";
             }
             else
             {

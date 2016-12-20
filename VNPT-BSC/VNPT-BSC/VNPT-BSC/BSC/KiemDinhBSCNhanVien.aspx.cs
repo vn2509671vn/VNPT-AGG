@@ -23,13 +23,19 @@ namespace VNPT_BSC.BSC
             Connection cnBSC = new Connection();
             DataTable gridData = new DataTable();
             string outputHTML = "";
-            string sqlBSC = "select giaobsc.*, nvgiao.nhanvien_hoten as tennvg, nvnhan.nhanvien_hoten as tennvn ";
-            sqlBSC += "from giaobscnhanvien giaobsc, nhanvien nvgiao, nhanvien nvnhan, nhanvien nvthamdinh ";
-            sqlBSC += "where giaobsc.nhanviengiao = nvgiao.nhanvien_id ";
+
+            string sqlBSC = "select nvgiao.nhanvien_id as nhanviengiao, nvgiao.nhanvien_hoten as tennvg, nvnhan.nhanvien_id as nhanviennhan, nvnhan.nhanvien_hoten as tennvn, giaobsc.nam, giaobsc.thang, giaobsc.trangthaicham, giaobsc.trangthaidongy_kqtd, giaobsc.trangthaiketthuc,  ";
+            sqlBSC += "(select COUNT(*) from bsc_nhanvien where bsc_nhanvien.nhanvienthamdinh = '" + nhanvienkiemdinh + "' and bsc_nhanvien.trangthaithamdinh = 0 and bsc_nhanvien.nam = '" + nam + "' and bsc_nhanvien.thang = giaobsc.thang) as sl_chuatd ";
+            sqlBSC += "from giaobscnhanvien giaobsc, bsc_nhanvien giaobsc_nv, nhanvien nvgiao, nhanvien nvnhan ";
+            sqlBSC += "where giaobsc.thang = giaobsc_nv.thang ";
+            sqlBSC += "and giaobsc.nam = giaobsc_nv.nam ";
+            sqlBSC += "and giaobsc.nhanviengiao = giaobsc_nv.nhanviengiao ";
+            sqlBSC += "and giaobsc.nhanviennhan = giaobsc_nv.nhanviennhan ";
+            sqlBSC += "and giaobsc.nhanviengiao = nvgiao.nhanvien_id ";
             sqlBSC += "and giaobsc.nhanviennhan = nvnhan.nhanvien_id ";
-            sqlBSC += "and giaobsc.nhanvienthamdinh = nvthamdinh.nhanvien_id ";
             sqlBSC += "and giaobsc.nam = '" + nam + "' ";
-            sqlBSC += "and giaobsc.nhanvienthamdinh = '" + nhanvienkiemdinh + "' ";
+            sqlBSC += "and giaobsc_nv.nhanvienthamdinh = '" + nhanvienkiemdinh + "' ";
+            sqlBSC += "group by nvgiao.nhanvien_id, nvgiao.nhanvien_hoten, nvnhan.nhanvien_id, nvnhan.nhanvien_hoten, giaobsc.nam, giaobsc.thang, giaobsc.trangthaicham, giaobsc.trangthaidongy_kqtd, giaobsc.trangthaiketthuc";
 
             try
             {
@@ -66,12 +72,11 @@ namespace VNPT_BSC.BSC
                 {
                     string nhanviengiao = gridData.Rows[nIndex]["nhanviengiao"].ToString();
                     string szNhanviennhan = gridData.Rows[nIndex]["nhanviennhan"].ToString();
-                    string szNhanvienthamdinh = gridData.Rows[nIndex]["nhanvienthamdinh"].ToString();
+                    string szNhanvienthamdinh = nhanvienkiemdinh.ToString();
                     string thang = gridData.Rows[nIndex]["thang"].ToString();
                     string nNam = gridData.Rows[nIndex]["nam"].ToString();
-                    string trangthainhan = gridData.Rows[nIndex]["trangthainhan"].ToString();
+                    string sl_chuathamdinh = gridData.Rows[nIndex]["sl_chuatd"].ToString();
                     string trangthaicham = gridData.Rows[nIndex]["trangthaicham"].ToString();
-                    string trangthaithamdinh = gridData.Rows[nIndex]["trangthaithamdinh"].ToString();
                     string trangthaiketthuc = gridData.Rows[nIndex]["trangthaiketthuc"].ToString();
                     string txtTrangThaiCham = "Chưa nộp";
                     string txtTrangThaiThamDinh = "Chưa thẩm định";
@@ -86,7 +91,7 @@ namespace VNPT_BSC.BSC
                         clsTrangThaiCham = "label-success";
                     }
 
-                    if (trangthaithamdinh == "True")
+                    if (Convert.ToInt32(sl_chuathamdinh) == 0)
                     {
                         txtTrangThaiThamDinh = "Đã thẩm định";
                         clsTrangThaiThamDinh = "label-success";
@@ -121,16 +126,22 @@ namespace VNPT_BSC.BSC
         {
             if (!IsPostBack)
             {
-                Nhanvien nhanvien = new Nhanvien();
-                nhanvien = Session.GetCurrentUser();
-
-                if (nhanvien == null || nhanvien.nhanvien_id == 2 && nhanvien.nhanvien_id == 4)
+                try
                 {
-                    Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                    Nhanvien nhanvien = new Nhanvien();
+                    nhanvien = Session.GetCurrentUser();
+
+                    if (nhanvien == null || nhanvien.nhanvien_id == 2 && nhanvien.nhanvien_id == 4)
+                    {
+                        Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    }
+
+                    nhanvienkiemdinh = nhanvien.nhanvien_id.ToString();
+                }
+                catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
-
-                nhanvienkiemdinh = nhanvien.nhanvien_id.ToString();
             }
         }
     }

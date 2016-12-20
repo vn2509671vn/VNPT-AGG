@@ -240,6 +240,7 @@ namespace VNPT_BSC.BSC
                     sqlInsertBSCDV += "and nam = '" + nam + "' ";
                     sqlInsertBSCDV += "and kpi = '" + kpi_detail[i].kpi_id + "' ";
                     sqlInsertBSCDV += "and trangthaithamdinh = 0";
+
                     try
                     {
                         cnData.ThucThiDL(sqlInsertBSCDV);
@@ -262,17 +263,23 @@ namespace VNPT_BSC.BSC
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack) {
-                Nhanvien nhanvien = new Nhanvien();
-                nhanvien = Session.GetCurrentUser();
-
-                donvigiao = Request.QueryString["donvigiao"];
-                donvinhan = Request.QueryString["donvinhan"];
-                thang = Request.QueryString["thang"];
-                nam = Request.QueryString["nam"];
-
-                if (donvigiao == null || donvinhan == null || thang == null || nam == null || nhanvien.nhanvien_donvi_id != Convert.ToInt32(donvinhan))
+                try
                 {
-                    Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                    Nhanvien nhanvien = new Nhanvien();
+                    nhanvien = Session.GetCurrentUser();
+
+                    donvigiao = Request.QueryString["donvigiao"];
+                    donvinhan = Request.QueryString["donvinhan"];
+                    thang = Request.QueryString["thang"];
+                    nam = Request.QueryString["nam"];
+
+                    if (donvigiao == null || donvinhan == null || thang == null || nam == null || nhanvien.nhanvien_donvi_id != Convert.ToInt32(donvinhan))
+                    {
+                        Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    }
+                }
+                catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
             }

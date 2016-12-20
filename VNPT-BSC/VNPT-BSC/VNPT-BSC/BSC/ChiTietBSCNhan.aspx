@@ -14,6 +14,15 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
+    <!-- Add for export data of datatable-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
 
     <!-- Plugin for swal alert -->
     <script src="../Bootstrap/sweetalert-dev.js"></script>
@@ -129,7 +138,6 @@
                 var nam = output.nam;
                 var soluong_kpi_dathamdinh = output.soluong_kpi_dathamdinh;
                 var soluong_dathamdinh = soluong_kpi_dathamdinh.split("/");
-                var donvithamdinh = output.donvithamdinh;
                 var trangthaigiao = output.trangthaigiao;
                 var trangthainhan = output.trangthainhan;
                 var trangthaicham = output.trangthaicham;
@@ -221,7 +229,18 @@
                 $("#table-kpi").DataTable({
                     "searching": true,
                     "info": true,
-                    "pageLength": 50
+                    "pageLength": 50,
+                    "dom": 'Bfrtip',
+                    "buttons": [
+                        {
+                            extend: 'excelHtml5',
+                            title: 'Chi tiết BSC-KPI ' + thang + "-" + nam
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            title: 'Chi tiết BSC-KPI ' + thang + "-" + nam
+                        }
+                    ]
                 });
             },
             error: function (msg) { alert(msg.d); }

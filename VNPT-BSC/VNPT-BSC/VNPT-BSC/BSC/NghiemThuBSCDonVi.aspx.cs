@@ -128,15 +128,21 @@ namespace VNPT_BSC.BSC
         {
             if (!IsPostBack)
             {
-                Nhanvien nhanvien = new Nhanvien();
-                nhanvien = Session.GetCurrentUser();
-                /*Nếu không tồn tại session hoặc chức vụ của nhân viên không phải Chuyên viên BSC (id = 10)*/
-                if (nhanvien == null || nhanvien.nhanvien_chucvu_id != 10)
+                try
                 {
-                    Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                    Nhanvien nhanvien = new Nhanvien();
+                    nhanvien = Session.GetCurrentUser();
+                    /*Nếu không tồn tại session hoặc chức vụ của nhân viên không phải Chuyên viên BSC (id = 10)*/
+                    if (nhanvien == null || nhanvien.nhanvien_chucvu_id != 10)
+                    {
+                        Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    }
+                    donvigiao = nhanvien.nhanvien_donvi_id.ToString();
+                }
+                catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
-                donvigiao = nhanvien.nhanvien_donvi_id.ToString();
             }
         }
     }

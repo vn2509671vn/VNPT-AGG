@@ -41,9 +41,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-6">Trạng thái thẩm định:</label>
+                    <label class="control-label col-sm-6">Đồng ý kết quả thẩm định:</label>
                     <div class="col-sm-6 form-inline">
-                        <span id="kiemdinhLabel" class="label label-default">Chưa thẩm định</span>
+                        <span id="dongyLabel" class="label label-default">Chưa đồng ý</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -101,11 +101,10 @@
                 var nhanviennhan = output.nhanviennhan;
                 var thang = output.thang;
                 var nam = output.nam;
-                var nhanvienthamdinh = output.nhanvienthamdinh;
                 var trangthaigiao = output.trangthaigiao;
                 var trangthainhan = output.trangthainhan;
                 var trangthaicham = output.trangthaicham;
-                var trangthaithamdinh = output.trangthaithamdinh;
+                var trangthaidongy_kqtd = output.trangthaidongy_kqtd;
                 var trangthaiketthuc = output.trangthaiketthuc;
 
                 /*Fill data*/
@@ -126,16 +125,15 @@
                 }
 
                 // Cập nhật trạng thái kiểm định
-                if (trangthaithamdinh == "True") {
-                    $("#kiemdinhLabel").removeClass("label-default");
-                    $("#kiemdinhLabel").addClass("label-success");
-                    $("#kiemdinhLabel").text("Đã kiểm định");
-                    $("#saveData").hide();
+                if (trangthaidongy_kqtd == "True") {
+                    $("#dongyLabel").removeClass("label-default");
+                    $("#dongyLabel").addClass("label-success");
+                    $("#dongyLabel").text("Đã đồng ý");
                 }
                 else {
-                    $("#kiemdinhLabel").removeClass("label-success");
-                    $("#kiemdinhLabel").addClass("label-default");
-                    $("#kiemdinhLabel").text("Chưa kiểm định");
+                    $("#dongyLabel").removeClass("label-success");
+                    $("#dongyLabel").addClass("label-default");
+                    $("#dongyLabel").text("Chưa đồng ý");
                 }
 
                 // Cập nhật trạng thái kết thúc
@@ -148,7 +146,7 @@
                     $("#ketthucLabel").removeClass("label-success");
                     $("#ketthucLabel").addClass("label-default");
                     $("#ketthucLabel").text("Chưa kết thúc");
-                    if (trangthaithamdinh == "True") {
+                    if (trangthaidongy_kqtd == "True") {
                         $("#updateKetThucStatus").show();
                     }
                     else {

@@ -57,7 +57,7 @@ namespace VNPT_BSC.BSC
 
             if (gridData.Rows.Count <= 0)
             {
-                outputHTML += "<tr><td colspan='9' class='text-center'>No item</td></tr>";
+                outputHTML += "<tr><td colspan='8' class='text-center'>No item</td></tr>";
             }
             else
             {
@@ -73,12 +73,10 @@ namespace VNPT_BSC.BSC
                     string trangthaiketthuc = gridData.Rows[nIndex]["trangthaiketthuc"].ToString();
                     string txtTrangThaiNhan = "Chưa nhận";
                     string txtTrangThaiCham = "Chưa nộp";
-                    string txtTrangThaiThamDinh = "Chưa thẩm định";
                     string txtTrangThaiDongYThamDinh = "Chưa đồng ý KQTĐ";
                     string txtTrangThaiKetThuc = "Chưa kết thúc";
                     string clsTrangThaiNhan = "label-default";
                     string clsTrangThaiCham = "label-default";
-                    string clsTrangThaiThamDinh = "label-default";
                     string clsTrangThaiDongYThamDinh = "label-default";
                     string clsTrangThaiKetThuc = "label-default";
 
@@ -127,16 +125,25 @@ namespace VNPT_BSC.BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Nhanvien nhanvien = new Nhanvien();
-            nhanvien = Session.GetCurrentUser();
-            /*Nếu không tồn tại session hoặc chức vụ của nhân viên không phải Trưởng phòng hoặc GĐ phòng bán hàng thì trở về trang login*/
-            if (nhanvien == null || nhanvien.nhanvien_chucvu_id != 2 && nhanvien.nhanvien_chucvu_id != 4)
-            {
-                Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                Response.Write("<script>window.location.href='../Login.aspx';</script>");
-            }
+            if (!IsPostBack) {
+                try
+                {
+                    Nhanvien nhanvien = new Nhanvien();
+                    nhanvien = Session.GetCurrentUser();
+                    /*Nếu không tồn tại session hoặc chức vụ của nhân viên không phải Trưởng phòng hoặc GĐ phòng bán hàng thì trở về trang login*/
+                    if (nhanvien == null || nhanvien.nhanvien_chucvu_id != 3 && nhanvien.nhanvien_chucvu_id != 5)
+                    {
+                        Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    }
 
-            donvinhan = nhanvien.nhanvien_donvi_id.ToString();
+                    donvinhan = nhanvien.nhanvien_donvi_id.ToString();
+                }
+                catch {
+                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                }
+            }
+            
         }
     }
 }

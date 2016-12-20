@@ -89,11 +89,13 @@ namespace VNPT_BSC.BSC
 
             /*Lấy danh sách các thông tin còn lại ở bảng giaobscdonvi*/
             DataTable dtGiaoBSCDV = new DataTable();
-            string sqlGiaoBSCDV = "select * from giaobscdonvi ";
-            sqlGiaoBSCDV += "where donvigiao = '" + donvigiao + "' ";
-            sqlGiaoBSCDV += "and donvinhan = '" + donvinhan + "'";
-            sqlGiaoBSCDV += "and thang = '" + thang + "'";
-            sqlGiaoBSCDV += "and nam = '" + nam + "'";
+            string sqlGiaoBSCDV = "select giaobscdonvi.*, donvinhan.donvi_ten as ten_dvn from giaobscdonvi, donvi as donvinhan ";
+            sqlGiaoBSCDV += "where giaobscdonvi.donvigiao = '" + donvigiao + "' ";
+            sqlGiaoBSCDV += "and giaobscdonvi.donvinhan = '" + donvinhan + "'";
+            sqlGiaoBSCDV += "and giaobscdonvi.thang = '" + thang + "'";
+            sqlGiaoBSCDV += "and giaobscdonvi.nam = '" + nam + "'";
+            sqlGiaoBSCDV += "and giaobscdonvi.donvinhan = donvinhan.donvi_id";
+
             try
             {
                 dtGiaoBSCDV = cnBSC.XemDL(sqlGiaoBSCDV);
@@ -107,6 +109,7 @@ namespace VNPT_BSC.BSC
             {
                 dicOutput.Add("donvigiao", dtGiaoBSCDV.Rows[0]["donvigiao"].ToString());
                 dicOutput.Add("donvinhan", dtGiaoBSCDV.Rows[0]["donvinhan"].ToString());
+                dicOutput.Add("ten_dvn", dtGiaoBSCDV.Rows[0]["ten_dvn"].ToString());
                 dicOutput.Add("thang", dtGiaoBSCDV.Rows[0]["thang"].ToString());
                 dicOutput.Add("nam", dtGiaoBSCDV.Rows[0]["nam"].ToString());
                 dicOutput.Add("trangthaigiao", dtGiaoBSCDV.Rows[0]["trangthaigiao"].ToString());
@@ -119,6 +122,7 @@ namespace VNPT_BSC.BSC
             {
                 dicOutput.Add("donvigiao", donvigiao.ToString());
                 dicOutput.Add("donvinhan", donvinhan.ToString());
+                dicOutput.Add("ten_dvn", "");
                 dicOutput.Add("thang", "0");
                 dicOutput.Add("nam", "0");
                 dicOutput.Add("trangthaigiao", "0");
@@ -154,17 +158,23 @@ namespace VNPT_BSC.BSC
         {
             if (!IsPostBack)
             {
-                Nhanvien nhanvien = new Nhanvien();
-                nhanvien = Session.GetCurrentUser();
-
-                donvigiao = Request.QueryString["donvigiao"];
-                donvinhan = Request.QueryString["donvinhan"];
-                thang = Request.QueryString["thang"];
-                nam = Request.QueryString["nam"];
-
-                if (donvigiao == null || donvinhan == null || thang == null || nam == null || nhanvien.nhanvien_donvi_id != Convert.ToInt32(donvigiao))
+                try
                 {
-                    Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                    Nhanvien nhanvien = new Nhanvien();
+                    nhanvien = Session.GetCurrentUser();
+
+                    donvigiao = Request.QueryString["donvigiao"];
+                    donvinhan = Request.QueryString["donvinhan"];
+                    thang = Request.QueryString["thang"];
+                    nam = Request.QueryString["nam"];
+
+                    if (donvigiao == null || donvinhan == null || thang == null || nam == null || nhanvien.nhanvien_donvi_id != Convert.ToInt32(donvigiao))
+                    {
+                        Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    }
+                }
+                catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
             }

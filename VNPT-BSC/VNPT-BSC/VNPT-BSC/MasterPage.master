@@ -49,7 +49,7 @@
                                     <h4 class="panel-title"><a href="">Trang Chủ</a> </h4>
                                 </div>
                             </div>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default admin">
                                 <div class="panel-heading color">
                                     <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span></span>Danh Mục Quản Lý<span class="caret"></span></a> </h4>
                                 </div>
@@ -63,7 +63,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default danhmucbsc">
                                 <div class="panel-heading color">
                                     <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span></span>Danh Mục BSC<span class="caret"></span></a> </h4>
                                 </div>
@@ -76,7 +76,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default qlybsc">
                                 <div class="panel-heading color">
                                     <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span></span>Quản Lý BSC<span class="caret"></span></a> </h4>
                                 </div>
@@ -93,6 +93,18 @@
                                         <li class="cls-bsc" id="kiemdinhbsc_nhanvien"><a href="/BSC/KiemDinhBSCNhanVien.aspx" class="navlink">Kiểm Định BSC - Nhân Viên</a></li>
                                         <li class="cls-bsc" id="nghiemthubsc_donvi"><a href="/BSC/NghiemThuBSCDonVi.aspx" class="navlink">Nghiệm thu BSC - Đơn Vị</a></li>
                                         <li class="cls-bsc" id="nghiemthubsc_nhanvien"><a href="/BSC/NghiemThuBSCNhanVien.aspx" class="navlink">Nghiệm thu BSC - Nhân Viên</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel panel-default admin">
+                                <div class="panel-heading color">
+                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span></span>Admin<span class="caret"></span></a> </h4>
+                                </div>
+                                <!-- Note: By adding "in" after "collapse", it starts with that particular panel open by default; remove if you want them all collapsed by default -->
+                                <div id="collapseFour" class="panel-collapse collapse off">
+                                    <ul class="list-group">
+                                        <li><a href="/Admin/QLGiaoBSCDonVi.aspx" class="navlink">QLý BSC Đơn Vị</a></li>
+                                        <li><a href="/Admin/QLGiaoBSCNhanVien.aspx" class="navlink">QLý BSC Nhân Viên</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -117,17 +129,22 @@
 <script type="text/javascript">
     var chucvu = "<%=chucvu%>";
     $(document).ready(function () {
-        $(".cls-bsc").hide();
+        $(".cls-bsc").hide(); 
+        $(".qlybsc").hide();
+        $(".admin").hide();
+        $(".danhmucbsc").show();
 
         // Chuyên viên bsc
         if (chucvu == 10) {
+            $(".qlybsc").show();
             $("#maubsc_donvi").show();
             $("#phanphoibsc_donvi").show();
             $("#nghiemthubsc_donvi").show();
             $("#nhanbsc_nhanvien").show();
             $("#kiemdinhbsc_nhanvien").show();
         }
-        else if (chucvu == 2 || chucvu == 4) {
+        else if (chucvu == 3 || chucvu == 5) {
+            $(".qlybsc").show();
             $("#nhanbsc_donvi").show();
             $("#kiemdinhbsc_donvi").show();
             $("#maubsc_nhanvien").show();
@@ -136,15 +153,19 @@
             $("#kiemdinhbsc_nhanvien").show();
             $("#nghiemthubsc_nhanvien").show();
         }
+        else if (chucvu == 30) {
+            $(".admin").show();
+        }
         else {
             $("#nhanbsc_nhanvien").show();
             $("#kiemdinhbsc_nhanvien").show();
+            $(".danhmucbsc").hide();
         }
 
         $("#logout").click(function () {
             $.ajax({
                 type: "POST",
-                url: "logout.aspx/thoat",
+                url: "/logout.aspx/thoat",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {

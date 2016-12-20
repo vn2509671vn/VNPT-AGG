@@ -49,9 +49,20 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-6">Trạng thái thẩm định:</label>
+                    <%--<label class="control-label col-sm-6">Trạng thái thẩm định:</label>
                     <div class="col-sm-6 form-inline">
                         <span id="kiemdinhLabel" class="label label-default">Chưa thẩm định</span>
+                    </div>--%>
+                    <label class="control-label col-sm-6">Số lượng KPI đã thẩm định: </label>
+                    <div class="col-sm-6 form-inline">
+                        <span><strong id="soluong_kpi_dathamdinh"></strong></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-6">Đồng ý KQTĐ:</label>
+                    <div class="col-sm-6 form-inline">
+                        <span class="label label-default" id="dongyLabel">Chưa đồng ý</span>
+                        <a class="btn btn-success btn-xs" id="updateDongYStatus">Đồng ý</a>
                     </div>
                 </div>
                 <div class="form-group">
@@ -90,6 +101,7 @@
         /*Hide button*/
         $("#updateNhanStatus").hide();
         $("#updateChamStatus").hide();
+        $("#updateDongYStatus").hide();
         $("#saveData").hide();
 
         var requestData = {
@@ -112,17 +124,20 @@
                 var nhanviennhan = output.nhanviennhan;
                 var thang = output.thang;
                 var nam = output.nam;
-                var nhanvienthamdinh = output.nhanvienthamdinh;
+                var soluong_kpi_dathamdinh = output.soluong_kpi_dathamdinh;
+                var soluong_dathamdinh = soluong_kpi_dathamdinh.split("/");
                 var trangthaigiao = output.trangthaigiao;
                 var trangthainhan = output.trangthainhan;
                 var trangthaicham = output.trangthaicham;
                 var trangthaithamdinh = output.trangthaithamdinh;
                 var trangthaiketthuc = output.trangthaiketthuc;
+                var trangthaidongy_kqtd = output.trangthaidongy_kqtd;
 
                 /*Fill data*/
                 $("#gridBSC").html(gridBSC);    // Fill to table
                 // Fill ngày áp dụng
                 $("#ngayapdung").text(thang + "/" + nam);
+                $("#soluong_kpi_dathamdinh").text(soluong_kpi_dathamdinh);
 
                 // Cập nhật trạng thái nhận
                 if (trangthainhan == "True") {
@@ -164,18 +179,6 @@
                     }
                 }
 
-                // Cập nhật trạng thái kiểm định
-                if (trangthaithamdinh == "True") {
-                    $("#kiemdinhLabel").removeClass("label-default");
-                    $("#kiemdinhLabel").addClass("label-success");
-                    $("#kiemdinhLabel").text("Đã kiểm định");
-                }
-                else {
-                    $("#kiemdinhLabel").removeClass("label-success");
-                    $("#kiemdinhLabel").addClass("label-default");
-                    $("#kiemdinhLabel").text("Chưa kiểm định");
-                }
-
                 // Cập nhật trạng thái kết thúc
                 if (trangthaiketthuc == "True") {
                     $("#ketthucLabel").removeClass("label-default");
@@ -186,6 +189,21 @@
                     $("#ketthucLabel").removeClass("label-success");
                     $("#ketthucLabel").addClass("label-default");
                     $("#ketthucLabel").text("Chưa kết thúc");
+                }
+
+                // Cập nhật trạng thái đồng ý thẩm định
+                if (trangthaidongy_kqtd == "True") {
+                    $("#dongyLabel").removeClass("label-default");
+                    $("#dongyLabel").addClass("label-success");
+                    $("#dongyLabel").text("Đồng ý");
+                }
+                else {
+                    $("#dongyLabel").removeClass("label-success");
+                    $("#dongyLabel").addClass("label-default");
+                    $("#dongyLabel").text("Chưa đồng ý");
+                    if (soluong_dathamdinh[0] == soluong_dathamdinh[1]) {
+                        $("#updateDongYStatus").show();
+                    }
                 }
 
                 $("#table-kpi").DataTable({
@@ -268,6 +286,41 @@
         });
     }
 
+    function updateDongYStatus(nhanviengiao, nhanviennhan, thang, nam) {
+        var requestData = {
+            nhanviengiao: nhanviengiao,
+            nhanviennhan: nhanviennhan,
+            thang: thang,
+            nam: nam
+        };
+
+        var szRequest = JSON.stringify(requestData);
+        $.ajax({
+            type: "POST",
+            url: "ChiTietBSCNVNhan.aspx/updateDongYStatus",
+            data: szRequest,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var isSuccess = result.d;
+                if (isSuccess) {
+                    swal({
+                        title: "Đồng ý với kết quả thẩm định thành công!!",
+                        text: "",
+                        type: "success"
+                    },
+                    function () {
+                        loadDataToPage(nhanviengiao, nhanviennhan, thang, nam);
+                    });
+                }
+                else {
+                    swal("Error!!!", "Cập nhật trạng thái không thành công!!!", "error");
+                }
+            },
+            error: function (msg) { alert(msg.d); }
+        });
+    }
+
     function onlyNumbers(e) {
         if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
     }
@@ -281,6 +334,10 @@
 
         $("#updateChamStatus").click(function () {
             updateChamStatus(nhanviengiao, nhanviennhan, thang, nam);
+        });
+
+        $("#updateDongYStatus").click(function () {
+            updateDongYStatus(nhanviengiao, nhanviennhan, thang, nam);
         });
 
         $("#saveData").click(function () {

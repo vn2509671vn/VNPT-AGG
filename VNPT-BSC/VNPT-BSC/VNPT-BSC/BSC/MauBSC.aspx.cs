@@ -146,33 +146,40 @@ namespace VNPT_BSC.BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Nhanvien nhanvien = new Nhanvien();
-            nhanvien = Session.GetCurrentUser();
-            /*Kiểm tra nếu không phải là chuyên viên BSC (id của chuyên viên BSC là 10) thì đẩy ra trang đăng nhập*/
-            if (nhanvien == null || nhanvien.nhanvien_chucvu_id != 10)
-            {
-                Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                Response.Write("<script>window.location.href='../Login.aspx';</script>");
-            }
-            nguoitao = nhanvien.nhanvien_id;
+            
 
             if (!IsPostBack) {
+                try
+                {
+                    Nhanvien nhanvien = new Nhanvien();
+                    nhanvien = Session.GetCurrentUser();
+                    /*Kiểm tra nếu không phải là chuyên viên BSC (id của chuyên viên BSC là 10) thì đẩy ra trang đăng nhập*/
+                    if (nhanvien == null || nhanvien.nhanvien_chucvu_id != 10)
+                    {
+                        Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    }
+                    nguoitao = nhanvien.nhanvien_id;
 
-                /*Get list BSC*/
-                dtBSC = new DataTable();
-                dtBSC = getBSCList(nguoitao);
+                    /*Get list BSC*/
+                    dtBSC = new DataTable();
+                    dtBSC = getBSCList(nguoitao);
 
-                /*Get list KPI*/
-                dtKPI = new DataTable();
-                dtKPI = getKPIList(nguoitao);
+                    /*Get list KPI*/
+                    dtKPI = new DataTable();
+                    dtKPI = getKPIList(nguoitao);
 
-                /*Get list các năm của BSC*/
-                dtBSCNam = new DataTable();
-                dtBSCNam = dsBSCNam(nguoitao);
+                    /*Get list các năm của BSC*/
+                    dtBSCNam = new DataTable();
+                    dtBSCNam = dsBSCNam(nguoitao);
 
-                /*Get list DVT*/
-                dtDVT = new DataTable();
-                dtDVT = dsDVT();
+                    /*Get list DVT*/
+                    dtDVT = new DataTable();
+                    dtDVT = dsDVT();
+                }
+                catch {
+                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                }
             }
         }
     }

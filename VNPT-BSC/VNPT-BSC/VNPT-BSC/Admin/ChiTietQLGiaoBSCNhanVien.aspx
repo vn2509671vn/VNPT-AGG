@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="ChiTietBSCNVKiemDinh.aspx.cs" Inherits="VNPT_BSC.BSC.ChiTietBSCNVKiemDinh" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="ChiTietQLGiaoBSCNhanVien.aspx.cs" Inherits="VNPT_BSC.Admin.ChiTietQLGiaoBSCNhanVien" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
@@ -35,22 +35,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-6">Trạng thái nộp:</label>
+                    <label class="control-label col-sm-6">Nhân viên giao:</label>
                     <div class="col-sm-6 form-inline">
-                        <span class="label label-default" id="chamLabel">Chưa nộp</span>
+                        <span><strong id="nhanviengiao"></strong></span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-6">Trạng thái thẩm định:</label>
+                    <label class="control-label col-sm-6">Nhân viên nhận:</label>
                     <div class="col-sm-6 form-inline">
-                        <span id="kiemdinhLabel" class="label label-default">Chưa thẩm định</span>
-                        <a class="btn btn-success btn-xs" id="updateThamDinhStatus">Duyệt</a>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-6">Trạng thái kết thúc:</label>
-                    <div class="col-sm-6 form-inline">
-                        <span id="ketthucLabel" class="label label-default">Chưa kết thúc</span>
+                        <span><strong id="nhanviennhan"></strong></span>
                     </div>
                 </div>
                 <div class="row">
@@ -76,26 +69,21 @@
 <script type="text/javascript">
     var nhanviengiao = "<%= nhanviengiao %>";
     var nhanviennhan = "<%= nhanviennhan %>";
-    var nhanvienthamdinh = "<%= nhanvienthamdinh %>";
     var thang = "<%= thang %>";
     var nam = "<%= nam %>";
 
-    function loadDataToPage(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh) {
-        /*Hide button*/
-        $("#updateThamDinhStatus").hide();
-        $("#saveData").hide();
+    function loadDataToPage(nhanviengiao, nhanviennhan, thang, nam, donvithamdinh) {
 
         var requestData = {
             nhanviengiao: nhanviengiao,
             nhanviennhan: nhanviennhan,
             thang: thang,
-            nam: nam,
-            nhanvienthamdinh: nhanvienthamdinh
+            nam: nam
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
             type: "POST",
-            url: "ChiTietBSCNVKiemDinh.aspx/loadBSCByCondition",
+            url: "ChiTietQLGiaoBSCNhanVien.aspx/loadBSCByCondition",
             data: szRequest,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -106,62 +94,18 @@
                 var nhanviennhan = output.nhanviennhan;
                 var thang = output.thang;
                 var nam = output.nam;
-                var soluong_kpi_dathamdinh = output.soluong_kpi_dathamdinh;
-                var soluong_dathamdinh = soluong_kpi_dathamdinh.split("/");
-                var trangthaigiao = output.trangthaigiao;
-                var trangthainhan = output.trangthainhan;
-                var trangthaicham = output.trangthaicham;
-                var trangthaiketthuc = output.trangthaiketthuc;
+                var ten_nvg = output.ten_nvg;
+                var ten_nvn = output.ten_nvn;
 
                 /*Fill data*/
                 $("#gridBSC").html(gridBSC);    // Fill to table
+
                 // Fill ngày áp dụng
                 $("#ngayapdung").text(thang + "/" + nam);
 
-                // Cập nhật trạng thái chấm
-                if (trangthaicham == "True") {
-                    $("#chamLabel").removeClass("label-default");
-                    $("#chamLabel").addClass("label-success");
-                    $("#chamLabel").text("Đã nộp");
-                }
-                else {
-                    $("#chamLabel").removeClass("label-success");
-                    $("#chamLabel").addClass("label-default");
-                    $("#chamLabel").text("Chưa nộp");
-                }
-
-                // Cập nhật trạng thái kiểm định
-                if (soluong_dathamdinh[0] == soluong_dathamdinh[1]) {
-                    $("#kiemdinhLabel").removeClass("label-default");
-                    $("#kiemdinhLabel").addClass("label-success");
-                    $("#kiemdinhLabel").text("Đã kiểm định");
-                    $("#saveData").hide();
-                }
-                else {
-                    $("#kiemdinhLabel").removeClass("label-success");
-                    $("#kiemdinhLabel").addClass("label-default");
-                    $("#kiemdinhLabel").text("Chưa kiểm định");
-                    if (trangthaicham == "True") {
-                        $("#updateThamDinhStatus").show();
-                        $("#saveData").show();
-                    }
-                    else {
-                        $("#updateThamDinhStatus").hide();
-                        $("#saveData").hide();
-                    }
-                }
-
-                // Cập nhật trạng thái kết thúc
-                if (trangthaiketthuc == "True") {
-                    $("#ketthucLabel").removeClass("label-default");
-                    $("#ketthucLabel").addClass("label-success");
-                    $("#ketthucLabel").text("Đã kết thúc");
-                }
-                else {
-                    $("#ketthucLabel").removeClass("label-success");
-                    $("#ketthucLabel").addClass("label-default");
-                    $("#ketthucLabel").text("Chưa kết thúc");
-                }
+                // Fill data
+                $("#nhanviengiao").text(ten_nvg);
+                $("#nhanviennhan").text(ten_nvn);
 
                 $("#table-kpi").DataTable({
                     "searching": true,
@@ -173,64 +117,44 @@
         });
     }
 
-    function updateKiemDinhStatus(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh) {
-        var requestData = {
-            nhanviengiao: nhanviengiao,
-            nhanviennhan: nhanviennhan,
-            thang: thang,
-            nam: nam,
-            nhanvienthamdinh: nhanvienthamdinh
-        };
-
-        var szRequest = JSON.stringify(requestData);
-        $.ajax({
-            type: "POST",
-            url: "ChiTietBSCNVKiemDinh.aspx/updateKiemDinhStatus",
-            data: szRequest,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (result) {
-                var isSuccess = result.d;
-                if (isSuccess) {
-                    swal({
-                        title: "Kiểm định BSC thành công!!",
-                        text: "",
-                        type: "success"
-                    },
-                    function () {
-                        loadDataToPage(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh);
-                    });
-                }
-                else {
-                    swal("Error!!!", "Kiểm định BSC không thành công!!!", "error");
-                }
-            },
-            error: function (msg) { alert(msg.d); }
-        });
-    }
-
     function onlyNumbers(e) {
         if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
     }
 
     $(document).ready(function () {
-        loadDataToPage(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh);
-
-        $("#updateThamDinhStatus").click(function () {
-            updateKiemDinhStatus(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh);
-        });
+        loadDataToPage(nhanviengiao, nhanviennhan, thang, nam);
 
         $("#saveData").click(function () {
             var kpi_detail = [];
             $("#table-kpi > tbody > tr").each(function () {
                 var kpi_id = $(this).attr("data-id");
                 var thamdinh = $("#thamdinh_" + kpi_id).val();
+                var thuchien = $("#thuchien_" + kpi_id).val();
+                var kehoach = $("#kehoach_" + kpi_id).val();
+                var trongso = $("#trongso_" + kpi_id).val();
+                var donvitinh = $("#dvt_" + kpi_id).val();
+                var nhanvienthamdinh = $("#nvtd_" + kpi_id).val();
                 if (thamdinh == "") {
                     thamdinh = 0;
                 }
+                if (thuchien == "") {
+                    thuchien = 0;
+                }
+                if (kehoach == "") {
+                    kehoach = 0;
+                }
+                if (trongso == "") {
+                    trongso = 0;
+                }
+
                 kpi_detail.push({
                     kpi_id: kpi_id,
-                    thamdinh: thamdinh
+                    thamdinh: thamdinh,
+                    thuchien: thuchien,
+                    kehoach: kehoach,
+                    trongso: trongso,
+                    donvitinh: donvitinh,
+                    nhanvienthamdinh: nhanvienthamdinh
                 });
             });
 
@@ -244,7 +168,7 @@
             var szRequest = JSON.stringify(requestData);
             $.ajax({
                 type: "POST",
-                url: "ChiTietBSCNVKiemDinh.aspx/saveData",
+                url: "ChiTietQLGiaoBSCNhanVien.aspx/saveData",
                 data: szRequest,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -257,7 +181,7 @@
                             type: "success"
                         },
                         function () {
-                            loadDataToPage(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh);
+                            loadDataToPage(nhanviengiao, nhanviennhan, thang, nam);
                         });
                     }
                     else {

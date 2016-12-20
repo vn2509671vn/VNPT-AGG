@@ -128,6 +128,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\ChiTietQLGiaoBSCDonVi.aspx" />
+    <Content Include="Admin\ChiTietQLGiaoBSCNhanVien.aspx" />
+    <Content Include="Admin\QLGiaoBSCDonVi.aspx" />
+    <Content Include="Admin\QLGiaoBSCNhanVien.aspx" />
     <Content Include="Bootstrap\Alert.js" />
     <Content Include="Bootstrap\bootstrap.css" />
     <Content Include="Bootstrap\bootstrap.js" />
@@ -327,6 +331,34 @@
     <Content Include="Bundle.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\ChiTietQLGiaoBSCDonVi.aspx.cs">
+      <DependentUpon>ChiTietQLGiaoBSCDonVi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ChiTietQLGiaoBSCDonVi.aspx.designer.cs">
+      <DependentUpon>ChiTietQLGiaoBSCDonVi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ChiTietQLGiaoBSCNhanVien.aspx.cs">
+      <DependentUpon>ChiTietQLGiaoBSCNhanVien.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ChiTietQLGiaoBSCNhanVien.aspx.designer.cs">
+      <DependentUpon>ChiTietQLGiaoBSCNhanVien.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\QLGiaoBSCDonVi.aspx.cs">
+      <DependentUpon>QLGiaoBSCDonVi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\QLGiaoBSCDonVi.aspx.designer.cs">
+      <DependentUpon>QLGiaoBSCDonVi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\QLGiaoBSCNhanVien.aspx.cs">
+      <DependentUpon>QLGiaoBSCNhanVien.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\QLGiaoBSCNhanVien.aspx.designer.cs">
+      <DependentUpon>QLGiaoBSCNhanVien.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Ajax\ajaxBSC.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\AuthConfig.cs" />

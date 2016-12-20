@@ -24,13 +24,13 @@ namespace VNPT_BSC.BSC
             Connection cnBSC = new Connection();
             DataTable gridData = new DataTable();
             string outputHTML = "";
-            string sqlBSC = "select giaobsc.*, nvgiao.nhanvien_hoten as tennvg, nvthamdinh.nhanvien_hoten as tennvtd ";
-            sqlBSC += "from giaobscnhanvien giaobsc, nhanvien nvgiao, nhanvien nvnhan, nhanvien nvthamdinh ";
+            string sqlBSC = "select giaobsc.*, nvgiao.nhanvien_hoten as tennvg ";
+            sqlBSC += "from giaobscnhanvien giaobsc, nhanvien nvgiao, nhanvien nvnhan ";
             sqlBSC += "where giaobsc.nhanviengiao = nvgiao.nhanvien_id ";
             sqlBSC += "and giaobsc.nhanviennhan = nvnhan.nhanvien_id ";
-            sqlBSC += "and giaobsc.nhanvienthamdinh = nvthamdinh.nhanvien_id ";
             sqlBSC += "and giaobsc.nam = '" + nam + "' ";
             sqlBSC += "and giaobsc.nhanviennhan = '" + nhanviennhan + "' ";
+            sqlBSC += "and giaobsc.trangthaigiao = 1 ";
 
             try
             {
@@ -47,11 +47,10 @@ namespace VNPT_BSC.BSC
             outputHTML += "<tr>";
             outputHTML += "<th>STT</th>";
             outputHTML += "<th>Nhân viên giao</th>";
-            outputHTML += "<th>Nhân viên thẩm định</th>";
             outputHTML += "<th>Ngày áp dụng</th>";
             outputHTML += "<th>Trạng thái nhận</th>";
             outputHTML += "<th>Trạng thái chấm</th>";
-            outputHTML += "<th>Trạng thái thẩm định</th>";
+            outputHTML += "<th>Trạng thái đồng ý KQTĐ</th>";
             outputHTML += "<th>Trạng thái kết thúc</th>";
             outputHTML += "<th></th>";
             outputHTML += "</tr>";
@@ -60,7 +59,7 @@ namespace VNPT_BSC.BSC
 
             if (gridData.Rows.Count <= 0)
             {
-                outputHTML += "<tr><td colspan='9' class='text-center'>No item</td></tr>";
+                outputHTML += "<tr><td colspan='8' class='text-center'>No item</td></tr>";
             }
             else
             {
@@ -72,15 +71,15 @@ namespace VNPT_BSC.BSC
                     string nNam = gridData.Rows[nIndex]["nam"].ToString();
                     string trangthainhan = gridData.Rows[nIndex]["trangthainhan"].ToString();
                     string trangthaicham = gridData.Rows[nIndex]["trangthaicham"].ToString();
-                    string trangthaithamdinh = gridData.Rows[nIndex]["trangthaithamdinh"].ToString();
+                    string trangthaidongythamdinh = gridData.Rows[nIndex]["trangthaidongy_kqtd"].ToString();
                     string trangthaiketthuc = gridData.Rows[nIndex]["trangthaiketthuc"].ToString();
                     string txtTrangThaiNhan = "Chưa nhận";
                     string txtTrangThaiCham = "Chưa nộp";
-                    string txtTrangThaiThamDinh = "Chưa thẩm định";
+                    string txtTrangThaiDongYThamDinh = "Chưa đồng ý KQTĐ";
                     string txtTrangThaiKetThuc = "Chưa kết thúc";
                     string clsTrangThaiNhan = "label-default";
                     string clsTrangThaiCham = "label-default";
-                    string clsTrangThaiThamDinh = "label-default";
+                    string clsTrangThaiDongYThamDinh = "label-default";
                     string clsTrangThaiKetThuc = "label-default";
 
                     if (trangthainhan == "True")
@@ -95,10 +94,10 @@ namespace VNPT_BSC.BSC
                         clsTrangThaiCham = "label-success";
                     }
 
-                    if (trangthaithamdinh == "True")
+                    if (trangthaidongythamdinh == "True")
                     {
-                        txtTrangThaiThamDinh = "Đã thẩm định";
-                        clsTrangThaiThamDinh = "label-success";
+                        txtTrangThaiDongYThamDinh = "Đã đồng ý";
+                        clsTrangThaiDongYThamDinh = "label-success";
                     }
 
                     if (trangthaiketthuc == "True")
@@ -110,11 +109,10 @@ namespace VNPT_BSC.BSC
                     outputHTML += "<tr>";
                     outputHTML += "<td class='text-center'>" + (nIndex + 1) + "</td>";
                     outputHTML += "<td class='text-center'>" + gridData.Rows[nIndex]["tennvg"].ToString() + "</td>";
-                    outputHTML += "<td class='text-center'>" + gridData.Rows[nIndex]["tennvtd"].ToString() + "</td>";
                     outputHTML += "<td class='text-center'><strong>" + thang + "/" + nNam + "</strong></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiNhan + "'>" + txtTrangThaiNhan + "</span></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiCham + "'>" + txtTrangThaiCham + "</span></td>";
-                    outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiThamDinh + "'>" + txtTrangThaiThamDinh + "</span></td>";
+                    outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiDongYThamDinh + "'>" + txtTrangThaiDongYThamDinh + "</span></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiKetThuc + "'>" + txtTrangThaiKetThuc + "</span></td>";
                     outputHTML += "<td class='text-center'><a class='" + "btn btn-primary detail" + "' onclick='xemChiTiet(" + thang + ", " + nam + ", " + nhanviengiao + ", " + szNhanviennhan + ")'>Chi tiết</a></td>";
                     outputHTML += "</tr>";
@@ -130,17 +128,23 @@ namespace VNPT_BSC.BSC
         {
             if (!IsPostBack)
             {
-                Nhanvien nhanvien = new Nhanvien();
-                nhanvien = Session.GetCurrentUser();
-
-                /*Không tồn tại sess*/
-                if (nhanvien == null)
+                try
                 {
-                    Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                    Nhanvien nhanvien = new Nhanvien();
+                    nhanvien = Session.GetCurrentUser();
+
+                    /*Không tồn tại sess*/
+                    if (nhanvien == null)
+                    {
+                        Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    }
+
+                    nhanviennhan = nhanvien.nhanvien_id.ToString();
+                }
+                catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
-
-                nhanviennhan = nhanvien.nhanvien_id.ToString();
             }
         }
     }

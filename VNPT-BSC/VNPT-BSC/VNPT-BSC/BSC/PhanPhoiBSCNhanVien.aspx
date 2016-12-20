@@ -58,21 +58,7 @@
                             <% } %>
                         </datalist>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-3">Nhân viên thẩm định:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" list="danhsachnhanvienthamdinh" size="50" id="nhanvienthamdinh"/>
-                        <datalist id="danhsachnhanvienthamdinh">
-                        <% for(int i = 0; i < dtFullNV.Rows.Count; i++){ %>
-                            <%
-                                string nhanvien_taikhoan =  dtFullNV.Rows[i]["nhanvien_taikhoan"].ToString();
-                                string nhanvien_hoten =  dtFullNV.Rows[i]["nhanvien_hoten"].ToString();
-                            %>
-                            <option value="<%= nhanvien_taikhoan%>"><%= nhanvien_hoten%></option>
-                        <% } %>
-                        </datalist>
-                    </div>
+                    <label class="col-sm-8 col-sm-offset-3 margin-top-5"><strong id="ten_nhanviennhan"></strong></label>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3">Trạng thái giao:</label>
@@ -88,12 +74,12 @@
                         <span id="nhanLabel" class="label label-default">Chưa nhận</span>
                     </div>
                 </div>
-                <div class="form-group">
+                <%--<div class="form-group">
                     <label class="control-label col-sm-3">Trạng thái kiểm định:</label>
                     <div class="col-sm-8 form-inline">
                         <span id="kiemdinhLabel" class="label label-default">Chưa kiểm định</span>
                     </div>
-                </div>
+                </div>--%>
                 <div class="form-group">
                     <label class="control-label col-sm-3">Trạng thái kết thúc:</label>
                     <div class="col-sm-8 form-inline">
@@ -159,16 +145,17 @@
 
 <script type="text/javascript">
     var nhanviengiao = "<%=nhanvienquanly%>";
+    var donvi = "<%=donvi%>";
     function getCurrentDate() {
         var curMonth = "<%= DateTime.Now.ToString("MM") %>";
         var curYear = "<%= DateTime.Now.ToString("yyyy") %>";
         $("#month").val(curMonth);
         $("#year").val(curYear);
         var nhanviennhan = $("#nhanviennhan").val();
-        getBSCByCondition(nhanviengiao, nhanviennhan, curMonth, curYear);
+        getBSCByCondition(nhanviengiao, nhanviennhan, curMonth, curYear, donvi);
     }
 
-    function getBSCByCondition(id_nv_giao, nv_nhan, thang, nam) {
+    function getBSCByCondition(id_nv_giao, nv_nhan, thang, nam, donvi) {
         /*Hide button*/
         $("#updateGiaoStatus").hide();
         $("#updateHuyGiaoStatus").hide();
@@ -177,7 +164,8 @@
             id_nv_giao: id_nv_giao,
             nv_nhan: nv_nhan,
             thang: thang,
-            nam: nam
+            nam: nam,
+            donvi: donvi
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
@@ -191,7 +179,7 @@
                 var gridBSC = output.gridBSC;
                 var nhanviengiao = output.nhanviengiao;
                 var nhanviennhan = output.nhanviennhan;
-                var nhanvienthamdinh = output.nhanvienthamdinh;
+                var ten_nhanviennhan = output.ten_nhanviennhan;
                 var trangthaigiao = output.trangthaigiao;
                 var trangthainhan = output.trangthainhan;
                 var trangthaithamdinh = output.trangthaithamdinh;
@@ -199,7 +187,8 @@
 
                 /*Fill data*/
                 $("#gridBSC").html(gridBSC);    // Fill to table
-                $("#nhanvienthamdinh").val(nhanvienthamdinh); // Fill to đơn vị thẩm định
+                $("#ten_nhanviennhan").text("Tên nhân viên: " + ten_nhanviennhan);
+
                 // Cập nhật trạng thái giao
                 if (trangthaigiao == "True") {
                     $("#giaoLabel").removeClass("label-default");
@@ -237,17 +226,17 @@
                     $("#nhanLabel").text("Chưa nhận");
                 }
 
-                // Cập nhật trạng thái kiểm định
-                if (trangthaithamdinh == "True") {
-                    $("#kiemdinhLabel").removeClass("label-default");
-                    $("#kiemdinhLabel").addClass("label-success");
-                    $("#kiemdinhLabel").text("Đã kiểm định");
-                }
-                else {
-                    $("#kiemdinhLabel").removeClass("label-success");
-                    $("#kiemdinhLabel").addClass("label-default");
-                    $("#kiemdinhLabel").text("Chưa kiểm định");
-                }
+                //// Cập nhật trạng thái kiểm định
+                //if (trangthaithamdinh == "True") {
+                //    $("#kiemdinhLabel").removeClass("label-default");
+                //    $("#kiemdinhLabel").addClass("label-success");
+                //    $("#kiemdinhLabel").text("Đã kiểm định");
+                //}
+                //else {
+                //    $("#kiemdinhLabel").removeClass("label-success");
+                //    $("#kiemdinhLabel").addClass("label-default");
+                //    $("#kiemdinhLabel").text("Chưa kiểm định");
+                //}
 
                 // Cập nhật trạng thái kết thúc
                 if (trangthaiketthuc == "True") {
@@ -273,14 +262,14 @@
 
     function fillDataBSC() {
         var nhanviennhan = $("#nhanviennhan").val();
-        getBSCByCondition(nhanviengiao, nhanviennhan, thang, nam);
+        getBSCByCondition(nhanviengiao, nhanviennhan, thang, nam, donvi);
     }
 
     function changeInputData() {
         var thang = $("#month").val();
         var nam = $("#year").val();
         var nhanviennhan = $("#nhanviennhan").val();
-        getBSCByCondition(nhanviengiao, nhanviennhan, thang, nam);
+        getBSCByCondition(nhanviengiao, nhanviennhan, thang, nam, donvi);
     }
 
     function onlyNumbers(e) {
@@ -307,7 +296,8 @@
             var requestData = {
                 thang: thang,
                 nam: nam,
-                nguoitao: nhanviengiao
+                nguoitao: nhanviengiao,
+                donvi: donvi
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({
@@ -331,10 +321,9 @@
 
         $("#saveData").click(function () {
             var nhanviennhan = $("#nhanviennhan").val();
-            var nhanvienthamdinh = $("#nhanvienthamdinh").val();
             var thang = $("#month").val();
             var nam = $("#year").val();
-            if (nhanviennhan == null || nhanviennhan == "" || nhanvienthamdinh == null || nhanvienthamdinh == "") {
+            if (nhanviennhan == null || nhanviennhan == "") {
                 swal("Error!", "Vui lòng nhập các trường bắt buộc!!!", "error");
                 return false;
             }
@@ -345,18 +334,19 @@
                 var tytrong = $("#tytrong_" + kpi_id).val();
                 var dvt = $("#dvt_" + kpi_id).val();
                 var kehoach = $("#kehoach_" + kpi_id).val();
+                var nhanvienthamdinh = $("#nvtd_" + kpi_id).val();
                 kpi_detail.push({
                     kpi_id: kpi_id,
                     tytrong: tytrong,
                     dvt: dvt,
-                    kehoach: kehoach
+                    kehoach: kehoach,
+                    nhanvienthamdinh: nhanvienthamdinh
                 });
             });
 
             var requestData = {
                 nhanviengiao: nhanviengiao,
                 nhanviennhan: nhanviennhan,
-                nhanvienthamdinh: nhanvienthamdinh,
                 thang: thang,
                 nam: nam,
                 kpi_detail: kpi_detail
@@ -409,7 +399,7 @@
                             type: "success"
                         },
                         function () {
-                            getBSCByCondition(nhanviengiao, nhanviennhan, thang, nam);
+                            getBSCByCondition(nhanviengiao, nhanviennhan, thang, nam, donvi);
                         });
                     }
                     else {
@@ -448,7 +438,7 @@
                             type: "success"
                         },
                         function () {
-                            getBSCByCondition(nhanviengiao, nhanviennhan, thang, nam);
+                            getBSCByCondition(nhanviengiao, nhanviennhan, thang, nam, donvi);
                         });
                     }
                 },

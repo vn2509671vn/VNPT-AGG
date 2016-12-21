@@ -14,17 +14,17 @@ namespace VNPT_BSC.DanhMuc
 {
     public partial class BSC : System.Web.UI.Page
     {
-   
+
         Connection cn = new Connection();
         public DataTable dtkpi;
         public static DataTable dtnhanvien_kpi = new DataTable();
         public static DataTable dtkpi_kpo = new DataTable();
-       
+
 
         private DataTable getkpiList()
         {
             Nhanvien nhanvien = Session.GetCurrentUser();
-            string sqlkpi = "select a.kpi_id,a.kpi_ten,a.kpi_mota,a.kpi_ngaytao,c.nhanvien_hoten,b.kpo_ten,b.kpo_id,c.nhanvien_id from kpi a,kpo b,nhanvien c where a.kpi_nguoitao = c.nhanvien_id and a.kpi_thuoc_kpo = b.kpo_id and a.kpi_nguoitao = '"+nhanvien.nhanvien_id+"'";
+            string sqlkpi = "select a.kpi_id,a.kpi_ten,a.kpi_mota,a.kpi_ngaytao,c.nhanvien_hoten,b.kpo_ten,b.kpo_id,c.nhanvien_id from kpi a,kpo b,nhanvien c where a.kpi_nguoitao = c.nhanvien_id and a.kpi_thuoc_kpo = b.kpo_id and a.kpi_nguoitao = '" + nhanvien.nhanvien_id + "'";
             DataTable dtkpi = new DataTable();
             try
             {
@@ -47,17 +47,8 @@ namespace VNPT_BSC.DanhMuc
             string sqlInsertNewData = "";
             try
             {
-
-
                 sqlInsertNewData = "insert into kpi(kpi_ten,kpi_mota, kpi_ngaytao,kpi_nguoitao,kpi_thuoc_kpo) values(N'" + kpi_tenAprove + "',N'" + kpi_motaAprove + "', '" + kpi_ngayAprove + "','" + nhanvien.nhanvien_id + "','" + kpi_kpoAprove + "')";
-                try
-                {
-                    kpi.ThucThiDL(sqlInsertNewData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                kpi.ThucThiDL(sqlInsertNewData);
                 output = true;
             }
             catch
@@ -68,7 +59,7 @@ namespace VNPT_BSC.DanhMuc
         }
 
         [WebMethod]
-        public static bool EditData(string kpi_ten_suaAprove, string kpi_mota_suaAprove,  string kpi_kpo_suaAprove, int kpi_id_suaAprove)
+        public static bool EditData(string kpi_ten_suaAprove, string kpi_mota_suaAprove, string kpi_kpo_suaAprove, int kpi_id_suaAprove)
         {
             Page objp = new Page();
             Nhanvien nhanvien = objp.Session.GetCurrentUser();
@@ -78,14 +69,7 @@ namespace VNPT_BSC.DanhMuc
             try
             {
                 sqlUpdateData = "Update kpi set kpi_ten = N'" + kpi_ten_suaAprove + "',kpi_mota = N'" + kpi_mota_suaAprove + "', kpi_nguoitao = '" + nhanvien.nhanvien_id + "', kpi_thuoc_kpo = '" + kpi_kpo_suaAprove + "' where kpi_id = '" + kpi_id_suaAprove + "'";
-                try
-                {
-                    kpi_edit.ThucThiDL(sqlUpdateData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                kpi_edit.ThucThiDL(sqlUpdateData);
                 output = true;
             }
             catch
@@ -103,17 +87,8 @@ namespace VNPT_BSC.DanhMuc
             string sqldeleteData = "";
             try
             {
-
-
                 sqldeleteData = "delete kpi where kpi_id = '" + kpi_id_xoaAprove + "'";
-                try
-                {
-                    kpi_delete.ThucThiDL(sqldeleteData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                kpi_delete.ThucThiDL(sqldeleteData);
                 output = true;
             }
             catch
@@ -125,7 +100,7 @@ namespace VNPT_BSC.DanhMuc
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            
+
             if (!IsPostBack)
             {
                 dtkpi = new DataTable();

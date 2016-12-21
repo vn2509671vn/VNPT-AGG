@@ -130,6 +130,9 @@
   <ItemGroup>
     <Content Include="Admin\ChiTietQLGiaoBSCDonVi.aspx" />
     <Content Include="Admin\ChiTietQLGiaoBSCNhanVien.aspx" />
+    <Content Include="Admin\loaiquyen.aspx" />
+    <Content Include="Admin\nhomquyen.aspx" />
+    <Content Include="Admin\Phanquyen.aspx" />
     <Content Include="Admin\QLGiaoBSCDonVi.aspx" />
     <Content Include="Admin\QLGiaoBSCNhanVien.aspx" />
     <Content Include="Bootstrap\Alert.js" />
@@ -344,6 +347,27 @@
     </Compile>
     <Compile Include="Admin\ChiTietQLGiaoBSCNhanVien.aspx.designer.cs">
       <DependentUpon>ChiTietQLGiaoBSCNhanVien.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\loaiquyen.aspx.cs">
+      <DependentUpon>loaiquyen.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\loaiquyen.aspx.designer.cs">
+      <DependentUpon>loaiquyen.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\nhomquyen.aspx.cs">
+      <DependentUpon>nhomquyen.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\nhomquyen.aspx.designer.cs">
+      <DependentUpon>nhomquyen.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Phanquyen.aspx.cs">
+      <DependentUpon>Phanquyen.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Phanquyen.aspx.designer.cs">
+      <DependentUpon>Phanquyen.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\QLGiaoBSCDonVi.aspx.cs">
       <DependentUpon>QLGiaoBSCDonVi.aspx</DependentUpon>

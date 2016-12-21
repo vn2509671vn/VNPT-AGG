@@ -42,17 +42,8 @@ namespace VNPT_BSC
             string sqlInsertNewData = "";
             try
             {
-
-
                 sqlInsertNewData = "insert into chucdanh(chucdanh_ten,chucdanh_mota, chucdanh_ma) values(N'" + cd_tenAprove + "',N'" + cd_motaAprove + "', N'" + cd_maAprove + "')";
-                try
-                {
-                    chucdanh.ThucThiDL(sqlInsertNewData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                chucdanh.ThucThiDL(sqlInsertNewData);
                 output = true;
             }
             catch
@@ -71,14 +62,7 @@ namespace VNPT_BSC
             try
             {
                 sqlUpdateData = "Update chucdanh set chucdanh_ten = N'" + cd_ten_suaAprove + "',chucdanh_mota = N'" + cd_mota_suaAprove + "', chucdanh_ma = N'" + cd_ma_suaAprove + "' where chucdanh_id = '" + cd_id_suaAprove + "'";
-                try
-                {
-                    chucdanh_edit.ThucThiDL(sqlUpdateData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                chucdanh_edit.ThucThiDL(sqlUpdateData);
                 output = true;
             }
             catch
@@ -96,17 +80,8 @@ namespace VNPT_BSC
             string sqldeleteData = "";
             try
             {
-
-
                 sqldeleteData = "delete chucdanh where chucdanh_id = '" + cd_id_xoaAprove + "'";
-                try
-                {
-                    chucdanh_delete.ThucThiDL(sqldeleteData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                chucdanh_delete.ThucThiDL(sqldeleteData);
                 output = true;
             }
             catch

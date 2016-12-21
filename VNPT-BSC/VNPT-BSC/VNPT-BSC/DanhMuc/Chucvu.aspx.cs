@@ -42,16 +42,8 @@ namespace VNPT_BSC
             try
             {
 
-
                 sqlInsertNewData = "insert into chucvu(chucvu_ten,chucvu_mota, chucvu_ma) values(N'" + cv_tenAprove + "',N'" + cv_motaAprove + "', N'" + cv_maAprove + "')";
-                try
-                {
-                    them_chucvu.ThucThiDL(sqlInsertNewData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                them_chucvu.ThucThiDL(sqlInsertNewData);
                 output = true;
             }
             catch
@@ -69,14 +61,7 @@ namespace VNPT_BSC
             try
             {
                 sqlUpdateData = "Update chucvu set chucvu_ten = N'" + cv_ten_suaAprove + "',chucvu_mota = N'" + cv_mota_suaAprove + "', chucvu_ma = N'" + cv_ma_suaAprove + "' where chucvu_id = '" + cv_id_suaAprove + "'";
-                try
-                {
-                    chucvu_edit.ThucThiDL(sqlUpdateData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                chucvu_edit.ThucThiDL(sqlUpdateData);
                 output = true;
             }
             catch
@@ -95,16 +80,8 @@ namespace VNPT_BSC
             try
             {
 
-
                 sqldeleteData = "delete chucvu where chucvu_id = '" + cv_id_xoaAprove + "'";
-                try
-                {
-                    chucvu_delete.ThucThiDL(sqldeleteData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                chucvu_delete.ThucThiDL(sqldeleteData);
                 output = true;
             }
             catch

@@ -81,24 +81,26 @@
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         <h4 class="modal-title">Thêm chức danh</h4>
                                     </div>
-                                    <div class="modal-body list-BSC">
-                                        <div class="input-group">
-                                            <div class="input-group">
-                                                <span class="input-group-addon" id="Span1" >Tên chức danh:<label style="color:red">*</label>&nbsp;</span>
-                                                <input type="text" class="form-control" style="width: 415px" aria-describedby="sizing-addon2" id="txttenchucdanh">
-                                            </div>
-                                            <br />
-                                            <div class="input-group">
-                                                <span class="input-group-addon " id="Span4">Mô tả chức danh:</span>
-                                                <input type="text" class="form-control" style="width: 412px" aria-describedby="sizing-addon2" id="txtmotachucdanh">
-                                            </div>
-                                            <br />
-                                            <div class="input-group">
-                                                <span class="input-group-addon" id="sizing-addon2">Mã chức danh:<label style="color:red">*</label>&nbsp;&nbsp; </span>
-                                                <input type="text" class="form-control" style="width: 415px" aria-describedby="sizing-addon2"" id="txtmachucdanh">
-                                            </div>
+                                 <div class="modal-body list-BSC form-horizontal">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Tên chức danh:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control fix-width-350" id="txttenchucdanh" />
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Mô tả chức danh:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control fix-width-350" id="txtmotachucdanh" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 ">Mã chức danh:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control fix-width-350" id="txtmachucdanh" />
+                                        </div>
+                                    </div>
+                                </div>
                                     <div class="modal-footer">
                                         <a class="btn btn-success" id="btnSave">Thêm chức danh</a>
                                         <a class="btn btn-default" data-dismiss="modal">Đóng</a>
@@ -119,24 +121,27 @@
                                         <h4 class="modal-title">Chỉnh sửa chức danh</h4>
                                     </div>
                                     <input type="hidden" id="txtidchucdanh_sua" />
-                                    <div class="modal-body list-BSC">
-                                        <div class="input-group">
-                                            <div class="input-group">
-                                                <span class="input-group-addon" id="Span2">Tên chức danh:<label style="color:red">*</label>&nbsp;</span>
-                                                <input type="text" class="form-control" style="width: 415px" aria-describedby="sizing-addon2" id="txttenchucdanh_sua">
-                                            </div>
-                                            <br />
-                                            <div class="input-group">
-                                                <span class="input-group-addon " id="Span3">Mô tả chức danh:</span>
-                                                <input type="text" class="form-control" style="width: 412px" aria-describedby="sizing-addon2" id="txtmotachucdanh_sua">
-                                            </div>
-                                            <br />
-                                            <div class="input-group">
-                                                <span class="input-group-addon" id="Span5" >Mã chức danh:<label style="color:red">*</label>&nbsp;&nbsp;</span>
-                                                <input type="text" class="form-control" style="width: 415px" aria-describedby="sizing-addon2"" id="txtmachucdanh_sua">
-                                            </div>
+                                    
+                                    <div class="modal-body list-BSC form-horizontal">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Tên chức danh:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control fix-width-350" id="txttenchucdanh_sua" />
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Mô tả chức danh:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control fix-width-350" id="txtmotachucdanh_sua" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 ">Mã chức danh:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control fix-width-350 " id="txtmachucdanh_sua" />
+                                        </div>
+                                    </div>
+                                </div>
                                     <div class="modal-footer">
                                         <a class="btn btn-primary" id="btnGhi">Ghi lại</a>
                                         <a class="btn btn-default" data-dismiss="modal">Đóng</a>

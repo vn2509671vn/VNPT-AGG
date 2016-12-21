@@ -80,24 +80,27 @@
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         <h4 class="modal-title">Thêm đơn vị</h4>
                                     </div>
-                                    <div class="modal-body list-BSC">
-                                        <div class="input-group">
-                                            <div class="input-group">
-                                                <span class="input-group-addon" id="Span1" >Tên đơn vị:<label style="color:red">*</label>&nbsp;</span>
-                                                <input type="text" class="form-control" style="width: 415px" aria-describedby="sizing-addon2" id="txttendv">
-                                            </div>
-                                            <br />
-                                            <div class="input-group">
-                                                <span class="input-group-addon " id="Span4">Mô tả đơn vị:</span>
-                                                <input type="text" class="form-control" style="width: 412px" aria-describedby="sizing-addon2" id="txtmotadv">
-                                            </div>
-                                            <br />
-                                            <div class="input-group">
-                                                <span class="input-group-addon" id="sizing-addon2">Mã đơn vị:<label style="color:red">*</label>&nbsp;&nbsp; </span>
-                                                <input type="text" class="form-control" style="width: 415px" aria-describedby="sizing-addon2"" id="txtmadv">
-                                            </div>
+                                    
+                                    <div class="modal-body list-BSC form-horizontal">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Tên đơn vị:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control fix-width-350" id="txttendv" />
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Mô tả đơn vị:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control fix-width-350" id="txtmotadv" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 ">Mã đơn vị:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control fix-width-350" id="txtmadv" />
+                                        </div>
+                                    </div>
+                                </div>
                                     <div class="modal-footer">
                                         <a class="btn btn-success" id="btnSave">Thêm đơn vị</a>
                                         <a class="btn btn-default" data-dismiss="modal">Đóng</a>
@@ -118,24 +121,27 @@
                                         <h4 class="modal-title">Chỉnh sửa đơn vị</h4>
                                     </div>
                                     <input type="hidden" id="txtiddv_sua" />
-                                    <div class="modal-body list-BSC">
-                                        <div class="input-group">
-                                            <div class="input-group">
-                                                <span class="input-group-addon" id="Span2">Tên đơn vị:<label style="color:red">*</label>&nbsp;</span>
-                                                <input type="text" class="form-control" style="width: 415px" aria-describedby="sizing-addon2" id="txttendv_sua">
-                                            </div>
-                                            <br />
-                                            <div class="input-group">
-                                                <span class="input-group-addon " id="Span3">Mô tả đơn vị:</span>
-                                                <input type="text" class="form-control" style="width: 412px" aria-describedby="sizing-addon2" id="txtmotadv_sua">
-                                            </div>
-                                            <br />
-                                            <div class="input-group">
-                                                <span class="input-group-addon" id="Span5" >Mã đơn vị:<label style="color:red">*</label>&nbsp;&nbsp;</span>
-                                                <input type="text" class="form-control" style="width: 415px" aria-describedby="sizing-addon2"" id="txtmadv_sua">
-                                            </div>
+                                    
+                                     <div class="modal-body list-BSC form-horizontal">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Tên đơn vị:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control fix-width-350" id="txttendv_sua" />
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Mô tả đơn vị:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control fix-width-350" id="txtmotadv_sua" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 ">Mã đơn vị:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control fix-width-350" id="txtmadv_sua" />
+                                        </div>
+                                    </div>
+                                </div>
                                     <div class="modal-footer">
                                         <a class="btn btn-primary" id="btnGhi">Ghi lại</a>
                                         <a class="btn btn-default" data-dismiss="modal">Đóng</a>

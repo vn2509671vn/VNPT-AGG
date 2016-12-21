@@ -44,17 +44,8 @@ namespace VNPT_BSC.DanhMuc
             string sqlInsertNewData = "";
             try
             {
-
-
                 sqlInsertNewData = "insert into kpo(kpo_ten,kpo_mota, kpo_ngaytao,kpo_nguoitao) values (N'" + kpo_tenAprove + "',N'" + kpo_motaAprove + "', '" + kpo_ngayAprove + "','" + nhanvien.nhanvien_id + "')";
-                try
-                {
-                    kpo.ThucThiDL(sqlInsertNewData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                kpo.ThucThiDL(sqlInsertNewData);
                 output = true;
             }
             catch
@@ -75,14 +66,7 @@ namespace VNPT_BSC.DanhMuc
             try
             {
                 sqlUpdateData = "Update kpo set kpo_ten = N'" + kpo_ten_suaAprove + "',kpo_mota = N'" + kpo_mota_suaAprove + "', kpo_nguoitao = '" + nhanvien.nhanvien_id + "' where kpo_id = '" + kpo_id_suaAprove + "'";
-                try
-                {
-                    kpo_edit.ThucThiDL(sqlUpdateData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                kpo_edit.ThucThiDL(sqlUpdateData);
                 output = true;
             }
             catch
@@ -99,17 +83,8 @@ namespace VNPT_BSC.DanhMuc
             string sqldeleteData = "";
             try
             {
-
-
                 sqldeleteData = "delete kpo where kpo_id = '" + kpo_id_xoaAprove + "'";
-                try
-                {
-                    kpo_delete.ThucThiDL(sqldeleteData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                kpo_delete.ThucThiDL(sqldeleteData);
                 output = true;
             }
             catch

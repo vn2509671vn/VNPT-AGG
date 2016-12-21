@@ -40,17 +40,8 @@ namespace VNPT_BSC.DanhMuc
             string sqlInsertNewData = "";
             try
             {
-
-
                 sqlInsertNewData = "insert into donvi(donvi_ten,donvi_mota, donvi_ma) values(N'" + dv_tenAprove + "',N'" + dv_motaAprove + "', '" + dv_maAprove + "')";
-                try
-                {
-                    donvi.ThucThiDL(sqlInsertNewData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                donvi.ThucThiDL(sqlInsertNewData);
                 output = true;
             }
             catch
@@ -69,14 +60,7 @@ namespace VNPT_BSC.DanhMuc
             try
             {
                 sqlUpdateData = "Update donvi set donvi_ten = N'" + dv_ten_suaAprove + "',donvi_mota = N'" + dv_mota_suaAprove + "', donvi_ma = N'" + dv_ma_suaAprove + "' where donvi_id = '" + dv_id_suaAprove + "'";
-                try
-                {
-                    donvi_edit.ThucThiDL(sqlUpdateData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                donvi_edit.ThucThiDL(sqlUpdateData);
                 output = true;
             }
             catch
@@ -94,17 +78,8 @@ namespace VNPT_BSC.DanhMuc
             string sqldeleteData = "";
             try
             {
-
-
                 sqldeleteData = "delete donvi where donvi_id = '" + dv_id_xoaAprove + "'";
-                try
-                {
-                    donvi_delete.ThucThiDL(sqldeleteData);
-                }
-                catch
-                {
-                    output = false;
-                }
+                donvi_delete.ThucThiDL(sqldeleteData);
                 output = true;
             }
             catch

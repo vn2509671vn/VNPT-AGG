@@ -103,6 +103,9 @@
                                 <!-- Note: By adding "in" after "collapse", it starts with that particular panel open by default; remove if you want them all collapsed by default -->
                                 <div id="collapseFour" class="panel-collapse collapse off">
                                     <ul class="list-group">
+                                        <li><a href="/Admin/nhomquyen.aspx" class="navlink">Nhóm quyền</a></li>
+                                        <li><a href="/Admin/loaiquyen.aspx" class="navlink">Loại quyền</a></li>
+                                        <li><a href="/Admin/Phanquyen.aspx" class="navlink">Phân quyền theo chức vụ</a></li>
                                         <li><a href="/Admin/QLGiaoBSCDonVi.aspx" class="navlink">QLý BSC Đơn Vị</a></li>
                                         <li><a href="/Admin/QLGiaoBSCNhanVien.aspx" class="navlink">QLý BSC Nhân Viên</a></li>
                                     </ul>

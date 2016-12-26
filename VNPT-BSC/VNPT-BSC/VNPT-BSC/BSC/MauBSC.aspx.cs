@@ -19,12 +19,14 @@ namespace VNPT_BSC.BSC
         public DataTable dtKPI;
         public DataTable dtBSCNam;
         public DataTable dtDVT;
+        public DataTable dtDVTD;
         public static int nguoitao;
         public class kpiDetail
         {
             public int kpi_id { get; set; }
             public int tytrong { get; set; }
-            public string dvt { get; set; }
+            public int dvt { get; set; }
+            public int dvtd { get; set; }
         }
 
         /*List đơn vị tính*/
@@ -41,6 +43,23 @@ namespace VNPT_BSC.BSC
             }
 
             return dsDonvitinh;
+        }
+
+        /*List đơn vị thẩm định*/
+        private DataTable dsDVTD()
+        {
+            DataTable dsDonvithamdinh = new DataTable();
+            string sqlDVTD = "select * from donvi";
+            try
+            {
+                dsDonvithamdinh = cn.XemDL(sqlDVTD);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dsDonvithamdinh;
         }
 
         /*List BSC theo năm*/
@@ -104,6 +123,7 @@ namespace VNPT_BSC.BSC
                     arrKPI[i].Add("kpi_id", dtKPI.Rows[i]["kpi_id"].ToString());
                     arrKPI[i].Add("tytrong", dtKPI.Rows[i]["tytrong"].ToString());
                     arrKPI[i].Add("donvitinh", dtKPI.Rows[i]["donvitinh"].ToString());
+                    arrKPI[i].Add("donvithamdinh", dtKPI.Rows[i]["donvithamdinh"].ToString());
                 }
             }
             return arrKPI;
@@ -123,9 +143,10 @@ namespace VNPT_BSC.BSC
                 {
                     int kpi_id = arrKPI_ID[i].kpi_id;
                     int tytrong = arrKPI_ID[i].tytrong;
-                    string dvt = arrKPI_ID[i].dvt;
+                    int dvt = arrKPI_ID[i].dvt;
+                    int dvtd = arrKPI_ID[i].dvtd;
                     string curDate = DateTime.Now.ToString("yyyy-MM-dd");
-                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, nguoitao, bscduocgiao, ngaytao, donvitinh, tytrong) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '" + nguoitao + "', '" + "" + "', '" + curDate + "', N'" + dvt + "', '" + tytrong + "')";
+                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, nguoitao, bscduocgiao, ngaytao, donvitinh, tytrong, donvithamdinh) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '" + nguoitao + "', '" + "" + "', '" + curDate + "', '" + dvt + "', '" + tytrong + "', '"+dvtd+"')";
                     try
                     {
                         cnDanhSachBSC.ThucThiDL(sqlInsertNewData);
@@ -153,8 +174,16 @@ namespace VNPT_BSC.BSC
                 {
                     Nhanvien nhanvien = new Nhanvien();
                     nhanvien = Session.GetCurrentUser();
-                    /*Kiểm tra nếu không phải là chuyên viên BSC (id của chuyên viên BSC là 10) thì đẩy ra trang đăng nhập*/
-                    if (nhanvien == null || nhanvien.nhanvien_chucvu_id != 10)
+
+                    // Khai báo các biến cho việc kiểm tra quyền
+                    int[] quyenHeThong = { };
+                    int nFindResult = -1;
+                    quyenHeThong = Session.GetRole();
+
+                    /*Kiểm tra nếu không có quyền giao bsc đơn vị (id của quyền là 2) thì đẩy ra trang đăng nhập*/
+                    nFindResult = Array.IndexOf(quyenHeThong, 2);
+
+                    if (nhanvien == null || nFindResult == -1)
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                         Response.Write("<script>window.location.href='../Login.aspx';</script>");
@@ -176,6 +205,10 @@ namespace VNPT_BSC.BSC
                     /*Get list DVT*/
                     dtDVT = new DataTable();
                     dtDVT = dsDVT();
+
+                    /*Get list DVTD*/
+                    dtDVTD = new DataTable();
+                    dtDVTD = dsDVTD();
                 }
                 catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");

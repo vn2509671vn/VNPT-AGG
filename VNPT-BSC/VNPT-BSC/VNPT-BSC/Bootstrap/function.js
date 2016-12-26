@@ -20,7 +20,7 @@ function validateMonth(element) {
 
 function validateYear(element) {
     var year = $("#" + element).val();
-    if (year > 2100 || year < 1900) {
+    if (year > 2100 || year < 2016) {
         $("#" + element).css("border-color", "red");
         return false;
     }

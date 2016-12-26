@@ -102,7 +102,7 @@
                                                   <% } %>
                                               </select>
                                           </td>
-                                          <td class='text-center'><input type="text" class='form-control' onkeypress='return onlyNumbers(event)' id='tytrong_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' size="2"/></td>
+                                          <td class='text-center'><input type="text" class='form-control' onkeypress='return onlyNumbers(event.charCode || event.keyCode);' id='tytrong_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' size="2"/></td>
                                         </tr>
                                     <% } %>
                                 </tbody>
@@ -127,7 +127,8 @@
     var nguoitao = "<%= nguoitao%>";
 
     function onlyNumbers(e) {
-        if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
+        //if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
+        return !(e > 31 && (e < 48 || e > 57));
     }
 
     function check_kpi_duocgiao() {

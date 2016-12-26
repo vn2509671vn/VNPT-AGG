@@ -118,7 +118,8 @@
     }
 
     function onlyNumbers(e) {
-        if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
+        //if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
+        return !(e > 31 && (e < 48 || e > 57));
     }
 
     $(document).ready(function () {

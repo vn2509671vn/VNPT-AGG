@@ -115,7 +115,7 @@ namespace VNPT_BSC.BSC
                     arrOutput += "</select>";
                     arrOutput += "</td>";
 
-                    arrOutput += "<td class='text-center'><input type='text' class='form-control' name='kehoach' id='kehoach_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' onkeypress='return onlyNumbers(event)'/></td>";
+                    arrOutput += "<td class='text-center'><input type='text' class='form-control' name='kehoach' id='kehoach_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
 
                     // Nhân viên thẩm định
                     arrOutput += "<td class='text-center'>";
@@ -215,8 +215,8 @@ namespace VNPT_BSC.BSC
                     }
                     outputHTML += "</select>";
                     outputHTML += "</td>";
-                    
-                    outputHTML += "<td class='text-center'><input type='text' class='form-control' name='kehoach' id='kehoach_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["kehoach"].ToString() + "' onkeypress='return onlyNumbers(event)'/></td>";
+
+                    outputHTML += "<td class='text-center'><input type='text' class='form-control' name='kehoach' id='kehoach_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["kehoach"].ToString() + "' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
 
                     // Nhân viên thẩm định
                     outputHTML += "<td class='text-center'>";
@@ -463,8 +463,15 @@ namespace VNPT_BSC.BSC
                     Nhanvien nhanvien = new Nhanvien();
                     nhanvien = Session.GetCurrentUser();
 
-                    /*Kiểm tra nếu không phải là chuyên viên BSC (id của chuyên viên BSC là 10) thì đẩy ra trang đăng nhập*/
-                    if (nhanvien == null || nhanvien.nhanvien_chucvu_id != 3 && nhanvien.nhanvien_chucvu_id != 5)
+                    // Khai báo các biến cho việc kiểm tra quyền
+                    int[] quyenHeThong = { };
+                    int nFindResult = -1;
+                    quyenHeThong = Session.GetRole();
+
+                    /*Kiểm tra nếu không có quyền giao bsc nhân viên (id của quyền là 3) thì đẩy ra trang đăng nhập*/
+                    nFindResult = Array.IndexOf(quyenHeThong, 3);
+
+                    if (nhanvien == null || nFindResult == -1)
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                         Response.Write("<script>window.location.href='../Login.aspx';</script>");

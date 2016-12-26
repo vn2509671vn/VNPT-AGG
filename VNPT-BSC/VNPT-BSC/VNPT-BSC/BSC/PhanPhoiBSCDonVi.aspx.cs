@@ -55,7 +55,7 @@ namespace VNPT_BSC.BSC
             DataTable dsDonvithamdinh = new DataTable();
             string sqlDVT = "select * from donvitinh";
             string sqlDVTD = "select * from donvi";
-            string sqlBSC = "select bsc.thang, bsc.nam, bsc.kpi_id, bsc.tytrong, bsc.donvitinh, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten ";
+            string sqlBSC = "select bsc.thang, bsc.nam, bsc.kpi_id, bsc.tytrong, bsc.donvitinh, bsc.donvithamdinh, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten ";
             sqlBSC += "from danhsachbsc bsc, kpi, kpo ";
             sqlBSC += "where bsc.kpi_id = kpi.kpi_id ";
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
@@ -109,14 +109,22 @@ namespace VNPT_BSC.BSC
                         }
                         arrOutput += "</select>";
                         arrOutput += "</td>";
-                        arrOutput += "<td class='text-center'><input type='text' class='form-control' name='kehoach' id='kehoach_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' onkeypress='return onlyNumbers(event)'/></td>";
+                        arrOutput += "<td class='text-center'><input type='text' class='form-control' name='kehoach' id='kehoach_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
 
                         // Đơn vị thẩm định
                         arrOutput += "<td class='text-center'>";
                         arrOutput += "<select class='form-control' id='dvtd_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>";
                         for (int nDVTD = 0; nDVTD < dsDonvithamdinh.Rows.Count; nDVTD++)
                         {
-                            arrOutput += "<option value='" + dsDonvithamdinh.Rows[nDVTD]["donvi_id"] + "'>" + dsDonvithamdinh.Rows[nDVTD]["donvi_ten"] + "</option>";
+                            //arrOutput += "<option value='" + dsDonvithamdinh.Rows[nDVTD]["donvi_id"] + "'>" + dsDonvithamdinh.Rows[nDVTD]["donvi_ten"] + "</option>";
+                            if (dsDonvithamdinh.Rows[nDVTD]["donvi_id"].ToString() == gridData.Rows[nKPI]["donvithamdinh"].ToString())
+                            {
+                                arrOutput += "<option value='" + dsDonvithamdinh.Rows[nDVTD]["donvi_id"] + "' selected>" + dsDonvithamdinh.Rows[nDVTD]["donvi_ten"] + "</option>";
+                            }
+                            else
+                            {
+                                arrOutput += "<option value='" + dsDonvithamdinh.Rows[nDVTD]["donvi_id"] + "'>" + dsDonvithamdinh.Rows[nDVTD]["donvi_ten"] + "</option>";
+                            }
                         }
                         arrOutput += "</select>";
                         arrOutput += "</td>";
@@ -205,7 +213,7 @@ namespace VNPT_BSC.BSC
                     outputHTML += "</select>";
                     outputHTML += "</td>";
 
-                    outputHTML += "<td class='text-center'><input type='text' class='form-control' name='kehoach' id='kehoach_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["kehoach"].ToString() + "' onkeypress='return onlyNumbers(event)'/></td>";
+                    outputHTML += "<td class='text-center'><input type='text' class='form-control' name='kehoach' id='kehoach_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["kehoach"].ToString() + "' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
                     
                     // Đơn vị thẩm định
                     outputHTML += "<td class='text-center'>";
@@ -251,7 +259,6 @@ namespace VNPT_BSC.BSC
                 dicOutput.Add("donvinhan", dtGiaoBSCDV.Rows[0]["donvinhan"].ToString());
                 dicOutput.Add("trangthaigiao", dtGiaoBSCDV.Rows[0]["trangthaigiao"].ToString());
                 dicOutput.Add("trangthainhan", dtGiaoBSCDV.Rows[0]["trangthainhan"].ToString());
-                dicOutput.Add("trangthaithamdinh", dtGiaoBSCDV.Rows[0]["trangthaithamdinh"].ToString());
                 dicOutput.Add("trangthaiketthuc", dtGiaoBSCDV.Rows[0]["trangthaiketthuc"].ToString());
             }
             else {
@@ -259,7 +266,6 @@ namespace VNPT_BSC.BSC
                 dicOutput.Add("donvinhan", id_dv_nhan.ToString());
                 dicOutput.Add("trangthaigiao", "0");
                 dicOutput.Add("trangthainhan", "0");
-                dicOutput.Add("trangthaithamdinh", "0");
                 dicOutput.Add("trangthaiketthuc", "0");
             }
             
@@ -282,13 +288,13 @@ namespace VNPT_BSC.BSC
                     cnData.ThucThiDL(sqlDeleteBSCDV);
                     cnData.ThucThiDL(sqlDeleteGiaoBSCDV);
 
-                    string sqlInsertGiaoBSC = "insert into giaobscdonvi(donvigiao, donvinhan, thang, nam, trangthaigiao, trangthainhan, trangthaicham, trangthaithamdinh, trangthaidongy_kqtd,trangthaiketthuc) ";
-                    sqlInsertGiaoBSC += "values('" + donvigiao + "', '" + donvinhan + "', '" + thang + "', '" + nam + "', 0, 0, 0, 0, 0, 0)";
+                    string sqlInsertGiaoBSC = "insert into giaobscdonvi(donvigiao, donvinhan, thang, nam, trangthaigiao, trangthainhan, trangthaicham, trangthaidongy_kqtd, trangthaiketthuc) ";
+                    sqlInsertGiaoBSC += "values('" + donvigiao + "', '" + donvinhan + "', '" + thang + "', '" + nam + "', 0, 0, 0, 0, 0)";
                     cnData.ThucThiDL(sqlInsertGiaoBSC);
                     for (int i = 0; i < kpi_detail.Length; i++)
                     {
-                        string sqlInsertBSCDV = "insert into bsc_donvi(donvigiao, donvinhan, thang, nam, kpi, donvithamdinh, donvitinh, trongso, kehoach, trangthaithamdinh, trangthaidongy_kqtd) ";
-                        sqlInsertBSCDV += "values('" + donvigiao + "', '" + donvinhan + "', '" + thang + "', '" + nam + "', '" + kpi_detail[i].kpi_id + "', '" + kpi_detail[i].donvithamdinh + "','" + kpi_detail[i].dvt + "', '" + Convert.ToInt32(kpi_detail[i].tytrong) + "', '" + Convert.ToDecimal(kpi_detail[i].kehoach) + "', 0, 0)";
+                        string sqlInsertBSCDV = "insert into bsc_donvi(donvigiao, donvinhan, thang, nam, kpi, donvithamdinh, donvitinh, trongso, kehoach, thuchien, thamdinh, trangthaithamdinh, kq_thuchien, hethong_thuchien) ";
+                        sqlInsertBSCDV += "values('" + donvigiao + "', '" + donvinhan + "', '" + thang + "', '" + nam + "', '" + kpi_detail[i].kpi_id + "', '" + kpi_detail[i].donvithamdinh + "','" + kpi_detail[i].dvt + "', '" + Convert.ToInt32(kpi_detail[i].tytrong) + "', '" + Convert.ToDecimal(kpi_detail[i].kehoach) + "', 0, 0, 0, 0, 0)";
                         try
                         {
                             cnData.ThucThiDL(sqlInsertBSCDV);
@@ -306,13 +312,13 @@ namespace VNPT_BSC.BSC
                 }
             }
             else {
-                string sqlInsertGiaoBSC = "insert into giaobscdonvi(donvigiao, donvinhan, thang, nam, trangthaigiao, trangthainhan, trangthaicham, trangthaithamdinh, trangthaidongy_kqtd, trangthaiketthuc) ";
-                sqlInsertGiaoBSC += "values('" + donvigiao + "', '" + donvinhan + "', '" + thang + "', '" + nam + "', 0, 0, 0, 0, 0, 0)";
+                string sqlInsertGiaoBSC = "insert into giaobscdonvi(donvigiao, donvinhan, thang, nam, trangthaigiao, trangthainhan, trangthaicham, trangthaidongy_kqtd, trangthaiketthuc) ";
+                sqlInsertGiaoBSC += "values('" + donvigiao + "', '" + donvinhan + "', '" + thang + "', '" + nam + "', 0, 0, 0, 0, 0)";
                 cnData.ThucThiDL(sqlInsertGiaoBSC);
                 for (int i = 0; i < kpi_detail.Length; i++)
                 {
-                    string sqlInsertBSCDV = "insert into bsc_donvi(donvigiao, donvinhan, thang, nam, kpi, donvithamdinh, donvitinh, trongso, kehoach, trangthaithamdinh, trangthaidongy_kqtd) ";
-                    sqlInsertBSCDV += "values('" + donvigiao + "', '" + donvinhan + "', '" + thang + "', '" + nam + "', '" + kpi_detail[i].kpi_id + "', '" + kpi_detail[i].donvithamdinh + "', '" + kpi_detail[i].dvt + "', '" + Convert.ToInt32(kpi_detail[i].tytrong) + "', '" + Convert.ToDecimal(kpi_detail[i].kehoach) + "', 0, 0)";
+                    string sqlInsertBSCDV = "insert into bsc_donvi(donvigiao, donvinhan, thang, nam, kpi, donvithamdinh, donvitinh, trongso, kehoach, thuchien, thamdinh, trangthaithamdinh, kq_thuchien, hethong_thuchien) ";
+                    sqlInsertBSCDV += "values('" + donvigiao + "', '" + donvinhan + "', '" + thang + "', '" + nam + "', '" + kpi_detail[i].kpi_id + "', '" + kpi_detail[i].donvithamdinh + "', '" + kpi_detail[i].dvt + "', '" + Convert.ToInt32(kpi_detail[i].tytrong) + "', '" + Convert.ToDecimal(kpi_detail[i].kehoach) + "', 0, 0, 0, 0, 0)";
                     try
                     {
                         cnData.ThucThiDL(sqlInsertBSCDV);
@@ -422,8 +428,15 @@ namespace VNPT_BSC.BSC
             {
                 Nhanvien nhanvien = new Nhanvien();
                 nhanvien = Session.GetCurrentUser();
-                /*Kiểm tra nếu không phải là chuyên viên BSC (id của chuyên viên BSC là 10) thì đẩy ra trang đăng nhập*/
-                if (nhanvien == null || nhanvien.nhanvien_chucvu_id != 10)
+
+                // Khai báo các biến cho việc kiểm tra quyền
+                int[] quyenHeThong = {};
+                int nFindResult = -1;
+                quyenHeThong = Session.GetRole();
+                
+                /*Kiểm tra nếu không có quyền giao bsc đơn vị (id của quyền là 2) thì đẩy ra trang đăng nhập*/
+                nFindResult = Array.IndexOf(quyenHeThong, 2);
+                if (nhanvien == null || nFindResult == -1)
                 {
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");

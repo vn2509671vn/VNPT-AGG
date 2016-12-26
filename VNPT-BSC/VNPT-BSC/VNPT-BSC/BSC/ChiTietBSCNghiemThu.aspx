@@ -33,7 +33,14 @@
     <div class="col-md-12 margin-top-30">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">Chi tiết BSC</h3>
+            Chi tiết BSC
+            <div class="pull-right">
+                <div class="btn-group">
+                    <a class="btn btn-warning btn-xs" href="NghiemThuBSCDonVi.aspx">
+                        Back
+                    </a>
+                </div>
+            </div>
           </div>
           <div class="panel-body">
               <div class="col-sm-12 form-horizontal">

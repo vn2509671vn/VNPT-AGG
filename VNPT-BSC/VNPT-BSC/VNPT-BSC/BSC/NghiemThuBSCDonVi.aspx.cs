@@ -132,8 +132,16 @@ namespace VNPT_BSC.BSC
                 {
                     Nhanvien nhanvien = new Nhanvien();
                     nhanvien = Session.GetCurrentUser();
-                    /*Nếu không tồn tại session hoặc chức vụ của nhân viên không phải Chuyên viên BSC (id = 10)*/
-                    if (nhanvien == null || nhanvien.nhanvien_chucvu_id != 10)
+
+                    // Khai báo các biến cho việc kiểm tra quyền
+                    int[] quyenHeThong = { };
+                    int nFindResult = -1;
+                    quyenHeThong = Session.GetRole();
+
+                    /*Kiểm tra nếu không có quyền giao bsc đơn vị (id của quyền là 2) thì đẩy ra trang đăng nhập*/
+                    nFindResult = Array.IndexOf(quyenHeThong, 2);
+
+                    if (nhanvien == null || nFindResult == -1)
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                         Response.Write("<script>window.location.href='../Login.aspx';</script>");

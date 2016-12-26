@@ -85,8 +85,16 @@ namespace VNPT_BSC.Admin
             {
                 Nhanvien nhanvien = new Nhanvien();
                 nhanvien = Session.GetCurrentUser();
-                /*Nếu không tồn tại session hoặc chức vụ của nhân viên không phải admin (id = 30)*/
-                if (nhanvien == null || nhanvien.nhanvien_chucvu_id != 30)
+
+                // Khai báo các biến cho việc kiểm tra quyền
+                int[] quyenHeThong = { };
+                int nFindResult = -1;
+                quyenHeThong = Session.GetRole();
+
+                /*Kiểm tra nếu không có quyền admin (id của quyền là 1) thì đẩy ra trang đăng nhập*/
+                nFindResult = Array.IndexOf(quyenHeThong, 1);
+
+                if (nhanvien == null || nFindResult == -1)
                 {
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");

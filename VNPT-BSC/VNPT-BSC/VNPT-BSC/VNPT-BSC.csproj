@@ -29,6 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -130,11 +131,14 @@
   <ItemGroup>
     <Content Include="Admin\ChiTietQLGiaoBSCDonVi.aspx" />
     <Content Include="Admin\ChiTietQLGiaoBSCNhanVien.aspx" />
+    <Content Include="Admin\ExportBSC.aspx" />
+    <Content Include="Admin\ImportExcel.aspx" />
     <Content Include="Admin\loaiquyen.aspx" />
     <Content Include="Admin\nhomquyen.aspx" />
     <Content Include="Admin\Phanquyen.aspx" />
     <Content Include="Admin\QLGiaoBSCDonVi.aspx" />
     <Content Include="Admin\QLGiaoBSCNhanVien.aspx" />
+    <Content Include="Admin\XuatMauBSC.aspx" />
     <Content Include="Bootstrap\Alert.js" />
     <Content Include="Bootstrap\bootstrap.css" />
     <Content Include="Bootstrap\bootstrap.js" />
@@ -157,6 +161,8 @@
     <Content Include="BSC\ChiTietBSCNVKiemDinh.aspx" />
     <Content Include="BSC\ChiTietBSCNVNghiemThu.aspx" />
     <Content Include="BSC\ChiTietBSCNVNhan.aspx" />
+    <Content Include="BSC\DanhSachBSCDaGiao.aspx" />
+    <Content Include="BSC\ImportBSC.aspx" />
     <Content Include="BSC\KiemDinhBSCDonVi.aspx" />
     <Content Include="BSC\KiemDinhBSCNhanVien.aspx" />
     <Content Include="BSC\MauBSC.aspx" />
@@ -167,6 +173,7 @@
     <Content Include="BSC\NhanBSCNhanVien.aspx" />
     <Content Include="BSC\PhanPhoiBSCDonVi.aspx" />
     <Content Include="BSC\PhanPhoiBSCNhanVien.aspx" />
+    <Content Include="BSC\XuatMauBSC.aspx" />
     <Content Include="DanhMuc\Donvitinh.aspx" />
     <Content Include="DanhMuc\KPI.aspx" />
     <Content Include="DanhMuc\Chucvu.aspx" />
@@ -348,6 +355,20 @@
     <Compile Include="Admin\ChiTietQLGiaoBSCNhanVien.aspx.designer.cs">
       <DependentUpon>ChiTietQLGiaoBSCNhanVien.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\ExportBSC.aspx.cs">
+      <DependentUpon>ExportBSC.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ExportBSC.aspx.designer.cs">
+      <DependentUpon>ExportBSC.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ImportExcel.aspx.cs">
+      <DependentUpon>ImportExcel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ImportExcel.aspx.designer.cs">
+      <DependentUpon>ImportExcel.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\loaiquyen.aspx.cs">
       <DependentUpon>loaiquyen.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -382,6 +403,13 @@
     </Compile>
     <Compile Include="Admin\QLGiaoBSCNhanVien.aspx.designer.cs">
       <DependentUpon>QLGiaoBSCNhanVien.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\XuatMauBSC.aspx.cs">
+      <DependentUpon>XuatMauBSC.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\XuatMauBSC.aspx.designer.cs">
+      <DependentUpon>XuatMauBSC.aspx</DependentUpon>
     </Compile>
     <Compile Include="Ajax\ajaxBSC.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -427,6 +455,20 @@
     </Compile>
     <Compile Include="BSC\ChiTietBSCNVNhan.aspx.designer.cs">
       <DependentUpon>ChiTietBSCNVNhan.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\DanhSachBSCDaGiao.aspx.cs">
+      <DependentUpon>DanhSachBSCDaGiao.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\DanhSachBSCDaGiao.aspx.designer.cs">
+      <DependentUpon>DanhSachBSCDaGiao.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\ImportBSC.aspx.cs">
+      <DependentUpon>ImportBSC.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\ImportBSC.aspx.designer.cs">
+      <DependentUpon>ImportBSC.aspx</DependentUpon>
     </Compile>
     <Compile Include="BSC\KiemDinhBSCDonVi.aspx.cs">
       <DependentUpon>KiemDinhBSCDonVi.aspx</DependentUpon>
@@ -497,6 +539,13 @@
     </Compile>
     <Compile Include="BSC\PhanPhoiBSCNhanVien.aspx.designer.cs">
       <DependentUpon>PhanPhoiBSCNhanVien.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\XuatMauBSC.aspx.cs">
+      <DependentUpon>XuatMauBSC.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\XuatMauBSC.aspx.designer.cs">
+      <DependentUpon>XuatMauBSC.aspx</DependentUpon>
     </Compile>
     <Compile Include="DanhMuc\Donvitinh.aspx.cs">
       <DependentUpon>Donvitinh.aspx</DependentUpon>
@@ -599,6 +648,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Upload\BSC\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Site.Master" />

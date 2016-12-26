@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="NghiemThuBSCDonVi.aspx.cs" Inherits="VNPT_BSC.BSC.NghiemThuBSCDonVi" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="XuatMauBSC.aspx.cs" Inherits="VNPT_BSC.BSC.XuatMauBSC" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
@@ -14,6 +14,15 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
+    <!-- Add for export data of datatable-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
 
     <!-- Plugin for swal alert -->
     <script src="../Bootstrap/sweetalert-dev.js"></script>
@@ -24,7 +33,7 @@
     <div class="col-md-12 margin-top-30">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">Nghiệm thu BSC</h3>
+            <h3 class="panel-title">Xuất mẫu BSC đơn vị</h3>
           </div>
           <div class="panel-body">
               <div class="col-sm-12 form-horizontal">
@@ -62,21 +71,18 @@
           </div>
         </div>
     </div>
-<script type="text/javascript">
-    function xemChiTiet(thang, nam, donvigiao, donvinhan) {
-        window.location.replace("ChiTietBSCNghiemThu.aspx?donvigiao=" + donvigiao + "&donvinhan=" + donvinhan + "&thang=" + thang + "&nam=" + nam);
-    }
 
-    function loadBSCByYear(month, year, donvigiao) {
+<script type="text/javascript">
+    function loadBSCByYear(month, year, nguoitao) {
         var requestData = {
-            donvigiao: donvigiao,
             thang: month,
-            nam: year
+            nam: year,
+            nguoitao: nguoitao
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
             type: "POST",
-            url: "NghiemThuBSCDonVi.aspx/loadBSCByYear",
+            url: "XuatMauBSC.aspx/loadBSCByYear",
             data: szRequest,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -86,9 +92,20 @@
 
                 $("#gridBSC").html(gridBSC);
                 $("#table-bsclist").DataTable({
-                    "searching": true,
-                    "info": true,
-                    "pageLength": 50
+                    "order": [],
+                    "pageLength": 50,
+                    "dom": 'Bfrtip',
+                    "buttons": [
+                        {
+                            extend: 'excelHtml5',
+                            text: 'Xuất file',
+                            title: 'Giao BSC/KPI ' + month + "-" + year
+                        }
+                    ],
+                    "columnDefs": [{
+                        "targets": 'no-sort',
+                        "orderable": false,
+                    }]
                 });
             },
             error: function (msg) { alert(msg.d); }
@@ -96,22 +113,22 @@
     }
 
     $(document).ready(function () {
-        var donvigiao = '<%=donvigiao %>';
+        var nguoitao = <%=nguoitao_id%>;
         // Load grid lần đầu
-        loadBSCByYear($("#month").val(), $("#year").val(), donvigiao);
+        loadBSCByYear($("#month").val(), $("#year").val(), nguoitao);
 
         // Load grid khi năm thay đổi
         $("#year").change(function () {
             var thang = $("#month").val();
             var nam = $(this).val();
-            loadBSCByYear(thang, nam, donvigiao);
+            loadBSCByYear(thang, nam, nguoitao);
         });
 
         // Load grid khi tháng thay đổi
         $("#month").change(function () {
             var nam = $("#year").val();
             var thang = $(this).val();
-            loadBSCByYear(thang, nam, donvigiao);
+            loadBSCByYear(thang, nam, nguoitao);
         });
     });
 </script>

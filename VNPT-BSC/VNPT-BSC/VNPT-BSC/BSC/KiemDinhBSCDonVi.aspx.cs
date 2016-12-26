@@ -17,7 +17,7 @@ namespace VNPT_BSC.BSC
         public static string donvikiemdinh;
 
         [WebMethod]
-        public static Dictionary<String, String> loadBSCByYear(int nam, int donvikiemdinh)
+        public static Dictionary<String, String> loadBSCByYear(int thang, int nam, int donvikiemdinh)
         {
             Dictionary<String, String> dicOutput = new Dictionary<string, string>();
             Connection cnBSC = new Connection();
@@ -25,7 +25,7 @@ namespace VNPT_BSC.BSC
             string outputHTML = "";
 
             string sqlBSC = "select dvgiao.donvi_id as donvigiao, dvgiao.donvi_ten as tendvg, dvnhan.donvi_id as donvinhan, dvnhan.donvi_ten as tendvn, giaobsc.nam, giaobsc.thang, giaobsc.trangthaicham, giaobsc.trangthaidongy_kqtd, giaobsc.trangthaiketthuc,  ";
-            sqlBSC += "(select COUNT(*) from bsc_donvi where bsc_donvi.donvithamdinh = '" + donvikiemdinh + "' and bsc_donvi.trangthaithamdinh = 0 and bsc_donvi.nam = '" + nam + "' and bsc_donvi.thang = giaobsc.thang) as sl_chuatd ";
+            sqlBSC += "(select COUNT(*) from bsc_donvi where bsc_donvi.donvithamdinh = '" + donvikiemdinh + "' and bsc_donvi.trangthaithamdinh = 0 and bsc_donvi.nam = '" + nam + "' and bsc_donvi.thang = '" + thang + "' and bsc_donvi.donvinhan = dvnhan.donvi_id) as sl_chuatd ";
             sqlBSC += "from giaobscdonvi giaobsc, bsc_donvi giaobsc_dv, donvi dvgiao, donvi dvnhan ";
             sqlBSC += "where giaobsc.thang = giaobsc_dv.thang ";
             sqlBSC += "and giaobsc.nam = giaobsc_dv.nam ";
@@ -34,6 +34,7 @@ namespace VNPT_BSC.BSC
             sqlBSC += "and giaobsc.donvigiao = dvgiao.donvi_id ";
             sqlBSC += "and giaobsc.donvinhan = dvnhan.donvi_id ";
             sqlBSC += "and giaobsc.nam = '" + nam + "' ";
+            sqlBSC += "and giaobsc.thang = '" + thang + "' ";
             sqlBSC += "and giaobsc_dv.donvithamdinh = '" + donvikiemdinh + "' ";
             sqlBSC += "group by dvgiao.donvi_id, dvgiao.donvi_ten, dvnhan.donvi_id, dvnhan.donvi_ten, giaobsc.nam, giaobsc.thang, giaobsc.trangthaicham, giaobsc.trangthaidongy_kqtd, giaobsc.trangthaiketthuc";
 
@@ -73,7 +74,7 @@ namespace VNPT_BSC.BSC
                     string donvigiao = gridData.Rows[nIndex]["donvigiao"].ToString();
                     string szDonvinhan = gridData.Rows[nIndex]["donvinhan"].ToString();
                     string szDonvithamdinh = donvikiemdinh.ToString();
-                    string thang = gridData.Rows[nIndex]["thang"].ToString();
+                    string nThang = gridData.Rows[nIndex]["thang"].ToString();
                     string nNam = gridData.Rows[nIndex]["nam"].ToString();
                     string sl_chuathamdinh = gridData.Rows[nIndex]["sl_chuatd"].ToString();
                     string trangthaicham = gridData.Rows[nIndex]["trangthaicham"].ToString();
@@ -107,11 +108,11 @@ namespace VNPT_BSC.BSC
                     outputHTML += "<td class='text-center'>" + (nIndex + 1) + "</td>";
                     outputHTML += "<td class='text-center'>" + gridData.Rows[nIndex]["tendvg"].ToString() + "</td>";
                     outputHTML += "<td class='text-center'>" + gridData.Rows[nIndex]["tendvn"].ToString() + "</td>";
-                    outputHTML += "<td class='text-center'><strong>" + thang + "/" + nNam + "</strong></td>";
+                    outputHTML += "<td class='text-center'><strong>" + nThang + "/" + nNam + "</strong></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiCham + "'>" + txtTrangThaiCham + "</span></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiThamDinh + "'>" + txtTrangThaiThamDinh + "</span></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiKetThuc + "'>" + txtTrangThaiKetThuc + "</span></td>";
-                    outputHTML += "<td class='text-center'><a class='" + "btn btn-primary detail" + "' onclick='xemChiTiet(" + thang + ", " + nam + ", " + donvigiao + ", " + szDonvinhan + ", " + szDonvithamdinh + ")'>Chi tiết</a></td>";
+                    outputHTML += "<td class='text-center'><a class='" + "btn btn-primary detail" + "' onclick='xemChiTiet(" + nThang + ", " + nam + ", " + donvigiao + ", " + szDonvinhan + ", " + szDonvithamdinh + ")'>Chi tiết</a></td>";
                     outputHTML += "</tr>";
                 }
             }
@@ -130,8 +131,16 @@ namespace VNPT_BSC.BSC
                 {
                     Nhanvien nhanvien = new Nhanvien();
                     nhanvien = Session.GetCurrentUser();
-                    /*Nếu không tồn tại session hoặc chức vụ của nhân viên không phải Trưởng phòng hoặc GĐ phòng bán hàng thì trở về trang login*/
-                    if (nhanvien == null || nhanvien.nhanvien_chucvu_id != 3 && nhanvien.nhanvien_chucvu_id != 5)
+
+                    // Khai báo các biến cho việc kiểm tra quyền
+                    int[] quyenHeThong = { };
+                    int nFindResult = -1;
+                    quyenHeThong = Session.GetRole();
+
+                    /*Kiểm tra nếu không có quyền giao bsc nhân viên (id của quyền là 3) thì đẩy ra trang đăng nhập*/
+                    nFindResult = Array.IndexOf(quyenHeThong, 3);
+
+                    if (nhanvien == null || nFindResult == -1)
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                         Response.Write("<script>window.location.href='../Login.aspx';</script>");

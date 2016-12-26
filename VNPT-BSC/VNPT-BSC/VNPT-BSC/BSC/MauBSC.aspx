@@ -87,14 +87,16 @@
                                     <th>KPI</th>
                                     <th>ĐVT</th>
                                     <th>Tỷ trọng (%)</th>
+                                    <th>Đơn vị thẩm định</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                     <% for(int i = 0; i < dtKPI.Rows.Count; i++){ %>
                                         <tr data-id="<%=dtKPI.Rows[i]["kpi_id"].ToString() %>">
                                           <td><input name="checkbox-kpi" id='kpi_id_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' type="checkbox" value="<%=dtKPI.Rows[i]["kpi_id"].ToString() %>" /></td>
-                                          <td><%=dtKPI.Rows[i]["name"].ToString() %></td>
+                                          <td class="min-width-130"><%=dtKPI.Rows[i]["name"].ToString() %></td>
                                           <%--<td class='text-center'><input type="text" class='form-control' id='dvt_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' size="5"/></td>--%>
+                                          <!-- Dropdown Đơn vị tính -->
                                           <td class='text-center'>
                                               <select class='form-control' id='dvt_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>'>
                                                   <% for (int nDVT = 0; nDVT < dtDVT.Rows.Count; nDVT++){ %>
@@ -102,7 +104,15 @@
                                                   <% } %>
                                               </select>
                                           </td>
-                                          <td class='text-center'><input type="text" class='form-control' onkeypress='return onlyNumbers(event)' id='tytrong_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' size="2"/></td>
+                                          <td class='text-center'><input type="text" class='form-control' onkeypress='return onlyNumbers(event.charCode || event.keyCode);' id='tytrong_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' size="2"/></td>
+                                          <!-- Dropdown Đơn vị thẩm định -->
+                                          <td class='text-center'>
+                                              <select class='form-control' id='dvtd_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>'>
+                                                  <% for (int nDVTD = 0; nDVTD < dtDVTD.Rows.Count; nDVTD++){ %>
+                                                  <option value="<% =dtDVTD.Rows[nDVTD]["donvi_id"].ToString() %>"><% =dtDVTD.Rows[nDVTD]["donvi_ten"].ToString() %></option>
+                                                  <% } %>
+                                              </select>
+                                          </td>
                                         </tr>
                                     <% } %>
                                 </tbody>
@@ -165,9 +175,11 @@
                         var KPI_ID = arrKPI[i].kpi_id;
                         var tytrong = arrKPI[i].tytrong;
                         var donvitinh = arrKPI[i].donvitinh;
+                        var donvithamdinh = arrKPI[i].donvithamdinh;
                         $(":checkbox[value='" + KPI_ID + "']").prop("checked", "true");
                         $("#dvt_" + KPI_ID).val(donvitinh);
                         $("#tytrong_" + KPI_ID).val(tytrong);
+                        $("#dvtd_" + KPI_ID).val(donvithamdinh);
                     }
                 },
                 error: function (msg) { alert(msg.d); }
@@ -196,12 +208,14 @@
                 //var dvt = $("#dvt_" + kpi_id).val();
                 var tytrong = $("#tytrong_" + kpi_id).val();
                 var dvt = $("#dvt_" + kpi_id).val();
+                var dvtd = $("#dvtd_" + kpi_id).val();
                 var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
                 if (isChecked == true) {
                     arrKPI.push({
                         kpi_id: kpi_id,
                         tytrong: tytrong,
-                        dvt: dvt
+                        dvt: dvt,
+                        dvtd: dvtd
                     });
                 }
             });

@@ -86,7 +86,7 @@ namespace VNPT_BSC.Admin
                     outputHTML += "<tr data-id='" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>";
                     outputHTML += "<td>" + (nKPI + 1) + "</td>";
                     outputHTML += "<td class='min-width-130'>" + gridData.Rows[nKPI]["kpi_ten"].ToString() + " (" + gridData.Rows[nKPI]["kpo_ten"].ToString() + ")" + "</td>";
-                    outputHTML += "<td class='text-center'><input type='text' class='form-control' name='trongso' id='trongso_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["trongso"].ToString() + "' onkeypress='return onlyNumbers(event)'/></td>";
+                    outputHTML += "<td class='text-center'><input type='text' class='form-control' name='trongso' id='trongso_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["trongso"].ToString() + "' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
                     //outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["donvitinh"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'>";
                     outputHTML += "<select class='form-control' id='dvt_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>";
@@ -103,9 +103,9 @@ namespace VNPT_BSC.Admin
                     }
                     outputHTML += "</select>";
                     outputHTML += "</td>";
-                    outputHTML += "<td class='text-center'><input type='text' class='form-control' name='kehoach' id='kehoach_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["kehoach"].ToString() + "' onkeypress='return onlyNumbers(event)'/></td>";
-                    outputHTML += "<td class='text-center'><input type='text' class='form-control' name='thuchien' id='thuchien_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["thuchien"].ToString() + "' onkeypress='return onlyNumbers(event)'/></td>";
-                    outputHTML += "<td class='text-center'><input type='text' class='form-control' name='thamdinh' id='thamdinh_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["thamdinh"].ToString() + "' onkeypress='return onlyNumbers(event)'/></td>";
+                    outputHTML += "<td class='text-center'><input type='text' class='form-control' name='kehoach' id='kehoach_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["kehoach"].ToString() + "' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
+                    outputHTML += "<td class='text-center'><input type='text' class='form-control' name='thuchien' id='thuchien_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["thuchien"].ToString() + "' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
+                    outputHTML += "<td class='text-center'><input type='text' class='form-control' name='thamdinh' id='thamdinh_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["thamdinh"].ToString() + "' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
                     // Đơn vị thẩm định
                     outputHTML += "<td class='text-center'>";
                     outputHTML += "<select class='form-control' id='dvtd_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>";
@@ -222,7 +222,15 @@ namespace VNPT_BSC.Admin
                 thang = Request.QueryString["thang"];
                 nam = Request.QueryString["nam"];
 
-                if (donvigiao == null || donvinhan == null || thang == null || nam == null || nhanvien.nhanvien_chucvu_id != 30)
+                // Khai báo các biến cho việc kiểm tra quyền
+                int[] quyenHeThong = { };
+                int nFindResult = -1;
+                quyenHeThong = Session.GetRole();
+
+                /*Kiểm tra nếu không có quyền admin (id của quyền là 1) thì đẩy ra trang đăng nhập*/
+                nFindResult = Array.IndexOf(quyenHeThong, 1);
+
+                if (donvigiao == null || donvinhan == null || thang == null || nam == null || nFindResult == -1)
                 {
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");

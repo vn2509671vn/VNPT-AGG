@@ -29,10 +29,21 @@
           <div class="panel-body">
               <div class="col-sm-12 form-horizontal">
                 <div class="form-group">
-                    <label class="control-label col-sm-6">Lọc theo năm:</label>
-                    <div class="col-sm-6">
+                    <label class="control-label col-sm-6">Lọc theo tháng/năm:</label>
+                    <div class="col-sm-6 form-inline">
+                        <select class="form-control" id="month">
+                            <% for(int i = 1; i <= 12; i++){ 
+                                string selectOption = "";
+                                int month =  Convert.ToInt32(DateTime.Now.ToString("MM"));
+                                if(i == month){
+                                    selectOption = "selected";
+                                }
+                            %>
+                            <option value="<%=i %>" <%=selectOption %>><%=i %></option>
+                            <% } %>
+                        </select>
                         <select class="form-control" id="year">
-                            <% for(int i = 1900; i <= 2100; i++){ 
+                            <% for(int i = 2016; i <= 2100; i++){ 
                                 string selectOption = "";
                                 int date =  Convert.ToInt32(DateTime.Now.ToString("yyyy"));
                                 if(i == date){
@@ -57,10 +68,11 @@
         window.location.replace("ChiTietBSCNVKiemDinh.aspx?nhanviengiao=" + nhanviengiao + "&nhanviennhan=" + nhanviennhan + "&thang=" + thang + "&nam=" + nam + "&nhanvienthamdinh=" + nhanvienthamdinh);
     }
 
-    function loadBSCByYear(year, nhanvienthamdinh) {
+    function loadBSCByYear(month, year, nhanvienthamdinh) {
         var requestData = {
             nhanvienkiemdinh: nhanvienkiemdinh,
-            nam: year
+            nam: year,
+            thang: month
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
@@ -86,12 +98,19 @@
 
     $(document).ready(function () {
         // Load grid lần đầu
-        loadBSCByYear($("#year").val(), nhanvienkiemdinh);
+        loadBSCByYear($("#month").val(), $("#year").val(), nhanvienkiemdinh);
 
         // Load grid khi năm thay đổi
         $("#year").change(function () {
+            var thang = $("#month").val();
             var nam = $(this).val();
-            loadBSCByYear(nam, nhanvienkiemdinh);
+            loadBSCByYear(thang, nam, nhanvienkiemdinh);
+        });
+        // Load grid khi tháng thay đổi
+        $("#month").change(function () {
+            var nam = $("#year").val();
+            var thang = $(this).val();
+            loadBSCByYear(thang, nam, nhanvienkiemdinh);
         });
     });
 </script>

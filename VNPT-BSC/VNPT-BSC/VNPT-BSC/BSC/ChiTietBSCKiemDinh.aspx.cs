@@ -145,7 +145,7 @@ namespace VNPT_BSC.BSC
             Connection cnNhanBSC = new Connection();
             bool isSuccess = false;
 
-            string sqlGiaoBSC = "update bsc_donvi set trangthaithamdinh = 1 where donvigiao = '" + donvigiao + "' and donvinhan = '" + donvinhan + "' and thang = '" + thang + "' and nam = '" + nam + "' and donvithamdinh = '" + donvithamdinh + "'";
+            string sqlGiaoBSC = "update bsc_donvi set trangthaithamdinh = 1 where donvigiao = '" + donvigiao + "' and donvinhan = '" + donvinhan + "' and thang = '" + thang + "' and nam = '" + nam + "' and donvithamdinh = '" + donvithamdinh + "' EXEC sp_ketquathuchien";
             try
             {
                 cnNhanBSC.ThucThiDL(sqlGiaoBSC);
@@ -172,7 +172,8 @@ namespace VNPT_BSC.BSC
                     sqlInsertBSCDV += "and donvinhan = '" + donvinhan + "' ";
                     sqlInsertBSCDV += "and thang = '" + thang + "' ";
                     sqlInsertBSCDV += "and nam = '" + nam + "' ";
-                    sqlInsertBSCDV += "and kpi = '" + kpi_detail[i].kpi_id + "'";
+                    sqlInsertBSCDV += "and kpi = '" + kpi_detail[i].kpi_id + "';";
+                    sqlInsertBSCDV += "EXEC sp_ketquathuchien @thang = '" + thang + "',@nam = '" + nam + "', @donvigiao = '" + donvigiao + "', @donvinhan = '" + donvinhan + "', @kpi_id = '" + kpi_detail[i].kpi_id + "'";
                     try
                     {
                         cnData.ThucThiDL(sqlInsertBSCDV);

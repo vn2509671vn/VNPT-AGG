@@ -207,6 +207,9 @@
     }
 
     $(document).ready(function () {
+        // Hiển thị danh sách các chức năng của ở BSC
+        $(".qlybsc a").click();
+
         loadDataToPage(nhanviengiao, nhanviennhan, thang, nam);
 
         $("#updateKetThucStatus").click(function () {

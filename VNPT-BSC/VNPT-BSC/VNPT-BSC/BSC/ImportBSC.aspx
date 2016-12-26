@@ -104,4 +104,10 @@
           </div>
         </div>
     </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Hiển thị danh sách các chức năng của ở BSC
+        $(".qlybsc a").click();
+    });
+</script>
 </asp:Content>

@@ -222,6 +222,9 @@
     }
 
     $(document).ready(function () {
+        // Hiển thị danh sách các chức năng của ở BSC
+        $(".qlybsc a").click();
+
         loadDataToPage(donvigiao, donvinhan, thang, nam, donvithamdinh);
 
         $("#updateThamDinhStatus").click(function () {

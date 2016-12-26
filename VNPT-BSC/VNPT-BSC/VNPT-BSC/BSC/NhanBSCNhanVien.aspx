@@ -86,6 +86,9 @@
 
     $(document).ready(function () {
         var nhanviennhan = '<%=nhanviennhan %>';
+        // Hiển thị danh sách các chức năng của ở BSC
+        $(".qlybsc a").click();
+
         // Load grid lần đầu
         loadBSCByYear($("#year").val(), nhanviennhan);
 

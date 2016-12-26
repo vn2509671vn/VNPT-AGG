@@ -154,7 +154,6 @@
                 $("#phanphoibsc_donvi").show();
                 $("#nghiemthubsc_donvi").show();
                 $("#nhanbsc_nhanvien").show();
-                $("#kiemdinhbsc_nhanvien").show();
                 $("#danhsach_bsc_dagiao").show();
             }
             else if (quyen == 3) {

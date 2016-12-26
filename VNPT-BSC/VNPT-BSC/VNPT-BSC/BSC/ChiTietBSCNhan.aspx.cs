@@ -237,7 +237,8 @@ namespace VNPT_BSC.BSC
                     sqlInsertBSCDV += "and thang = '" + thang + "' ";
                     sqlInsertBSCDV += "and nam = '" + nam + "' ";
                     sqlInsertBSCDV += "and kpi = '" + kpi_detail[i].kpi_id + "' ";
-                    sqlInsertBSCDV += "and trangthaithamdinh = 0";
+                    sqlInsertBSCDV += "and trangthaithamdinh = 0;";
+                    sqlInsertBSCDV += "EXEC sp_ketquathuchien @thang = '" + thang + "',@nam = '" + nam + "', @donvigiao = '" + donvigiao + "', @donvinhan = '" + donvinhan + "', @kpi_id = '" + kpi_detail[i].kpi_id + "'";
 
                     try
                     {

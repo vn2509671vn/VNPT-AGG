@@ -25,7 +25,7 @@ namespace VNPT_BSC.BSC
             /*Lấy danh sách BSC từ bảng bsc_donvi*/
             DataTable gridData = new DataTable();
             string outputHTML = "";
-            string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, dvt.dvt_ten as donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh ";
+            string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, dvt.dvt_ten as donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh, bsc.kq_thuchien, bsc.diem_kpi ";
             sqlBSC += "from bsc_donvi bsc, kpi, kpo, donvi dvgiao, donvi dvnhan, donvitinh dvt ";
             sqlBSC += "where bsc.kpi = kpi.kpi_id ";
             sqlBSC += "and bsc.donvitinh = dvt.dvt_id ";
@@ -48,29 +48,40 @@ namespace VNPT_BSC.BSC
             outputHTML += "<table id='table-kpi' class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%'>";
             outputHTML += "<thead>";
             outputHTML += "<tr>";
-            outputHTML += "<th>STT</th>";
-            outputHTML += "<th>Chỉ tiêu</th>";
-            outputHTML += "<th>Tỷ trọng (%)</th>";
-            outputHTML += "<th>ĐVT</th>";
-            outputHTML += "<th>Kế hoạch</th>";
-            outputHTML += "<th>Thực hiện</th>";
-            outputHTML += "<th>Thẩm định</th>";
-            outputHTML += "<th>Tỷ lệ thực hiện (%)</th>";
+            outputHTML += "<th class='no-sort'>STT</th>";
+            outputHTML += "<th class='no-sort'>Chỉ tiêu</th>";
+            outputHTML += "<th class='no-sort'>Tỷ trọng (%)</th>";
+            outputHTML += "<th class='no-sort'>ĐVT</th>";
+            outputHTML += "<th class='no-sort'>Kế hoạch</th>";
+            outputHTML += "<th class='no-sort'>Thực hiện</th>";
+            outputHTML += "<th class='no-sort'>Thẩm định</th>";
+            outputHTML += "<th class='no-sort'>Tỷ lệ thực hiện (%)</th>";
+            outputHTML += "<th class='no-sort'>Mức độ hoàn thành</th>";
+            outputHTML += "<th class='no-sort'>Điểm</th>";
             outputHTML += "</tr>";
             outputHTML += "</thead>";
             outputHTML += "<tbody>";
             if (gridData.Rows.Count <= 0)
             {
-                outputHTML += "<tr><td colspan='8' class='text-center'>No item</td></tr>";
+                outputHTML += "<tr><td colspan='10' class='text-center'>No item</td></tr>";
             }
             else
             {
+                int nTongTrongSo = 0;
+                decimal nTongSoDiem = 0;
                 for (int nKPI = 0; nKPI < gridData.Rows.Count; nKPI++)
                 {
                     decimal tylethuchien = 0;
+                    int trongso = Convert.ToInt32(gridData.Rows[nKPI]["trongso"].ToString());
                     decimal kehoach = Convert.ToDecimal(gridData.Rows[nKPI]["kehoach"].ToString());
                     decimal thamdinh = Convert.ToDecimal(gridData.Rows[nKPI]["thamdinh"].ToString());
+                    decimal mucdohoanthanh = Convert.ToDecimal(gridData.Rows[nKPI]["kq_thuchien"].ToString());
+                    decimal diem = Convert.ToDecimal(gridData.Rows[nKPI]["diem_kpi"].ToString());
+
                     tylethuchien = (thamdinh / kehoach) * 100;
+                    nTongTrongSo += trongso;
+                    nTongSoDiem += diem;
+
                     outputHTML += "<tr data-id='" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>";
                     outputHTML += "<td>" + (nKPI + 1) + "</td>";
                     outputHTML += "<td>" + gridData.Rows[nKPI]["kpi_ten"].ToString() + " (" + gridData.Rows[nKPI]["kpo_ten"].ToString() + ")" + "</td>";
@@ -80,8 +91,23 @@ namespace VNPT_BSC.BSC
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["thuchien"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["thamdinh"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + String.Format("{0:0.000}",tylethuchien) + "</strong></td>";
+                    outputHTML += "<td class='text-center'><strong>" + String.Format("{0:0.000}", mucdohoanthanh) + "</strong></td>";
+                    outputHTML += "<td class='text-center'><strong>" + String.Format("{0:0.000}", diem) + "</strong></td>";
                     outputHTML += "</tr>";
                 }
+
+                outputHTML += "<tr>";
+                outputHTML += "<td></td>";
+                outputHTML += "<td class='text-center'><strong>Tỷ lệ thực hiện</strong></td>";
+                outputHTML += "<td class='text-center'><strong>" + nTongTrongSo + "%" + "</strong></td>";
+                outputHTML += "<td></td>";
+                outputHTML += "<td></td>";
+                outputHTML += "<td></td>";
+                outputHTML += "<td></td>";
+                outputHTML += "<td></td>";
+                outputHTML += "<td></td>";
+                outputHTML += "<td class='text-center'><strong>" + Convert.ToInt32((nTongSoDiem * 100)) + "%" + "</strong></td>";
+                outputHTML += "</tr>";
             }
             outputHTML += "</tbody>";
             outputHTML += "</table>";

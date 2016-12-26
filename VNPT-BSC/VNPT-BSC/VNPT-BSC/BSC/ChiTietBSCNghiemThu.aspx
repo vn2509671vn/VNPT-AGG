@@ -171,8 +171,7 @@
                 }
 
                 $("#table-kpi").DataTable({
-                    "searching": true,
-                    "info": true,
+                    "order": [],
                     "pageLength": 50,
                     "dom": 'Bfrtip',
                     "buttons": [
@@ -184,7 +183,11 @@
                             extend: 'pdfHtml5',
                             title: 'Nghiệm thu đơn vị ' + ten_dvn
                         }
-                    ]
+                    ],
+                    "columnDefs": [{
+                        "targets": 'no-sort',
+                        "orderable": false,
+                    }]
                 });
             },
             error: function (msg) { alert(msg.d); }
@@ -227,6 +230,9 @@
     }
 
     $(document).ready(function () {
+        // Hiển thị danh sách các chức năng của ở BSC
+        $(".qlybsc a").click();
+
         loadDataToPage(donvigiao, donvinhan, thang, nam);
 
         $("#updateKetThucStatus").click(function () {

@@ -115,6 +115,9 @@
     }
 
     $(document).ready(function () {
+        // Hiển thị danh sách các chức năng của ở BSC
+        $(".qlybsc a").click();
+
         // Load grid lần đầu
         loadBSCByYear($("#month").val(), $("#year").val());
 

@@ -18,14 +18,14 @@ namespace VNPT_BSC
             return session["currentUser"] as Nhanvien;
         }
 
-        public static void SetRole(this HttpSessionState session, int[] role)
+        public static void SetRole(this HttpSessionState session, List<int> role)
         {
             session["role"] = role;
         }
 
-        public static int[] GetRole(this HttpSessionState session)
+        public static List<int> GetRole(this HttpSessionState session)
         {
-            return session["role"] as int[];
+            return session["role"] as List<int>;
         }
     }
 }

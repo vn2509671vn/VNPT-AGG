@@ -71,28 +71,38 @@ namespace VNPT_BSC
         {
             if (!IsPostBack)
             {
-                Nhanvien nhanvien = new Nhanvien();
-                nhanvien = Session.GetCurrentUser();
-                /*Get list BSC*/
-                dtkpiindex = new DataTable();
-                dtkpiindex = getkpiindexList(nhanvien.nhanvien_id);
-
-                dtthamdinhindex = new DataTable();
-                dtthamdinhindex = getthamdinhindexList(nhanvien.nhanvien_id);
                 try
                 {
-                    string sqlnhanvien = "select * from nhanvien";
-                    string sqlkpi = "select * from kpi";
+                    Nhanvien nhanvien = new Nhanvien();
+                    nhanvien = Session.GetCurrentUser();
 
-                    dtnhanvien_kpi = cn.XemDL(sqlnhanvien);
-                    dtkpi = cn.XemDL(sqlkpi);
+                    if (nhanvien == null)
+                    {
+                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    }
+
+                    /*Get list BSC*/
+                    dtkpiindex = new DataTable();
+                    dtkpiindex = getkpiindexList(nhanvien.nhanvien_id);
+
+                    dtthamdinhindex = new DataTable();
+                    dtthamdinhindex = getthamdinhindexList(nhanvien.nhanvien_id);
+                    try
+                    {
+                        string sqlnhanvien = "select * from nhanvien";
+                        string sqlkpi = "select * from kpi";
+
+                        dtnhanvien_kpi = cn.XemDL(sqlnhanvien);
+                        dtkpi = cn.XemDL(sqlkpi);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
+                catch {
+                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
-
-
             }
         }
     }

@@ -17,7 +17,6 @@ namespace VNPT_BSC.BSC
         Connection cn = new Connection();
         public static int donvichuquan;
         public static int nguoitao;
-        public static int chucvu;
         public static DataTable dtDonvi = new DataTable();
         public static DataTable dtFullDV = new DataTable();
         public static DataTable dtBSC = new DataTable();
@@ -430,13 +429,14 @@ namespace VNPT_BSC.BSC
                 nhanvien = Session.GetCurrentUser();
 
                 // Khai báo các biến cho việc kiểm tra quyền
-                int[] quyenHeThong = {};
-                int nFindResult = -1;
+                List<int> quyenHeThong = new List<int>();
+                bool nFindResult = false;
                 quyenHeThong = Session.GetRole();
                 
                 /*Kiểm tra nếu không có quyền giao bsc đơn vị (id của quyền là 2) thì đẩy ra trang đăng nhập*/
-                nFindResult = Array.IndexOf(quyenHeThong, 2);
-                if (nhanvien == null || nFindResult == -1)
+                nFindResult = quyenHeThong.Contains(2);
+
+                if (nhanvien == null || !nFindResult)
                 {
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
@@ -444,7 +444,6 @@ namespace VNPT_BSC.BSC
 
                 donvichuquan = nhanvien.nhanvien_donvi_id;
                 nguoitao = nhanvien.nhanvien_id;
-                chucvu = nhanvien.nhanvien_chucvu_id;
 
                 string sqlDanhSachDonVi = "select * from donvi";
                 string sqlDanhSachKPI = "select thang, nam, CONVERT(varchar(4), thang) + '/' + CONVERT(varchar(4), nam) AS content from DANHSACHBSC where nguoitao = '" + nguoitao + "' group by nam, thang order by nam, thang ASC";

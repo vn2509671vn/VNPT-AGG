@@ -173,6 +173,7 @@
     <Content Include="BSC\NhanBSCNhanVien.aspx" />
     <Content Include="BSC\PhanPhoiBSCDonVi.aspx" />
     <Content Include="BSC\PhanPhoiBSCNhanVien.aspx" />
+    <Content Include="BSC\XepHangBSC.aspx" />
     <Content Include="BSC\XuatMauBSC.aspx" />
     <Content Include="DanhMuc\Donvitinh.aspx" />
     <Content Include="DanhMuc\KPI.aspx" />
@@ -539,6 +540,13 @@
     </Compile>
     <Compile Include="BSC\PhanPhoiBSCNhanVien.aspx.designer.cs">
       <DependentUpon>PhanPhoiBSCNhanVien.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\XepHangBSC.aspx.cs">
+      <DependentUpon>XepHangBSC.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\XepHangBSC.aspx.designer.cs">
+      <DependentUpon>XepHangBSC.aspx</DependentUpon>
     </Compile>
     <Compile Include="BSC\XuatMauBSC.aspx.cs">
       <DependentUpon>XuatMauBSC.aspx</DependentUpon>

@@ -14,7 +14,7 @@ namespace VNPT_BSC
 {
     public partial class Login : System.Web.UI.Page
     {
-        public static int[] quyenHeThong;
+        public static List<int> quyenHeThong = new List<int>();
         
         private static DataTable getQuyenByChucVuID(int chucvu_id)
         {
@@ -33,6 +33,21 @@ namespace VNPT_BSC
             return result;
         }
 
+        private static DataTable getListChucVu(int nhanvien_id)
+        {
+            Connection cn = new Connection();
+            DataTable dtResult = new DataTable();
+            string sql = "select * from nhanvien_chucvu where nhanvien_id = '" + nhanvien_id + "'";
+            try
+            {
+                dtResult = cn.XemDL(sql);
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+            return dtResult;
+        }
+
         [WebMethod]
         public static bool dangnhap(string idApprove, string passApprove)
         {
@@ -41,10 +56,11 @@ namespace VNPT_BSC
             Nhanvien nv = new Nhanvien();
             DataTable dt = new DataTable();
             DataTable dtQuyen = new DataTable();
+            DataTable dtChucVu = new DataTable();
 
             bool output = false;
             string sqlllogin = "";
-            sqlllogin = "select * from nhanvien a, donvi b,chucvu c where a.nhanvien_taikhoan = '" + idApprove + "' and a.nhanvien_matkhau = '" + passApprove + "' and a.nhanvien_donvi = b.donvi_id and a.nhanvien_chucvu = c.chucvu_id";
+            sqlllogin = "select * from nhanvien a, donvi b where a.nhanvien_taikhoan = '" + idApprove + "' and a.nhanvien_matkhau = '" + passApprove + "' and a.nhanvien_donvi = b.donvi_id";
             try
             {
                 dt = cn.XemDL(sqlllogin);
@@ -53,17 +69,29 @@ namespace VNPT_BSC
                     nv.nhanvien_id = Convert.ToInt32(dt.Rows[0][0].ToString());
                     nv.nhanvien_hoten = dt.Rows[0][1].ToString();
                     nv.nhanvien_donvi = dt.Rows[0]["donvi_ten"].ToString();
-                    nv.nhanvien_chucvu = dt.Rows[0]["chucvu_ten"].ToString();
                     nv.nhanvien_donvi_id = Convert.ToInt32(dt.Rows[0]["nhanvien_donvi"].ToString());
-                    nv.nhanvien_chucvu_id = Convert.ToInt32(dt.Rows[0]["nhanvien_chucvu"].ToString());
                     objp.Session.SetCurrentUser(nv);
 
-                    dtQuyen = getQuyenByChucVuID(nv.nhanvien_chucvu_id);
-                    quyenHeThong = new int[dtQuyen.Rows.Count];
-                    for (int nIndex = 0; nIndex < dtQuyen.Rows.Count; nIndex++)
-                    {
-                        quyenHeThong[nIndex] = Convert.ToInt32(dtQuyen.Rows[nIndex]["quyen_id"].ToString());
+                    dtChucVu = getListChucVu(nv.nhanvien_id);
+                    int numChucVu = dtChucVu.Rows.Count;
+                    nv.nhanvien_chucvu_id = new int[numChucVu];
+
+                    for (int nCVIndex = 0; nCVIndex < dtChucVu.Rows.Count; nCVIndex++) {
+                        int chuvu_id = Convert.ToInt32(dtChucVu.Rows[nCVIndex]["chucvu_id"].ToString());
+                        nv.nhanvien_chucvu_id[nCVIndex] = chuvu_id;
+
+                        dtQuyen = getQuyenByChucVuID(chuvu_id);
+                        for (int nIndex = 0; nIndex < dtQuyen.Rows.Count; nIndex++)
+                        {
+                            int quyen_id = Convert.ToInt32(dtQuyen.Rows[nIndex]["quyen_id"].ToString());
+                            bool existItem = false;
+                            existItem = quyenHeThong.Contains(quyen_id);
+                            if (!existItem) {
+                                quyenHeThong.Add(quyen_id);
+                            }
+                        }
                     }
+                    
                     objp.Session.SetRole(quyenHeThong);
                 }
                 else{

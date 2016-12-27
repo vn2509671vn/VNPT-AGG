@@ -37,7 +37,7 @@ namespace VNPT_BSC.Admin
             /*Lấy danh sách BSC từ bảng bsc_donvi*/
             DataTable gridData = new DataTable();
             string sqlDVT = "select * from donvitinh";
-            string sqlNVTD = "select * from nhanvien where nhanvien_chucvu in (3,5)";
+            string sqlNVTD = "select nhanvien.* from nhanvien, nhanvien_chucvu where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id and nhanvien_chucvu.chucvu_id in (3,5)";
             string outputHTML = "";
             string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, dvt.dvt_id as donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh, bsc.trangthaithamdinh, bsc.nhanvienthamdinh ";
             sqlBSC += "from bsc_nhanvien bsc, kpi, kpo, nhanvien nvgiao, nhanvien nvnhan, donvitinh dvt ";
@@ -223,14 +223,14 @@ namespace VNPT_BSC.Admin
                 nam = Request.QueryString["nam"];
 
                 // Khai báo các biến cho việc kiểm tra quyền
-                int[] quyenHeThong = { };
-                int nFindResult = -1;
+                List<int> quyenHeThong = new List<int>();
+                bool nFindResult = false;
                 quyenHeThong = Session.GetRole();
 
                 /*Kiểm tra nếu không có quyền admin (id của quyền là 1) thì đẩy ra trang đăng nhập*/
-                nFindResult = Array.IndexOf(quyenHeThong, 1);
+                nFindResult = quyenHeThong.Contains(1);
 
-                if (nhanviengiao == null || nhanviennhan == null || thang == null || nam == null || nFindResult == -1)
+                if (nhanviengiao == null || nhanviennhan == null || thang == null || nam == null || !nFindResult)
                 {
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");

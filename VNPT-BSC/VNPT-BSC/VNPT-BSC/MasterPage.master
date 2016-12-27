@@ -88,6 +88,7 @@
                                         <li class="cls-bsc" id="xuatmaubsc_donvi"><a href="/BSC/XuatMauBSC.aspx" class="navlink">Xuất mẫu BSC</a></li>
                                         <li class="cls-bsc" id="import_bsc"><a href="/BSC/ImportBSC.aspx" class="navlink">Import BSC</a></li>
                                         <li class="cls-bsc" id="danhsach_bsc_dagiao"><a href="/BSC/DanhSachBSCDaGiao.aspx" class="navlink">Danh sách BSC đã giao</a></li>
+                                        <li class="cls-bsc" id="xephang_bsc"><a href="/BSC/XepHangBSC.aspx" class="navlink">Danh sách xếp hạng</a></li>
                                         <li class="cls-bsc" id="phanphoibsc_donvi"><a href="/BSC/PhanPhoiBSCDonVi.aspx" class="navlink">Phân phối BSC - Đơn Vị</a></li>
                                         <li class="cls-bsc" id="phanphoibsc_nhanvien"><a href="/BSC/PhanPhoiBSCNhanVien.aspx" class="navlink">Phân phối BSC - Nhân Viên</a></li>
                                         <li class="cls-bsc" id="nhanbsc_donvi"><a href="/BSC/NhanBSCDonVi.aspx" class="navlink">Nhận BSC - Đơn Vị</a></li>
@@ -151,6 +152,7 @@
                 $("#maubsc_donvi").show();
                 $("#xuatmaubsc_donvi").show();
                 $("#import_bsc").show();
+                $("#xephang_bsc").show();
                 $("#phanphoibsc_donvi").show();
                 $("#nghiemthubsc_donvi").show();
                 $("#nhanbsc_nhanvien").show();

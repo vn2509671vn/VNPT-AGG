@@ -55,7 +55,7 @@ namespace VNPT_BSC.BSC
             DataTable dsDonvitinh = new DataTable();
             DataTable dsNhanvienthamdinh = new DataTable();
             string sqlDVT = "select * from donvitinh";
-            string sqlNVTD = "select * from nhanvien where nhanvien_chucvu IN (3,5) and nhanvien_donvi = '" + donvi + "'";
+            string sqlNVTD = "select nhanvien.* from nhanvien, nhanvien_chucvu where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id and nhanvien_chucvu.chucvu_id in (3,5) and nhanvien.nhanvien_donvi = '" + donvi + "'";
             string sqlBSC = "select bsc.thang, bsc.nam, bsc.kpi_id, bsc.tytrong, bsc.donvitinh, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten ";
             sqlBSC += "from danhsachbsc bsc, kpi, kpo ";
             sqlBSC += "where bsc.kpi_id = kpi.kpi_id ";
@@ -145,7 +145,7 @@ namespace VNPT_BSC.BSC
             DataTable dsDonvitinh = new DataTable();
             DataTable dsNhanvienthamdinh = new DataTable();
             string sqlDVT = "select * from donvitinh";
-            string sqlNVTD = "select * from nhanvien where nhanvien_chucvu IN (3,5) and nhanvien_donvi = '" + donvi + "'";
+            string sqlNVTD = "select nhanvien.* from nhanvien, nhanvien_chucvu where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id and nhanvien_chucvu.chucvu_id in (3,5) and nhanvien.nhanvien_donvi = '" + donvi + "'";
 
             // Lấy thông tin của nhân viên nhận thông qua tài khoản
             int nhanviennhan = 0;
@@ -464,14 +464,14 @@ namespace VNPT_BSC.BSC
                     nhanvien = Session.GetCurrentUser();
 
                     // Khai báo các biến cho việc kiểm tra quyền
-                    int[] quyenHeThong = { };
-                    int nFindResult = -1;
+                    List<int> quyenHeThong = new List<int>();
+                    bool nFindResult = false;
                     quyenHeThong = Session.GetRole();
 
                     /*Kiểm tra nếu không có quyền giao bsc nhân viên (id của quyền là 3) thì đẩy ra trang đăng nhập*/
-                    nFindResult = Array.IndexOf(quyenHeThong, 3);
+                    nFindResult = quyenHeThong.Contains(3);
 
-                    if (nhanvien == null || nFindResult == -1)
+                    if (nhanvien == null || !nFindResult)
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                         Response.Write("<script>window.location.href='../Login.aspx';</script>");

@@ -40,7 +40,7 @@ namespace VNPT_BSC.BSC
         private DataTable getChuyenVienBSC()
         {
             DataTable dtResult = new DataTable();
-            string sql = "select * from nhanvien where nhanvien_chucvu = 10";
+            string sql = "select nhanvien.* from nhanvien, nhanvien_chucvu where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id and nhanvien_chucvu.chucvu_id = 10";
             try
             {
                 dtResult = cn.XemDL(sql);
@@ -168,13 +168,14 @@ namespace VNPT_BSC.BSC
             dtChuyenVienBSC = getChuyenVienBSC();
 
             // Khai báo các biến cho việc kiểm tra quyền
-            int[] quyenHeThong = { };
-            int nFindResult = -1;
+            List<int> quyenHeThong = new List<int>();
+            bool nFindResult = false;
             quyenHeThong = Session.GetRole();
 
             /*Kiểm tra nếu không có quyền giao bsc đơn vị (id của quyền là 2) thì đẩy ra trang đăng nhập*/
-            nFindResult = Array.IndexOf(quyenHeThong, 2);
-            if (nhanvien == null || nFindResult == -1)
+            nFindResult = quyenHeThong.Contains(2);
+
+            if (nhanvien == null || !nFindResult)
             {
                 Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                 Response.Write("<script>window.location.href='../Login.aspx';</script>");

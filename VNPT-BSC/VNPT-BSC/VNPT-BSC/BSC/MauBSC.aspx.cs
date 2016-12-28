@@ -63,10 +63,16 @@ namespace VNPT_BSC.BSC
         }
 
         /*List BSC theo năm*/
-        private DataTable dsBSCNam(int nguoitao)
+        private DataTable dsBSCNam()
         {
             DataTable dsBSC = new DataTable();
-            string sqlBSCDuocGiao = "select nam from danhsachbsc where nguoitao = '" + nguoitao + "' group by nam order by nam DESC";
+            string sqlBSCDuocGiao = "select nam from danhsachbsc where nguoitao ";
+            sqlBSCDuocGiao += "in (select nhanvien.nhanvien_id from nhanvien, chucvu, nhanvien_chucvu, quyen_cv ";
+            sqlBSCDuocGiao += "where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id ";
+            sqlBSCDuocGiao += "and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id ";
+            sqlBSCDuocGiao += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
+            sqlBSCDuocGiao += "and quyen_cv.quyen_id = 2) group by nam order by nam DESC";
+
             try
             {
                 dsBSC = cn.XemDL(sqlBSCDuocGiao);
@@ -80,9 +86,15 @@ namespace VNPT_BSC.BSC
         }
 
         /*Get KPI list*/
-        private DataTable getKPIList(int nguoitao)
+        private DataTable getKPIList()
         {
-            string sqlKPI = "select kpi.kpi_id, kpo.kpo_id, kpi.kpi_ten + ' (' + kpo.kpo_ten + ')' as name from kpi, kpo where kpi.kpi_thuoc_kpo = kpo.kpo_id and kpi.kpi_nguoitao = '" + nguoitao + "' order by kpo.kpo_id ASC";
+            string sqlKPI = "select kpi.kpi_id, kpo.kpo_id, kpi.kpi_ten + ' (' + kpo.kpo_ten + ')' as name from kpi, kpo where kpi.kpi_thuoc_kpo = kpo.kpo_id and kpi.kpi_nguoitao ";
+            sqlKPI += "in (select nhanvien.nhanvien_id from nhanvien, chucvu, nhanvien_chucvu, quyen_cv ";
+            sqlKPI += "where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id ";
+            sqlKPI += "and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id ";
+            sqlKPI += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
+            sqlKPI += "and quyen_cv.quyen_id = 2) order by kpo.kpo_id ASC";
+
             DataTable dtKPI = new DataTable();
             try
             {
@@ -94,8 +106,13 @@ namespace VNPT_BSC.BSC
             return dtKPI;
         }
 
-        private DataTable getBSCList(int nguoitao) {
-            string sqlBSC = "select thang,nam from danhsachbsc where nguoitao = '" + nguoitao + "' group by thang, nam order by nam,thang DESC";
+        private DataTable getBSCList() {
+            string sqlBSC = "select thang,nam from danhsachbsc where nguoitao ";
+            sqlBSC += "in (select nhanvien.nhanvien_id from nhanvien, chucvu, nhanvien_chucvu, quyen_cv ";
+            sqlBSC += "where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id ";
+            sqlBSC += "and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id ";
+            sqlBSC += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
+            sqlBSC += "and quyen_cv.quyen_id = 2) group by thang, nam order by nam,thang DESC";
             DataTable dtBSC = new DataTable();
             try {
                 dtBSC = cn.XemDL(sqlBSC);
@@ -107,12 +124,18 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static Dictionary<String, String>[] BindingCheckBox(int monthAprove, int yearAprove, int nguoitao)
+        public static Dictionary<String, String>[] BindingCheckBox(int monthAprove, int yearAprove)
         {
             DataTable dtKPI = new DataTable();
             Connection cnDanhSachBSC = new Connection();
             Dictionary<String, String>[] arrKPI = { };
-            string sql = "select * from danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao = '" + nguoitao + "'";
+            string sql = "select * from danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao ";
+            sql += "in (select nhanvien.nhanvien_id from nhanvien, chucvu, nhanvien_chucvu, quyen_cv ";
+            sql += "where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id ";
+            sql += "and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id ";
+            sql += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
+            sql += "and quyen_cv.quyen_id = 2)";
+
             dtKPI = cnDanhSachBSC.XemDL(sql);
             if (dtKPI.Rows.Count > 0)
             {
@@ -134,7 +157,14 @@ namespace VNPT_BSC.BSC
         {
             Connection cnDanhSachBSC = new Connection();
             bool output = false;
-            string sqlDelOldData = "delete danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao = '" + nguoitao + "'";
+            string sqlDelOldData = "delete danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao ";
+            sqlDelOldData += "in (select nhanvien.nhanvien_id from nhanvien, chucvu, nhanvien_chucvu, quyen_cv ";
+            sqlDelOldData += "where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id ";
+            sqlDelOldData += "and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id ";
+            sqlDelOldData += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
+            sqlDelOldData += "and quyen_cv.quyen_id = 2) ";
+            sqlDelOldData += "and bscduocgiao = '' ";
+
             string sqlInsertNewData = "";
             try
             {
@@ -167,8 +197,6 @@ namespace VNPT_BSC.BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-
             if (!IsPostBack) {
                 try
                 {
@@ -192,15 +220,15 @@ namespace VNPT_BSC.BSC
 
                     /*Get list BSC*/
                     dtBSC = new DataTable();
-                    dtBSC = getBSCList(nguoitao);
+                    dtBSC = getBSCList();
 
                     /*Get list KPI*/
                     dtKPI = new DataTable();
-                    dtKPI = getKPIList(nguoitao);
+                    dtKPI = getKPIList();
 
                     /*Get list các năm của BSC*/
                     dtBSCNam = new DataTable();
-                    dtBSCNam = dsBSCNam(nguoitao);
+                    dtBSCNam = dsBSCNam();
 
                     /*Get list DVT*/
                     dtDVT = new DataTable();

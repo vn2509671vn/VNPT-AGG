@@ -76,20 +76,6 @@
                         </select>
                     </div>
                 </div>
-                <%--<div class="form-group">
-                    <label class="control-label col-sm-3">Đơn vị thẩm định:</label>
-                    <div class="col-sm-8">
-                        <select class="form-control" id="donvithamdinh">
-                            <% for(int i = 0; i < dtFullDV.Rows.Count; i++){ %>
-                                <%
-                                    string donvi_id =  dtFullDV.Rows[i]["donvi_id"].ToString();
-                                    string donvi_ten =  dtFullDV.Rows[i]["donvi_ten"].ToString();
-                                %>
-                                <option value="<%= donvi_id%>"><%= donvi_ten%></option>
-                            <% } %>
-                        </select>
-                    </div>
-                </div>--%>
                 
                 <div class="form-group">
                     <label class="control-label col-sm-3">Trạng thái giao:</label>
@@ -142,9 +128,10 @@
                                                     string thang =  dtBSC.Rows[iBSC]["thang"].ToString();
                                                     string nam =  dtBSC.Rows[iBSC]["nam"].ToString();
                                                     string noidung =  dtBSC.Rows[iBSC]["content"].ToString();
+                                                    string szNguoitao = dtBSC.Rows[iBSC]["nhanvien_id"].ToString();
                                                 %>
                                               <div class="radio">
-                                                <label><input type="radio" name="optradioBSC" data-thang="<%=thang %>" data-nam="<%=nam %>"><%= noidung%></label>
+                                                <label><input type="radio" name="optradioBSC" data-thang="<%=thang %>" data-nam="<%=nam %>" data-nguoitao="<%=szNguoitao %>"><%= noidung%></label>
                                               </div>
                                           <% } %>
                                           </div>
@@ -175,7 +162,6 @@
     </div>
 
 <script type="text/javascript">
-    var nguoitao = "<%= nguoitao%>";
     var donvigiao = "<%= donvichuquan%>";
     function getCurrentDate() {
         var curMonth = "<%= DateTime.Now.ToString("MM") %>";
@@ -255,18 +241,6 @@
                     $("#nhanLabel").addClass("label-default");
                     $("#nhanLabel").text("Chưa nhận");
                 }
-                
-                // Cập nhật trạng thái kiểm định
-                //if (trangthaithamdinh == "True") {
-                //    $("#kiemdinhLabel").removeClass("label-default");
-                //    $("#kiemdinhLabel").addClass("label-success");
-                //    $("#kiemdinhLabel").text("Đã kiểm định");
-                //}
-                //else {
-                //    $("#kiemdinhLabel").removeClass("label-success");
-                //    $("#kiemdinhLabel").addClass("label-default");
-                //    $("#kiemdinhLabel").text("Chưa kiểm định");
-                //}
 
                 // Cập nhật trạng thái kết thúc
                 if (trangthaiketthuc == "True") {
@@ -325,10 +299,11 @@
         $("#loadBSC").click(function () {
             var thang = $("input[name=optradioBSC]:checked").attr("data-thang");
             var nam = $("input[name=optradioBSC]:checked").attr("data-nam");
+            var szNguoitao = $("input[name=optradioBSC]:checked").attr("data-nguoitao");
             var requestData = {
                 thang: thang,
                 nam: nam,
-                nguoitao: nguoitao
+                nguoitao: szNguoitao
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({

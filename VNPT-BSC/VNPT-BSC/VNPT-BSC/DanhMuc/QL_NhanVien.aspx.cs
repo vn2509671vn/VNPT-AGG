@@ -112,14 +112,31 @@ namespace VNPT_BSC.DanhMuc
         {
             if (!IsPostBack)
             {
-                /*Get list BSC*/
-                dtnhanvien = new DataTable();
-                dtnhanvien = getnhanvienList();
                 try
                 {
                     string sqldonvi = "select * from donvi";
                     string sqlchucvu = "select * from chucvu";
                     string sqlchucdanh = "select * from chucdanh";
+                    Nhanvien nhanvien = new Nhanvien();
+                    nhanvien = Session.GetCurrentUser();
+
+                    // Khai báo các biến cho việc kiểm tra quyền
+                    List<int> quyenHeThong = new List<int>();
+                    bool nFindResult = false;
+                    quyenHeThong = Session.GetRole();
+
+                    /*Kiểm tra nếu không có quyền admin (id của quyền là 1) thì đẩy ra trang đăng nhập*/
+                    nFindResult = quyenHeThong.Contains(1);
+
+                    if (nhanvien == null || !nFindResult)
+                    {
+                        Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    }
+
+                    /*Get list BSC*/
+                    dtnhanvien = new DataTable();
+                    dtnhanvien = getnhanvienList();
 
                     dtdonvi_nv = nv.XemDL(sqldonvi);
                     dtchucvu_nv = nv.XemDL(sqlchucvu);
@@ -127,7 +144,7 @@ namespace VNPT_BSC.DanhMuc
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
 
             }

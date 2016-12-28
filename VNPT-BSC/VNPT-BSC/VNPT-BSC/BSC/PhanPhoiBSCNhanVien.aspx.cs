@@ -482,7 +482,7 @@ namespace VNPT_BSC.BSC
 
                     string sqlDanhSachNhanVien = "select * from nhanvien where nhanvien_donvi = '" + donvi + "'";
                     string sqlDanhSachFullNV = sqlDanhSachNhanVien;
-                    string sqlDanhSachKPI = "select thang, nam, CONVERT(varchar(4), thang) + '/' + CONVERT(varchar(4), nam) AS content from DANHSACHBSC where nguoitao = '" + nhanvienquanly + "' group by nam, thang order by nam, thang ASC";
+                    string sqlDanhSachKPI = "select thang, nam, CONVERT(varchar(4), thang) + '/' + CONVERT(varchar(4), nam) AS content from DANHSACHBSC where nguoitao = '" + nhanvienquanly + "' and bscduocgiao != '' group by nam, thang order by nam, thang ASC";
                     dtNhanVien = cn.XemDL(sqlDanhSachNhanVien);
                     dtBSC = cn.XemDL(sqlDanhSachKPI);
                     dtFullNV = cn.XemDL(sqlDanhSachFullNV);

@@ -73,11 +73,10 @@
     </div>
 
 <script type="text/javascript">
-    function loadBSCByYear(month, year, nguoitao) {
+    function loadBSCByYear(month, year) {
         var requestData = {
             thang: month,
-            nam: year,
-            nguoitao: nguoitao
+            nam: year
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
@@ -113,25 +112,24 @@
     }
 
     $(document).ready(function () {
-        var nguoitao = <%=nguoitao_id%>;
         // Hiển thị danh sách các chức năng của ở BSC
         $(".qlybsc a").click();
 
         // Load grid lần đầu
-        loadBSCByYear($("#month").val(), $("#year").val(), nguoitao);
+        loadBSCByYear($("#month").val(), $("#year").val());
 
         // Load grid khi năm thay đổi
         $("#year").change(function () {
             var thang = $("#month").val();
             var nam = $(this).val();
-            loadBSCByYear(thang, nam, nguoitao);
+            loadBSCByYear(thang, nam);
         });
 
         // Load grid khi tháng thay đổi
         $("#month").change(function () {
             var nam = $("#year").val();
             var thang = $(this).val();
-            loadBSCByYear(thang, nam, nguoitao);
+            loadBSCByYear(thang, nam);
         });
     });
 </script>

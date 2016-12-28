@@ -50,7 +50,7 @@ namespace VNPT_BSC.BSC
         private DataTable dsBSCNam(int nguoitao)
         {
             DataTable dsBSC = new DataTable();
-            string sqlBSCDuocGiao = "select nam from danhsachbsc where nguoitao = '" + nguoitao + "' group by nam order by nam DESC";
+            string sqlBSCDuocGiao = "select nam from danhsachbsc where nguoitao = '" + nguoitao + "' and bscduocgiao != '' group by nam order by nam DESC";
             try
             {
                 dsBSC = cn.XemDL(sqlBSCDuocGiao);
@@ -97,7 +97,7 @@ namespace VNPT_BSC.BSC
 
         private DataTable getBSCList(int nguoitao)
         {
-            string sqlBSC = "select thang,nam,bscduocgiao from danhsachbsc where nguoitao = '" + nguoitao + "' group by thang, nam,bscduocgiao order by nam,thang,bscduocgiao";
+            string sqlBSC = "select thang,nam,bscduocgiao from danhsachbsc where nguoitao = '" + nguoitao + "' and bscduocgiao != '' group by thang, nam,bscduocgiao order by nam,thang,bscduocgiao";
             DataTable dtBSC = new DataTable();
             try
             {
@@ -176,7 +176,7 @@ namespace VNPT_BSC.BSC
             DataTable dtKPI = new DataTable();
             Connection cnDanhSachBSC = new Connection();
             Dictionary<String, String>[] arrKPI = { };
-            string sql = "select * from danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao = '" + nguoitao + "'";
+            string sql = "select * from danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao = '" + nguoitao + "' and bscduocgiao != ''";
             dtKPI = cnDanhSachBSC.XemDL(sql);
             if (dtKPI.Rows.Count > 0)
             {
@@ -197,7 +197,7 @@ namespace VNPT_BSC.BSC
         {
             Connection cnDanhSachBSC = new Connection();
             bool output = false;
-            string sqlDelOldData = "delete danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao = '" + nguoitao + "'";
+            string sqlDelOldData = "delete danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao = '" + nguoitao + "' and bscduocgiao = '" + bscduocgiao + "'";
             string sqlInsertNewData = "";
             try
             {

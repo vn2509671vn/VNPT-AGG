@@ -16,7 +16,7 @@ namespace VNPT_BSC.BSC
     {
         public static int nguoitao_id;
         // Lấy ra danh sách các KPI, DVT, Trọng số theo tháng, năm và KPO
-        public static DataTable getKPIByTimeAndKPO(int thang, int nam, int kpo_id, int nguoitao)
+        public static DataTable getKPIByTimeAndKPO(int thang, int nam, int kpo_id)
         {
             Connection cnBSC = new Connection();
             DataTable dsKPIByTimeAndKPO = new DataTable();
@@ -28,7 +28,13 @@ namespace VNPT_BSC.BSC
             sqlKPIByTimeAndKPO += "and danhsachbsc.thang = '" + thang + "' ";
             sqlKPIByTimeAndKPO += "and danhsachbsc.nam = '" + nam + "' ";
             sqlKPIByTimeAndKPO += "and kpo.kpo_id = '" + kpo_id + "' ";
-            sqlKPIByTimeAndKPO += "and danhsachbsc.nguoitao = '" + nguoitao + "' ";
+            sqlKPIByTimeAndKPO += "and danhsachbsc.nguoitao  ";
+            sqlKPIByTimeAndKPO += "in (select nhanvien.nhanvien_id from nhanvien, chucvu, nhanvien_chucvu, quyen_cv ";
+            sqlKPIByTimeAndKPO += "where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id ";
+            sqlKPIByTimeAndKPO += "and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id ";
+            sqlKPIByTimeAndKPO += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
+            sqlKPIByTimeAndKPO += "and quyen_cv.quyen_id = 2) ";
+            sqlKPIByTimeAndKPO += "and danhsachbsc.bscduocgiao = '' ";
             sqlKPIByTimeAndKPO += "group by kpi.kpi_id, kpi.kpi_ten, dvt.dvt_ten, danhsachbsc.tytrong";
             try
             {
@@ -43,7 +49,7 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static Dictionary<String, String> loadBSCByYear(int thang, int nam, int nguoitao)
+        public static Dictionary<String, String> loadBSCByYear(int thang, int nam)
         {
             Dictionary<String, String> dicOutput = new Dictionary<string, string>();
             Connection cnBSC = new Connection();
@@ -55,11 +61,18 @@ namespace VNPT_BSC.BSC
             string outputHTML = "";
 
             string sqlKPOByTime = "select kpo.kpo_id, kpo.kpo_ten ";
-            sqlKPOByTime += "from kpo, kpi, bsc_donvi ";
-            sqlKPOByTime += "where bsc_donvi.kpi = kpi.kpi_id ";
+            sqlKPOByTime += "from kpo, kpi, danhsachbsc ";
+            sqlKPOByTime += "where danhsachbsc.kpi_id = kpi.kpi_id ";
             sqlKPOByTime += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
-            sqlKPOByTime += "and bsc_donvi.thang = '" + thang + "' ";
-            sqlKPOByTime += "and bsc_donvi.nam = '" + nam + "' ";
+            sqlKPOByTime += "and danhsachbsc.thang = '" + thang + "' ";
+            sqlKPOByTime += "and danhsachbsc.nam = '" + nam + "' ";
+            sqlKPOByTime += "and danhsachbsc.nguoitao in (select nhanvien.nhanvien_id ";
+            sqlKPOByTime += "from nhanvien, chucvu, nhanvien_chucvu, quyen_cv ";
+            sqlKPOByTime += "where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id ";
+            sqlKPOByTime += "and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id ";
+            sqlKPOByTime += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
+            sqlKPOByTime += "and quyen_cv.quyen_id = 2) ";
+            sqlKPOByTime += "and danhsachbsc.bscduocgiao = '' ";
             sqlKPOByTime += "group by kpo.kpo_id, kpo.kpo_ten ";
 
             try
@@ -109,7 +122,7 @@ namespace VNPT_BSC.BSC
                     int kpo_id = Convert.ToInt32(dsKPOByTime.Rows[nIndexKPO]["kpo_id"].ToString());
 
                     // Hiển thị các KPI, DVT, Trọng số theo KPO
-                    dsKPIByTimeAndKPO = getKPIByTimeAndKPO(thang, nam, kpo_id, nguoitao);
+                    dsKPIByTimeAndKPO = getKPIByTimeAndKPO(thang, nam, kpo_id);
                     if (dsKPIByTimeAndKPO.Rows.Count <= 0)
                     {
                         outputHTML += "<tr><td colspan='" + (12 + 4) + "' class='text-center'>No item</td></tr>";
@@ -168,7 +181,6 @@ namespace VNPT_BSC.BSC
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
 
-                nguoitao_id = nhanvien.nhanvien_id;
             }
             catch
             {

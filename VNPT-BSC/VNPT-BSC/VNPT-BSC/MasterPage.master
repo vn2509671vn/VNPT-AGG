@@ -83,9 +83,9 @@
                                 <!-- Note: By adding "in" after "collapse", it starts with that particular panel open by default; remove if you want them all collapsed by default -->
                                 <div id="collapseThree" class="panel-collapse collapse off">
                                     <ul class="list-group">
-                                        <li class="cls-bsc" id="maubsc_donvi"><a href="/BSC/MauBSC.aspx" class="navlink">Mẫu BSC</a></li>
-                                        <li class="cls-bsc" id="maubsc_nhanvien"><a href="/BSC/MauBSCNhanVien.aspx" class="navlink">Mẫu BSC</a></li>
-                                        <li class="cls-bsc" id="xuatmaubsc_donvi"><a href="/BSC/XuatMauBSC.aspx" class="navlink">Xuất mẫu BSC</a></li>
+                                        <li class="cls-bsc" id="maubsc_donvi"><a href="/BSC/MauBSC.aspx" class="navlink">Mẫu BSC đơn vị</a></li>
+                                        <li class="cls-bsc" id="maubsc_nhanvien"><a href="/BSC/MauBSCNhanVien.aspx" class="navlink">Mẫu BSC nhân viên</a></li>
+                                        <li class="cls-bsc" id="xuatmaubsc_donvi"><a href="/BSC/XuatMauBSC.aspx" class="navlink">Xuất mẫu BSC đơn vị</a></li>
                                         <li class="cls-bsc" id="import_bsc"><a href="/BSC/ImportBSC.aspx" class="navlink">Import BSC</a></li>
                                         <li class="cls-bsc" id="danhsach_bsc_dagiao"><a href="/BSC/DanhSachBSCDaGiao.aspx" class="navlink">Danh sách BSC đã giao</a></li>
                                         <li class="cls-bsc" id="xephang_bsc"><a href="/BSC/XepHangBSC.aspx" class="navlink">Danh sách xếp hạng</a></li>

@@ -59,6 +59,7 @@ namespace VNPT_BSC
             DataTable dtChucVu = new DataTable();
 
             bool output = false;
+            quyenHeThong.Clear();
             string sqlllogin = "";
             sqlllogin = "select * from nhanvien a, donvi b where a.nhanvien_taikhoan = '" + idApprove + "' and a.nhanvien_matkhau = '" + passApprove + "' and a.nhanvien_donvi = b.donvi_id";
             try

@@ -93,8 +93,32 @@ namespace VNPT_BSC.DanhMuc
         {
             if (!IsPostBack)
             {
-                dtdvt = new DataTable();
-                dtdvt = getdvtList();
+                try
+                {
+                    Nhanvien nhanvien = new Nhanvien();
+                    nhanvien = Session.GetCurrentUser();
+
+                    // Khai báo các biến cho việc kiểm tra quyền
+                    List<int> quyenHeThong = new List<int>();
+                    bool nFindResult = false;
+                    quyenHeThong = Session.GetRole();
+
+                    /*Kiểm tra nếu không có quyền admin (id của quyền là 1) thì đẩy ra trang đăng nhập*/
+                    nFindResult = quyenHeThong.Contains(1);
+
+                    if (nhanvien == null || !nFindResult)
+                    {
+                        Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    }
+
+                    dtdvt = new DataTable();
+                    dtdvt = getdvtList();
+                }
+                catch {
+                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                }
+                
             }
         }
     }

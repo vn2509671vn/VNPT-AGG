@@ -53,7 +53,7 @@
                                                 continue;
                                             }
                                         %>
-                                        <a href="#" class="list-group-item list-group-item-info text-center" onclick="fillData(<%=month %>, <%=year %>, <%=nguoitao %>)"><%= month +"/"+ year%></a>
+                                        <a href="#" class="list-group-item list-group-item-info text-center" onclick="fillData(<%=month %>, <%=year %>)"><%= month +"/"+ year%></a>
                                     <% } %>
                                 </ul>
                             </div>
@@ -134,7 +134,7 @@
     </div>
 <script type="text/javascript">
     var nguoitao = '<%= nguoitao%>';
-    function fillData(month, year, nguoitao) {
+    function fillData(month, year) {
         $("input[type=text]").each(function () {
             $(this).val("");
         });
@@ -147,8 +147,7 @@
 
         var requestData = {
             monthAprove: month,
-            yearAprove: year,
-            nguoitao: nguoitao
+            yearAprove: year
         };
 
         var szRequest = JSON.stringify(requestData);

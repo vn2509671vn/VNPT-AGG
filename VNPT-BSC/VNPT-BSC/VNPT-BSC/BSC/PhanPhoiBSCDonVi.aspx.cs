@@ -16,7 +16,6 @@ namespace VNPT_BSC.BSC
     {
         Connection cn = new Connection();
         public static int donvichuquan;
-        public static int nguoitao;
         public static DataTable dtDonvi = new DataTable();
         public static DataTable dtFullDV = new DataTable();
         public static DataTable dtBSC = new DataTable();
@@ -443,13 +442,23 @@ namespace VNPT_BSC.BSC
                 }
 
                 donvichuquan = nhanvien.nhanvien_donvi_id;
-                nguoitao = nhanvien.nhanvien_id;
 
                 string sqlDanhSachDonVi = "select * from donvi";
-                string sqlDanhSachKPI = "select thang, nam, CONVERT(varchar(4), thang) + '/' + CONVERT(varchar(4), nam) AS content from DANHSACHBSC where nguoitao = '" + nguoitao + "' group by nam, thang order by nam, thang ASC";
+                string sqlDanhSachKPI = "select DANHSACHBSC.thang, DANHSACHBSC.nam, CONVERT(varchar(4), DANHSACHBSC.thang) + '/' + CONVERT(varchar(4), DANHSACHBSC.nam) + N' - Người tạo:' + nhanvien.nhanvien_hoten AS content, nhanvien.nhanvien_id ";
+                //sqlDanhSachKPI += "from DANHSACHBSC, nhanvien where DANHSACHBSC.nguoitao in (select nhanvien_id from nhanvien_chucvu where chucvu_id = 10) ";
+                sqlDanhSachKPI += "from DANHSACHBSC, nhanvien where DANHSACHBSC.nguoitao ";
+                sqlDanhSachKPI += "in (select nhanvien_chucvu.nhanvien_id ";
+                sqlDanhSachKPI += "from chucvu, nhanvien_chucvu, quyen_cv ";
+                sqlDanhSachKPI += "where chucvu.chucvu_id = nhanvien_chucvu.chucvu_id ";
+                sqlDanhSachKPI += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
+                sqlDanhSachKPI += "and quyen_cv.quyen_id = 2) ";
+                sqlDanhSachKPI += "and DANHSACHBSC.bscduocgiao = '' ";
+                sqlDanhSachKPI += "and DANHSACHBSC.nguoitao = nhanvien.nhanvien_id ";
+                sqlDanhSachKPI += "group by DANHSACHBSC.nam, DANHSACHBSC.thang, nhanvien.nhanvien_hoten, nhanvien.nhanvien_id ";
+                sqlDanhSachKPI += "order by DANHSACHBSC.nam, DANHSACHBSC.thang, nhanvien.nhanvien_hoten, nhanvien.nhanvien_id ASC";
+
                 dtDonvi = cn.XemDL(sqlDanhSachDonVi);
                 dtBSC = cn.XemDL(sqlDanhSachKPI);
-                //dtFullDV = cn.XemDL(sqlDanhSachFullDV);
                 dtDVT = dsDVT();
             }
             catch (Exception ex)

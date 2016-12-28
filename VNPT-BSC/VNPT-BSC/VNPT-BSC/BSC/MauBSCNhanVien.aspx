@@ -259,6 +259,11 @@
             var month = $("#month").val();
             var year = $("#year").val();
             var data = $("#bscduocgiao").val();
+            if (data == null) {
+                swal("Error", "Không thể lưu mẫu bsc vì đơn vị của bạn chưa nhận bsc nào!!!", "error");
+                return false;
+            }
+
             var arrDate = data.split("-");
             var bscduocgiao = arrDate[0] + "-" + arrDate[1];
 
@@ -268,6 +273,7 @@
                 swal("Error", "Vui lòng nhập đúng vào trường bất buộc!!!", "error");
                 return false;
             }
+
             var arrKPI = new Array();
             $("#danhsachKPIDuocGiao > tbody > tr").each(function () {
                 var kpi_id = $(this).attr("data-id");

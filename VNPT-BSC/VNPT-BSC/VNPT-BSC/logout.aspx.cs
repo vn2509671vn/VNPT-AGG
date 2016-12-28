@@ -21,9 +21,15 @@ namespace VNPT_BSC
         public static bool thoat()
         {
             Page objp = new Page();
-            objp.Session.Abandon();
-            objp.Session.Clear();
-            objp.Session.RemoveAll();
+            try
+            {
+                objp.Session.Abandon();
+                objp.Session.Clear();
+                objp.Session.RemoveAll();
+            }
+            catch (Exception ex){
+                throw ex;
+            }
             return true;
         }
         protected void Page_Load(object sender, EventArgs e)

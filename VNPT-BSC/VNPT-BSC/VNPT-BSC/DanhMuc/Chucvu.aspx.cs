@@ -95,9 +95,33 @@ namespace VNPT_BSC
         {
             if (!IsPostBack)
             {
-                /*Get list BSC*/
-                dtchucvu = new DataTable();
-                dtchucvu = getchucvuList();
+                try
+                {
+                    Nhanvien nhanvien = new Nhanvien();
+                    nhanvien = Session.GetCurrentUser();
+
+                    // Khai báo các biến cho việc kiểm tra quyền
+                    List<int> quyenHeThong = new List<int>();
+                    bool nFindResult = false;
+                    quyenHeThong = Session.GetRole();
+
+                    /*Kiểm tra nếu không có quyền admin (id của quyền là 1) thì đẩy ra trang đăng nhập*/
+                    nFindResult = quyenHeThong.Contains(1);
+
+                    if (nhanvien == null || !nFindResult)
+                    {
+                        Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    }
+
+                    /*Get list BSC*/
+                    dtchucvu = new DataTable();
+                    dtchucvu = getchucvuList();
+                }
+                catch {
+                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                }
+                
 
 
             }

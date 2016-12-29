@@ -103,6 +103,15 @@
                                               </select>
                                           </td>
                                           <td class='text-center'><input type="text" class='form-control' onkeypress='return onlyNumbers(event.charCode || event.keyCode);' id='tytrong_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' size="2"/></td>
+                                          <!-- Dropdown Nhân viên thẩm định -->
+                                          <td class='text-center'>
+                                              <select class='form-control' id='nvtd_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>'>
+                                                  <% for (int nNVTD = 0; nNVTD < dtNVTD.Rows.Count; nNVTD++)
+                                                     { %>
+                                                  <option value="<% =dtNVTD.Rows[nNVTD]["nhanvien_id"].ToString() %>"><% =dtNVTD.Rows[nNVTD]["nhanvien_hoten"].ToString() %></option>
+                                                  <% } %>
+                                              </select>
+                                          </td>
                                         </tr>
                                     <% } %>
                                 </tbody>
@@ -198,9 +207,11 @@
                         var KPI_ID = arrKPI[i].kpi_id;
                         var tytrong = arrKPI[i].tytrong;
                         var donvitinh = arrKPI[i].donvitinh;
+                        var nhanvienthamdinh = arrKPI[i].nhanvienthamdinh;
                         $(":checkbox[value='" + KPI_ID + "']").prop("checked", "true");
                         $("#dvt_" + KPI_ID).val(donvitinh);
                         $("#tytrong_" + KPI_ID).val(tytrong);
+                        $("#nvtd_" + KPI_ID).val(nhanvienthamdinh);
                     }
                 },
                 error: function (msg) { alert(msg.d); }
@@ -281,12 +292,14 @@
                 //var dvt = $("#dvt_" + kpi_id).val();
                 var tytrong = $("#tytrong_" + kpi_id).val();
                 var dvt = $("#dvt_" + kpi_id).val();
+                var nvtd = $("#nvtd_" + kpi_id).val();
                 var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
                 if (isChecked == true) {
                     arrKPI.push({
                         kpi_id: kpi_id,
                         tytrong: tytrong,
-                        dvt: dvt
+                        dvt: dvt,
+                        nvtd: nvtd
                     });
                 }
             });
@@ -297,12 +310,14 @@
                 //var dvt = $("#dvt_" + kpi_id).val();
                 var tytrong = $("#tytrong_" + kpi_id).val();
                 var dvt = $("#dvt_" + kpi_id).val();
+                var nvtd = $("#nvtd_" + kpi_id).val();
                 var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
                 if (isChecked == true) {
                     arrKPI.push({
                         kpi_id: kpi_id,
                         tytrong: tytrong,
-                        dvt: dvt
+                        dvt: dvt,
+                        nvtd: nvtd
                     });
                 }
             });

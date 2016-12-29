@@ -108,13 +108,17 @@ namespace VNPT_BSC.DanhMuc
 
                     // Khai báo các biến cho việc kiểm tra quyền
                     List<int> quyenHeThong = new List<int>();
-                    bool nFindResult = false;
+                    bool nFindResultAdmin = false;
+                    bool nFindResultBSCDonVi = false;
+                    bool nFindResultBSCNhanVien = false;
                     quyenHeThong = Session.GetRole();
 
-                    /*Kiểm tra nếu không có quyền admin (id của quyền là 1) thì đẩy ra trang đăng nhập*/
-                    nFindResult = quyenHeThong.Contains(1);
+                    /*Kiểm tra nếu không có quyền admin, bsc đơn vị, bsc nhân viên (id của quyền là 1) thì đẩy ra trang đăng nhập*/
+                    nFindResultAdmin = quyenHeThong.Contains(1);
+                    nFindResultBSCDonVi = quyenHeThong.Contains(2);
+                    nFindResultBSCNhanVien = quyenHeThong.Contains(3);
 
-                    if (nhanvien == null || !nFindResult)
+                    if (nhanvien == null || !nFindResultAdmin && !nFindResultBSCDonVi && !nFindResultBSCNhanVien)
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                         Response.Write("<script>window.location.href='../Login.aspx';</script>");

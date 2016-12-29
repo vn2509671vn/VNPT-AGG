@@ -180,13 +180,13 @@ namespace VNPT_BSC.BSC
                     try
                     {
                         cnDanhSachBSC.ThucThiDL(sqlInsertNewData);
+                        output = true;
                     }
                     catch (Exception ex)
                     {
                         output = false;
                     }
                 }
-                output = true;
             }
             catch
             {

@@ -56,10 +56,11 @@ namespace VNPT_BSC.BSC
             DataTable dsNhanvienthamdinh = new DataTable();
             string sqlDVT = "select * from donvitinh";
             string sqlNVTD = "select nhanvien.* from nhanvien, nhanvien_chucvu where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id and nhanvien_chucvu.chucvu_id in (3,5) and nhanvien.nhanvien_donvi = '" + donvi + "'";
-            string sqlBSC = "select bsc.thang, bsc.nam, bsc.kpi_id, bsc.tytrong, bsc.donvitinh, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten ";
+            string sqlBSC = "select bsc.thang, bsc.nam, bsc.kpi_id, bsc.tytrong, bsc.donvitinh, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, bsc.nhanvienthamdinh ";
             sqlBSC += "from danhsachbsc bsc, kpi, kpo ";
             sqlBSC += "where bsc.kpi_id = kpi.kpi_id ";
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
+            sqlBSC += "and bsc.bscduocgiao != '' ";
             sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' and bsc.nguoitao = '"+nguoitao+"'";
             try
             {
@@ -122,7 +123,15 @@ namespace VNPT_BSC.BSC
                     arrOutput += "<select class='form-control' id='nvtd_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>";
                     for (int nNVTD = 0; nNVTD < dsNhanvienthamdinh.Rows.Count; nNVTD++)
                     {
-                        arrOutput += "<option value='" + dsNhanvienthamdinh.Rows[nNVTD]["nhanvien_id"] + "'>" + dsNhanvienthamdinh.Rows[nNVTD]["nhanvien_hoten"] + "</option>";
+                        //arrOutput += "<option value='" + dsNhanvienthamdinh.Rows[nNVTD]["nhanvien_id"] + "'>" + dsNhanvienthamdinh.Rows[nNVTD]["nhanvien_hoten"] + "</option>";
+                        if (dsNhanvienthamdinh.Rows[nNVTD]["nhanvien_id"].ToString() == gridData.Rows[nKPI]["nhanvienthamdinh"].ToString())
+                        {
+                            arrOutput += "<option value='" + dsNhanvienthamdinh.Rows[nNVTD]["nhanvien_id"] + "' selected>" + dsNhanvienthamdinh.Rows[nNVTD]["nhanvien_hoten"] + "</option>";
+                        }
+                        else
+                        {
+                            arrOutput += "<option value='" + dsNhanvienthamdinh.Rows[nNVTD]["nhanvien_id"] + "'>" + dsNhanvienthamdinh.Rows[nNVTD]["nhanvien_hoten"] + "</option>";
+                        }
                     }
                     arrOutput += "</select>";
                     arrOutput += "</td>";

@@ -188,8 +188,8 @@
 
         // Người dùng bình thường
         if (quyenHeThong.length == 0) {
+            $(".qlybsc_nv").show();
             $("#nhanbsc_nhanvien").show();
-            $("#kiemdinhbsc_nhanvien").show();
             $(".danhmucbsc").hide();
         }
 

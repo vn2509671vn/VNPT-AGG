@@ -285,7 +285,7 @@
 
     $(document).ready(function () {
         // Hiển thị danh sách các chức năng của ở BSC
-        $(".qlybsc a").click();
+        $(".qlybsc_dv a").click();
 
         /*Hide button*/
         $("#updateGiaoStatus").hide();

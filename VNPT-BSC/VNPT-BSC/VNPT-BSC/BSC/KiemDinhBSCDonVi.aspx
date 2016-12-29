@@ -98,7 +98,7 @@
     $(document).ready(function () {
         var donvikiemdinh = '<%=donvikiemdinh %>';
         // Hiển thị danh sách các chức năng của ở BSC
-        $(".qlybsc a").click();
+        $(".qlybsc_dv a").click();
 
         // Load grid lần đầu
         loadBSCByYear($("#month").val(), $("#year").val(), donvikiemdinh);

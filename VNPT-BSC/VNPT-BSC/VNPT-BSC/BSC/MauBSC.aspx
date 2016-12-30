@@ -209,6 +209,9 @@
                 //var tytrong = $("#tytrong_" + kpi_id).val();
                 //var dvt = $("#dvt_" + kpi_id).val();
                 var tytrong = $("#tytrong_" + kpi_id).val();
+                if (tytrong == "") {
+                    tytrong = 0;
+                }
                 var dvt = $("#dvt_" + kpi_id).val();
                 var dvtd = $("#dvtd_" + kpi_id).val();
                 var isChecked = $("#kpi_id_" + kpi_id).is(":checked");

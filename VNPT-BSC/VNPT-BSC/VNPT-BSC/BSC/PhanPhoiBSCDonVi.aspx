@@ -340,6 +340,9 @@
                 var tytrong = $("#tytrong_" + kpi_id).val();
                 var dvt = $("#dvt_" + kpi_id).val();
                 var kehoach = $("#kehoach_" + kpi_id).val();
+                if (kehoach == "") {
+                    kehoach = 0;
+                }
                 var donvithamdinh = $("#dvtd_" + kpi_id).val();
                 kpi_detail.push({
                     kpi_id: kpi_id,

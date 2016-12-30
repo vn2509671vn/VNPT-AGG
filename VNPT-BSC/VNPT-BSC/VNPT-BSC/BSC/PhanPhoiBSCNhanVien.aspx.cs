@@ -434,7 +434,8 @@ namespace VNPT_BSC.BSC
             return result;
         }
 
-        private static int getNhanVienID(string taikhoan) {
+        private static int getNhanVienID(string taikhoan)
+        {
             int id_nhanviennhan = 0;
             for (int nIndex = 0; nIndex < dtFullNV.Rows.Count; nIndex++)
             {

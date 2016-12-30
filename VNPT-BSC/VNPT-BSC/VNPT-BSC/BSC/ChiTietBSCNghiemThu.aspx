@@ -46,25 +46,25 @@
               <div class="col-sm-12 form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-6">Ngày áp dụng:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span><strong id="ngayapdung"></strong></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-6">Trạng thái nộp:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span class="label label-default" id="chamLabel">Chưa nộp</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-6">Đồng ý kết quả thẩm định:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span id="dongyLabel" class="label label-default">Chưa đồng ý</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-6">Trạng thái kết thúc:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span id="ketthucLabel" class="label label-default">Chưa kết thúc</span>
                         <a class="btn btn-success btn-xs" id="updateKetThucStatus">Kết thúc</a>
                     </div>

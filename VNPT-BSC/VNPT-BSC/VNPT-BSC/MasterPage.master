@@ -60,6 +60,7 @@
                                         <li><a href="/DanhMuc/QL_NhanVien.aspx" class="navlink">Danh Mục Nhân Viên</a></li>
                                         <li><a href="/DanhMuc/Chucdanh.aspx" class="navlink">Danh Mục Chức Danh</a></li>
                                         <li><a href="/DanhMuc/Chucvu.aspx" class="navlink">Danh Mục Chức Vụ</a></li>
+                                        <li><a href="/DanhMuc/nhanvienchucvu.aspx" class="navlink">Danh Mục Nhân Viên - Chức Vụ</a></li>
                                     </ul>
                                 </div>
                             </div>

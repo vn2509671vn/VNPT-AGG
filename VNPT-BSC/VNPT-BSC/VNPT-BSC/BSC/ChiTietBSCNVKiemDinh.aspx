@@ -43,20 +43,20 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-6">Trạng thái nộp:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span class="label label-default" id="chamLabel">Chưa nộp</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-6">Trạng thái thẩm định:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span id="kiemdinhLabel" class="label label-default">Chưa thẩm định</span>
                         <a class="btn btn-success btn-xs" id="updateThamDinhStatus">Duyệt</a>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-6">Trạng thái kết thúc:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span id="ketthucLabel" class="label label-default">Chưa kết thúc</span>
                     </div>
                 </div>

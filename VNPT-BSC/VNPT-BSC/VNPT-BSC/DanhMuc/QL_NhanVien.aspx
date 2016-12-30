@@ -17,6 +17,7 @@
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
 
     <!-- Plugin for swal alert -->
+
     <script src="../Bootstrap/sweetalert-dev.js"></script>
     <link href="../Bootstrap/sweetalert.css" rel="stylesheet" />
     <script src="../Bootstrap/sweetalert.min.js"></script>
@@ -38,7 +39,6 @@
                                     <th>Họ tên</th>
                                     <th>Đơn vị</th>
                                     <th>Di động</th>
-                                    <th>Chức vụ</th>
                                     <th>Chức danh</th>
                                     <th>Tài khoản</th>
                                     <th class="fix-table-edit-edit">Chỉnh sửa</th>
@@ -48,7 +48,7 @@
                                 <% if (dtnhanvien.Rows.Count == 0)
                                    { %>
                                 <tr>
-                                    <td colspan="2" class="text-center">No item</td>
+                                    <td colspan="7" class="text-center">No item</td>
                                 </tr>
                                 <% }
                                    else
@@ -76,12 +76,10 @@
                                        string nv_ngayvaonganh = dtnhanvien.Rows[i]["nhanvien_ngayvaonganh"].ToString();
                                        string nv_didong = dtnhanvien.Rows[i]["nhanvien_didong"].ToString();
                                        string nv_email = dtnhanvien.Rows[i]["nhanvien_email"].ToString();
-                                       string nv_chucvu = dtnhanvien.Rows[i]["chucvu_ten"].ToString();
                                        string nv_chucdanh = dtnhanvien.Rows[i]["chucdanh_ten"].ToString();
                                        string nv_taikhoan = dtnhanvien.Rows[i]["nhanvien_taikhoan"].ToString();
                                        string nv_matkhau = dtnhanvien.Rows[i]["nhanvien_matkhau"].ToString();
                                        string nv_chucdanh_id = dtnhanvien.Rows[i]["chucdanh_id"].ToString();
-                                       string nv_chucvu_id = dtnhanvien.Rows[i]["chucvu_id"].ToString();
                                        string nv_donvi_id = dtnhanvien.Rows[i]["donvi_id"].ToString();
                                      
                                 %>
@@ -90,7 +88,6 @@
                                     <td><%=  nv_ten%></td>
                                     <td><%=  nv_donvi%></td>
                                     <td><%=  nv_didong%></td>
-                                    <td><%= nv_chucvu %></td>
                                     <td><%=  nv_chucdanh%></td>
                                     <td><%=  nv_taikhoan%></td>
                                     <td>
@@ -115,7 +112,6 @@
                                             '<%=nv_ngayvaonganh %>',
                                             '<%=nv_didong %>',
                                             '<%=nv_email %>',
-                                            '<%=nv_chucvu_id %>',
                                             '<%=nv_chucdanh_id %>',
                                             '<%=nv_taikhoan %>')">Thông tin chi tiết</a>
                                         <a class="btn btn-danger btn-xs" type="button" id="btnXoa" onclick="deletedata('<%=nv_id %>')">Xóa</a>
@@ -142,22 +138,7 @@
                                                     <input type="text" class="form-control" data-val="" id="ten" />
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Chức vụ:</label>
-                                                <div class="col-sm-8">
-                                                    <select  class="form-control fix-day col-sm-8" id="chucvu">
-                                                        <% for (int i = 0; i < dtchucvu_nv.Rows.Count; i++)
-                                                           { %>
-                                                        <%
-                                                               string chucvu_id = dtchucvu_nv.Rows[i]["chucvu_id"].ToString();
-                                                               string chucvu_ten = dtchucvu_nv.Rows[i]["chucvu_ten"].ToString();
-                                                        %>
-                                                        <option value="<%= chucvu_id%>"><%= chucvu_ten%></option>
-
-                                                        <% } %>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                           
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Chức danh:</label>
                                                 <div class="col-sm-8">
@@ -342,22 +323,7 @@
                                                     <input type="text" class="form-control" data-val="" id="txtten" />
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Chức vụ:</label>
-                                                <div class="col-sm-8">
-                                                    <select  class="form-control fix-day col-sm-8" id="chucvu_edit">
-                                                        <% for (int i = 0; i < dtchucvu_nv.Rows.Count; i++)
-                                                           { %>
-                                                        <%
-                                                               string chucvu_id = dtchucvu_nv.Rows[i]["chucvu_id"].ToString();
-                                                               string chucvu_ten = dtchucvu_nv.Rows[i]["chucvu_ten"].ToString();
-                                                        %>
-                                                        <option value="<%= chucvu_id%>"><%= chucvu_ten%></option>
-
-                                                        <% } %>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                            
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Chức danh:</label>
                                                 <div class="col-sm-8">
@@ -396,7 +362,12 @@
                                                     <input type="date" class="form-control  fix-day  fix-height-34" data-val="" id="datengaysinh" />
                                                 </div>
                                             </div>
-
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Nơi sinh:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" data-val="" id="txtnoisinh" />
+                                                </div>
+                                            </div>
                                             <div class="form-group form-horizontal">
                                                 <label class="control-label col-sm-4">Đảng viên:</label>
                                                 <div class="col-sm-8">
@@ -493,12 +464,7 @@
                                                     <input type="text" class="form-control" data-val="" id="txtnoicap" />
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Nơi sinh:</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" data-val="" id="txtnoisinh" />
-                                                </div>
-                                            </div>
+                                            
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Quê quán:</label>
                                                 <div class="col-sm-8">
@@ -543,7 +509,6 @@
             nv_ngayvaonganh,
             nv_didong,
             nv_email,
-            nv_chucvu_id,
             nv_chucdanh_id,
             nv_taikhoan) {
             $('#txtid_sua').val(nv_id);
@@ -570,7 +535,6 @@
             $('#datenganh').val(nv_ngayvaonganh);
             $('#txtdidong').val(nv_didong);
             $('#txtemail').val(nv_email);
-            $('#chucvu_edit').val(nv_chucvu_id);
             $('#chucdanh_edit').val(nv_chucdanh_id);
             $('#txttaikhoan').val(nv_taikhoan);
            
@@ -654,7 +618,6 @@
                 var nv_ngayvaonganh = $("#ngaynganh").val();
                 var nv_didong = $('#didong').val();
                 var nv_email = $("#email").val();
-                var nv_chucvu = $("#chucvu").val();
                 var nv_chucdanh = $("#chucdanh").val();
                 var nv_taikhoan = $("#taikhoan").val();
                 var nv_matkhau = $("#matkhau").val();
@@ -682,7 +645,6 @@
                     nv_ngayvaonganhA: nv_ngayvaonganh,
                     nv_didongA: nv_didong,
                     nv_emailA: nv_email,
-                    nv_chucvuA: nv_chucvu,
                     nv_chucdanhA: nv_chucdanh,
                     nv_taikhoanA: nv_taikhoan,
                     nv_matkhauA: nv_matkhau
@@ -719,7 +681,6 @@
             $('#btnEdit').click(function () {
                 var nv_id_sua = $("#txtid_sua").val();
                 var nv_ten_sua = $("#txtten").val();
-                var nv_chucvu_sua = $("#chucvu_edit").val();
                 var nv_chucdanh_sua = $("#chucdanh_edit").val();
                 var nv_donvi_sua = $("#donvi_edit").val();
                 var nv_datengaysinh_sua = $("#datengaysinh").val();
@@ -748,7 +709,6 @@
                 var requestData = {
                     nv_id_suaA: nv_id_sua,
                     nv_ten_suaA: nv_ten_sua,
-                    nv_chucvu_suaA: nv_chucvu_sua,
                     nv_chucdanh_suaA: nv_chucdanh_sua,
                     nv_donvi_suaA:nv_donvi_sua,
                     nv_datengaysinh_suaA:nv_datengaysinh_sua,

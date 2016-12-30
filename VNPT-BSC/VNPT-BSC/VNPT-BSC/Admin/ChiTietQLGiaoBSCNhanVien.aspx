@@ -30,19 +30,19 @@
               <div class="col-sm-12 form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-6">Ngày áp dụng:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span><strong id="ngayapdung"></strong></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-6">Nhân viên giao:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span><strong id="nhanviengiao"></strong></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-6">Nhân viên nhận:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span><strong id="nhanviennhan"></strong></span>
                     </div>
                 </div>

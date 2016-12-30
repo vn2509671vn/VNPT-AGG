@@ -18,138 +18,200 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="col-md-12 margin-top-30" id="bscgiao">
+
+
+    <div class="col-md-12 margin-top-30">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">DANH SÁCH KPI ĐƯỢC GIAO</h3>
+                <h3 class="panel-title">Lọc dữ liệu</h3>
             </div>
-            <table id="table-chucdanh" class="table table-striped table-bordered table-full-width" cellspacing="0" width="100%">
-                <thead>
-                    <tr>
-                        <th>Nhân viên giao</th>
-                        <th>Nhân viên nhận</th>
-                        <th>Tháng</th>
-                        <th>Năm</th>
-                        <th>KPI</th>
-                        <th>Đơn vị tính</th>
-                        <th>Trọng số</th>
-                        <th>Kế hoạch</th>
-                        <th>Thực hiện</th>
-                        <th>Thẩm định</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% if (dtkpiindex.Rows.Count == 0)
-                       { %>
-                    <tr>
-                        <td colspan="9" class="text-center">No item</td>
-                    </tr>
-                    <% }
-                       else
-                       { %>
-                    <% for (int i = 0; i < dtkpiindex.Rows.Count; i++)
-                       { %>
-                    <%
-                           string nv_giao = dtkpiindex.Rows[i]["giao"].ToString();
-                           string nv_nhan = dtkpiindex.Rows[i]["nhan"].ToString();
-                           string nv_thang = dtkpiindex.Rows[i][2].ToString();
-                           string nv_nam = dtkpiindex.Rows[i][3].ToString();
-                           string nv_kpi = dtkpiindex.Rows[i]["tenkpi"].ToString();
-                           string nv_dvt = dtkpiindex.Rows[i][5].ToString();
-                           string nv_ts = dtkpiindex.Rows[i][6].ToString();
-                           string nv_kh = dtkpiindex.Rows[i][7].ToString();
-                           string nv_th = dtkpiindex.Rows[i][8].ToString();
-                           string nv_td = dtkpiindex.Rows[i][9].ToString();
-                                     
-                    %>
-                    <tr>
-                        <td><%= nv_giao %></td>
-                        <td><%=  nv_nhan%></td>
-                        <td><%=  nv_thang%></td>
-                        <td><%=  nv_nam%></td>
-                        <td><%=  nv_kpi%></td>
-                        <td><%=  nv_dvt%></td>
-                        <td><%= nv_ts %></td>
-                        <td><%=  nv_kh%></td>
-                        <td><%=  nv_th%></td>
-                        <td><%=  nv_td%></td>
-                    </tr>
-                    <% } %>
-                    <% } %>
-                </tbody>
-            </table>
+            <div class="panel-body">
+                <div class="col-sm-12 form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-6">Lọc theo tháng/năm:</label>
+                        <div class="col-sm-6 form-inline">
+                            <select class="form-control" id="month">
+                                <% for (int i = 1; i <= 12; i++)
+                                   {
+                                       string selectOption = "";
+                                       int month = Convert.ToInt32(DateTime.Now.ToString("MM"));
+                                       if (i == month)
+                                       {
+                                           selectOption = "selected";
+                                       }
+                                %>
+                                <option value="<%=i %>" <%=selectOption %>><%=i %></option>
+                                <% } %>
+                            </select>
+                            <select class="form-control" id="year">
+                                <% for (int i = 2016; i <= 2100; i++)
+                                   {
+                                       string selectOption = "";
+                                       int date = Convert.ToInt32(DateTime.Now.ToString("yyyy"));
+                                       if (i == date)
+                                       {
+                                           selectOption = "selected";
+                                       }
+                                %>
+                                <option value="<%=i %>" <%=selectOption %>><%=i %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
-    <div class="col-md-12 margin-top-30" id="thamdinh">
+    <div class="col-md-12 margin-top-30" id="Div1">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">DANH SÁCH KPI THẨM ĐỊNH</h3>
+                <h3 class="panel-title">Danh sách BSC đơn vi</h3>
             </div>
-            <table id="table1" class="table table-striped table-bordered table-full-width" cellspacing="0" width="100%">
-                <thead>
-                    <tr>
-                        <th>Nhân viên giao</th>
-                        <th>Nhân viên nhận</th>
-                        <th>Năm</th>
-                        <th>Tháng</th>
-                        <th>Trạng thái chấm</th>
-                        <th>Trạng thái đồng ý KQTĐ</th>
-                        <th>Trạng thái kết thúc</th>
-                        <th>Số lượng KPI chưa thẩm định</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% if (dtthamdinhindex.Rows.Count == 0)
-                       { %>
-                    <tr>
-                        <td colspan="9" class="text-center">No item</td>
-                    </tr>
-                    <% }
-                       else
-                       { %>
-                    <% for (int i = 0; i < dtthamdinhindex.Rows.Count; i++)
-                       { %>
-                    <%
-                           string nv_giao = dtthamdinhindex.Rows[i]["tennvg"].ToString();
-                           string nv_nhan = dtthamdinhindex.Rows[i]["tennvn"].ToString();
-                           string nv_nam = dtthamdinhindex.Rows[i]["nam"].ToString();
-                           string nv_thang = dtthamdinhindex.Rows[i]["thang"].ToString();
-                           string nv_ttcham = dtthamdinhindex.Rows[i]["trangthaicham"].ToString();
-                           string nv_ttdongy = dtthamdinhindex.Rows[i]["trangthaidongy_kqtd"].ToString();
-                           string nv_ttketthuc = dtthamdinhindex.Rows[i]["trangthaiketthuc"].ToString();
-                           string nv_soluong = dtthamdinhindex.Rows[i]["sl_chuatd"].ToString();
-                                     
-                    %>
-                    <tr>
-                        <td><%= nv_giao %></td>
-                        <td><%=  nv_nhan%></td>
-                        <td><%=  nv_nam%></td>
-                        <td><%=  nv_thang%></td>
-                        <td><%=  nv_ttcham%></td>
-                        <td><%= nv_ttdongy %></td>
-                        <td><%=  nv_ttketthuc%></td>
-                        <td><%=  nv_soluong%></td>
-                    </tr>
-                    <% } %>
-                    <% } %>
-                </tbody>
-            </table>
+            <div class="panel-body">
+                <div class="col-sm-12" id="gridBSC">
+                </div>
+            </div>
         </div>
     </div>
+
+    <div class="col-md-12 margin-top-30" id="Div2">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Danh sách KPI nhân viên</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12" id="gridBSCnhanvien">
+                </div>
+            </div>
+        </div>
+    </div>
+     <div class="col-md-12 margin-top-30" id="Div3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Danh sách KPI thẩm định</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12" id="gridBSCnhanvienthamdinh">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
 
     <script>
+        function loadBSCByYear(month, year, donvi_id) {
+            var requestData = {
+                nam: year,
+                thang: month,
+                nhanvien_donvi_id: donvi_id
+            };
+            var szRequest = JSON.stringify(requestData);
+            $.ajax({
+                type: "POST",
+                url: "index.aspx/loadBSCByYear",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var output = result.d;
+                    var gridBSC = output.gridBSC;
 
-       <% if (dtkpiindex.Rows.Count == 0)
-          { %>
-        $('#bscgiao').hide();
-        <% } %>
+                    $("#gridBSC").html(gridBSC);
+                    $("#table-bsclist").DataTable({
+                        "searching": true,
+                        "info": true,
+                        "lengthMenu": [5, 10, 20]
+                    });
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        }
 
-        <% if (dtthamdinhindex.Rows.Count == 0)
-           { %>
-        $('#thamdinh').hide();
-        <% } %>
 
+        function loadBSCnhanvienByYear(month, year, nhanvien_id) {
+            var requestData = {
+                nam: year,
+                thang: month,
+                nhanvien_id: nhanvien_id
+            };
+            var szRequest = JSON.stringify(requestData);
+            $.ajax({
+                type: "POST",
+                url: "index.aspx/loadBSCnhanvienByYear",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var output = result.d;
+                    var gridBSCnhanvien = output.gridBSCnhanvien;
 
-       
+                    $("#gridBSCnhanvien").html(gridBSCnhanvien);
+                    $("#table-bscnhanvienlist").DataTable({
+                        "searching": true,
+                        "info": true,
+                        "lengthMenu": [5, 10, 20]
+                    });
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        }
+
+        function loadBSCnhanvien_thamdinhByYear(month, year, nhanvien_id) {
+            var requestData = {
+                nam: year,
+                thang: month,
+                nhanvien_id: nhanvien_id
+            };
+            var szRequest = JSON.stringify(requestData);
+            $.ajax({
+                type: "POST",
+                url: "index.aspx/loadBSCnhanvien_thamdinhByYear",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var output = result.d;
+                    var gridBSCnhanvienthamdinh = output.gridBSCnhanvienthamdinh;
+
+                    $("#gridBSCnhanvienthamdinh").html(gridBSCnhanvienthamdinh);
+                    $("#table-bscnhanvienthamdinh").DataTable({
+                        "searching": true,
+                        "info": true,
+                        "lengthMenu": [5, 10, 20]
+                    });
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        }
+        $(document).ready(function () {
+            var donvi_id = "<%=  donvi_id%>";
+            var nhanvien_id = "<%=  nhanvien_id%>";
+            // Load grid lần đầu
+            loadBSCByYear($("#month").val(), $("#year").val(), donvi_id);
+            loadBSCnhanvienByYear($("#month").val(), $("#year").val(), nhanvien_id);
+            loadBSCnhanvien_thamdinhByYear($("#month").val(), $("#year").val(), nhanvien_id);
+
+            // Load grid khi năm thay đổi
+            $("#year").change(function () {
+                var thang = $("#month").val();
+                var nam = $(this).val();
+                loadBSCByYear(thang, nam, donvi_id);
+                loadBSCnhanvienByYear(thang, nam, nhanvien_id);
+                loadBSCnhanvien_thamdinhByYear(thang, nam, nhanvien_id);
+            });
+
+            // Load grid khi tháng thay đổi
+            $("#month").change(function () {
+                var nam = $("#year").val();
+                var thang = $(this).val();
+                loadBSCByYear(thang, nam, donvi_id);
+                loadBSCnhanvienByYear(thang, nam, nhanvien_id);
+                loadBSCnhanvien_thamdinhByYear(thang, nam, nhanvien_id);
+            });
+        });
     </script>
 </asp:Content>

@@ -237,6 +237,7 @@
     <Content Include="DanhMuc\Chucdanh.aspx" />
     <Content Include="DanhMuc\Donvi.aspx" />
     <Content Include="DanhMuc\KPO.aspx" />
+    <Content Include="DanhMuc\nhanvienchucvu.aspx" />
     <Content Include="DanhMuc\QL_NhanVien.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Images\accent.png" />
@@ -604,6 +605,13 @@
     </Compile>
     <Compile Include="DanhMuc\KPO.aspx.designer.cs">
       <DependentUpon>KPO.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DanhMuc\nhanvienchucvu.aspx.cs">
+      <DependentUpon>nhanvienchucvu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\nhanvienchucvu.aspx.designer.cs">
+      <DependentUpon>nhanvienchucvu.aspx</DependentUpon>
     </Compile>
     <Compile Include="DanhMuc\QL_NhanVien.aspx.cs">
       <DependentUpon>QL_NhanVien.aspx</DependentUpon>

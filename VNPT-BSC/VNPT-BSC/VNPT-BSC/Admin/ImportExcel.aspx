@@ -39,7 +39,7 @@
               <div class="col-sm-12 form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-6">Chọn thời gian giao:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline ">
                         <asp:DropDownList runat="server" ID="DropDownListMonth" class="form-control">
                             <asp:ListItem>1</asp:ListItem>
                             <asp:ListItem>2</asp:ListItem>

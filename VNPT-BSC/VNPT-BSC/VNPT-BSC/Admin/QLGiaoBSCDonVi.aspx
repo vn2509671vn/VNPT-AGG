@@ -30,7 +30,7 @@
               <div class="col-sm-12 form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-6">Lọc theo tháng/năm:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline ">
                         <select class="form-control" id="month">
                             <% for(int i = 1; i <= 12; i++){ 
                                 string selectOption = "";

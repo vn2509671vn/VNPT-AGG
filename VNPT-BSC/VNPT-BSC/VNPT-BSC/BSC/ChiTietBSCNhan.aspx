@@ -47,20 +47,20 @@
               <div class="col-sm-12 form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-6">Ngày áp dụng:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span><strong id="ngayapdung"></strong></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-6">Trạng thái nhận:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span class="label label-default" id="nhanLabel">Chưa nhận</span>
                         <a class="btn btn-success btn-xs" id="updateNhanStatus">Nhận</a>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-6">Trạng thái nộp:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span class="label label-default" id="chamLabel">Chưa nộp</span>
                         <a class="btn btn-success btn-xs" id="updateChamStatus">Nộp BSC</a>
                         <%--<a class="btn btn-danger btn-xs" id="updateHuyChamStatus">Hủy</a>--%>
@@ -72,20 +72,20 @@
                         <span id="kiemdinhLabel" class="label label-default">Chưa thẩm định</span>
                     </div>--%>
                     <label class="control-label col-sm-6">Số lượng KPI đã thẩm định: </label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span><strong id="soluong_kpi_dathamdinh"></strong></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-6">Đồng ý KQTĐ:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7 ">
                         <span class="label label-default" id="dongyLabel">Chưa đồng ý</span>
                         <a class="btn btn-success btn-xs" id="updateDongYStatus">Đồng ý</a>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-6">Trạng thái kết thúc:</label>
-                    <div class="col-sm-6 form-inline">
+                    <label class="control-label col-sm-6 ">Trạng thái kết thúc:</label>
+                    <div class="col-sm-6 form-inline padding-top-7">
                         <span id="ketthucLabel" class="label label-default">Chưa kết thúc</span>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Web.Configuration;
 
-namespace VNPT_BCS
+namespace VNPT_BSC
 {
     public class Connection
     {
@@ -18,7 +18,7 @@ namespace VNPT_BCS
                 if (cn.State == 0)
                 {
                     //cn.ConnectionString = @"Data Source=10.94.30.4;Initial Catalog=PortalVNPT;User ID=portal; Password = portal!123;Integrated Security=True";
-                    cn.ConnectionString = @"Data Source=DESKTOP-I1I982R;Initial Catalog=VNPT;Integrated Security=True";
+                    cn.ConnectionString = @"Data Source=10.94.34.106;Initial Catalog=VNPT;Persist Security Info=True;User ID=sa; Password = 123";
                     cn.Open();
                 }
             }

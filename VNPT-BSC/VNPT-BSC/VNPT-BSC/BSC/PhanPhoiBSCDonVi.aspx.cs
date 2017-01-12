@@ -46,7 +46,7 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static string loadBSC(int thang, int nam, int nguoitao) {
+        public static string loadBSC(int thang, int nam, int nguoitao, int loaiMauBSC) {
             Connection cnBSC = new Connection();
             DataTable gridData = new DataTable();
             DataTable dsDonvitinh = new DataTable();
@@ -57,7 +57,7 @@ namespace VNPT_BSC.BSC
             sqlBSC += "from danhsachbsc bsc, kpi, kpo ";
             sqlBSC += "where bsc.kpi_id = kpi.kpi_id ";
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
-            sqlBSC += "and bsc.thang = '"+thang+"' and bsc.nam = '"+nam+"' and bsc.nguoitao = '"+nguoitao+"'";
+            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' and bsc.nguoitao = '" + nguoitao + "' and bsc.maubsc = '" + loaiMauBSC + "'";
             try{
                 gridData = cnBSC.XemDL(sqlBSC);
                 dsDonvitinh = cnBSC.XemDL(sqlDVT);
@@ -422,6 +422,7 @@ namespace VNPT_BSC.BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Phân phối bsc";
             try
             {
                 Nhanvien nhanvien = new Nhanvien();
@@ -444,9 +445,9 @@ namespace VNPT_BSC.BSC
                 donvichuquan = nhanvien.nhanvien_donvi_id;
 
                 string sqlDanhSachDonVi = "select * from donvi";
-                string sqlDanhSachKPI = "select DANHSACHBSC.thang, DANHSACHBSC.nam, CONVERT(varchar(4), DANHSACHBSC.thang) + '/' + CONVERT(varchar(4), DANHSACHBSC.nam) + N' - Người tạo:' + nhanvien.nhanvien_hoten AS content, nhanvien.nhanvien_id ";
+                string sqlDanhSachKPI = "select TOP 20 DANHSACHBSC.thang, DANHSACHBSC.nam, CONVERT(varchar(4), DANHSACHBSC.thang) + '/' + CONVERT(varchar(4), DANHSACHBSC.nam) + ' ' + loaimaubsc.loai_ten + N' - Người tạo:' + nhanvien.nhanvien_hoten AS content, nhanvien.nhanvien_id, loaimaubsc.loai_id ";
                 //sqlDanhSachKPI += "from DANHSACHBSC, nhanvien where DANHSACHBSC.nguoitao in (select nhanvien_id from nhanvien_chucvu where chucvu_id = 10) ";
-                sqlDanhSachKPI += "from DANHSACHBSC, nhanvien where DANHSACHBSC.nguoitao ";
+                sqlDanhSachKPI += "from DANHSACHBSC, nhanvien, loaimaubsc where DANHSACHBSC.nguoitao ";
                 sqlDanhSachKPI += "in (select nhanvien_chucvu.nhanvien_id ";
                 sqlDanhSachKPI += "from chucvu, nhanvien_chucvu, quyen_cv ";
                 sqlDanhSachKPI += "where chucvu.chucvu_id = nhanvien_chucvu.chucvu_id ";
@@ -454,8 +455,9 @@ namespace VNPT_BSC.BSC
                 sqlDanhSachKPI += "and quyen_cv.quyen_id = 2) ";
                 sqlDanhSachKPI += "and DANHSACHBSC.bscduocgiao = '' ";
                 sqlDanhSachKPI += "and DANHSACHBSC.nguoitao = nhanvien.nhanvien_id ";
-                sqlDanhSachKPI += "group by DANHSACHBSC.nam, DANHSACHBSC.thang, nhanvien.nhanvien_hoten, nhanvien.nhanvien_id ";
-                sqlDanhSachKPI += "order by DANHSACHBSC.nam, DANHSACHBSC.thang, nhanvien.nhanvien_hoten, nhanvien.nhanvien_id ASC";
+                sqlDanhSachKPI += "and DANHSACHBSC.maubsc = loaimaubsc.loai_id ";
+                sqlDanhSachKPI += "group by DANHSACHBSC.nam, DANHSACHBSC.thang, nhanvien.nhanvien_hoten, nhanvien.nhanvien_id, loaimaubsc.loai_id, loaimaubsc.loai_ten ";
+                sqlDanhSachKPI += "order by DANHSACHBSC.nam, DANHSACHBSC.thang DESC";
 
                 dtDonvi = cn.XemDL(sqlDanhSachDonVi);
                 dtBSC = cn.XemDL(sqlDanhSachKPI);

@@ -20,6 +20,8 @@ namespace VNPT_BSC.BSC
         public DataTable dtBSCNam;
         public DataTable dtDVT;
         public DataTable dtDVTD;
+        public static DataTable dtMauBSC;
+
         public static int nguoitao;
         public class kpiDetail
         {
@@ -27,6 +29,23 @@ namespace VNPT_BSC.BSC
             public int tytrong { get; set; }
             public int dvt { get; set; }
             public int dvtd { get; set; }
+        }
+
+        /*List loại mẫu bsc*/
+        private DataTable dsMauBSC()
+        {
+            DataTable dsMauBSC = new DataTable();
+            string sqlMauBSC = "select * from loaimaubsc";
+            try
+            {
+                dsMauBSC = cn.XemDL(sqlMauBSC);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dsMauBSC;
         }
 
         /*List đơn vị tính*/
@@ -124,7 +143,7 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static Dictionary<String, String>[] BindingCheckBox(int monthAprove, int yearAprove)
+        public static Dictionary<String, String>[] BindingCheckBox(int monthAprove, int yearAprove, int loaiMauBSC)
         {
             DataTable dtKPI = new DataTable();
             Connection cnDanhSachBSC = new Connection();
@@ -134,7 +153,8 @@ namespace VNPT_BSC.BSC
             sql += "where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id ";
             sql += "and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id ";
             sql += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
-            sql += "and quyen_cv.quyen_id = 2)";
+            sql += "and quyen_cv.quyen_id = 2) ";
+            sql += "and maubsc = '" + loaiMauBSC + "'";
 
             dtKPI = cnDanhSachBSC.XemDL(sql);
             if (dtKPI.Rows.Count > 0)
@@ -153,7 +173,7 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static bool SaveData(int monthAprove, int yearAprove, kpiDetail[] arrKPI_ID, int nguoitao)
+        public static bool SaveData(int monthAprove, int yearAprove, kpiDetail[] arrKPI_ID, int nguoitao, int loaiMauBSC)
         {
             Connection cnDanhSachBSC = new Connection();
             bool output = false;
@@ -164,6 +184,7 @@ namespace VNPT_BSC.BSC
             sqlDelOldData += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
             sqlDelOldData += "and quyen_cv.quyen_id = 2) ";
             sqlDelOldData += "and bscduocgiao = '' ";
+            sqlDelOldData += "and maubsc = '" + loaiMauBSC + "' ";
 
             string sqlInsertNewData = "";
             try
@@ -176,7 +197,7 @@ namespace VNPT_BSC.BSC
                     int dvt = arrKPI_ID[i].dvt;
                     int dvtd = arrKPI_ID[i].dvtd;
                     string curDate = DateTime.Now.ToString("yyyy-MM-dd");
-                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, nguoitao, bscduocgiao, ngaytao, donvitinh, tytrong, donvithamdinh) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '" + nguoitao + "', '" + "" + "', '" + curDate + "', '" + dvt + "', '" + tytrong + "', '"+dvtd+"')";
+                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, nguoitao, bscduocgiao, ngaytao, donvitinh, tytrong, donvithamdinh, maubsc) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '" + nguoitao + "', '" + "" + "', '" + curDate + "', '" + dvt + "', '" + tytrong + "', '" + dvtd + "', '" + loaiMauBSC + "')";
                     try
                     {
                         cnDanhSachBSC.ThucThiDL(sqlInsertNewData);
@@ -197,6 +218,7 @@ namespace VNPT_BSC.BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Mẫu BSC";
             if (!IsPostBack) {
                 try
                 {
@@ -237,6 +259,10 @@ namespace VNPT_BSC.BSC
                     /*Get list DVTD*/
                     dtDVTD = new DataTable();
                     dtDVTD = dsDVTD();
+
+                    /*Get list MauBSC*/
+                    dtMauBSC = new DataTable();
+                    dtMauBSC = dsMauBSC();
                 }
                 catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");

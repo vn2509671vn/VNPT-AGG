@@ -214,6 +214,7 @@ namespace VNPT_BSC.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Chi tiết giao bsc đơn vị";
             try
             {
                 Nhanvien nhanvien = new Nhanvien();

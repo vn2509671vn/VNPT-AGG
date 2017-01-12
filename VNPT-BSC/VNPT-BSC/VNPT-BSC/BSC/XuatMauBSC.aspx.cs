@@ -15,8 +15,28 @@ namespace VNPT_BSC.BSC
     public partial class XuatMauBSC : System.Web.UI.Page
     {
         public static int nguoitao_id;
+        public static DataTable dtMauBSC;
+
+        /*List loại mẫu bsc*/
+        private DataTable dsMauBSC()
+        {
+            DataTable dsMauBSC = new DataTable();
+            Connection cn = new Connection();
+            string sqlMauBSC = "select * from loaimaubsc";
+            try
+            {
+                dsMauBSC = cn.XemDL(sqlMauBSC);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dsMauBSC;
+        }
+
         // Lấy ra danh sách các KPI, DVT, Trọng số theo tháng, năm và KPO
-        public static DataTable getKPIByTimeAndKPO(int thang, int nam, int kpo_id)
+        public static DataTable getKPIByTimeAndKPO(int thang, int nam, int kpo_id, int loaiMauBSC)
         {
             Connection cnBSC = new Connection();
             DataTable dsKPIByTimeAndKPO = new DataTable();
@@ -35,6 +55,7 @@ namespace VNPT_BSC.BSC
             sqlKPIByTimeAndKPO += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
             sqlKPIByTimeAndKPO += "and quyen_cv.quyen_id = 2) ";
             sqlKPIByTimeAndKPO += "and danhsachbsc.bscduocgiao = '' ";
+            sqlKPIByTimeAndKPO += "and danhsachbsc.maubsc = '" + loaiMauBSC + "'";
             sqlKPIByTimeAndKPO += "group by kpi.kpi_id, kpi.kpi_ten, dvt.dvt_ten, danhsachbsc.tytrong";
             try
             {
@@ -49,7 +70,7 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static Dictionary<String, String> loadBSCByYear(int thang, int nam)
+        public static Dictionary<String, String> loadBSCByYear(int thang, int nam, int loaiMauBSC)
         {
             Dictionary<String, String> dicOutput = new Dictionary<string, string>();
             Connection cnBSC = new Connection();
@@ -73,6 +94,7 @@ namespace VNPT_BSC.BSC
             sqlKPOByTime += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
             sqlKPOByTime += "and quyen_cv.quyen_id = 2) ";
             sqlKPOByTime += "and danhsachbsc.bscduocgiao = '' ";
+            sqlKPOByTime += "and danhsachbsc.maubsc = '" + loaiMauBSC + "' ";
             sqlKPOByTime += "group by kpo.kpo_id, kpo.kpo_ten ";
 
             try
@@ -122,7 +144,7 @@ namespace VNPT_BSC.BSC
                     int kpo_id = Convert.ToInt32(dsKPOByTime.Rows[nIndexKPO]["kpo_id"].ToString());
 
                     // Hiển thị các KPI, DVT, Trọng số theo KPO
-                    dsKPIByTimeAndKPO = getKPIByTimeAndKPO(thang, nam, kpo_id);
+                    dsKPIByTimeAndKPO = getKPIByTimeAndKPO(thang, nam, kpo_id, loaiMauBSC);
                     if (dsKPIByTimeAndKPO.Rows.Count <= 0)
                     {
                         outputHTML += "<tr><td colspan='" + (12 + 4) + "' class='text-center'>No item</td></tr>";
@@ -161,6 +183,7 @@ namespace VNPT_BSC.BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Xuất mẫu bsc";
             try
             {
                 Nhanvien nhanvien = new Nhanvien();
@@ -180,6 +203,10 @@ namespace VNPT_BSC.BSC
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
+
+                /*Get list MauBSC*/
+                dtMauBSC = new DataTable();
+                dtMauBSC = dsMauBSC();
 
             }
             catch

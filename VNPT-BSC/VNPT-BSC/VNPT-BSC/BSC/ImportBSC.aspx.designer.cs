@@ -31,6 +31,15 @@ namespace VNPT_BSC.BSC {
         protected global::System.Web.UI.WebControls.DropDownList DropDownListYear;
         
         /// <summary>
+        /// DropDownListLoaiMauBSC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownListLoaiMauBSC;
+        
+        /// <summary>
         /// excelUpload control.
         /// </summary>
         /// <remarks>

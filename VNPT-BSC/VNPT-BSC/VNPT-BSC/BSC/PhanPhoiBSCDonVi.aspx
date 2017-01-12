@@ -1,6 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="PhanPhoiBSCDonVi.aspx.cs" Inherits="VNPT_BSC.BSC.PhanPhoiBSCDonVi" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="PhanPhoiBSCDonVi.aspx.cs" Inherits="VNPT_BSC.BSC.PhanPhoiBSCDonVi" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
+    <%--<link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 
     <!-- Customize css -->
@@ -8,10 +8,13 @@
 
     <script src="../Bootstrap/jquery.js"></script>
     <script src="../Bootstrap/bootstrap.js"></script>
-    <script src="../Bootstrap/function.js"></script>
+    <script src="../Bootstrap/function.js"></script>--%>
 
+    <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
+    <script src="../Bootstrap/jquery.js"></script>
+    <script src="../Bootstrap/function.js"></script>
     <!-- Plugin for datatable-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
 
@@ -22,7 +25,7 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="col-md-12 margin-top-30">
+    <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
             <h3 class="panel-title">GIAO BSC CHO ĐƠN VỊ</h3>
@@ -44,10 +47,10 @@
                         </ul>
                     </div>
               </div>--%>
-              <div class="col-sm-12 form-horizontal">
+              <div class="col-md-12 col-xs-12 form-horizontal">
                 <div class="form-group">
-                    <label class="control-label col-sm-3">Thời gian:</label>
-                    <div class="col-sm-6 form-inline">
+                    <label class="control-label col-md-3 col-xs-3">Thời gian:</label>
+                    <div class="col-md-6 col-xs-6 form-inline">
                         <select class="form-control" id="month" onchange="changeInputData()">
                             <% for(int nMonth = 1; nMonth <= 12; nMonth++){ %>
                                 <option><%= nMonth %></option>
@@ -63,8 +66,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-sm-3">Đơn vị nhận:</label>
-                    <div class="col-sm-8">
+                    <label class="control-label col-md-3 col-xs-3">Đơn vị nhận:</label>
+                    <div class="col-md-4 col-xs-12">
                         <select class="form-control" id="donvi" onchange="changeInputData()">
                         <% for(int i = 0; i < dtDonvi.Rows.Count; i++){ %>
                             <%
@@ -129,9 +132,10 @@
                                                     string nam =  dtBSC.Rows[iBSC]["nam"].ToString();
                                                     string noidung =  dtBSC.Rows[iBSC]["content"].ToString();
                                                     string szNguoitao = dtBSC.Rows[iBSC]["nhanvien_id"].ToString();
+                                                    string loaimau = dtBSC.Rows[iBSC]["loai_id"].ToString();
                                                 %>
                                               <div class="radio">
-                                                <label><input type="radio" name="optradioBSC" data-thang="<%=thang %>" data-nam="<%=nam %>" data-nguoitao="<%=szNguoitao %>"><%= noidung%></label>
+                                                <label><input type="radio" name="optradioBSC" data-thang="<%=thang %>" data-nam="<%=nam %>" data-nguoitao="<%=szNguoitao %>" data-loaimau="<%=loaimau %>"><%= noidung%></label>
                                               </div>
                                           <% } %>
                                           </div>
@@ -153,7 +157,7 @@
                         <!-- /.panel-body -->
                     </div>
                 </div>
-                <div class="col-sm-12 text-center">
+                <div class="col-md-12 col-xs-12 text-center">
                     <a class="btn btn-success" id="saveData">Save</a>
                 </div>
              </div>
@@ -164,7 +168,7 @@
 <script type="text/javascript">
     var donvigiao = "<%= donvichuquan%>";
     function getCurrentDate() {
-        var curMonth = "<%= DateTime.Now.ToString("MM") %>";
+        var curMonth = "<%= DateTime.Now.ToString("%M") %>";
         var curYear = "<%= DateTime.Now.ToString("yyyy") %>";
         $("#month").val(curMonth);
         $("#year").val(curYear);
@@ -284,8 +288,6 @@
     }
 
     $(document).ready(function () {
-        // Hiển thị danh sách các chức năng của ở BSC
-        $(".qlybsc_dv a").click();
 
         /*Hide button*/
         $("#updateGiaoStatus").hide();
@@ -300,10 +302,12 @@
             var thang = $("input[name=optradioBSC]:checked").attr("data-thang");
             var nam = $("input[name=optradioBSC]:checked").attr("data-nam");
             var szNguoitao = $("input[name=optradioBSC]:checked").attr("data-nguoitao");
+            var loaimau = $("input[name=optradioBSC]:checked").attr("data-loaimau");
             var requestData = {
                 thang: thang,
                 nam: nam,
-                nguoitao: szNguoitao
+                nguoitao: szNguoitao,
+                loaiMauBSC: loaimau
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({

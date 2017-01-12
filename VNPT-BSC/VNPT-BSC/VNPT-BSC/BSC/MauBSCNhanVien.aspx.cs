@@ -21,6 +21,7 @@ namespace VNPT_BSC.BSC
         public static DataTable dtBSCNam = new DataTable();
         public static DataTable dtDVT = new DataTable();
         public static DataTable dtNVTD = new DataTable();
+        public static DataTable dtMauBSC = new DataTable();
         public static int nguoitao;
         public static int donvinhan;
         public class kpiDetail
@@ -29,6 +30,23 @@ namespace VNPT_BSC.BSC
             public int tytrong { get; set; }
             public string dvt { get; set; }
             public int nvtd { get; set; }
+        }
+
+        /*List loại mẫu bsc*/
+        private DataTable dsMauBSC()
+        {
+            DataTable dsMauBSC = new DataTable();
+            string sqlMauBSC = "select * from loaimaubsc";
+            try
+            {
+                dsMauBSC = cn.XemDL(sqlMauBSC);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dsMauBSC;
         }
 
         /*List đơn vị tính*/
@@ -86,7 +104,7 @@ namespace VNPT_BSC.BSC
         private DataTable dsBSCDuocGiao(int donvinhan)
         {
             DataTable dsBSC = new DataTable();
-            string sqlBSCDuocGiao = "select top 10 thang,nam from giaobscdonvi where donvinhan = '" + donvinhan + "' and trangthaigiao = 1 group by thang, nam order by nam,thang DESC";
+            string sqlBSCDuocGiao = "select top 24 thang,nam from giaobscdonvi where donvinhan = '" + donvinhan + "' and trangthaigiao = 1 group by thang, nam order by nam,thang DESC";
             try
             {
                 dsBSC = cn.XemDL(sqlBSCDuocGiao);
@@ -196,12 +214,12 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static Dictionary<String, String>[] BindingCheckBox(int monthAprove, int yearAprove, int nguoitao)
+        public static Dictionary<String, String>[] BindingCheckBox(int monthAprove, int yearAprove, int nguoitao, int maubsc)
         {
             DataTable dtKPI = new DataTable();
             Connection cnDanhSachBSC = new Connection();
             Dictionary<String, String>[] arrKPI = { };
-            string sql = "select * from danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao = '" + nguoitao + "' and bscduocgiao != ''";
+            string sql = "select * from danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao = '" + nguoitao + "' and bscduocgiao != '' and maubsc = '" + maubsc + "'";
             dtKPI = cnDanhSachBSC.XemDL(sql);
             if (dtKPI.Rows.Count > 0)
             {
@@ -218,16 +236,45 @@ namespace VNPT_BSC.BSC
             return arrKPI;
         }
 
+        private static DataTable dtDSBSC(int thang, int nam, int nguoitao) {
+            DataTable dtResult = new DataTable();
+            Connection cn = new Connection();
+            string sql = "select bscduocgiao from danhsachbsc where thang = '" + thang + "' and nam = '" + nam + "' and nguoitao = '" + nguoitao + "' and bscduocgiao != '' group by bscduocgiao";
+            try
+            {
+                dtResult = cn.XemDL(sql);
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+            return dtResult;
+        }
+
         [WebMethod]
-        public static bool SaveData(int monthAprove, int yearAprove, kpiDetail[] arrKPI_ID, int nguoitao, string bscduocgiao)
+        public static bool SaveData(int monthAprove, int yearAprove, kpiDetail[] arrKPI_ID, int nguoitao, string bscduocgiao, int maubsc)
         {
             Connection cnDanhSachBSC = new Connection();
-            bool output = false;
-            string sqlDelOldData = "delete danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao = '" + nguoitao + "' and bscduocgiao = '" + bscduocgiao + "'";
+            DataTable dtKiemTraDSBSC = new DataTable();
+            //Dictionary<String, String> dicOutput = new Dictionary<string, string>();
+            bool bResult = false;
+            string sqlDelOldData = "";
             string sqlInsertNewData = "";
             try
             {
-                cnDanhSachBSC.ThucThiDL(sqlDelOldData);
+                dtKiemTraDSBSC = dtDSBSC(monthAprove, yearAprove, nguoitao);
+                if (dtKiemTraDSBSC.Rows.Count > 0) {
+                    if (bscduocgiao == dtKiemTraDSBSC.Rows[0][0].ToString())
+                    {
+                        // Xóa chính nó và insert mới bản thân nó
+                        sqlDelOldData = "delete danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao = '" + nguoitao + "' and bscduocgiao = '" + bscduocgiao + "' and maubsc = '" + maubsc + "'";
+                    }
+                    else { 
+                        // Xóa hết mẫu
+                        sqlDelOldData = "delete danhsachbsc where thang = '" + monthAprove + "' and nam = '" + yearAprove + "' and nguoitao = '" + nguoitao + "' and bscduocgiao != ''";
+                    }
+                    cnDanhSachBSC.ThucThiDL(sqlDelOldData);
+                }
+
                 for (int i = 0; i < arrKPI_ID.Length; i++)
                 {
                     int kpi_id = arrKPI_ID[i].kpi_id;
@@ -235,27 +282,30 @@ namespace VNPT_BSC.BSC
                     string dvt = arrKPI_ID[i].dvt;
                     int nhanvienthamdinh = arrKPI_ID[i].nvtd;
                     string curDate = DateTime.Now.ToString("yyyy-MM-dd");
-                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, nguoitao, bscduocgiao, ngaytao, donvitinh, tytrong, nhanvienthamdinh) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '" + nguoitao + "', '" + bscduocgiao + "', '" + curDate + "', N'" + dvt + "', '" + tytrong + "', '" + nhanvienthamdinh + "')";
+                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, nguoitao, bscduocgiao, ngaytao, donvitinh, tytrong, nhanvienthamdinh, maubsc) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '" + nguoitao + "', '" + bscduocgiao + "', '" + curDate + "', N'" + dvt + "', '" + tytrong + "', '" + nhanvienthamdinh + "', '" + maubsc + "')";
                     try
                     {
                         cnDanhSachBSC.ThucThiDL(sqlInsertNewData);
-                        output = true;
                     }
                     catch (Exception ex)
                     {
-                        output = false;
+                        cnDanhSachBSC.ThucThiDL(sqlDelOldData);
+                        bResult = false;
+                        break;
                     }
                 }
+                bResult = true;
             }
             catch
             {
-                output = false;
+                bResult = false;
             }
-            return output;
+            return bResult;
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Mẫu BSC";
             if (!IsPostBack) {
                 try
                 {
@@ -284,6 +334,7 @@ namespace VNPT_BSC.BSC
                     dtBSCNam = dsBSCNam(nguoitao);
                     dtDVT = dsDVT();
                     dtNVTD = dsNVTD(donvinhan);
+                    dtMauBSC = dsMauBSC();
                 }
                 catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");

@@ -90,6 +90,7 @@ namespace VNPT_BSC.DanhMuc
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Quản lý đơn vị";
             if (!IsPostBack)
             {
                 try

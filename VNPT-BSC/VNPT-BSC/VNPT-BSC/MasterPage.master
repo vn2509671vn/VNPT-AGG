@@ -1,16 +1,16 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.Master.cs" Inherits="VNPT_BSC.MasterPageEdit" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="VNPT_BSC.MasterPageEdit" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    <link href="Bootstrap/hien_custom.css" rel="stylesheet" />
-    <link href="Bootstrap/bootstrap.css" rel="stylesheet" />
-    <link href="Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="Bootstrap/menu.css" rel="stylesheet" />
-    <script src="Bootstrap/jquery.js"></script>
-    <script src="Bootstrap/bootstrap.js"></script>
+    <link href="/Bootstrap/hien_custom.css" rel="stylesheet" />
+    <link href="/Bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="/Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/Bootstrap/menu.css" rel="stylesheet" />
+    <script src="/Bootstrap/jquery.js"></script>
+    <script src="/Bootstrap/bootstrap.js"></script>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -118,6 +118,7 @@
                                 <!-- Note: By adding "in" after "collapse", it starts with that particular panel open by default; remove if you want them all collapsed by default -->
                                 <div id="collapseFour" class="panel-collapse collapse off">
                                     <ul class="list-group">
+                                        <li><a href="/Admin/Test.aspx" class="navlink">Test</a></li>
                                         <li><a href="/Admin/nhomquyen.aspx" class="navlink">Nhóm quyền</a></li>
                                         <li><a href="/Admin/loaiquyen.aspx" class="navlink">Loại quyền</a></li>
                                         <li><a href="/Admin/Phanquyen.aspx" class="navlink">Phân quyền theo chức vụ</a></li>

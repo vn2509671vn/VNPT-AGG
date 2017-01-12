@@ -94,22 +94,40 @@ namespace VNPT_BSC.Admin
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Quản lý việc phân quyền nhân viên";
             if (!IsPostBack)
             {
-                dtphanquyen = new DataTable();
-                dtphanquyen = getphanquyenList();
                 try
                 {
+                    Nhanvien nhanvien = new Nhanvien();
+                    nhanvien = Session.GetCurrentUser();
+
+                    dtphanquyen = new DataTable();
+                    dtphanquyen = getphanquyenList();
                     string sqlchucvu = "select * from chucvu";
                     string sqlquyen = "select * from quyen";
 
                     dtchucvu = cn.XemDL(sqlchucvu);
                     dtquyen = cn.XemDL(sqlquyen);
+
+                    // Khai báo các biến cho việc kiểm tra quyền
+                    List<int> quyenHeThong = new List<int>();
+                    bool nFindResult = false;
+                    quyenHeThong = Session.GetRole();
+
+                    /*Kiểm tra nếu không có quyền admin (id của quyền là 1) thì đẩy ra trang đăng nhập*/
+                    nFindResult = quyenHeThong.Contains(1);
+
+                    if (nhanvien == null || !nFindResult)
+                    {
+                        Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    }
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
+                catch {
+                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
+                
             }
         }
     }

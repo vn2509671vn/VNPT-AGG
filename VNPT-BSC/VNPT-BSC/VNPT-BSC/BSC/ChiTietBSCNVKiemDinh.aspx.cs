@@ -195,6 +195,7 @@ namespace VNPT_BSC.BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Chi tiết kiểm định";
             if (!IsPostBack)
             {
                 try

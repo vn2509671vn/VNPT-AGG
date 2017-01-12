@@ -1,27 +1,27 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="KPO.aspx.cs" Inherits="VNPT_BSC.DanhMuc.KPO" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="KPO.aspx.cs" Inherits="VNPT_BSC.DanhMuc.KPO" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script src="../Bootstrap/sweetalert.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../Bootstrap/sweetalert.css">
+    <link rel="stylesheet" type="text/css" href="../Bootstrap/sweetalert.css"/>
     <link href="../Bootstrap/hien_custom.css" rel="stylesheet" />
-    <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
-    <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <%--<link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" />--%>
     <script src="../Bootstrap/jquery.js"></script>
-    <script src="../Bootstrap/bootstrap.js"></script>
+    <%--<script src="../Bootstrap/bootstrap.js"></script>--%>
     <!-- Plugin for datatable-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
     <script src="../Bootstrap/Alert.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="col-md-12 margin-top-30">
+    <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">DANH MỤC KPO</h3>
             </div>
             <div class="panel-body">
-                <div class="col-sm-12">
+                <div class="col-md-12 col-xs-12">
                     <div class="table-responsive fix-border-table">
                         <a class="btn btn-success btn-xl fix-label-margin-top" data-toggle="modal" data-target="#themKPO">Thêm KPO</a>
                         <table id="table-kpi" class="table table-striped table-bordered table-full-width" cellspacing="0" width="100%">

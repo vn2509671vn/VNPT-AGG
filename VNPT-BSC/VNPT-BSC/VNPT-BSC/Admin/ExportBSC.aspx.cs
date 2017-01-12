@@ -198,6 +198,7 @@ namespace VNPT_BSC.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Thống kê bsc đã giao";
             try
             {
                 Nhanvien nhanvien = new Nhanvien();

@@ -5,17 +5,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    <script src="Bootstrap/jquery.js"></script>
-    <script src="Bootstrap/bootstrap.js"></script>
-    <link href="Bootstrap/bootstrap.css" rel="stylesheet" />
-    <link href="Bootstrap/hien_custom.css" rel="stylesheet" />
+    <script src="/Bootstrap/jquery.js"></script>
+    <script src="/Bootstrap/bootstrap.js"></script>
+    <link href="/Bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="/Bootstrap/hien_custom.css" rel="stylesheet" />
     <script src="../Bootstrap/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../Bootstrap/sweetalert.css">
 
 </head>
 <body>
-    <form id="form1" runat="server">
-        <div class="col-md-4 col-md-offset-4 margin-top-120">
+    <div class="container">
+        <form id="form1" runat="server">
+        <div class="col-md-4 col-md-offset-4 col-xs-12 margin-top-120">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title" style="text-align:center">ĐĂNG NHẬP HỆ THỐNG</h3>
@@ -66,7 +67,7 @@
                  $("#btn-login").click(function () {
                      var id = $("#login-username").val();
                      var pass = $('#login-password').val();
-                     
+
                      var isCheck = check();
                      if (!isCheck) {
                          return false;
@@ -100,7 +101,8 @@
                      });
                  });
              });
-       </script>
-    </form>
+            </script>
+        </form>
+    </div>
 </body>
 </html>

@@ -146,36 +146,44 @@ namespace VNPT_BSC.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Nhanvien nhanvien = new Nhanvien();
-            DataTable dtDonvi = new DataTable();
-            DataTable dtChuyenVienBSC = new DataTable();
-            nhanvien = Session.GetCurrentUser();
-            dtDonvi = getListDV();
-            dtChuyenVienBSC = getChuyenVienBSC();
-
-            // Khai báo các biến cho việc kiểm tra quyền
-            List<int> quyenHeThong = new List<int>();
-            bool nFindResult = false;
-            quyenHeThong = Session.GetRole();
-
-            /*Kiểm tra nếu không có quyền admin (id của quyền là 1) thì đẩy ra trang đăng nhập*/
-            nFindResult = quyenHeThong.Contains(1);
-
-            if (nhanvien == null || !nFindResult)
+            this.Title = "Import excel";
+            try
             {
-                Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                Nhanvien nhanvien = new Nhanvien();
+                DataTable dtDonvi = new DataTable();
+                DataTable dtChuyenVienBSC = new DataTable();
+                nhanvien = Session.GetCurrentUser();
+                dtDonvi = getListDV();
+                dtChuyenVienBSC = getChuyenVienBSC();
+
+                // Khai báo các biến cho việc kiểm tra quyền
+                List<int> quyenHeThong = new List<int>();
+                bool nFindResult = false;
+                quyenHeThong = Session.GetRole();
+
+                /*Kiểm tra nếu không có quyền admin (id của quyền là 1) thì đẩy ra trang đăng nhập*/
+                nFindResult = quyenHeThong.Contains(1);
+
+                if (nhanvien == null || !nFindResult)
+                {
+                    Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                }
+
+                DropDownListDVG.DataSource = dtDonvi;
+                DropDownListDVG.DataTextField = "donvi_ten";
+                DropDownListDVG.DataValueField = "donvi_id";
+                DropDownListDVG.DataBind();
+
+                DropDownListCVBSC.DataSource = dtChuyenVienBSC;
+                DropDownListCVBSC.DataTextField = "nhanvien_hoten";
+                DropDownListCVBSC.DataValueField = "nhanvien_id";
+                DropDownListCVBSC.DataBind();
+            }
+            catch {
                 Response.Write("<script>window.location.href='../Login.aspx';</script>");
             }
-
-            DropDownListDVG.DataSource = dtDonvi;
-            DropDownListDVG.DataTextField = "donvi_ten";
-            DropDownListDVG.DataValueField = "donvi_id";
-            DropDownListDVG.DataBind();
-
-            DropDownListCVBSC.DataSource = dtChuyenVienBSC;
-            DropDownListCVBSC.DataTextField = "nhanvien_hoten";
-            DropDownListCVBSC.DataValueField = "nhanvien_id";
-            DropDownListCVBSC.DataBind();
+            
         }
 
         protected void btnUpload_Click(object sender, EventArgs e)

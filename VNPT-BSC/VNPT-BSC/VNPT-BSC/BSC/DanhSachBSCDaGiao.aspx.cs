@@ -200,6 +200,7 @@ namespace VNPT_BSC.BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Danh sách bsc đã giao";
             try
             {
                 Nhanvien nhanvien = new Nhanvien();

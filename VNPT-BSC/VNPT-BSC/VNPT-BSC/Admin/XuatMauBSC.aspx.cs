@@ -147,6 +147,7 @@ namespace VNPT_BSC.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Xuất mẫu bsc";
             try
             {
                 Nhanvien nhanvien = new Nhanvien();

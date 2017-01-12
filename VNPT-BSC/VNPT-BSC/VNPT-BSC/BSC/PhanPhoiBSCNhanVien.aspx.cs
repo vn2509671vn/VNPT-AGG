@@ -48,7 +48,7 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static string loadBSC(int thang, int nam, int nguoitao, int donvi)
+        public static string loadBSC(int thang, int nam, int nguoitao, int donvi, int loaiMauBSC)
         {
             Connection cnBSC = new Connection();
             DataTable gridData = new DataTable();
@@ -61,7 +61,7 @@ namespace VNPT_BSC.BSC
             sqlBSC += "where bsc.kpi_id = kpi.kpi_id ";
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
             sqlBSC += "and bsc.bscduocgiao != '' ";
-            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' and bsc.nguoitao = '"+nguoitao+"'";
+            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' and bsc.nguoitao = '" + nguoitao + "' and bsc.maubsc = '" + loaiMauBSC + "'";
             try
             {
                 gridData = cnBSC.XemDL(sqlBSC);
@@ -466,6 +466,7 @@ namespace VNPT_BSC.BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Phân phối bsc";
             if (!IsPostBack)
             {
                 try
@@ -492,7 +493,7 @@ namespace VNPT_BSC.BSC
 
                     string sqlDanhSachNhanVien = "select * from nhanvien where nhanvien_donvi = '" + donvi + "'";
                     string sqlDanhSachFullNV = sqlDanhSachNhanVien;
-                    string sqlDanhSachKPI = "select thang, nam, CONVERT(varchar(4), thang) + '/' + CONVERT(varchar(4), nam) AS content from DANHSACHBSC where nguoitao = '" + nhanvienquanly + "' and bscduocgiao != '' group by nam, thang order by nam, thang ASC";
+                    string sqlDanhSachKPI = "select DANHSACHBSC.thang, DANHSACHBSC.nam, CONVERT(varchar(4), DANHSACHBSC.thang) + '/' + CONVERT(varchar(4), DANHSACHBSC.nam) + ' ' + loaimaubsc.loai_ten AS content, loaimaubsc.loai_id from DANHSACHBSC, loaimaubsc where nguoitao = '" + nhanvienquanly + "' and bscduocgiao != '' and DANHSACHBSC.maubsc = loaimaubsc.loai_id group by DANHSACHBSC.nam, DANHSACHBSC.thang, loaimaubsc.loai_id, loaimaubsc.loai_ten order by DANHSACHBSC.nam, DANHSACHBSC.thang DESC";
                     dtNhanVien = cn.XemDL(sqlDanhSachNhanVien);
                     dtBSC = cn.XemDL(sqlDanhSachKPI);
                     dtFullNV = cn.XemDL(sqlDanhSachFullNV);

@@ -1,6 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="NhanBSCDonVi.aspx.cs" Inherits="VNPT_BSC.BSC.NhanBSCDonVi" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="NhanBSCDonVi.aspx.cs" Inherits="VNPT_BSC.BSC.NhanBSCDonVi" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
+    <%--<link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 
     <!-- Customize css -->
@@ -8,10 +8,13 @@
 
     <script src="../Bootstrap/jquery.js"></script>
     <script src="../Bootstrap/bootstrap.js"></script>
-    <script src="../Bootstrap/function.js"></script>
+    <script src="../Bootstrap/function.js"></script>--%>
 
+    <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
+    <script src="../Bootstrap/jquery.js"></script>
+    <script src="../Bootstrap/function.js"></script>
     <!-- Plugin for datatable-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
 
@@ -21,16 +24,16 @@
     <script src="../Bootstrap/sweetalert.min.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="col-md-12 margin-top-30">
+    <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
             <h3 class="panel-title">NHẬN BSC</h3>
           </div>
           <div class="panel-body">
-              <div class="col-sm-12 form-horizontal">
+              <div class="col-md-12 col-xs-12 form-horizontal">
                 <div class="form-group">
-                    <label class="control-label col-sm-6">Lọc theo năm:</label>
-                    <div class="col-sm-6">
+                    <label class="control-label col-md-6">Lọc theo năm:</label>
+                    <div class="col-md-3">
                         <select class="form-control" id="year">
                             <% for(int i = 2016; i <= 2100; i++){ 
                                 string selectOption = "";
@@ -45,7 +48,7 @@
                     </div>
                 </div>
               </div>
-              <div class="col-sm-12" id="gridBSC">
+              <div class="col-md-12 col-xs-12" id="gridBSC">
 
               </div>
           </div>
@@ -85,8 +88,6 @@
 
     $(document).ready(function () {
         var donvinhan = '<%=donvinhan %>';
-        // Hiển thị danh sách các chức năng của ở BSC
-        $(".qlybsc_dv a").click();
 
         // Load grid lần đầu
         loadBSCByYear($("#year").val(), donvinhan);

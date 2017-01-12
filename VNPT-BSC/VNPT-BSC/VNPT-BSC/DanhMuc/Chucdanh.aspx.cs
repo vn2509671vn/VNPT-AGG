@@ -93,7 +93,7 @@ namespace VNPT_BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            this.Title = "Quản lý chức danh";
             if (!IsPostBack)
             {
                 try

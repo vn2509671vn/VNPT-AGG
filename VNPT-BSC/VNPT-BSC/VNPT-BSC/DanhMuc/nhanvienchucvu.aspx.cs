@@ -110,8 +110,7 @@ namespace VNPT_BSC.DanhMuc
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-
-
+            this.Title = "Quản lý chức vụ của nhân viên";
             if (!IsPostBack)
             {
                 dtnv_cv = new DataTable();

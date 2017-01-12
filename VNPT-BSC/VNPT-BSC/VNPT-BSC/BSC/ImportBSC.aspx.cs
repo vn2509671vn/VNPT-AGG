@@ -21,6 +21,41 @@ namespace VNPT_BSC.BSC
         public static int gDonvigiao;
         public static int gNguoitao;
 
+        /*List loại mẫu bsc*/
+        private DataTable dsMauBSC()
+        {
+            DataTable dsMauBSC = new DataTable();
+            string sqlMauBSC = "select * from loaimaubsc";
+            try
+            {
+                dsMauBSC = cn.XemDL(sqlMauBSC);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dsMauBSC;
+        }
+
+        private int countKPI(int thang, int nam, int loaiMauBSC)
+        {
+            int nTong = 0;
+            DataTable dtResult = new DataTable();
+            string sql = "select * from danhsachbsc where thang = '" + thang + "' and nam = '" + nam + "' and nguoitao in (select nhanvien.nhanvien_id from nhanvien, chucvu, nhanvien_chucvu, quyen_cv where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id and chucvu.chucvu_id = quyen_cv.chucvu_id and quyen_cv.quyen_id = 2) and bscduocgiao = '' and maubsc = '" + loaiMauBSC + "'";
+            try
+            {
+                dtResult = cn.XemDL(sql);
+                nTong = dtResult.Rows.Count;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return nTong;
+        }
+
         private DataTable getListDV()
         {
             DataTable dtResult = new DataTable();
@@ -92,10 +127,10 @@ namespace VNPT_BSC.BSC
             return bResult;
         }
 
-        private DataTable getKPIDeTail(int thang, int nam, int kpi_id, int nguoitao)
+        private DataTable getKPIDeTail(int thang, int nam, int kpi_id, int loaiMauBSC)
         {
             DataTable dtResult = new DataTable();
-            string sql = "select * from danhsachbsc where thang = '" + thang + "' and nam = '" + nam + "' and nguoitao = '" + nguoitao + "' and kpi_id = '" + kpi_id + "'";
+            string sql = "select * from danhsachbsc where thang = '" + thang + "' and nam = '" + nam + "' and nguoitao in (select nhanvien.nhanvien_id from nhanvien, chucvu, nhanvien_chucvu, quyen_cv where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id and chucvu.chucvu_id = quyen_cv.chucvu_id and quyen_cv.quyen_id = 2) and kpi_id = '" + kpi_id + "' and bscduocgiao = '' and maubsc = '" + loaiMauBSC + "'";
             try
             {
                 dtResult = cn.XemDL(sql);
@@ -107,11 +142,11 @@ namespace VNPT_BSC.BSC
             return dtResult;
         }
 
-        private bool insertBSC_DonVi(int donvigiao, int donvinhan, int thang, int nam, int kpi_id, int nguoitao, int kehoach)
+        private bool insertBSC_DonVi(int donvigiao, int donvinhan, int thang, int nam, int kpi_id, int kehoach, int loaiMauBSC)
         {
             DataTable dtKPIDetai = new DataTable();
             bool bResult = false;
-            dtKPIDetai = getKPIDeTail(thang, nam, kpi_id, nguoitao);
+            dtKPIDetai = getKPIDeTail(thang, nam, kpi_id, loaiMauBSC);
             if (dtKPIDetai.Rows.Count > 0)
             {
                 try
@@ -160,35 +195,47 @@ namespace VNPT_BSC.BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Nhanvien nhanvien = new Nhanvien();
-            DataTable dtDonvi = new DataTable();
-            DataTable dtChuyenVienBSC = new DataTable();
-            nhanvien = Session.GetCurrentUser();
-            dtDonvi = getListDV();
-            dtChuyenVienBSC = getChuyenVienBSC();
+            this.Title = "Import BSC";
+            if (!IsPostBack) {
+                Nhanvien nhanvien = new Nhanvien();
+                DataTable dtDonvi = new DataTable();
+                DataTable dtChuyenVienBSC = new DataTable();
+                DataTable dtMauBSC = new DataTable();
 
-            // Khai báo các biến cho việc kiểm tra quyền
-            List<int> quyenHeThong = new List<int>();
-            bool nFindResult = false;
-            quyenHeThong = Session.GetRole();
+                nhanvien = Session.GetCurrentUser();
 
-            /*Kiểm tra nếu không có quyền giao bsc đơn vị (id của quyền là 2) thì đẩy ra trang đăng nhập*/
-            nFindResult = quyenHeThong.Contains(2);
+                // Khai báo các biến cho việc kiểm tra quyền
+                List<int> quyenHeThong = new List<int>();
+                bool nFindResult = false;
+                quyenHeThong = Session.GetRole();
 
-            if (nhanvien == null || !nFindResult)
-            {
-                Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                /*Kiểm tra nếu không có quyền giao bsc đơn vị (id của quyền là 2) thì đẩy ra trang đăng nhập*/
+                nFindResult = quyenHeThong.Contains(2);
+
+                if (nhanvien == null || !nFindResult)
+                {
+                    Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                }
+
+                gDonvigiao = nhanvien.nhanvien_donvi_id;
+                gNguoitao = nhanvien.nhanvien_id;
+                dtDonvi = getListDV();
+                dtChuyenVienBSC = getChuyenVienBSC();
+                dtMauBSC = dsMauBSC();
+
+                DropDownListLoaiMauBSC.DataSource = dtMauBSC;
+                DropDownListLoaiMauBSC.DataTextField = "loai_ten";
+                DropDownListLoaiMauBSC.DataValueField = "loai_id";
+                DropDownListLoaiMauBSC.DataBind();
             }
-
-            gDonvigiao = nhanvien.nhanvien_donvi_id;
-            gNguoitao = nhanvien.nhanvien_id;
         }
 
         protected void btnUpload_Click(object sender, EventArgs e)
         {
             int thang = Convert.ToInt32(DropDownListMonth.SelectedValue.ToString());
             int nam = Convert.ToInt32(DropDownListYear.SelectedValue.ToString());
+            int loaiMauBSC = Convert.ToInt32(DropDownListLoaiMauBSC.SelectedValue.ToString());
 
             if (excelUpload.HasFile)
             {
@@ -198,14 +245,15 @@ namespace VNPT_BSC.BSC
 
                 string FilePath = Server.MapPath(FolderPath + FileName);
                 excelUpload.SaveAs(FilePath);
-                Import_To_Grid(FilePath, Extension, "Yes", thang, nam);
+                Import_To_Grid(FilePath, Extension, "Yes", thang, nam, loaiMauBSC);
             }
         }
 
-        private void Import_To_Grid(string FilePath, string Extension, string isHDR, int thang, int nam)
+        private void Import_To_Grid(string FilePath, string Extension, string isHDR, int thang, int nam, int loaiMauBSC)
         {
             bool bImport = false;
             bool isExist = false;
+            int nTongKPI = 0;
             string conStr = "";
             switch (Extension)
             {
@@ -244,6 +292,12 @@ namespace VNPT_BSC.BSC
             GridView1.DataSource = dtResult;
             GridView1.DataBind();
 
+            nTongKPI = countKPI(thang, nam, loaiMauBSC);
+            if (dtResult.Rows.Count != nTongKPI) {
+                Response.Write("<script>alert('File đã chọn có cấu trúc không giống với mẫu trong database!!!')</script>");
+                return;
+            }
+
             List<string> headers = new List<string>();
             foreach (DataColumn col in dtResult.Columns)
             {
@@ -277,19 +331,25 @@ namespace VNPT_BSC.BSC
                     {
                         kehoach = 0;
                     }
-                    else { 
-                    kehoach = Convert.ToInt32(dtResult.Rows[nRowIndex][nColIndex].ToString().Trim());
+                    else {
+                        decimal tmpKehoach = Convert.ToDecimal(dtResult.Rows[nRowIndex][nColIndex].ToString().Trim());
+                        kehoach = Convert.ToInt32(tmpKehoach);
                     }
                     kpi_id = Convert.ToInt32(dtResult.Rows[nRowIndex][0].ToString().Trim());
-                    
-                    bResultBSCDV = insertBSC_DonVi(gDonvigiao, donvinhan_id, thang, nam, kpi_id, gNguoitao, kehoach);
+
+                    bResultBSCDV = insertBSC_DonVi(gDonvigiao, donvinhan_id, thang, nam, kpi_id, kehoach, loaiMauBSC);
                     if (bResultBSCDV == false)
                     {
                         delBSC_DV(gDonvigiao, thang, nam);
-                        Response.Write("<script>alert('Import không thành công!!! Cấu trúc hoặc dữ liệu trong file không đúng định dạng')</script>");
+                        bImport = false;
+                        //Response.Write("<script>alert('Import không thành công!!! Cấu trúc hoặc dữ liệu trong file không đúng định dạng')</script>");
                         break;
                     }
                     bImport = true;
+                }
+
+                if (!bImport) {
+                    break;
                 }
             }
 
@@ -301,6 +361,7 @@ namespace VNPT_BSC.BSC
                 else
                 {
                     delGiaoBSCDV(gDonvigiao, thang, nam);
+                    Response.Write("<script>alert('Import không thành công!!! Cấu trúc hoặc dữ liệu trong file không đúng định dạng')</script>");
                 }
             }
         }

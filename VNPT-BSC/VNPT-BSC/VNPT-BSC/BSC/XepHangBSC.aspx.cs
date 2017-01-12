@@ -77,6 +77,7 @@ namespace VNPT_BSC.BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Danh sách xếp hạng";
             try
             {
                 Nhanvien nhanvien = new Nhanvien();

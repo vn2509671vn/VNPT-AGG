@@ -1,0 +1,259 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterLayout.Master.cs" Inherits="VNPT_BSC.MasterLayout" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap -->
+    <link href="Bootstrap/bootstrap.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Datatables -->
+    <link href="/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet" />
+    <link href="/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet" />
+    <link href="/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    <link href="/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom Theme Style -->
+    <link href="/build/css/custom.css" rel="stylesheet" />
+
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="/index.aspx" class="site_title">
+                <i style="padding-top: 12px; float: left">
+                <img src="/Images/Logo/logo.jpg" class="img-responsive"/>
+                </i> 
+                <span>VNPT An Giang</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_info">
+                <span>Xin chào,</span>
+                <h2><strong><%= userName %></strong></h2>
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <ul class="nav side-menu">
+                  <li><a href="/index.aspx"><i class="fa fa-home"></i> Trang Chủ </a></li>
+                  <li class="admin"><a><i class="fa fa-edit"></i> Danh Mục Quản Lý <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="/DanhMuc/Donvi.aspx">Đơn Vị</a></li>
+                      <li><a href="/DanhMuc/QL_NhanVien.aspx">Nhân Viên</a></li>
+                      <li><a href="/DanhMuc/Chucdanh.aspx">Chức Danh</a></li>
+                      <li><a href="/DanhMuc/Chucvu.aspx">Chức Vụ</a></li>
+                      <li><a href="/DanhMuc/nhanvienchucvu.aspx">Phân Chức Vụ</a></li>
+                    </ul>
+                  </li>
+                  <li class="danhmucbsc"><a><i class="fa fa-bar-chart-o"></i> Danh Mục BSC <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="/DanhMuc/KPO.aspx">KPO</a></li>
+                      <li><a href="/DanhMuc/KPI.aspx">KPI</a></li>
+                      <li><a href="/DanhMuc/Donvitinh.aspx">Danh Mục Đơn Vị Tính</a></li>
+                    </ul>
+                  </li>
+                  <li class="qlybsc_dv"><a><i class="fa fa-sitemap"></i> Quản Lý BSC Đơn vị <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li class="cls-bsc" id="maubsc_donvi"><a href="/BSC/MauBSC.aspx">Mẫu BSC</a></li>
+                      <li class="cls-bsc" id="xuatmaubsc_donvi"><a href="/BSC/XuatMauBSC.aspx">Xuất Mẫu BSC</a></li>
+                      <li class="cls-bsc" id="import_bsc"><a href="/BSC/ImportBSC.aspx">Import BSC</a></li>
+                      <li class="cls-bsc" id="danhsach_bsc_dagiao"><a href="/BSC/DanhSachBSCDaGiao.aspx">Danh Sách BSC Đã Giao</a></li>
+                      <li class="cls-bsc" id="xephang_bsc"><a href="/BSC/XepHangBSC.aspx">Danh Sách Xếp Hạng</a></li>
+                      <li class="cls-bsc" id="phanphoibsc_donvi"><a href="/BSC/PhanPhoiBSCDonVi.aspx">Phân Phối BSC</a></li>
+                      <li class="cls-bsc" id="nhanbsc_donvi"><a href="/BSC/NhanBSCDonVi.aspx">Nhận BSC</a></li>
+                      <li class="cls-bsc" id="kiemdinhbsc_donvi"><a href="/BSC/KiemDinhBSCDonVi.aspx">Kiểm Định BSC</a></li>
+                      <li class="cls-bsc" id="nghiemthubsc_donvi"><a href="/BSC/NghiemThuBSCDonVi.aspx">Nghiệm Thu BSC</a></li>
+                    </ul>
+                  </li>
+                  <li class="qlybsc_nv"><a><i class="fa fa-users"></i> Quản Lý BSC NV <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li class="cls-bsc" id="maubsc_nhanvien"><a href="/BSC/MauBSCNhanVien.aspx">Mẫu BSC</a></li>
+                      <li class="cls-bsc" id="phanphoibsc_nhanvien"><a href="/BSC/PhanPhoiBSCNhanVien.aspx">Phân Phối BSC</a></li>
+                      <li class="cls-bsc" id="nhanbsc_nhanvien"><a href="/BSC/NhanBSCNhanVien.aspx">Nhận BSC</a></li>
+                      <li class="cls-bsc" id="kiemdinhbsc_nhanvien"><a href="/BSC/KiemDinhBSCNhanVien.aspx">Kiểm Định BSC</a></li>
+                      <li class="cls-bsc" id="nghiemthubsc_nhanvien"><a href="/BSC/NghiemThuBSCNhanVien.aspx">Nghiệm Thu BSC</a></li>
+                    </ul>
+                  </li>
+                  <li class="admin"><a><i class="fa fa-user-secret"></i> Admin <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="/Admin/nhomquyen.aspx">Nhóm Quyền</a></li>
+                      <li><a href="/Admin/loaiquyen.aspx">Loại Quyền</a></li>
+                      <li><a href="/Admin/Phanquyen.aspx">Phân Quyền Theo Chức Vụ</a></li>
+                      <li><a href="/Admin/QLGiaoBSCDonVi.aspx">Quản Lý BSC Đơn Vị</a></li>
+                      <li><a href="/Admin/QLGiaoBSCNhanVien.aspx">Quản Lý BSC Nhân Viên</a></li>
+                      <li><a href="/Admin/XuatMauBSC.aspx">Xuất Mẫu BSC</a></li>
+                      <li><a href="/Admin/ImportExcel.aspx">Import BSC</a></li>
+                      <li><a href="/Admin/ExportBSC.aspx">Thống kê BSC đã giao</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /sidebar menu -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <strong><%= userName %></strong>
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <%--<li><a href="javascript:;"> Profile</a></li>--%>
+                    <li><a id="logout"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <form id="form1" runat="server">
+                <div>
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        
+                    </asp:ContentPlaceHolder>
+                </div>
+            </form>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-left">
+            <strong>© 2014-<span style="font-weight:bold;">2017</span>, <a>VIỄN THÔNG AN GIANG</a></strong>
+            <br/>Địa chỉ: Số 2, Lê Lợi, Mỹ Bình, Tp. Long Xuyên, An Giang, Việt Nam. 
+            <br/>Tel: (076) 800126 - Fax: (076) 3856294
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- Datatables -->
+    <script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="/vendors/datatables.net-scroller/js/datatables.scroller.min.js"></script>
+    <script src="/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="/build/js/custom.min.js"></script>
+  </body>
+</html>
+<script type="text/javascript">
+    var quyenHeThong = <%= javaSerial.Serialize(quyenHeThong) %>
+    $(document).ready(function () {
+        $(".cls-bsc").hide();
+        $(".qlybsc_dv").hide();
+        $(".qlybsc_nv").hide();
+        $(".admin").hide();
+        $(".danhmucbsc").show();
+
+        for (var nIndex = 0; nIndex < quyenHeThong.length; nIndex++) {
+            // Chuyên viên bsc
+            var quyen = quyenHeThong[nIndex];
+            if (quyen == 2) {
+                $(".qlybsc_dv").show();
+                $(".qlybsc_nv").show();
+                $("#maubsc_donvi").show();
+                $("#xuatmaubsc_donvi").show();
+                $("#import_bsc").show();
+                $("#xephang_bsc").show();
+                $("#phanphoibsc_donvi").show();
+                $("#nghiemthubsc_donvi").show();
+                $("#nhanbsc_nhanvien").show();
+                $("#danhsach_bsc_dagiao").show();
+            }
+            else if (quyen == 3) {
+                $(".qlybsc_dv").show();
+                $(".qlybsc_nv").show();
+                $("#nhanbsc_donvi").show();
+                $("#kiemdinhbsc_donvi").show();
+                $("#maubsc_nhanvien").show();
+                $("#phanphoibsc_nhanvien").show();
+                $("#nhanbsc_nhanvien").show();
+                $("#kiemdinhbsc_nhanvien").show();
+                $("#nghiemthubsc_nhanvien").show();
+            }
+            else if (quyen == 1) {
+                $(".admin").show();
+            }
+        }
+
+        // Người dùng bình thường
+        if (quyenHeThong.length == 0) {
+            $(".qlybsc_nv").show();
+            $("#nhanbsc_nhanvien").show();
+            $(".danhmucbsc").hide();
+        }
+
+        $("#logout").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/logout.aspx/thoat",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result.d) {
+                        window.location.replace("/Login.aspx");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        });
+    });
+</script>

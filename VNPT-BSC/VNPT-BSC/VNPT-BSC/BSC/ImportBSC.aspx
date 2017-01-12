@@ -1,6 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="ImportBSC.aspx.cs" Inherits="VNPT_BSC.BSC.ImportBSC" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="ImportBSC.aspx.cs" Inherits="VNPT_BSC.BSC.ImportBSC" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
+    <%--<link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 
     <!-- Customize css -->
@@ -8,14 +8,17 @@
 
     <script src="../Bootstrap/jquery.js"></script>
     <script src="../Bootstrap/bootstrap.js"></script>
-    <script src="../Bootstrap/function.js"></script>
+    <script src="../Bootstrap/function.js"></script>--%>
 
+    <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
+    <script src="../Bootstrap/jquery.js"></script>
+    <script src="../Bootstrap/function.js"></script>
     <!-- Plugin for datatable-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
     <!-- Add for export data of datatable-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
@@ -30,13 +33,13 @@
     <script src="../Bootstrap/sweetalert.min.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="col-md-12 margin-top-30">
+    <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
             <h3 class="panel-title">Giao BSC đơn vị bằng Excel</h3>
           </div>
           <div class="panel-body">
-              <div class="col-sm-12 form-horizontal">
+              <div class="col-md-12 col-xs-12 form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-6">Chọn thời gian giao:</label>
                     <div class="col-sm-6 form-inline">
@@ -91,6 +94,12 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-sm-6">Chọn loại mẫu:</label>
+                    <div class="col-sm-6 form-inline">
+                        <asp:DropDownList runat="server" ID="DropDownListLoaiMauBSC" class="form-control" AutoPostBack="True"></asp:DropDownList>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-sm-6">Chọn file:</label>
                     <div class="col-sm-6 form-inline">
                         <asp:FileUpload ID="excelUpload" runat="server" class="form-control"/>
@@ -98,16 +107,10 @@
                     </div>
                 </div>
               </div>
-              <div class="col-sm-12" id="gridBSC">
+              <div class="col-md-12 col-xs-12" id="gridBSC">
                 <asp:GridView ID="GridView1" runat="server"></asp:GridView>
               </div>
           </div>
         </div>
     </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        // Hiển thị danh sách các chức năng của ở BSC
-        $(".qlybsc_dv a").click();
-    });
-</script>
 </asp:Content>

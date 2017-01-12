@@ -1,76 +1,81 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="loaiquyen.aspx.cs" Inherits="VNPT_BSC.Admin.loaiquyen" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="loaiquyen.aspx.cs" Inherits="VNPT_BSC.Admin.loaiquyen" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <script src="../Bootstrap/sweetalert.min.js"></script>
+    <%--<script src="../Bootstrap/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../Bootstrap/sweetalert.css">
     <link href="../Bootstrap/hien_custom.css" rel="stylesheet" />
     <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <script src="../Bootstrap/jquery.js"></script>
-    <script src="../Bootstrap/bootstrap.js"></script>
+    <script src="../Bootstrap/bootstrap.js"></script>--%>
+
+    <link href="../Bootstrap/hien_custom.css" rel="stylesheet" />
+    <script src="../Bootstrap/jquery.js"></script>
     <!-- Plugin for datatable-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
     <script src="../Bootstrap/Alert.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="col-md-12 margin-top-30">
+    <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">DANH MỤC KPI</h3>
+                <h3 class="panel-title">DANH MỤC LOẠI QUYỀN</h3>
             </div>
             <div class="panel-body">
-                <div class="col-sm-12">
+                <div class="col-md-12 col-xs-12">
                     <div class="table-responsive fix-border-table">
-                        <a class="btn btn-success btn-xl fix-label-margin-top" data-toggle="modal" data-target="#themkpi">Thêm KPI</a>
+                        <a class="btn btn-success btn-xl fix-label-margin-top" data-toggle="modal" data-target="#themkpi">Thêm Loại Quyền</a>
                     </div>
-                    <table id="table-kpi" class="table table-striped table-bordered table-full-width" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Mã quyền</th>
-                                <th>Tên quyền</th>
-                                <th>Mô tả quyền</th>
-                                <th>Nhóm quyền</th>
-                                <th class="fix-table-edit-edit">Chỉnh sửa</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% if (dtquyen.Rows.Count == 0)
-                               { %>
-                            <tr>
-                                <td colspan="6" class="text-center">No item</td>
-                            </tr>
-                            <% }
-                               else
-                               { %>
-                            <% for (int i = 0; i < dtquyen.Rows.Count; i++)
-                               { %>
-                            <%
-                                    string quyen_id = dtquyen.Rows[i]["quyen_id"].ToString();
-                                    string quyen_ma = dtquyen.Rows[i]["quyen_maquyen"].ToString();
-                                    string quyen_ten = dtquyen.Rows[i]["quyen_ten"].ToString();
-                                    string quyen_mota = dtquyen.Rows[i]["quyen_mota"].ToString();
-                                    string quyen_nhom = dtquyen.Rows[i]["loaiquyen_ten"].ToString();
+                    <div class="table-responsive fix-border-table">
+                        <table id="table-kpi" class="table table-striped table-bordered table-full-width" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Mã loại quyền</th>
+                                    <th>Tên loại quyền</th>
+                                    <th>Mô tả loại quyền</th>
+                                    <th>Nhóm quyền</th>
+                                    <th class="fix-table-edit-edit">Chỉnh sửa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (dtquyen.Rows.Count == 0)
+                                   { %>
+                                <tr>
+                                    <td colspan="6" class="text-center">No item</td>
+                                </tr>
+                                <% }
+                                   else
+                                   { %>
+                                <% for (int i = 0; i < dtquyen.Rows.Count; i++)
+                                   { %>
+                                <%
+                                        string quyen_id = dtquyen.Rows[i]["quyen_id"].ToString();
+                                        string quyen_ma = dtquyen.Rows[i]["quyen_maquyen"].ToString();
+                                        string quyen_ten = dtquyen.Rows[i]["quyen_ten"].ToString();
+                                        string quyen_mota = dtquyen.Rows[i]["quyen_mota"].ToString();
+                                        string quyen_nhom = dtquyen.Rows[i]["loaiquyen_ten"].ToString();
 
-                            %>
-                            <tr>
-                                <td><%= quyen_id %></td>
-                                <td><%= quyen_ma%></td>
-                                <td><%= quyen_ten%></td>
-                                <td><%= quyen_mota %></td>
-                                <td><%= quyen_nhom%></td>
-                                <td>
-                                    <a class="btn btn-primary btn-xs" type="button" data-target="#Editquyen" data-toggle="modal" onclick="editdata('<%=quyen_id %>','<%=quyen_ma%>','<%=quyen_ten%>','<%=quyen_mota%>','<%=quyen_nhom%>')">Chỉnh sửa</a>
-                                    <a class="btn btn-danger btn-xs" type="button" id="btnXoa" onclick="deletedata('<%=quyen_id %>')">Xóa</a>
+                                %>
+                                <tr>
+                                    <td><%= quyen_id %></td>
+                                    <td><%= quyen_ma%></td>
+                                    <td><%= quyen_ten%></td>
+                                    <td><%= quyen_mota %></td>
+                                    <td><%= quyen_nhom%></td>
+                                    <td>
+                                        <a class="btn btn-primary btn-xs" type="button" data-target="#Editquyen" data-toggle="modal" onclick="editdata('<%=quyen_id %>','<%=quyen_ma%>','<%=quyen_ten%>','<%=quyen_mota%>','<%=quyen_nhom%>')">Chỉnh sửa</a>
+                                        <a class="btn btn-danger btn-xs" type="button" id="btnXoa" onclick="deletedata('<%=quyen_id %>')">Xóa</a>
 
-                                </td>
-                            </tr>
-                            <% } %>
-                            <% } %>
-                        </tbody>
-                    </table>
+                                    </td>
+                                </tr>
+                                <% } %>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- ADD-->
                     <div id="themkpi" class="modal fade" role="dialog">
                         <div class="modal-dialog">
@@ -79,24 +84,24 @@
                             <div class="modal-content col-md-12">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title" style="text-align: center">Thêm Quyền</h4>
+                                    <h4 class="modal-title" style="text-align: center">THÊM LOẠI QUYỀN</h4>
                                 </div>
                                 <div class="modal-body list-BSC form-horizontal">
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-4">Mã quyền:</label>
+                                        <label class="control-label col-sm-4">Mã loại quyền:</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control fix-width-350" id="txtmaquyen" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-4 ">Tên quyền:</label>
+                                        <label class="control-label col-sm-4 ">Tên loại quyền:</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control fix-width-350 fix-height-34" id="txttenquyen" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-4 ">Mô tả quyền:</label>
+                                        <label class="control-label col-sm-4 ">Mô tả loại quyền:</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control fix-width-350 fix-height-34" id="txtmotaquyen" />
                                         </div>
@@ -118,7 +123,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <a class="btn btn-success" id="btnSave">Thêm quyền</a>
+                                    <a class="btn btn-success" id="btnSave">Thêm loại quyền</a>
                                     <a class="btn btn-default" data-dismiss="modal">Đóng</a>
                                 </div>
                             </div>
@@ -132,24 +137,24 @@
                             <div class="modal-content col-md-12">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title" style="text-align: center">CHỈNH SỬA QUYỀN</h4>
+                                    <h4 class="modal-title" style="text-align: center">CHỈNH SỬA LOẠI QUYỀN</h4>
                                 </div>
                                 <input type="hidden" id="txtidquyen_sua" />
                                 <div class="modal-body list-BSC form-horizontal">
                                     <div class="form-group">
-                                        <label class="control-label col-sm-4">Mã quyền:</label>
+                                        <label class="control-label col-sm-4">Mã loại quyền:</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control fix-width-350" id="txtmaquyen_sua" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-4">Tên quyền:</label>
+                                        <label class="control-label col-sm-4">Tên loại quyền:</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control fix-width-350" id="txttenquyen_sua" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-4">Mô tả quyền:</label>
+                                        <label class="control-label col-sm-4">Mô tả loại quyền:</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control fix-width-350" id="txtmotaquyen_sua" />
                                         </div>
@@ -172,7 +177,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <a class="btn btn-success" id="btnEdit">Lưu thay đổi</a>
+                                    <a class="btn btn-success" id="btnEdit">Lưu</a>
                                     <a class="btn btn-default" data-dismiss="modal">Đóng</a>
                                 </div>
                             </div>

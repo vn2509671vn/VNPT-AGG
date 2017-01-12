@@ -1,13 +1,16 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="MauBSCNhanVien.aspx.cs" Inherits="VNPT_BSC.BSC.MauBSCNhanVien" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="MauBSCNhanVien.aspx.cs" Inherits="VNPT_BSC.BSC.MauBSCNhanVien" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
+    <%--<link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
     <script src="../Bootstrap/jquery.js"></script>
     <script src="../Bootstrap/bootstrap.js"></script>
-    <script src="../Bootstrap/function.js"></script>
+    <script src="../Bootstrap/function.js"></script>--%>
 
+    <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
+    <script src="../Bootstrap/jquery.js"></script>
+    <script src="../Bootstrap/function.js"></script>
     <!-- Plugin for datatable-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
 
@@ -17,13 +20,13 @@
     <script src="../Bootstrap/sweetalert.min.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="col-md-12 margin-top-30">
+    <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
             <h3 class="panel-title">MẪU CHỈ TIÊU BSC/KPI CHO NHÂN VIÊN</h3>
           </div>
           <div class="panel-body">
-            <div class="col-sm-3">
+            <div class="col-md-2 col-xs-12 padding-right-10">
                 <div class="panel panel-primary">
                     <%--<div class="panel-heading">
                         <h3 class="panel-title">Danh Sách Mẫu BSC</h3>
@@ -55,7 +58,7 @@
                     
                 </div>
             </div>
-            <div class="col-sm-9 form-horizontal">
+            <div class="col-md-10 col-xs-12 form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-3">Thời gian áp dụng:</label>
                     <div class="col-sm-4 form-inline">
@@ -64,8 +67,18 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-sm-3">Loại mẫu:</label>
+                    <div class="col-sm-4 form-inline">
+                        <select class='form-control' id='loaiMauBSC'>
+                            <% for (int nMauBSC = 0; nMauBSC < dtMauBSC.Rows.Count; nMauBSC++){ %>
+                            <option value="<% =dtMauBSC.Rows[nMauBSC]["loai_id"].ToString() %>"><% =dtMauBSC.Rows[nMauBSC]["loai_ten"].ToString() %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-sm-3">KPI được giao:</label>
-                    <div class="col-sm-8">
+                    <div class="col-sm-4">
                         <!-- Load 10 BSC được giao gần nhất -->
                         <select class="form-control" id="bscduocgiao">
                             <% for(int i = 0; i < dsBSCDV.Rows.Count; i++){ %>
@@ -73,12 +86,14 @@
                             <% } %>
                         </select>
                     </div>
-                    <div class="col-sm-12 margin-top-5" id="kpiduocgiao">
+                    <div class="col-md-12 col-xs-12 margin-top-5">
+                        <div class='table-responsive' id="kpiduocgiao">
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3">Danh sách KPI:</label>
-                    <div class="col-sm-12">
+                    <div class="col-md-12 col-xs-12">
                         <div class='table-responsive'>
                             <table class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%' id="danhsachKPI">
                                 <thead>
@@ -121,7 +136,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-12">
+                    <div class="col-md-12 col-xs-12">
                         <div class="col-sm-8 col-sm-offset-3">
                             <button type="button" class="btn btn-success" id="btnSave">Lưu</button>
                             <button type="button" class="btn btn-default" id="btnClean" onclick="clearInputs()">Reset</button>
@@ -164,6 +179,7 @@
         });
         $("#month").val(month);
         $("#year").val(year);
+        var loaiMauBSC = $("#loaiMauBSC").val();
 
         /*Remove red border*/
         $("#month").css("border-color", "#ccc");
@@ -181,7 +197,8 @@
         var requestData = {
             monthAprove: month,
             yearAprove: year,
-            nguoitao: nguoitao
+            nguoitao: nguoitao,
+            maubsc: loaiMauBSC
         };
 
         var szRequest = JSON.stringify(requestData);
@@ -243,16 +260,19 @@
     }
 
     $(document).ready(function () {
-        // Hiển thị danh sách các chức năng của ở BSC
-        $(".qlybsc_nv a").click();
 
         validateNumber("month");
         validateNumber("year");
 
         // Set thời gian hiện tại
-        var curTime = new Date();
-        var month = curTime.getMonth() + 1;
-        var year = curTime.getFullYear();
+        //var curTime = new Date();
+        //var month = curTime.getMonth() + 1;
+        //var year = curTime.getFullYear();
+        var dateTime = $("#bscduocgiao").val();
+        var arrDate = dateTime.split("-");
+        var month = arrDate[0];
+        var year = arrDate[1];
+        var nDonvinhan = arrDate[2];
         loadKPIDuocGiao(month, year, donvinhan);
 
 
@@ -262,8 +282,19 @@
             var arrDate = data.split("-");
             var thang = arrDate[0];
             var nam = arrDate[1];
-            var donvinhan = arrDate[2];
-            loadKPIDuocGiao(thang, nam, donvinhan);
+            var nDonvinhan = arrDate[2];
+            loadKPIDuocGiao(thang, nam, nDonvinhan);
+        });
+
+        $("#loaiMauBSC").change(function () {
+            var month = $("#month").val();
+            var year = $("#year").val();
+            var data = $('#bscduocgiao').val();
+            var arrDate = data.split("-");
+            var thang = arrDate[0];
+            var nam = arrDate[1];
+            var bscduocgiao = thang + "-" + nam;
+            fillData(month, year, nguoitao, bscduocgiao);
         });
 
         // Khi click save
@@ -278,9 +309,11 @@
 
             var arrDate = data.split("-");
             var bscduocgiao = arrDate[0] + "-" + arrDate[1];
+            var loaiMauBSC = $("#loaiMauBSC").val();
 
             var isMonth = validateMonth("month");
             var isYear = validateYear("year");
+
             if (!isMonth || !isYear) {
                 swal("Error", "Vui lòng nhập đúng vào trường bất buộc!!!", "error");
                 return false;
@@ -339,7 +372,8 @@
                 yearAprove: year,
                 arrKPI_ID: arrKPI,
                 nguoitao: nguoitao,
-                bscduocgiao: bscduocgiao
+                bscduocgiao: bscduocgiao,
+                maubsc: loaiMauBSC
             };
 
             var szRequest = JSON.stringify(requestData);

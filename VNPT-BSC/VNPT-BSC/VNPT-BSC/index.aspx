@@ -1,15 +1,18 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="VNPT_BSC.index" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="VNPT_BSC.index" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <script src="../Bootstrap/sweetalert.min.js"></script>
+    <%--<script src="../Bootstrap/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../Bootstrap/sweetalert.css">
     <link href="../Bootstrap/hien_custom.css" rel="stylesheet" />
     <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <script src="../Bootstrap/jquery.js"></script>
-    <script src="../Bootstrap/bootstrap.js"></script>
+    <script src="../Bootstrap/bootstrap.js"></script>--%>
+
+    <link href="../Bootstrap/hien_custom.css" rel="stylesheet" />
+    <script src="../Bootstrap/jquery.js"></script>
     <!-- Plugin for datatable-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
 
@@ -20,7 +23,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
 
-    <div class="col-md-12 margin-top-30">
+    <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">Lọc dữ liệu</h3>
@@ -63,36 +66,36 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12 margin-top-30" id="Div1">
+    <div class="col-md-12 col-xs-12" id="Div1">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">Danh sách BSC đơn vi</h3>
             </div>
             <div class="panel-body">
-                <div class="col-sm-12" id="gridBSC">
+                <div class="col-md-12 col-xs-12" id="gridBSC">
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-12 margin-top-30" id="Div2">
+    <div class="col-md-12 col-xs-12" id="Div2">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">Danh sách KPI nhân viên</h3>
             </div>
             <div class="panel-body">
-                <div class="col-sm-12" id="gridBSCnhanvien">
+                <div class="col-md-12 col-xs-12" id="gridBSCnhanvien">
                 </div>
             </div>
         </div>
     </div>
-     <div class="col-md-12 margin-top-30" id="Div3">
+     <div class="col-md-12 col-xs-12" id="Div3">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">Danh sách KPI thẩm định</h3>
             </div>
             <div class="panel-body">
-                <div class="col-sm-12" id="gridBSCnhanvienthamdinh">
+                <div class="col-md-12 col-xs-12" id="gridBSCnhanvienthamdinh">
                 </div>
             </div>
         </div>

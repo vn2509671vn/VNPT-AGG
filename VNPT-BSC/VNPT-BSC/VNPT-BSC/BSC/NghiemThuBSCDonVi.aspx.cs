@@ -126,6 +126,7 @@ namespace VNPT_BSC.BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Nghiệm thu bsc";
             if (!IsPostBack)
             {
                 try

@@ -1,17 +1,19 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeBehind="ChiTietQLGiaoBSCNhanVien.aspx.cs" Inherits="VNPT_BSC.Admin.ChiTietQLGiaoBSCNhanVien" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="ChiTietQLGiaoBSCNhanVien.aspx.cs" Inherits="VNPT_BSC.Admin.ChiTietQLGiaoBSCNhanVien" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
-    <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <%--<link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>--%>
 
     <!-- Customize css -->
     <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
 
-    <script src="../Bootstrap/jquery.js"></script>
+    <%--<script src="../Bootstrap/jquery.js"></script>
     <script src="../Bootstrap/bootstrap.js"></script>
-    <script src="../Bootstrap/function.js"></script>
+    <script src="../Bootstrap/function.js"></script>--%>
 
+    <script src="../Bootstrap/jquery.js"></script>
+    <script src="../Bootstrap/function.js"></script>
     <!-- Plugin for datatable-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
 
@@ -21,13 +23,13 @@
     <script src="../Bootstrap/sweetalert.min.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="col-md-12 margin-top-30">
+    <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
             <h3 class="panel-title">Chi tiết BSC</h3>
           </div>
           <div class="panel-body">
-              <div class="col-sm-12 form-horizontal">
+              <div class="col-md-12 col-xs-12 form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-6">Ngày áp dụng:</label>
                     <div class="col-sm-6 form-inline padding-top-7 ">
@@ -58,7 +60,7 @@
                         <!-- /.panel-body -->
                     </div>
                 </div>
-                <div class="col-sm-12 text-center">
+                <div class="col-md-12 col-xs-12 text-center">
                     <a class="btn btn-success" id="saveData">Save</a>
                 </div>
               </div>

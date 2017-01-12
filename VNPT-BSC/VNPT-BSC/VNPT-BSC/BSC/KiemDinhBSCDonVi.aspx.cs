@@ -125,6 +125,7 @@ namespace VNPT_BSC.BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Title = "Kiểm định bsc";
             if (!IsPostBack)
             {
                 try

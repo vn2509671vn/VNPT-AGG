@@ -184,7 +184,9 @@
                         },
                         {
                             extend: 'pdfHtml5',
-                            title: 'Nghiệm thu đơn vị ' + ten_dvn
+                            title: 'Nghiệm thu đơn vị ' + ten_dvn,
+                            orientation: 'landscape',
+                            pageSize: 'LEGAL'
                         }
                     ],
                     "columnDefs": [{

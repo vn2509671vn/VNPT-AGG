@@ -104,7 +104,9 @@
                         },
                         {
                             extend: 'pdfHtml5',
-                            title: 'Giao BSC/KPI ' + month + "-" + year
+                            title: 'Giao BSC/KPI ' + month + "-" + year,
+                            orientation: 'landscape',
+                            pageSize: 'LEGAL'
                         }
                     ],
                     "columnDefs": [{

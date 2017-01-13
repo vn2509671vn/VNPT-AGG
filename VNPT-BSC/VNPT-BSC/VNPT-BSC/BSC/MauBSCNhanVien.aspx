@@ -34,7 +34,7 @@
                     <div class="panel list-group">
                         <% for(int nIndex = 0; nIndex < dtBSCNam.Rows.Count; nIndex++){ %>
                             <%
-                                string BSCyear =  dtBSC.Rows[nIndex]["nam"].ToString();
+                               string BSCyear = dtBSCNam.Rows[nIndex]["nam"].ToString();
                             %>
                             <strong><a href="#" class="list-group-item list-group-item-success" data-toggle="collapse" data-target="#<%=BSCyear %>"><%=BSCyear%></a></strong>
                             <div id="<%=BSCyear %>" class="sublinks collapse">

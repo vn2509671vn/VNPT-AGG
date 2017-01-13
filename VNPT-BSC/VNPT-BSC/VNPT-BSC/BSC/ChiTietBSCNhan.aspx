@@ -248,7 +248,9 @@
                         },
                         {
                             extend: 'pdfHtml5',
-                            title: 'Chi tiết BSC-KPI ' + thang + "-" + nam
+                            title: 'Chi tiết BSC-KPI ' + thang + "-" + nam,
+                            orientation: 'landscape',
+                            pageSize: 'LEGAL'
                         }
                     ]
                 });

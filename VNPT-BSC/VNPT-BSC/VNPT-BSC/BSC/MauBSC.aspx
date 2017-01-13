@@ -197,7 +197,9 @@
         $("#loaiMauBSC").change(function () {
             var month = $("#month").val();
             var year = $("#year").val();
-            fillData(month, year);
+            if (month != "" && year != "") {
+                fillData(month, year);
+            }
         });
 
         $("#btnSave").click(function () {

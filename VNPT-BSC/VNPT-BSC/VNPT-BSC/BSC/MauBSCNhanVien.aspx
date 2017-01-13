@@ -294,7 +294,9 @@
             var thang = arrDate[0];
             var nam = arrDate[1];
             var bscduocgiao = thang + "-" + nam;
-            fillData(month, year, nguoitao, bscduocgiao);
+            if (month != "" && year != "" && bscduocgiao != "") {
+                fillData(month, year, nguoitao, bscduocgiao);
+            }
         });
 
         // Khi click save

@@ -72,6 +72,7 @@
                       <li><a href="/DanhMuc/KPO.aspx">KPO</a></li>
                       <li><a href="/DanhMuc/KPI.aspx">KPI</a></li>
                       <li><a href="/DanhMuc/Donvitinh.aspx">Danh Mục Đơn Vị Tính</a></li>
+                      <li><a href="/DanhMuc/loaimau.aspx">Danh Mục Loại Mẫu BSC</a></li>
                     </ul>
                   </li>
                   <li class="qlybsc_dv"><a><i class="fa fa-sitemap"></i> Quản Lý BSC Đơn vị <span class="fa fa-chevron-down"></span></a>

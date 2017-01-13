@@ -81,7 +81,7 @@ namespace VNPT_BSC.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.Title = "quản lý giao bsc đơn vị";
+            this.Title = "Quản lý giao bsc đơn vị";
             try
             {
                 Nhanvien nhanvien = new Nhanvien();

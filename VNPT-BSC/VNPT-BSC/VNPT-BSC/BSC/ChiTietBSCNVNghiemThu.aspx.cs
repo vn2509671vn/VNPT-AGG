@@ -70,7 +70,14 @@ namespace VNPT_BSC.BSC
                     decimal tylethuchien = 0;
                     decimal kehoach = Convert.ToDecimal(gridData.Rows[nKPI]["kehoach"].ToString());
                     decimal thamdinh = Convert.ToDecimal(gridData.Rows[nKPI]["thamdinh"].ToString());
-                    tylethuchien = (thamdinh / kehoach) * 100;
+                    if (kehoach == 0)
+                    {
+                        tylethuchien = 0;
+                    }
+                    else {
+                        tylethuchien = (thamdinh / kehoach) * 100;
+                    }
+                    
                     outputHTML += "<tr data-id='" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>";
                     outputHTML += "<td>" + (nKPI + 1) + "</td>";
                     outputHTML += "<td>" + gridData.Rows[nKPI]["kpi_ten"].ToString() + " (" + gridData.Rows[nKPI]["kpo_ten"].ToString() + ")" + "</td>";

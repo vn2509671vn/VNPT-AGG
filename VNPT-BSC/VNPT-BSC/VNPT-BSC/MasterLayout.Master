@@ -65,6 +65,7 @@
                       <li><a href="/DanhMuc/Chucdanh.aspx">Chức Danh</a></li>
                       <li><a href="/DanhMuc/Chucvu.aspx">Chức Vụ</a></li>
                       <li><a href="/DanhMuc/nhanvienchucvu.aspx">Phân Chức Vụ</a></li>
+                      <li><a href="/DanhMuc/loaimau.aspx">Danh Mục Loại Mẫu BSC</a></li>
                     </ul>
                   </li>
                   <li class="danhmucbsc"><a><i class="fa fa-bar-chart-o"></i> Danh Mục BSC <span class="fa fa-chevron-down"></span></a>
@@ -72,7 +73,6 @@
                       <li><a href="/DanhMuc/KPO.aspx">KPO</a></li>
                       <li><a href="/DanhMuc/KPI.aspx">KPI</a></li>
                       <li><a href="/DanhMuc/Donvitinh.aspx">Danh Mục Đơn Vị Tính</a></li>
-                      <li><a href="/DanhMuc/loaimau.aspx">Danh Mục Loại Mẫu BSC</a></li>
                     </ul>
                   </li>
                   <li class="qlybsc_dv"><a><i class="fa fa-sitemap"></i> Quản Lý BSC Đơn vị <span class="fa fa-chevron-down"></span></a>
@@ -104,8 +104,8 @@
                       <li><a href="/Admin/Phanquyen.aspx">Phân Quyền Theo Chức Vụ</a></li>
                       <li><a href="/Admin/QLGiaoBSCDonVi.aspx">Quản Lý BSC Đơn Vị</a></li>
                       <li><a href="/Admin/QLGiaoBSCNhanVien.aspx">Quản Lý BSC Nhân Viên</a></li>
-                      <li><a href="/Admin/XuatMauBSC.aspx">Xuất Mẫu BSC</a></li>
-                      <li><a href="/Admin/ImportExcel.aspx">Import BSC</a></li>
+                      <%--<li><a href="/Admin/XuatMauBSC.aspx">Xuất Mẫu BSC</a></li>
+                      <li><a href="/Admin/ImportExcel.aspx">Import BSC</a></li>--%>
                       <li><a href="/Admin/ExportBSC.aspx">Thống kê BSC đã giao</a></li>
                     </ul>
                   </li>

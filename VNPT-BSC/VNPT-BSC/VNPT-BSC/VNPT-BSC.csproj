@@ -242,6 +242,7 @@
     <Content Include="DanhMuc\Chucdanh.aspx" />
     <Content Include="DanhMuc\Donvi.aspx" />
     <Content Include="DanhMuc\KPO.aspx" />
+    <Content Include="DanhMuc\loaimau.aspx" />
     <Content Include="DanhMuc\nhanvienchucvu.aspx" />
     <Content Include="DanhMuc\QL_NhanVien.aspx" />
     <Content Include="documentation\css\animate.min.css" />
@@ -4022,6 +4023,13 @@
     </Compile>
     <Compile Include="DanhMuc\KPO.aspx.designer.cs">
       <DependentUpon>KPO.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DanhMuc\loaimau.aspx.cs">
+      <DependentUpon>loaimau.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\loaimau.aspx.designer.cs">
+      <DependentUpon>loaimau.aspx</DependentUpon>
     </Compile>
     <Compile Include="DanhMuc\nhanvienchucvu.aspx.cs">
       <DependentUpon>nhanvienchucvu.aspx</DependentUpon>

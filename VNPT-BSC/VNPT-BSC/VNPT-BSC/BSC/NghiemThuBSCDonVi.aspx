@@ -62,6 +62,9 @@
               <div class="col-md-12 col-xs-12" id="gridBSC">
 
               </div>
+              <div class="col-md-12 col-xs-12 text-center">
+                <a class="btn btn-success" id="nghiemthuTatCa">Nghiệm thu tất cả</a>
+              </div>
           </div>
         </div>
     </div>
@@ -86,6 +89,7 @@
             success: function (result) {
                 var output = result.d;
                 var gridBSC = output.gridBSC;
+                var isNghiemThuTatCa = output.isKetThucTatCa;
 
                 $("#gridBSC").html(gridBSC);
                 $("#table-bsclist").DataTable({
@@ -93,6 +97,13 @@
                     "info": true,
                     "pageLength": 50
                 });
+
+                if (isNghiemThuTatCa == "True") {
+                    $("#nghiemthuTatCa").show();
+                }
+                else {
+                    $("#nghiemthuTatCa").hide();
+                }
             },
             error: function (msg) { alert(msg.d); }
         });
@@ -116,6 +127,41 @@
             var nam = $("#year").val();
             var thang = $(this).val();
             loadBSCByYear(thang, nam, donvigiao);
+        });
+
+        $("#nghiemthuTatCa").click(function () {
+            var nam = $("#year").val();
+            var thang = $("#month").val();
+            var requestData = {
+                donvigiao: donvigiao,
+                thang: thang,
+                nam: nam
+            };
+            var szRequest = JSON.stringify(requestData);
+            $.ajax({
+                type: "POST",
+                url: "NghiemThuBSCDonVi.aspx/nghiemthuTatCa",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var isSuccess = result.d;
+                    if (isSuccess) {
+                        swal({
+                            title: "Nghiệm thu thành công!!",
+                            text: "",
+                            type: "success"
+                        },
+                        function () {
+                            loadBSCByYear(thang, nam, donvigiao);
+                        });
+                    }
+                    else {
+                        swal("Error!!!", "Nghiệm thu không thành công!!!", "error");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
         });
     });
 </script>

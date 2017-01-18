@@ -114,7 +114,7 @@ namespace VNPT_BSC.BSC
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiCham + "'>" + txtTrangThaiCham + "</span></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiDongY + "'>" + txtTrangThaiDongY + "</span></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiKetThuc + "'>" + txtTrangThaiKetThuc + "</span></td>";
-                    outputHTML += "<td class='text-center'><a class='" + "btn btn-primary detail" + "' onclick='xemChiTiet(" + szThang + ", " + szNam + ", " + szNhanviengiao + ", " + szNhanviennhan + ")'>Chi tiết</a></td>";
+                    outputHTML += "<td class='text-center'><a class='" + "btn btn-primary detail btn-xs" + "' onclick='xemChiTiet(" + szThang + ", " + szNam + ", " + szNhanviengiao + ", " + szNhanviennhan + ")'>Chi tiết</a></td>";
                     outputHTML += "</tr>";
                 }
             }

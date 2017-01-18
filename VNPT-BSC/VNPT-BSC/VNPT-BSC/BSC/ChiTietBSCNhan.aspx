@@ -11,6 +11,7 @@
     <script src="../Bootstrap/function.js"></script>--%>
 
     <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
+    <link href="../Bootstrap/hien_custom.css" rel="stylesheet" />
     <script src="../Bootstrap/jquery.js"></script>
     <script src="../Bootstrap/function.js"></script>
     <!-- Plugin for datatable-->
@@ -110,13 +111,156 @@
               </div>
           </div>
         </div>
-    </div>
+        <!----------------------------------------------------------Phần hồi BSC Giao--------------------------------------------------------------->
+            <div id="guiPhanhoi" class="modal fade" role="dialog">
+                <div class="modal-dialog">
 
+                    <!-- Modal content-->
+                    <div class="modal-content col-md-12">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Gửi Phản Hồi</h4>
+                        </div>
+                        <input type="hidden" id="edit_kpi_id" />
+                                    
+                        <div class="modal-body form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Tên KPI:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control fix-width-350" id="edit_kpi_ten" readonly/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Kế hoạch được giao:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control fix-width-350" id="edit_kehoach_duocgiao" readonly/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 ">Kế hoạch đề xuất:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control fix-width-350 " id="edit_kehoach_dexuat" onkeypress="return onlyNumbers(event.charCode || event.keyCode);"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 ">Lý do đề xuất:</label>
+                                <div class="col-md-8">
+                                    <textarea id="edit_lydo_dexuat" rows="4" class="form-control">
+
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-success" id="edit_btnGui">Gửi</a>
+                            <a class="btn btn-default" id="edit_btnHuy">Hủy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <!-- End -->
+    <!----------------------------------------------------------Phần hồi BSC Giao--------------------------------------------------------------->
+            <div id="guiPhanhoiTD" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content col-md-12">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Gửi Phản Hồi Kết Quả Thẩm Định</h4>
+                        </div>
+                        <input type="hidden" id="td_edit_kpi_id" />
+                                    
+                        <div class="modal-body form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Tên KPI:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control fix-width-350" id="td_edit_kpi_ten" readonly/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Kết quả thẩm định:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control fix-width-350" id="td_edit_kqtd" readonly/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 ">Kết quả thâm định đề xuất:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control fix-width-350 " id="td_edit_kqtd_dexuat" onkeypress="return onlyNumbers(event.charCode || event.keyCode);"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 ">Lý do đề xuất:</label>
+                                <div class="col-md-8">
+                                    <textarea id="td_edit_kqtd_lydo" rows="4" class="form-control">
+
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-success" id="td_edit_btnGui">Gửi</a>
+                            <a class="btn btn-default" id="td_edit_btnHuy">Hủy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <!-- End -->
+    </div>
 <script type="text/javascript">
     var donvigiao = "<%= donvigiao %>";
     var donvinhan = "<%= donvinhan %>";
     var thang = "<%= thang %>";
     var nam = "<%= nam %>";
+
+    function phanHoi(kpi_id) {
+        var data = $('#idPhanHoi_' + kpi_id).val();
+        var arrDate = data.split("-");
+        var kpi_ten = arrDate[1];
+        var kehoach_duocgiao = arrDate[2];
+        var kehoach_dexuat = arrDate[3];
+        var lydo_dexuat = arrDate[4];
+        var daxuly_dexuat = arrDate[5];
+        $('#edit_kpi_id').val(kpi_id);
+        $('#edit_kpi_ten').val(kpi_ten);
+        $('#edit_kehoach_duocgiao').val(kehoach_duocgiao);
+        $('#edit_kehoach_dexuat').val(kehoach_dexuat);
+        $('#edit_lydo_dexuat').val(lydo_dexuat);
+
+        if (daxuly_dexuat == "True") {
+            $("#edit_btnGui").hide();
+            $("#edit_btnHuy").hide();
+        }
+        else {
+            $("#edit_btnGui").show();
+            $("#edit_btnHuy").show();
+        }
+    }
+
+    function phanHoiTD(kpi_id) {
+        var data = $('#idPhanHoiTD_' + kpi_id).val();
+        var arrDate = data.split("-");
+        var kpi_ten = arrDate[1];
+        var ketqua_thamdinh = arrDate[2];
+        var thamdinh_dexuat = arrDate[3];
+        var thamdinh_lydo_dexuat = arrDate[4];
+        var thamdinh_daxuly_dexuat = arrDate[5];
+        $('#td_edit_kpi_id').val(kpi_id);
+        $('#td_edit_kpi_ten').val(kpi_ten);
+        $('#td_edit_kqtd').val(ketqua_thamdinh);
+        $('#td_edit_kqtd_dexuat').val(thamdinh_dexuat);
+        $('#td_edit_kqtd_lydo').val(thamdinh_lydo_dexuat);
+
+        if (thamdinh_daxuly_dexuat == "True") {
+            $("#td_edit_btnGui").hide();
+            $("#td_edit_btnHuy").hide();
+        }
+        else {
+            $("#td_edit_btnGui").show();
+            $("#td_edit_btnHuy").show();
+        }
+    }
 
     function loadDataToPage(donvigiao, donvinhan, thang, nam) {
         /*Hide button*/
@@ -466,6 +610,184 @@
                     }
                     else {
                         swal("Error!!!", "Lưu không thành công!!!", "error");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        });
+
+        $("#edit_btnGui").click(function () {
+            var kpi_id = $('#edit_kpi_id').val();
+            var kehoach_dexuat = "";
+            var lydo_dexuat = "";
+            kehoach_dexuat = $('#edit_kehoach_dexuat').val();
+            lydo_dexuat = $('#edit_lydo_dexuat').val();
+
+            if (kehoach_dexuat == "") {
+                swal("Error!!!", "Vui lòng nhập giá trị kế hoạch đề xuất!!!", "error");
+                return;
+            }
+
+            var requestData = {
+                donvigiao: donvigiao,
+                donvinhan: donvinhan,
+                thang: thang,
+                nam: nam,
+                kpi_id: kpi_id,
+                kehoach_dexuat: kehoach_dexuat,
+                lydo_dexuat: lydo_dexuat
+            };
+            var szRequest = JSON.stringify(requestData);
+
+            $.ajax({
+                type: "POST",
+                url: "ChiTietBSCNhan.aspx/savePhanHoi",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var isSuccess = result.d;
+                    if (isSuccess) {
+                        swal({
+                            title: "Phản hồi thành công!!",
+                            text: "",
+                            type: "success"
+                        },
+                        function () {
+                            $("button[data-dismiss=modal]").click();
+                            loadDataToPage(donvigiao, donvinhan, thang, nam);
+                        });
+                    }
+                    else {
+                        swal("Error!!!", "Phản hồi không thành công!!!", "error");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        });
+
+        $("#td_edit_btnGui").click(function () {
+            var kpi_id = $('#td_edit_kpi_id').val();
+            var thamdinh_dexuat = "";
+            var thamdinh_lydo_dexuat = "";
+            thamdinh_dexuat = $('#td_edit_kqtd_dexuat').val();
+            thamdinh_lydo_dexuat = $('#td_edit_kqtd_lydo').val();
+
+            if (thamdinh_dexuat == "") {
+                swal("Error!!!", "Vui lòng nhập giá trị kế hoạch đề xuất!!!", "error");
+                return;
+            }
+
+            var requestData = {
+                donvigiao: donvigiao,
+                donvinhan: donvinhan,
+                thang: thang,
+                nam: nam,
+                kpi_id: kpi_id,
+                thamdinh_dexuat: thamdinh_dexuat,
+                thamdinh_lydo_dexuat: thamdinh_lydo_dexuat
+            };
+            var szRequest = JSON.stringify(requestData);
+
+            $.ajax({
+                type: "POST",
+                url: "ChiTietBSCNhan.aspx/savePhanHoiTD",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var isSuccess = result.d;
+                    if (isSuccess) {
+                        swal({
+                            title: "Phản hồi thành công!!",
+                            text: "",
+                            type: "success"
+                        },
+                        function () {
+                            $("button[data-dismiss=modal]").click();
+                            loadDataToPage(donvigiao, donvinhan, thang, nam);
+                        });
+                    }
+                    else {
+                        swal("Error!!!", "Phản hồi không thành công!!!", "error");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        });
+
+        $("#edit_btnHuy").click(function () {
+            var kpi_id = $('#edit_kpi_id').val();
+
+            var requestData = {
+                donvigiao: donvigiao,
+                donvinhan: donvinhan,
+                thang: thang,
+                nam: nam,
+                kpi_id: kpi_id
+            };
+            var szRequest = JSON.stringify(requestData);
+
+            $.ajax({
+                type: "POST",
+                url: "ChiTietBSCNhan.aspx/huyPhanHoi",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var isSuccess = result.d;
+                    if (isSuccess) {
+                        swal({
+                            title: "Hủy phản hồi thành công!!",
+                            text: "",
+                            type: "success"
+                        },
+                        function () {
+                            $("button[data-dismiss=modal]").click();
+                            loadDataToPage(donvigiao, donvinhan, thang, nam);
+                        });
+                    }
+                    else {
+                        swal("Error!!!", "Hủy phản hồi không thành công!!!", "error");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        });
+
+        $("#td_edit_btnHuy").click(function () {
+            var kpi_id = $('#td_edit_kpi_id').val();
+
+            var requestData = {
+                donvigiao: donvigiao,
+                donvinhan: donvinhan,
+                thang: thang,
+                nam: nam,
+                kpi_id: kpi_id
+            };
+            var szRequest = JSON.stringify(requestData);
+
+            $.ajax({
+                type: "POST",
+                url: "ChiTietBSCNhan.aspx/huyPhanHoiTD",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var isSuccess = result.d;
+                    if (isSuccess) {
+                        swal({
+                            title: "Hủy phản hồi thành công!!",
+                            text: "",
+                            type: "success"
+                        },
+                        function () {
+                            $("button[data-dismiss=modal]").click();
+                            loadDataToPage(donvigiao, donvinhan, thang, nam);
+                        });
+                    }
+                    else {
+                        swal("Error!!!", "Hủy phản hồi không thành công!!!", "error");
                     }
                 },
                 error: function (msg) { alert(msg.d); }

@@ -68,7 +68,7 @@ namespace VNPT_BSC.Admin
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nIndex]["tendvg"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nIndex]["tendvn"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + szThang + "/" + szNam + "</strong></td>";
-                    outputHTML += "<td class='text-center'><a class='" + "btn btn-primary detail" + "' onclick='xemChiTiet(" + szThang + ", " + szNam + ", " + szDonvigiao + ", " + szDonvinhan + ")'>Chi tiết</a></td>";
+                    outputHTML += "<td class='text-center'><a class='" + "btn btn-primary detail btn-xs" + "' onclick='xemChiTiet(" + szThang + ", " + szNam + ", " + szDonvigiao + ", " + szDonvinhan + ")'>Chi tiết</a></td>";
                     outputHTML += "</tr>";
                 }
             }

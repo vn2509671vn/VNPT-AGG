@@ -21,6 +21,54 @@ namespace VNPT_BSC
         public static List<int> quyenHeThong = new List<int>();
         public static JavaScriptSerializer javaSerial = new JavaScriptSerializer();
         public static string userName = "";
+        public static DataTable dtPhanHoiGiao = new DataTable();
+        public static DataTable dtPhanHoiThamDinh = new DataTable();
+
+        private static DataTable getPhanHoiGiao() {
+            Connection cn = new Connection();
+            DataTable dtResult = new DataTable();
+            string sql = "select bsc.thang, bsc.nam, bsc.donvinhan, dv.donvi_ten, bsc.donvigiao ";
+            sql += "from bsc_donvi bsc, donvi dv, giaobscdonvi ";
+            sql += "where bsc.phanhoi_giao_daxuly = 0 ";
+            sql += "and bsc.donvinhan = dv.donvi_id ";
+
+            sql += "and bsc.donvigiao = giaobscdonvi.donvigiao ";
+            sql += "and bsc.donvinhan = giaobscdonvi.donvinhan ";
+            sql += "and bsc.thang = giaobscdonvi.thang ";
+            sql += "and bsc.nam = giaobscdonvi.nam ";
+            sql += "and giaobscdonvi.trangthainhan = 0 ";
+
+            sql += "group by bsc.thang, bsc.nam, bsc.donvinhan, dv.donvi_ten, bsc.donvigiao";
+            try
+            {
+                dtResult = cn.XemDL(sql);
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+            return dtResult;
+        }
+
+        private static DataTable getPhanHoiThamDinh(int donvithamdinh)
+        {
+            Connection cn = new Connection();
+            DataTable dtResult = new DataTable();
+            string sql = "select bsc.thang, bsc.nam, bsc.donvigiao, bsc.donvinhan, dv.donvi_ten, bsc.donvithamdinh ";
+            sql += "from bsc_donvi bsc, donvi dv ";
+            sql += "where bsc.phanhoi_thamdinh_daxuly = 0 ";
+            sql += "and bsc.donvinhan = dv.donvi_id ";
+            sql += "and bsc.donvithamdinh = '" + donvithamdinh + "'";
+            sql += "group by bsc.thang, bsc.nam, bsc.donvigiao, bsc.donvinhan, dv.donvi_ten, bsc.donvithamdinh";
+            try
+            {
+                dtResult = cn.XemDL(sql);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dtResult;
+        }
 
         private string getTenChucVu(int chucvuID)
         {
@@ -50,7 +98,7 @@ namespace VNPT_BSC
             Nhanvien nhanvien = new Nhanvien();
             DataTable dtQuyen = new DataTable();
             int nNumRole = 0;
-            string szChucVu = "";
+            //string szChucVu = "";
             nhanvien = Session.GetCurrentUser();
             quyenHeThong = Session.GetRole();
             if (nhanvien == null)
@@ -61,15 +109,17 @@ namespace VNPT_BSC
             userName = nhanvien.nhanvien_hoten;
             nNumRole = nhanvien.nhanvien_chucvu_id.Length;
 
-            for (int nIndex = 0; nIndex < nNumRole; nIndex++)
-            {
-                int chucvu_id = nhanvien.nhanvien_chucvu_id[nIndex];
-                szChucVu += getTenChucVu(chucvu_id);
-                if (nIndex < nNumRole - 1)
-                {
-                    szChucVu += ",";
-                }
-            }
+            dtPhanHoiGiao = getPhanHoiGiao();
+            dtPhanHoiThamDinh = getPhanHoiThamDinh(nhanvien.nhanvien_donvi_id);
+            //for (int nIndex = 0; nIndex < nNumRole; nIndex++)
+            //{
+            //    int chucvu_id = nhanvien.nhanvien_chucvu_id[nIndex];
+            //    szChucVu += getTenChucVu(chucvu_id);
+            //    if (nIndex < nNumRole - 1)
+            //    {
+            //        szChucVu += ",";
+            //    }
+            //}
         }
     }
 }

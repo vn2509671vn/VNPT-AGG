@@ -22,6 +22,8 @@ namespace VNPT_BSC.BSC
             Dictionary<String, String> dicOutput = new Dictionary<string, string>();
             Connection cnBSC = new Connection();
             DataTable gridData = new DataTable();
+            int soluongDongY = 0;
+            int soluongKetthuc = 0;
             string outputHTML = "";
             string sqlBSC = "select giaobsc.*, dvnhan.donvi_ten as tendvn ";
             sqlBSC += "from giaobscdonvi giaobsc, donvi dvgiao, donvi dvnhan ";
@@ -97,24 +99,35 @@ namespace VNPT_BSC.BSC
                     {
                         txtTrangThaiDongY = "Đã đồng ý";
                         clsTrangThaiDongY = "label-success";
+                        soluongDongY++;
                     }
 
                     if (trangthaiketthuc == "True")
                     {
                         txtTrangThaiKetThuc = "Đã kết thúc";
                         clsTrangThaiKetThuc = "label-success";
+                        soluongKetthuc++;
                     }
 
                     outputHTML += "<tr>";
                     outputHTML += "<td class='text-center'>" + (nIndex + 1) + "</td>";
-                    outputHTML += "<td class='text-center'>" + gridData.Rows[nIndex]["tendvn"].ToString() + "</td>";
+                    outputHTML += "<td><strong>" + gridData.Rows[nIndex]["tendvn"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + szThang + "/" + szNam + "</strong></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiNhan + "'>" + txtTrangThaiNhan + "</span></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiCham + "'>" + txtTrangThaiCham + "</span></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiDongY + "'>" + txtTrangThaiDongY + "</span></td>";
                     outputHTML += "<td class='text-center'><span class='label " + clsTrangThaiKetThuc + "'>" + txtTrangThaiKetThuc + "</span></td>";
-                    outputHTML += "<td class='text-center'><a class='" + "btn btn-primary detail" + "' onclick='xemChiTiet(" + szThang + ", " + szNam + ", " + szDonvigiao + ", " + szDonvinhan + ")'>Chi tiết</a></td>";
+                    outputHTML += "<td class='text-center'><a class='" + "btn btn-primary detail btn-xs" + "' onclick='xemChiTiet(" + szThang + ", " + szNam + ", " + szDonvigiao + ", " + szDonvinhan + ")'>Chi tiết</a></td>";
                     outputHTML += "</tr>";
+                }
+
+                // Nếu tất cả các đơn vị đều đồng ý kết quả thẩm định thì cho phép kết thúc tất cả
+                if (soluongDongY == gridData.Rows.Count && soluongKetthuc < gridData.Rows.Count)
+                {
+                    dicOutput.Add("isKetThucTatCa", "True");
+                }
+                else {
+                    dicOutput.Add("isKetThucTatCa", "False");
                 }
             }
             outputHTML += "</tbody>";
@@ -122,6 +135,22 @@ namespace VNPT_BSC.BSC
             dicOutput.Add("gridBSC", outputHTML);
 
             return dicOutput;
+        }
+
+        [WebMethod]
+        public static bool nghiemthuTatCa(int donvigiao, int thang, int nam) {
+            Connection cn = new Connection();
+            bool bResult = false;
+            string sql = "update giaobscdonvi set trangthaiketthuc = 1 where donvigiao = '" + donvigiao + "' and thang = '" + thang + "' and nam = '" + nam + "'";
+            try
+            {
+                cn.ThucThiDL(sql);
+                bResult = true;
+            }
+            catch {
+                bResult = false;
+            }
+            return bResult;
         }
 
         protected void Page_Load(object sender, EventArgs e)

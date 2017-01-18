@@ -83,14 +83,14 @@ namespace VNPT_BSC.BSC
                 Nhanvien nhanvien = new Nhanvien();
                 nhanvien = Session.GetCurrentUser();
 
-                // Khai báo các biến cho việc kiểm tra quyền
-                List<int> quyenHeThong = new List<int>();
-                bool nFindResult = false;
-                quyenHeThong = Session.GetRole();
+                //// Khai báo các biến cho việc kiểm tra quyền
+                //List<int> quyenHeThong = new List<int>();
+                //bool nFindResult = false;
+                //quyenHeThong = Session.GetRole();
 
-                /*Kiểm tra nếu không có quyền giao bsc đơn vị (id của quyền là 2) thì đẩy ra trang đăng nhập*/
-                nFindResult = quyenHeThong.Contains(2);
-                if (nhanvien == null || !nFindResult)
+                ///*Kiểm tra nếu không có quyền giao bsc đơn vị (id của quyền là 2) thì đẩy ra trang đăng nhập*/
+                //nFindResult = quyenHeThong.Contains(2);
+                if (nhanvien == null)
                 {
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");

@@ -80,8 +80,6 @@
                       <li class="cls-bsc" id="maubsc_donvi"><a href="/BSC/MauBSC.aspx">Mẫu BSC</a></li>
                       <li class="cls-bsc" id="xuatmaubsc_donvi"><a href="/BSC/XuatMauBSC.aspx">Xuất Mẫu BSC</a></li>
                       <li class="cls-bsc" id="import_bsc"><a href="/BSC/ImportBSC.aspx">Import BSC</a></li>
-                      <li class="cls-bsc" id="danhsach_bsc_dagiao"><a href="/BSC/DanhSachBSCDaGiao.aspx">Danh Sách BSC Đã Giao</a></li>
-                      <li class="cls-bsc" id="xephang_bsc"><a href="/BSC/XepHangBSC.aspx">Danh Sách Xếp Hạng</a></li>
                       <li class="cls-bsc" id="phanphoibsc_donvi"><a href="/BSC/PhanPhoiBSCDonVi.aspx">Phân Phối BSC</a></li>
                       <li class="cls-bsc" id="nhanbsc_donvi"><a href="/BSC/NhanBSCDonVi.aspx">Nhận BSC</a></li>
                       <li class="cls-bsc" id="kiemdinhbsc_donvi"><a href="/BSC/KiemDinhBSCDonVi.aspx">Kiểm Định BSC</a></li>
@@ -109,6 +107,12 @@
                       <li><a href="/Admin/ExportBSC.aspx">Thống kê BSC đã giao</a></li>
                     </ul>
                   </li>
+                  <li><a><i class="fa fa-line-chart"></i> Thống Kê Báo Cáo <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li id="danhsach_bsc_dagiao"><a href="/BSC/DanhSachBSCDaGiao.aspx">Danh Sách BSC Đã Giao</a></li>
+                      <li id="xephang_bsc"><a href="/BSC/XepHangBSC.aspx">Danh Sách Xếp Hạng</a></li>
+                    </ul>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -133,6 +137,60 @@
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
                     <%--<li><a href="javascript:;"> Profile</a></li>--%>
                     <li><a id="logout"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
+                  </ul>
+                </li>
+
+                <!-- Thông báo số lượng phản hồi giao -->
+                <li role="presentation" class="dropdown" id="phanhoiGiao">
+                  <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false" title="Phản hồi giao bsc">
+                    <i class="fa fa-commenting-o"></i>
+                    <span class="badge bg-green"><%= dtPhanHoiGiao.Rows.Count%></span>
+                  </a>
+                  <ul class="dropdown-menu list-unstyled msg_list" role="menu">
+                    <% for (int nGiao = 0; nGiao < dtPhanHoiGiao.Rows.Count; nGiao++ ){
+                           string donvinhan = dtPhanHoiGiao.Rows[nGiao]["donvinhan"].ToString();
+                           string thang = dtPhanHoiGiao.Rows[nGiao]["thang"].ToString();
+                           string nam = dtPhanHoiGiao.Rows[nGiao]["nam"].ToString();
+                           string donvi_ten = dtPhanHoiGiao.Rows[nGiao]["donvi_ten"].ToString();
+                           string thoigian = dtPhanHoiGiao.Rows[nGiao]["thang"].ToString() + "-" + dtPhanHoiGiao.Rows[nGiao]["nam"].ToString();
+                    %>
+                    <li>
+                      <a href="/BSC/PhanPhoiBSCDonVi.aspx?donvinhan=<%=donvinhan %>&thang=<%=thang %>&nam=<%=nam %>">
+                        <span>
+                          <span><%= donvi_ten %></span>
+                          <span class="time"><%= thoigian %></span>
+                        </span>
+                      </a>
+                    </li>
+                    <% } %>
+                  </ul>
+                </li>
+
+                <!-- Thông báo số lượng phản hồi thẩm định -->
+                <li role="presentation" class="dropdown" id="phanhoiThamDinh">
+                  <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false" title="Phản hồi thẩm định bsc">
+                    <i class="fa fa-commenting"></i>
+                    <span class="badge bg-green"><%= dtPhanHoiThamDinh.Rows.Count%></span>
+                  </a>
+                  <ul class="dropdown-menu list-unstyled msg_list" role="menu">
+                    <% for (int nThamDinh = 0; nThamDinh < dtPhanHoiThamDinh.Rows.Count; nThamDinh++ ){
+                           string donvigiao = dtPhanHoiThamDinh.Rows[nThamDinh]["donvigiao"].ToString();
+                           string donvithamdinh = dtPhanHoiThamDinh.Rows[nThamDinh]["donvithamdinh"].ToString();
+                           string donvinhan = dtPhanHoiThamDinh.Rows[nThamDinh]["donvinhan"].ToString();
+                           string thang = dtPhanHoiThamDinh.Rows[nThamDinh]["thang"].ToString();
+                           string nam = dtPhanHoiThamDinh.Rows[nThamDinh]["nam"].ToString();
+                           string donvi_ten = dtPhanHoiThamDinh.Rows[nThamDinh]["donvi_ten"].ToString();
+                           string thoigian = dtPhanHoiThamDinh.Rows[nThamDinh]["thang"].ToString() + "-" + dtPhanHoiThamDinh.Rows[nThamDinh]["nam"].ToString();
+                    %>
+                    <li>
+                      <a href="/BSC/ChiTietBSCKiemDinh.aspx?donvigiao=<%=donvigiao %>&donvinhan=<%=donvinhan %>&thang=<%=thang %>&nam=<%=nam %>&donvithamdinh=<%=donvithamdinh %>">
+                        <span>
+                          <span><%= donvi_ten %></span>
+                          <span class="time"><%= thoigian %></span>
+                        </span>
+                      </a>
+                    </li>
+                    <% } %>
                   </ul>
                 </li>
               </ul>
@@ -196,13 +254,15 @@
   </body>
 </html>
 <script type="text/javascript">
-    var quyenHeThong = <%= javaSerial.Serialize(quyenHeThong) %>
+    var quyenHeThong = <%= javaSerial.Serialize(quyenHeThong)%>
     $(document).ready(function () {
         $(".cls-bsc").hide();
         $(".qlybsc_dv").hide();
         $(".qlybsc_nv").hide();
         $(".admin").hide();
         $(".danhmucbsc").show();
+        $("#phanhoiGiao").hide();
+        $("#phanhoiThamDinh").hide();
 
         for (var nIndex = 0; nIndex < quyenHeThong.length; nIndex++) {
             // Chuyên viên bsc
@@ -218,6 +278,7 @@
                 $("#nghiemthubsc_donvi").show();
                 $("#nhanbsc_nhanvien").show();
                 $("#danhsach_bsc_dagiao").show();
+                $("#phanhoiGiao").show();
             }
             else if (quyen == 3) {
                 $(".qlybsc_dv").show();
@@ -229,6 +290,7 @@
                 $("#nhanbsc_nhanvien").show();
                 $("#kiemdinhbsc_nhanvien").show();
                 $("#nghiemthubsc_nhanvien").show();
+                $("#phanhoiThamDinh").show();
             }
             else if (quyen == 1) {
                 $(".admin").show();

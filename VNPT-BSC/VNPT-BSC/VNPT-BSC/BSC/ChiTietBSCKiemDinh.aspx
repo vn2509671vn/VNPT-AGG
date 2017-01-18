@@ -81,6 +81,53 @@
               </div>
           </div>
         </div>
+        <!----------------------------------------------------------Phản hồi--------------------------------------------------------------->
+            <div id="guiPhanhoi" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content col-md-12">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" id="close_phanhoi">&times;</button>
+                            <h4 class="modal-title">Gửi Phản Hồi</h4>
+                        </div>
+                        <input type="hidden" id="edit_kpi_id" />
+                                    
+                        <div class="modal-body form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Tên KPI:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control fix-width-350" id="edit_kpi_ten" readonly/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Kết quả đề xuất:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control fix-width-350" id="edit_thamdinh_dexuat" readonly/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 ">Lý do đề xuất:</label>
+                                <div class="col-md-8">
+                                    <textarea id="edit_lydo_dexuat" rows="4" class="form-control">
+
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 ">Kết quả cuối cùng:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control fix-width-350 " id="edit_thamdinh_cuoicung" onkeypress="return onlyNumbers(event.charCode || event.keyCode);"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-success" id="edit_btnXuLy">Xử lý</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <!-- End Phản hồi -->
     </div>
 
 <script type="text/javascript">
@@ -89,6 +136,28 @@
     var donvithamdinh = "<%= donvithamdinh %>";
     var thang = "<%= thang %>";
     var nam = "<%= nam %>";
+
+    function phanHoi(kpi_id) {
+        var data = $('#idPhanHoi_' + kpi_id).val();
+        var arrDate = data.split("-");
+        var kpi_ten = arrDate[1];
+        var kqtd = arrDate[2];
+        var thamdinh_dexuat = arrDate[3];
+        var lydo_dexuat = arrDate[4];
+        var daxuly_dexuat = arrDate[5];
+        $('#edit_kpi_id').val(kpi_id);
+        $('#edit_kpi_ten').val(kpi_ten);
+        $('#edit_thamdinh_dexuat').val(thamdinh_dexuat);
+        $('#edit_lydo_dexuat').val(lydo_dexuat);
+        $('#edit_thamdinh_cuoicung').val(kqtd);
+
+        if (daxuly_dexuat == "True" || daxuly_dexuat == "") {
+            $("#edit_btnXuLy").hide();
+        }
+        else if (daxuly_dexuat == "False") {
+            $("#edit_btnXuLy").show();
+        }
+    }
 
     function loadDataToPage(donvigiao, donvinhan, thang, nam, donvithamdinh) {
         /*Hide button*/
@@ -279,6 +348,54 @@
                 error: function (msg) { alert(msg.d); }
             });
         });
+
+        $("#edit_btnXuLy").click(function () {
+            var kpi_id = $('#edit_kpi_id').val();
+            var thamdinh_cuoicung = "";
+            thamdinh_cuoicung = $('#edit_thamdinh_cuoicung').val();
+
+            if (thamdinh_cuoicung == "") {
+                swal("Error!!!", "Vui lòng nhập giá trị kế hoạch cuối cùng!!!", "error");
+                return;
+            }
+
+            var requestData = {
+                donvigiao: donvigiao,
+                donvinhan: donvinhan,
+                thang: thang,
+                nam: nam,
+                kpi_id: kpi_id,
+                thamdinh_cuoicung: thamdinh_cuoicung,
+            };
+            var szRequest = JSON.stringify(requestData);
+
+            $.ajax({
+                type: "POST",
+                url: "ChiTietBSCKiemDinh.aspx/xulyPhanHoi",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var isSuccess = result.d;
+                    if (isSuccess) {
+                        swal({
+                            title: "Xử lý phản hồi thành công!!",
+                            text: "",
+                            type: "success"
+                        },
+                        function () {
+                            $("#close_phanhoi").click();
+                            loadDataToPage(donvigiao, donvinhan, thang, nam, donvithamdinh);
+                        });
+                    }
+                    else {
+                        swal("Error!!!", "Xử lý phản hồi không thành công!!!", "error");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        });
+
     });
 
 </script>

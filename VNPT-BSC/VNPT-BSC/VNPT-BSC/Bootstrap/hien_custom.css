@@ -81,3 +81,8 @@
 .margin-top-120 {
     margin-top: 120px !important;
 }
+
+.fix-table-edit-100
+{
+    width:100px !important;
+}

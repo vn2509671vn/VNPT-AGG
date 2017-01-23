@@ -104,6 +104,7 @@ namespace VNPT_BSC
             {
                 output = false;
             }
+
             return output;
         }
         protected void Page_Load(object sender, EventArgs e)

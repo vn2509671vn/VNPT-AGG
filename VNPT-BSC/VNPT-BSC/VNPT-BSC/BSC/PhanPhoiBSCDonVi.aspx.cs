@@ -379,6 +379,8 @@ namespace VNPT_BSC.BSC
         [WebMethod]
         public static bool giaoBSC(int donvigiao, int donvinhan, int thang, int nam) {
             Connection cnGiaoBSC = new Connection();
+            Message msg = new Message();
+            string szMsgContent = "Ban vua nhan duoc BSC/KPI " + thang + "-" + nam + ". Vui long vao kiem tra va xac nhan!!!";
             bool isSuccess = false;
             bool isExist = isExistGiaoBSC_DV(donvigiao, donvinhan, thang, nam);
             if (!isExist) {
@@ -389,6 +391,7 @@ namespace VNPT_BSC.BSC
             try
             {
                 cnGiaoBSC.ThucThiDL(sqlGiaoBSC);
+                msg.SendSMS_ByIDDV(donvinhan, szMsgContent);
                 isSuccess = true;
             }
             catch {
@@ -419,6 +422,8 @@ namespace VNPT_BSC.BSC
         public static bool ketthucBSC(int donvigiao, int donvinhan, int thang, int nam)
         {
             Connection cnGiaoBSC = new Connection();
+            Message msg = new Message();
+            string szMsgContent = "BSC/KPI " + thang + "-" + nam + " cua ban da duoc nghiem thu xong!!!";
             bool isSuccess = false;
             bool isExist = isExistGiaoBSC_DV(donvigiao, donvinhan, thang, nam);
             if (!isExist)
@@ -430,6 +435,7 @@ namespace VNPT_BSC.BSC
             try
             {
                 cnGiaoBSC.ThucThiDL(sqlGiaoBSC);
+                msg.SendSMS_ByIDDV(donvinhan, szMsgContent);
                 isSuccess = true;
             }
             catch
@@ -469,6 +475,8 @@ namespace VNPT_BSC.BSC
         {
             bool isSuccess = false;
             Connection cnData = new Connection();
+            Message msg = new Message();
+            string szMsgContent = "Phan hoi ve viec giao BSC da duoc xu ly!!! Ban vui long vao kiem tra lai.";
             try
             {
                 string sqlUpdatePhanHoi = "update bsc_donvi set kehoach = '" + kehoach_cuoicung + "', phanhoi_giao_daxuly = 1 ";
@@ -483,6 +491,7 @@ namespace VNPT_BSC.BSC
                 try
                 {
                     cnData.ThucThiDL(sqlUpdatePhanHoi);
+                    msg.SendSMS_ByIDDV(donvinhan, szMsgContent);
                     isSuccess = true;
                 }
                 catch

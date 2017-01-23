@@ -356,6 +356,19 @@ namespace VNPT_BSC.BSC
             if (!isExist) {
                 if (bImport)
                 {
+                    // Send sms thông báo tới các đơn vị
+                    Message msg = new Message();
+                    for (int nMaDV = 4; nMaDV < headers.Count; nMaDV++)
+                    {
+                        string ma_dv = headers[nMaDV];
+                        DataTable dtSDT = dtSDTByMaDV(ma_dv);
+                        for (int i = 0; i < dtSDT.Rows.Count; i++) {
+                            string szSDT = dtSDT.Rows[i]["nhanvien_didong"].ToString().Trim();
+                            string szContent = "Ban vua nhan duoc BSC/KPI "+thang+"-"+nam+". Vui long vao kiem tra va xac nhan!!!";
+                            msg.SendSMS_VTTP(szSDT, szContent);
+                        }
+                    }
+
                     Response.Write("<script>alert('Import BSC thành công!!!')</script>");
                 }
                 else
@@ -364,6 +377,19 @@ namespace VNPT_BSC.BSC
                     Response.Write("<script>alert('Import không thành công!!! Cấu trúc hoặc dữ liệu trong file không đúng định dạng')</script>");
                 }
             }
+        }
+
+        private DataTable dtSDTByMaDV(string szMaDV) {
+            DataTable dtResult = new DataTable();
+            string sql = "select nv.nhanvien_didong from nhanvien nv, donvi dv, nhanvien_chucvu cv where nv.nhanvien_donvi = dv.donvi_id and dv.donvi_ma = '" + szMaDV + "' and nv.nhanvien_id = cv.nhanvien_id and cv.chucvu_id in (3,5)";
+            try
+            {
+                dtResult = cn.XemDL(sql);
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+            return dtResult;
         }
     }
 }

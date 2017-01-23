@@ -240,6 +240,8 @@ namespace VNPT_BSC.BSC
         {
             bool isSuccess = false;
             Connection cnData = new Connection();
+            Message msg = new Message();
+            string szMsgContent = "Phan hoi ve viec tham dinh BSC da duoc xu ly!!! Ban vui long vao kiem tra lai.";
             try
             {
                 string sqlUpdatePhanHoi = "update bsc_donvi set thamdinh = '" + thamdinh_cuoicung + "', phanhoi_thamdinh_daxuly = 1 ";
@@ -254,6 +256,7 @@ namespace VNPT_BSC.BSC
                 try
                 {
                     cnData.ThucThiDL(sqlUpdatePhanHoi);
+                    msg.SendSMS_ByIDDV(donvinhan, szMsgContent);
                     isSuccess = true;
                 }
                 catch

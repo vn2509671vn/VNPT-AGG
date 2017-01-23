@@ -332,6 +332,8 @@ namespace VNPT_BSC.BSC
         {
             bool isSuccess = false;
             Connection cnData = new Connection();
+            Message msg = new Message();
+            string szMsgContent = "Ban vua nhan duoc phan hoi ve viec giao bsc!!! Vui long kiem tra phan hoi duoc nhan.";
             try
             {
                 string sqlUpdatePhanHoi = "update bsc_donvi set phanhoi_giao_dexuat = '" + kehoach_dexuat + "', phanhoi_giao_lydo = N'" + lydo_dexuat + "', phanhoi_giao_daxuly = 0 ";
@@ -346,6 +348,7 @@ namespace VNPT_BSC.BSC
                 try
                 {
                     cnData.ThucThiDL(sqlUpdatePhanHoi);
+                    msg.SendSMSToChuyenVienBSC(szMsgContent);
                     isSuccess = true;
                 }
                 catch
@@ -360,11 +363,31 @@ namespace VNPT_BSC.BSC
             return isSuccess;
         }
 
+        private static int getDonviTD_ID(int donvigiao, int donvinhan, int thang, int nam, int kpi_id) {
+            int donviID = 0;
+            DataTable dtTmp = new DataTable();
+            Connection cn = new Connection();
+            string sql = "select donvithamdinh from bsc_donvi where donvigiao = '" + donvigiao + "' and donvinhan = '" + donvinhan + "' and thang = '" + thang + "' and nam = '" + nam + "' and kpi = '" + kpi_id + "'";
+            try
+            {
+                dtTmp = cn.XemDL(sql);
+            }
+            catch (Exception ex){
+                throw ex;
+            }
+
+            donviID = Convert.ToInt32(dtTmp.Rows[0][0].ToString().Trim());
+            return donviID;
+        }
+
         [WebMethod]
         public static bool savePhanHoiTD(int donvigiao, int donvinhan, int thang, int nam, int kpi_id, int thamdinh_dexuat, string thamdinh_lydo_dexuat)
         {
             bool isSuccess = false;
             Connection cnData = new Connection();
+            Message msg = new Message();
+            string szMsgContent = "Ban vua nhan duoc phan hoi ve viec tham dinh bsc!!! Vui long kiem tra phan hoi duoc nhan.";
+            int donvithamdinh = 0;
             try
             {
                 string sqlUpdatePhanHoi = "update bsc_donvi set phanhoi_thamdinh_dexuat = '" + thamdinh_dexuat + "', phanhoi_thamdinh_lydo = N'" + thamdinh_lydo_dexuat + "', phanhoi_thamdinh_daxuly = 0 ";
@@ -379,6 +402,8 @@ namespace VNPT_BSC.BSC
                 try
                 {
                     cnData.ThucThiDL(sqlUpdatePhanHoi);
+                    donvithamdinh = getDonviTD_ID(donvigiao, donvinhan, thang, nam, kpi_id);
+                    msg.SendSMS_ByIDDV(donvithamdinh, szMsgContent);
                     isSuccess = true;
                 }
                 catch

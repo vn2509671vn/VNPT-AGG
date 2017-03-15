@@ -165,7 +165,11 @@
     <Content Include="BSC\ChiTietBSCNVNghiemThu.aspx" />
     <Content Include="BSC\ChiTietBSCNVNhan.aspx" />
     <Content Include="BSC\DanhSachBSCDaGiao.aspx" />
+    <Content Include="BSC\DanhSachBSCDaGiao_ThamDinh.aspx" />
+    <Content Include="BSC\DanhSachBSCDaGiao_ThucTrang.aspx" />
+    <Content Include="BSC\DanhSachBSCNVDaGiao.aspx" />
     <Content Include="BSC\ImportBSC.aspx" />
+    <Content Include="BSC\ImportBSCNV.aspx" />
     <Content Include="BSC\KiemDinhBSCDonVi.aspx" />
     <Content Include="BSC\KiemDinhBSCNhanVien.aspx" />
     <Content Include="BSC\MauBSC.aspx" />
@@ -178,6 +182,7 @@
     <Content Include="BSC\PhanPhoiBSCNhanVien.aspx" />
     <Content Include="BSC\XepHangBSC.aspx" />
     <Content Include="BSC\XuatMauBSC.aspx" />
+    <Content Include="BSC\XuatMauBSCNV.aspx" />
     <Content Include="build\css\custom.css" />
     <Content Include="build\css\custom.min.css" />
     <Content Include="build\js\custom.js" />
@@ -243,6 +248,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="DanhMuc\Chucdanh.aspx" />
     <Content Include="DanhMuc\Donvi.aspx" />
+    <Content Include="DanhMuc\KPI_PhongBanChucNang.aspx" />
     <Content Include="DanhMuc\KPO.aspx" />
     <Content Include="DanhMuc\loaimau.aspx" />
     <Content Include="DanhMuc\nhanvienchucvu.aspx" />
@@ -3889,12 +3895,40 @@
     <Compile Include="BSC\DanhSachBSCDaGiao.aspx.designer.cs">
       <DependentUpon>DanhSachBSCDaGiao.aspx</DependentUpon>
     </Compile>
+    <Compile Include="BSC\DanhSachBSCDaGiao_ThamDinh.aspx.cs">
+      <DependentUpon>DanhSachBSCDaGiao_ThamDinh.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\DanhSachBSCDaGiao_ThamDinh.aspx.designer.cs">
+      <DependentUpon>DanhSachBSCDaGiao_ThamDinh.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\DanhSachBSCDaGiao_ThucTrang.aspx.cs">
+      <DependentUpon>DanhSachBSCDaGiao_ThucTrang.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\DanhSachBSCDaGiao_ThucTrang.aspx.designer.cs">
+      <DependentUpon>DanhSachBSCDaGiao_ThucTrang.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\DanhSachBSCNVDaGiao.aspx.cs">
+      <DependentUpon>DanhSachBSCNVDaGiao.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\DanhSachBSCNVDaGiao.aspx.designer.cs">
+      <DependentUpon>DanhSachBSCNVDaGiao.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BSC\ImportBSC.aspx.cs">
       <DependentUpon>ImportBSC.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="BSC\ImportBSC.aspx.designer.cs">
       <DependentUpon>ImportBSC.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\ImportBSCNV.aspx.cs">
+      <DependentUpon>ImportBSCNV.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\ImportBSCNV.aspx.designer.cs">
+      <DependentUpon>ImportBSCNV.aspx</DependentUpon>
     </Compile>
     <Compile Include="BSC\KiemDinhBSCDonVi.aspx.cs">
       <DependentUpon>KiemDinhBSCDonVi.aspx</DependentUpon>
@@ -3980,6 +4014,13 @@
     <Compile Include="BSC\XuatMauBSC.aspx.designer.cs">
       <DependentUpon>XuatMauBSC.aspx</DependentUpon>
     </Compile>
+    <Compile Include="BSC\XuatMauBSCNV.aspx.cs">
+      <DependentUpon>XuatMauBSCNV.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\XuatMauBSCNV.aspx.designer.cs">
+      <DependentUpon>XuatMauBSCNV.aspx</DependentUpon>
+    </Compile>
     <Compile Include="DanhMuc\Donvitinh.aspx.cs">
       <DependentUpon>Donvitinh.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -4022,6 +4063,13 @@
     </Compile>
     <Compile Include="DanhMuc\Donvi.aspx.designer.cs">
       <DependentUpon>Donvi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DanhMuc\KPI_PhongBanChucNang.aspx.cs">
+      <DependentUpon>KPI_PhongBanChucNang.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\KPI_PhongBanChucNang.aspx.designer.cs">
+      <DependentUpon>KPI_PhongBanChucNang.aspx</DependentUpon>
     </Compile>
     <Compile Include="DanhMuc\KPO.aspx.cs">
       <DependentUpon>KPO.aspx</DependentUpon>

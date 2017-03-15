@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.13/api/fnFilterClear.js"></script>
+    
 
     <!-- Plugin for swal alert -->
     <script src="../Bootstrap/sweetalert-dev.js"></script>
@@ -84,18 +86,28 @@
                             <table class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%' id="danhsachKPI">
                                 <thead>
                                   <tr>
-                                    <th><input type="checkbox" id="checkall-kpi"/></th>
+                                    <th class='text-center'><input type="checkbox" id="checkall-kpi"/></th>
                                     <th>KPI</th>
+                                    <th>KPO</th>
                                     <th>ĐVT</th>
                                     <th>Tỷ trọng (%)</th>
                                     <th>Đơn vị thẩm định</th>
+                                  </tr>
+                                  <tr id="thSearch">
+                                    <th></th>
+                                    <th data-filter="1">KPI</th>
+                                    <th data-filter="1">KPO</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                     <% for(int i = 0; i < dtKPI.Rows.Count; i++){ %>
                                         <tr data-id="<%=dtKPI.Rows[i]["kpi_id"].ToString() %>">
-                                          <td><input name="checkbox-kpi" id='kpi_id_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' type="checkbox" value="<%=dtKPI.Rows[i]["kpi_id"].ToString() %>" /></td>
-                                          <td class="min-width-130"><%=dtKPI.Rows[i]["name"].ToString() %></td>
+                                          <td class='text-center'><input name="checkbox-kpi" id='kpi_id_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' type="checkbox" value="<%=dtKPI.Rows[i]["kpi_id"].ToString() %>" /></td>
+                                          <td class="min-width-130"><strong><%=dtKPI.Rows[i]["name"].ToString() %></strong></td>
+                                          <td><strong><%=dtKPI.Rows[i]["kpo_ten"].ToString() %></strong></td>
                                           <%--<td class='text-center'><input type="text" class='form-control' id='dvt_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' size="5"/></td>--%>
                                           <!-- Dropdown Đơn vị tính -->
                                           <td class='text-center'>
@@ -214,6 +226,18 @@
             }
 
             var arrKPI = new Array();
+            var totalTyTrong = 0;
+
+            // Clear search
+            var table = $('#danhsachKPI').DataTable();
+            table
+             .search('')
+             .columns().search('')
+             .draw();
+            $('#danhsachKPI thead tr#thSearch th input').each(function () {
+                $(this).val('');
+            });
+
             $("#danhsachKPI > tbody > tr").each(function () {
                 var kpi_id = $(this).attr("data-id");
                 //var tytrong = $("#tytrong_" + kpi_id).val();
@@ -222,10 +246,12 @@
                 if (tytrong == "") {
                     tytrong = 0;
                 }
+                
                 var dvt = $("#dvt_" + kpi_id).val();
                 var dvtd = $("#dvtd_" + kpi_id).val();
                 var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
                 if (isChecked == true) {
+                    totalTyTrong += parseInt(tytrong);
                     arrKPI.push({
                         kpi_id: kpi_id,
                         tytrong: tytrong,
@@ -240,6 +266,10 @@
                 return false;
             }
 
+            if (totalTyTrong != 100) {
+                swal("Error", "Tổng tỷ trọng của các KPI phải bằng 100%. Vui lòng kiểm tra lại tỷ trọng của các KPI", "error");
+                return false;
+            }
             var requestData = {
                 monthAprove: month,
                 yearAprove: year,
@@ -287,6 +317,35 @@
                     this.checked = false;
                 });
             }
+        });
+
+        // Setup - add a text input to each footer cell
+        $('#danhsachKPI thead tr#thSearch th').each(function () {
+            var title = $(this).text();
+            var isFilter = $(this).attr("data-filter");
+            if (isFilter) {
+                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+            }
+        });
+
+        // DataTable
+        var table = $('#danhsachKPI').DataTable({
+            "bLengthChange": false,
+            "bPaginate": false,
+            "bSort": false
+        });
+
+        // Apply the search
+        table.columns().every(function () {
+            var that = this;
+
+            $('input', this.header()).on('keyup change', function () {
+                if (that.search() !== this.value) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
         });
     });
 </script>

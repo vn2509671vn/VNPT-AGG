@@ -18,7 +18,7 @@ namespace VNPT_BSC.BSC
         public class kpiDetail
         {
             public int kpi_id { get; set; }
-            public decimal thamdinh { get; set; }
+            public float thamdinh { get; set; }
         }
 
         [WebMethod]
@@ -43,7 +43,7 @@ namespace VNPT_BSC.BSC
             sqlBSC += "and bsc.nhanviennhan = '" + nhanviennhan + "' ";
             sqlBSC += "and bsc.nhanvienthamdinh = '" + nhanvienthamdinh + "' ";
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
-            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "'";
+            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' ORDER BY kpo.kpo_id ASC";
             try
             {
                 gridData = cnBSC.XemDL(sqlBSC);
@@ -81,10 +81,10 @@ namespace VNPT_BSC.BSC
                     }
 
                     outputHTML += "<tr data-id='" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>";
-                    outputHTML += "<td>" + (nKPI + 1) + "</td>";
-                    outputHTML += "<td>" + gridData.Rows[nKPI]["kpi_ten"].ToString() + " (" + gridData.Rows[nKPI]["kpo_ten"].ToString() + ")" + "</td>";
+                    outputHTML += "<td class='text-center'>" + (nKPI + 1) + "</td>";
+                    outputHTML += "<td><strong>" +  gridData.Rows[nKPI]["kpi_ten"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["trongso"].ToString() + "</strong></td>";
-                    outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["donvitinh"].ToString() + "</strong></td>";
+                    outputHTML += "<td><strong>" + gridData.Rows[nKPI]["donvitinh"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["kehoach"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["thuchien"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><input type='text' class='form-control' name='thamdinh' id='thamdinh_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["thamdinh"].ToString() + "' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
@@ -124,6 +124,7 @@ namespace VNPT_BSC.BSC
                 dicOutput.Add("trangthainhan", dtGiaoBSCDV.Rows[0]["trangthainhan"].ToString());
                 dicOutput.Add("trangthaicham", dtGiaoBSCDV.Rows[0]["trangthaicham"].ToString());
                 dicOutput.Add("trangthaiketthuc", dtGiaoBSCDV.Rows[0]["trangthaiketthuc"].ToString());
+                dicOutput.Add("trangthaidongy_kqtd", dtGiaoBSCDV.Rows[0]["trangthaidongy_kqtd"].ToString());
             }
             else
             {
@@ -135,21 +136,27 @@ namespace VNPT_BSC.BSC
                 dicOutput.Add("trangthainhan", "0");
                 dicOutput.Add("trangthaicham", "0");
                 dicOutput.Add("trangthaiketthuc", "0");
+                dicOutput.Add("trangthaidongy_kqtd", "0");
             }
 
             return dicOutput;
         }
 
         [WebMethod]
-        public static bool updateKiemDinhStatus(int nhanviengiao, int nhanviennhan, int thang, int nam, int nhanvienthamdinh)
+        public static bool updateKiemDinhStatus(int nhanviengiao, int nhanviennhan, int thang, int nam, int nhanvienthamdinh, int trangthaithamdinh)
         {
             Connection cnNhanBSC = new Connection();
+            Message msg = new Message();
+            string szMsgContent = "BSC cua ban da duoc tham dinh!!! Ban vui long vao kiem tra.";
             bool isSuccess = false;
 
-            string sqlGiaoBSC = "update bsc_nhanvien set trangthaithamdinh = 1 where nhanviengiao = '" + nhanviengiao + "' and nhanviennhan = '" + nhanviennhan + "' and thang = '" + thang + "' and nam = '" + nam + "' and nhanvienthamdinh = '" + nhanvienthamdinh + "'";
+            string sqlGiaoBSC = "update bsc_nhanvien set trangthaithamdinh = '" + trangthaithamdinh + "' where nhanviengiao = '" + nhanviengiao + "' and nhanviennhan = '" + nhanviennhan + "' and thang = '" + thang + "' and nam = '" + nam + "' and nhanvienthamdinh = '" + nhanvienthamdinh + "'";
             try
             {
                 cnNhanBSC.ThucThiDL(sqlGiaoBSC);
+                if (trangthaithamdinh == 1) {
+                    msg.SendSMS_ByIDNV(nhanviennhan, szMsgContent);
+                }
                 isSuccess = true;
             }
             catch

@@ -91,6 +91,7 @@
                             <asp:ListItem>2049</asp:ListItem>
                             <asp:ListItem>2050</asp:ListItem>
                         </asp:DropDownList>
+                        <asp:Button ID="btnGetDate" runat="server" Text="Hiện tại" class="form-control btn-warning" OnClick="btnGetDate_Click"/>
                     </div>
                 </div>
                 <div class="form-group">

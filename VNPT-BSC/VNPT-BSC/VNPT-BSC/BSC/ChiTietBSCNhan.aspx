@@ -106,7 +106,9 @@
                     </div>
                 </div>
                 <div class="col-md-12 col-xs-12 text-center">
-                    <a class="btn btn-success" id="saveData">Save</a>
+                    <!-- Mod start ThangTGM 02092017 - Không cho đơn vị tự chấm bsc -->
+                    <%--<a class="btn btn-success" id="saveData">Save</a>--%>
+                    <!-- Mod end -->
                 </div>
               </div>
           </div>
@@ -346,7 +348,7 @@
                     $("#chamLabel").text("Chưa nộp");
                     $("#updateHuyChamStatus").hide();
                     if (trangthainhan == "True") {
-                        $("#updateChamStatus").show();
+                        //$("#updateChamStatus").show();
                     }
                     else {
                         $("#updateChamStatus").hide();
@@ -545,7 +547,7 @@
 
     function onlyNumbers(e) {
         //if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
-        return !(e > 31 && (e < 48 || e > 57));
+        return !(e > 31 && (e < 48 || e > 57) && e != 46);
     }
 
     $(document).ready(function () {
@@ -556,9 +558,9 @@
             updateNhanStatus(donvigiao, donvinhan, thang, nam);
         });
 
-        $("#updateChamStatus").click(function () {
-            updateChamStatus(donvigiao, donvinhan, thang, nam);
-        });
+        //$("#updateChamStatus").click(function () {
+        //    updateChamStatus(donvigiao, donvinhan, thang, nam);
+        //});
 
         $("#updateHuyChamStatus").click(function () {
             updateHuyChamStatus(donvigiao, donvinhan, thang, nam);
@@ -573,6 +575,11 @@
             $("#table-kpi > tbody > tr").each(function () {
                 var kpi_id = $(this).attr("data-id");
                 var thuchien = $("#thuchien_" + kpi_id).val();
+                if (isNaN(thuchien)) {
+                    swal("Error!", "Sai định dạng kiểu chữ số!!!", "error");
+                    return false;
+                }
+
                 if (thuchien == "") {
                     thuchien = 0;
                 }
@@ -623,6 +630,11 @@
             kehoach_dexuat = $('#edit_kehoach_dexuat').val();
             lydo_dexuat = $('#edit_lydo_dexuat').val();
 
+            if (isNaN(kehoach_dexuat)) {
+                swal("Error!", "Sai định dạng kiểu chữ số!!!", "error");
+                return false;
+            }
+
             if (kehoach_dexuat == "") {
                 swal("Error!!!", "Vui lòng nhập giá trị kế hoạch đề xuất!!!", "error");
                 return;
@@ -672,6 +684,11 @@
             var thamdinh_lydo_dexuat = "";
             thamdinh_dexuat = $('#td_edit_kqtd_dexuat').val();
             thamdinh_lydo_dexuat = $('#td_edit_kqtd_lydo').val();
+
+            if (isNaN(thamdinh_dexuat)) {
+                swal("Error!", "Sai định dạng kiểu chữ số!!!", "error");
+                return false;
+            }
 
             if (thamdinh_dexuat == "") {
                 swal("Error!!!", "Vui lòng nhập giá trị kế hoạch đề xuất!!!", "error");

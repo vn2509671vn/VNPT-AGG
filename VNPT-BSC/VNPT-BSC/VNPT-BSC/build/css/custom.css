@@ -3944,3 +3944,6 @@ ul.notifications {
   border: 1px solid #e5e5e5; }
 
 /** /Dropzone.js **/
+table tr:hover td {
+	background-color: #D6FF5C;
+}

@@ -18,7 +18,7 @@ namespace VNPT_BSC.BSC
         public class kpiDetail
         {
             public int kpi_id { get; set; }
-            public decimal thuchien { get; set; }
+            public float thuchien { get; set; }
         }
 
         [WebMethod]
@@ -43,7 +43,7 @@ namespace VNPT_BSC.BSC
             sqlBSC += "and bsc.nhanviennhan = '" + nhanviennhan + "' ";
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
             sqlBSC += "and bsc.donvitinh = dvt.dvt_id ";
-            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "'";
+            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' ORDER BY kpo.kpo_id ASC";
             try
             {
                 gridData = cnBSC.XemDL(sqlBSC);
@@ -86,10 +86,10 @@ namespace VNPT_BSC.BSC
                     }
 
                     outputHTML += "<tr data-id='" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>";
-                    outputHTML += "<td>" + (nKPI + 1) + "</td>";
-                    outputHTML += "<td>" + gridData.Rows[nKPI]["kpi_ten"].ToString() + " (" + gridData.Rows[nKPI]["kpo_ten"].ToString() + ")" + "</td>";
+                    outputHTML += "<td class='text-center'>" + (nKPI + 1) + "</td>";
+                    outputHTML += "<td><strong>" +  gridData.Rows[nKPI]["kpi_ten"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["trongso"].ToString() + "</strong></td>";
-                    outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["donvitinh"].ToString() + "</strong></td>";
+                    outputHTML += "<td><strong>" + gridData.Rows[nKPI]["donvitinh"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["kehoach"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><input type='text' class='form-control' name='thuchien' id='thuchien_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["thuchien"].ToString() + "' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["thamdinh"].ToString() + "</strong></td>";
@@ -172,12 +172,15 @@ namespace VNPT_BSC.BSC
         public static bool updateDongYStatus(int nhanviengiao, int nhanviennhan, int thang, int nam)
         {
             Connection cnNhanBSC = new Connection();
+            Message msg = new Message();
+            string szMsgContent = "Mot BSC/KPI da dong y ket qua tham dinh!!! Ban vui long vao kiem tra va ket thuc.";
             bool isSuccess = false;
 
             string sqlGiaoBSC = "update giaobscnhanvien set trangthaidongy_kqtd = 1 where nhanviengiao = '" + nhanviengiao + "' and nhanviennhan = '" + nhanviennhan + "' and thang = '" + thang + "' and nam = '" + nam + "'";
             try
             {
                 cnNhanBSC.ThucThiDL(sqlGiaoBSC);
+                msg.SendSMS_ByIDNV(nhanviengiao, szMsgContent);
                 isSuccess = true;
             }
             catch

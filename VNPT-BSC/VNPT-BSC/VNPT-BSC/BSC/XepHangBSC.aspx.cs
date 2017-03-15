@@ -19,8 +19,9 @@ namespace VNPT_BSC.BSC
         {
             Connection cnBSC = new Connection();
             DataTable gridData = new DataTable();
+            DataTable gridDataTTKD = new DataTable();
 
-            string sqlBSC = "select donvi.donvi_id, donvi.donvi_ten, (select SUM(diem_kpi) from bsc_donvi where donvinhan = donvi.donvi_id and thang = '" + thang + "' and nam = '" + nam + "') as diem ";
+            string sqlBSC = "select donvi.donvi_id, donvi.donvi_ten, (select SUM(((kq_thuchien*trongso)/100)) from bsc_donvi where donvinhan = donvi.donvi_id and thang = '" + thang + "' and nam = '" + nam + "') as diem ";
             sqlBSC += "from donvi, bsc_donvi ";
             sqlBSC += "where bsc_donvi.donvinhan = donvi.donvi_id ";
             sqlBSC += "and donvi.donvi_loai = 1 ";
@@ -28,9 +29,18 @@ namespace VNPT_BSC.BSC
             sqlBSC += "group by donvi.donvi_id, donvi.donvi_ten ";
             sqlBSC += "ORDER BY diem DESC";
 
+            string sqlTTKD = "select donvi.donvi_id, donvi.donvi_ten, (select SUM(((kq_thuchien*trongso)/100)) from bsc_donvi where donvinhan = donvi.donvi_id and thang = '" + thang + "' and nam = '" + nam + "') as diem ";
+            sqlTTKD += "from donvi, bsc_donvi ";
+            sqlTTKD += "where bsc_donvi.donvinhan = donvi.donvi_id ";
+            sqlTTKD += "and bsc_donvi.thang = '" + thang + "' and bsc_donvi.nam = '" + nam + "' ";
+            sqlTTKD += "and donvi.donvi_id = 1 ";
+            sqlTTKD += "group by donvi.donvi_id, donvi.donvi_ten ";
+            sqlTTKD += "ORDER BY diem DESC";
+
             try
             {
                 gridData = cnBSC.XemDL(sqlBSC);
+                gridDataTTKD = cnBSC.XemDL(sqlTTKD);
             }
             catch (Exception ex)
             {
@@ -46,6 +56,7 @@ namespace VNPT_BSC.BSC
             arrOutput += "<th class='text-center'>Đơn vị</th>";
             arrOutput += "<th class='text-center'>Điểm xếp hạng</th>";
             arrOutput += "<th class='text-center'>Xếp hạng</th>";
+            arrOutput += "<th class='hide'>Chú thích</th>";
             arrOutput += "</tr>";
             arrOutput += "</thead>";
             arrOutput += "<tbody>";
@@ -63,10 +74,29 @@ namespace VNPT_BSC.BSC
                         diem = Convert.ToDecimal(gridData.Rows[nKPI]["diem"].ToString()) * 100;
                     }
                     arrOutput += "<tr>";
-                    arrOutput += "<td class='text-center'>" + (nKPI + 1) + "</td>";
+                    arrOutput += "<td style='text-align: center'>" + (nKPI + 1) + "</td>";
                     arrOutput += "<td class='min-width-130'><strong>" + gridData.Rows[nKPI]["donvi_ten"].ToString() + "</strong></td>";
-                    arrOutput += "<td class='text-center'><strong>" + String.Format("{0:0.00}", diem) + "%" + "</strong></td>";
-                    arrOutput += "<td class='text-center'>" + (nKPI + 1) + "</td>";
+                    arrOutput += "<td style='text-align: center'><strong>" + String.Format("{0:0.00}", diem) + "%" + "</strong></td>";
+                    arrOutput += "<td style='text-align: center'>" + (nKPI + 1) + "</td>";
+                    arrOutput += "<td class='hide'></td>";
+                    arrOutput += "</tr>";
+                }
+            }
+
+            if (gridDataTTKD.Rows.Count > 0) {
+                for (int nKPITTKD = 0; nKPITTKD < gridDataTTKD.Rows.Count; nKPITTKD++)
+                {
+                    decimal diem = 0;
+                    if (gridDataTTKD.Rows[nKPITTKD]["diem"].ToString() != "")
+                    {
+                        diem = Convert.ToDecimal(gridDataTTKD.Rows[nKPITTKD]["diem"].ToString()) * 100;
+                    }
+                    arrOutput += "<tr class='hide'>";
+                    arrOutput += "<td class='text-center'></td>";
+                    arrOutput += "<td class='min-width-130'><strong>" + gridDataTTKD.Rows[nKPITTKD]["donvi_ten"].ToString() + "</strong></td>";
+                    arrOutput += "<td style='text-align: center'><strong>" + String.Format("{0:0.00}", diem) + "%" + "</strong></td>";
+                    arrOutput += "<td class='text-center'></td>";
+                    arrOutput += "<td></td>";
                     arrOutput += "</tr>";
                 }
             }

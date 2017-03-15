@@ -75,7 +75,7 @@
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Danh sách KPI
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Danh sách KPI <span class="red-color" id="ten_dvn"></span>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body" id="gridBSC">
@@ -128,6 +128,7 @@
 
                 /*Fill data*/
                 $("#gridBSC").html(gridBSC);    // Fill to table
+                $("#ten_dvn").html(ten_dvn);
                 // Fill ngày áp dụng
                 $("#ngayapdung").text(thang + "/" + nam);
 
@@ -179,15 +180,17 @@
                     "dom": 'Bfrtip',
                     "buttons": [
                         {
-                            extend: 'excelHtml5',
-                            title: 'Nghiệm thu đơn vị ' + ten_dvn
-                        },
-                        {
-                            extend: 'pdfHtml5',
-                            title: 'Nghiệm thu đơn vị ' + ten_dvn,
-                            orientation: 'landscape',
-                            pageSize: 'LEGAL'
+                            text: 'Excel',
+                            action: function (e, dt, node, config) {
+                                ExportToExcel('table-kpi', ten_dvn, thang, nam);
+                            }
                         }
+                        //{
+                        //    extend: 'pdfHtml5',
+                        //    title: 'Nghiệm thu đơn vị ' + ten_dvn,
+                        //    orientation: 'landscape',
+                        //    pageSize: 'LEGAL'
+                        //}
                     ],
                     "columnDefs": [{
                         "targets": 'no-sort',

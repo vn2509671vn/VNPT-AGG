@@ -94,7 +94,9 @@
                     </div>
                 </div>
                 <div class="col-md-12 col-xs-12 text-center">
-                    <a class="btn btn-success" id="saveData">Save</a>
+                    <!-- Mod start ThangTGM 02092017 - Không cho nhân viên tự chấm bsc -->
+                    <%--<a class="btn btn-success" id="saveData">Save</a>--%>
+                    <!-- Mod end -->
                 </div>
               </div>
           </div>
@@ -333,7 +335,7 @@
 
     function onlyNumbers(e) {
         //if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
-        return !(e > 31 && (e < 48 || e > 57));
+        return !(e > 31 && (e < 48 || e > 57) && e != 46);
     }
 
     $(document).ready(function () {

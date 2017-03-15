@@ -91,19 +91,19 @@
                 var gridBSC = output.gridBSC;
                 var isNghiemThuTatCa = output.isKetThucTatCa;
 
-                $("#gridBSC").html(gridBSC);
-                $("#table-bsclist").DataTable({
-                    "searching": true,
-                    "info": true,
-                    "pageLength": 50
-                });
-
                 if (isNghiemThuTatCa == "True") {
                     $("#nghiemthuTatCa").show();
                 }
                 else {
                     $("#nghiemthuTatCa").hide();
                 }
+
+                $("#gridBSC").html(gridBSC);
+                $("#table-bsclist").DataTable({
+                    "searching": true,
+                    "info": true,
+                    "pageLength": 50
+                });
             },
             error: function (msg) { alert(msg.d); }
         });

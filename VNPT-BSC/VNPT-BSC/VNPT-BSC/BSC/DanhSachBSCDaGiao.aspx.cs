@@ -14,20 +14,46 @@ namespace VNPT_BSC.BSC
 {
     public partial class DanhSachBSCDaGiao : System.Web.UI.Page
     {
+        public static DataTable dtMauBSC = new DataTable();
+
+        /*List loại mẫu bsc*/
+        private DataTable dsMauBSC()
+        {
+            DataTable dsMauBSC = new DataTable();
+            Connection cn = new Connection();
+            string sqlMauBSC = "select * from loaimaubsc";
+            try
+            {
+                dsMauBSC = cn.XemDL(sqlMauBSC);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dsMauBSC;
+        }
+
         // Lấy ra danh sách các KPI, DVT, Trọng số theo tháng, năm và KPO
-        public static DataTable getKPIByTimeAndKPO(int thang, int nam, int kpo_id)
+        public static DataTable getKPIByTimeAndKPO(int thang, int nam, int kpo_id, int loaibsc)
         {
             Connection cnBSC = new Connection();
             DataTable dsKPIByTimeAndKPO = new DataTable();
-            string sqlKPIByTimeAndKPO = "select kpi.kpi_id, kpi.kpi_ten, dvt.dvt_ten, bsc_donvi.trongso ";
-            sqlKPIByTimeAndKPO += "from kpo, kpi, bsc_donvi, donvitinh dvt ";
+            string sqlKPIByTimeAndKPO = "select kpi.kpi_id, kpi.kpi_ten, dvt.dvt_ten, bsc_donvi.trongso, danhsachbsc.stt ";
+            sqlKPIByTimeAndKPO += "from kpo, kpi, bsc_donvi, donvitinh dvt, danhsachbsc ";
             sqlKPIByTimeAndKPO += "where bsc_donvi.kpi = kpi.kpi_id ";
             sqlKPIByTimeAndKPO += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
             sqlKPIByTimeAndKPO += "and bsc_donvi.donvitinh = dvt.dvt_id ";
             sqlKPIByTimeAndKPO += "and bsc_donvi.thang = '" + thang + "' ";
             sqlKPIByTimeAndKPO += "and bsc_donvi.nam = '" + nam + "' ";
+            sqlKPIByTimeAndKPO += "and bsc_donvi.loaimau = '" + loaibsc + "' ";
             sqlKPIByTimeAndKPO += "and kpo.kpo_id = '" + kpo_id + "' ";
-            sqlKPIByTimeAndKPO += "group by kpi.kpi_id, kpi.kpi_ten, dvt.dvt_ten, bsc_donvi.trongso";
+            sqlKPIByTimeAndKPO += "and bsc_donvi.thang = danhsachbsc.thang ";
+            sqlKPIByTimeAndKPO += "and bsc_donvi.nam = danhsachbsc.nam ";
+            sqlKPIByTimeAndKPO += "and bsc_donvi.loaimau = danhsachbsc.maubsc ";
+            sqlKPIByTimeAndKPO += "and bsc_donvi.kpi = danhsachbsc.kpi_id  ";
+            sqlKPIByTimeAndKPO += "and danhsachbsc.bscduocgiao = '' ";
+            sqlKPIByTimeAndKPO += "group by kpi.kpi_id, kpi.kpi_ten, dvt.dvt_ten, bsc_donvi.trongso, danhsachbsc.stt ORDER BY danhsachbsc.stt ASC";
             try
             {
                 dsKPIByTimeAndKPO = cnBSC.XemDL(sqlKPIByTimeAndKPO);
@@ -41,7 +67,7 @@ namespace VNPT_BSC.BSC
         }
 
         // Lấy danh sách kế hoạch bsc theo tháng năm và kpi của các đơn vị
-        public static DataTable getDetailByTimeAndKPI(int thang, int nam, int kpi_id)
+        public static DataTable getDetailByTimeAndKPI(int thang, int nam, int kpi_id, int loaibsc)
         {
             Connection cnBSC = new Connection();
             DataTable dsDetailByTimeAndKPI = new DataTable();
@@ -50,6 +76,7 @@ namespace VNPT_BSC.BSC
             sqlDetailByTimeAndKPI += "where thang = '" + thang + "' ";
             sqlDetailByTimeAndKPI += "and nam = '" + nam + "' ";
             sqlDetailByTimeAndKPI += "and kpi = '" + kpi_id + "'";
+            sqlDetailByTimeAndKPI += "and loaimau = '" + loaibsc + "'";
 
             try
             {
@@ -64,7 +91,7 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static Dictionary<String, String> loadBSCByYear(int thang, int nam)
+        public static Dictionary<String, String> loadBSCByYear(int thang, int nam, int loaibsc)
         {
             Dictionary<String, String> dicOutput = new Dictionary<string, string>();
             Connection cnBSC = new Connection();
@@ -78,6 +105,7 @@ namespace VNPT_BSC.BSC
             sqlDonViByTime += "from bsc_donvi, donvi ";
             sqlDonViByTime += "where bsc_donvi.thang = '" + thang + "' ";
             sqlDonViByTime += "and bsc_donvi.nam = '" + nam + "' ";
+            sqlDonViByTime += "and bsc_donvi.loaimau = '" + loaibsc + "' ";
             sqlDonViByTime += "and bsc_donvi.donvinhan = donvi.donvi_id ";
             sqlDonViByTime += "group by bsc_donvi.donvinhan, donvi.donvi_ma ";
 
@@ -87,6 +115,7 @@ namespace VNPT_BSC.BSC
             sqlKPOByTime += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
             sqlKPOByTime += "and bsc_donvi.thang = '" + thang + "' ";
             sqlKPOByTime += "and bsc_donvi.nam = '" + nam + "' ";
+            sqlKPOByTime += "and bsc_donvi.loaimau = '" + loaibsc + "' ";
             sqlKPOByTime += "group by kpo.kpo_id, kpo.kpo_ten ";
 
             try
@@ -152,7 +181,7 @@ namespace VNPT_BSC.BSC
                     outputHTML += "</tr>";
 
                     // Hiển thị các KPI, DVT, Trọng số theo KPO
-                    dsKPIByTimeAndKPO = getKPIByTimeAndKPO(thang, nam, kpo_id);
+                    dsKPIByTimeAndKPO = getKPIByTimeAndKPO(thang, nam, kpo_id, loaibsc);
                     if (dsKPIByTimeAndKPO.Rows.Count <= 0)
                     {
                         outputHTML += "<tr><td colspan='" + (slDonvi + 4) + "' class='text-center'>No item</td></tr>";
@@ -169,11 +198,11 @@ namespace VNPT_BSC.BSC
                             outputHTML += "<tr>";
                             outputHTML += "<td class='text-center'>" + (nIndexKPI + 1) + "</td>";
                             outputHTML += "<td><strong>" + kpi_ten + "</strong></td>";
-                            outputHTML += "<td class='text-center'><strong>" + dvt_ten + "</strong></td>";
+                            outputHTML += "<td><strong>" + dvt_ten + "</strong></td>";
                             outputHTML += "<td class='text-center'><strong>" + trongso + "</strong></td>";
 
                             // Hiển thị danh sách kế hoạch bsc theo tháng năm và kpi của các đơn vị
-                            dsDetailByTimeAndKPI = getDetailByTimeAndKPI(thang, nam, kpi_id);
+                            dsDetailByTimeAndKPI = getDetailByTimeAndKPI(thang, nam, kpi_id, loaibsc);
                             if (dsDetailByTimeAndKPI.Rows.Count <= 0)
                             {
                                 outputHTML += "<td colspan='" + slDonvi + "' class='text-center'>No item</td>";
@@ -183,7 +212,7 @@ namespace VNPT_BSC.BSC
                                 for (int nIndexDetail = 0; nIndexDetail < dsDetailByTimeAndKPI.Rows.Count; nIndexDetail++)
                                 {
                                     string kehoach = dsDetailByTimeAndKPI.Rows[nIndexDetail]["kehoach"].ToString();
-                                    outputHTML += "<td>" + kehoach + "</td>";
+                                    outputHTML += "<td class='text-center'>" + kehoach + "</td>";
                                 }
                             }
                             outputHTML += "</tr>";
@@ -219,6 +248,8 @@ namespace VNPT_BSC.BSC
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
+
+                dtMauBSC = dsMauBSC();
             }
             catch
             {

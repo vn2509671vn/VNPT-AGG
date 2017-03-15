@@ -4,6 +4,7 @@
     <script src="../Bootstrap/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../Bootstrap/sweetalert.css"/>
     <link href="../Bootstrap/hien_custom.css" rel="stylesheet" />
+    <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
     <%--<link href="../Bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" />--%>
     <script src="../Bootstrap/jquery.js"></script>
@@ -29,11 +30,13 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Mã KPI</th>
                                 <th>Tên KPI</th>
                                 <th>Mô tả KPI</th>
                                 <th>Ngày tạo KPI</th>
                                 <th>Người tạo KPI</th>
                                 <th>Thuộc nhóm KPO</th>
+                                <th>Thuộc nhóm KPI</th>
                                 <th class="fix-table-edit-edit">Chỉnh sửa</th>
                             </tr>
                             <tr id="filterSection">
@@ -42,7 +45,9 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
                                 <th id="filter_kpo">KPO</th>
+                                <th></th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -51,7 +56,7 @@
                             <% if (dtkpi.Rows.Count == 0)
                                { %>
                             <tr>
-                                <td colspan="7" class="text-center">No item</td>
+                                <td colspan="9" class="text-center">No item</td>
                             </tr>
                             <% }
                                else
@@ -59,25 +64,29 @@
                             <% for (int i = 0; i < dtkpi.Rows.Count; i++)
                                { %>
                             <%
-                                    string kpi_id = dtkpi.Rows[i][0].ToString();
-                                    string kpi_ten = dtkpi.Rows[i][1].ToString();
-                                    string kpi_mota = dtkpi.Rows[i][2].ToString();
+                                    string kpi_id = dtkpi.Rows[i]["kpi_id"].ToString();
+                                    string kpi_ten = dtkpi.Rows[i]["kpi_ten"].ToString();
+                                    string kpi_ma = dtkpi.Rows[i]["kpi_ma"].ToString();
+                                    string kpi_mota = dtkpi.Rows[i]["kpi_mota"].ToString();
                                     string kpi_ngaytao = String.Format("{0:MM/dd/yyyy}", dtkpi.Rows[i][3].ToString());
                                     string kpi_nguoitao = dtkpi.Rows[i]["nhanvien_hoten"].ToString();
                                     string kpi_thuockpo = dtkpi.Rows[i]["kpo_ten"].ToString();
                                     string kpo_id = dtkpi.Rows[i]["kpo_id"].ToString();
                                     string nhanvien_id = dtkpi.Rows[i]["nhanvien_id"].ToString();
-
+                                    string ten_nhom_kpi = dtkpi.Rows[i]["ten_nhom"].ToString();
+                                    string id_nhom_kpi = dtkpi.Rows[i]["id"].ToString();
                             %>
                             <tr>
                                 <td><%= kpi_id %></td>
-                                <td><%= kpi_ten%></td>
+                                <td><strong><%= kpi_ma%></strong></td>
+                                <td><strong><%= kpi_ten%></strong></td>
                                 <td><%= kpi_mota%></td>
                                 <td><%= kpi_ngaytao %></td>
                                 <td><%= kpi_nguoitao%></td>
                                 <td><%= kpi_thuockpo%></td>
+                                <td class="min-width-150"><%= ten_nhom_kpi%></td>
                                 <td>
-                                    <a class="btn btn-primary btn-xs" type="button" data-target="#Editkpi" data-toggle="modal" onclick="editdata('<%=kpi_id %>','<%=kpi_ten%>','<%=kpi_mota%>','<%=kpi_ngaytao%>','<%=kpo_id%>')">Chỉnh sửa</a>
+                                    <a class="btn btn-primary btn-xs" type="button" data-target="#Editkpi" data-toggle="modal" onclick="editdata('<%=kpi_id %>','<%=kpi_ten%>','<%=kpi_ma%>','<%=kpi_mota%>','<%=kpi_ngaytao%>','<%=kpo_id%>', '<%=id_nhom_kpi%>')">Chỉnh sửa</a>
                                     <a class="btn btn-danger btn-xs" type="button" id="btnXoa" onclick="deletedata('<%=kpi_id %>')">Xóa</a>
 
                                 </td>
@@ -86,7 +95,7 @@
                             <% } %>
                         </tbody>
                     </table>
-                    <!-- EDIT-->
+                    <!-- Add-->
                     <div id="themkpi" class="modal fade" role="dialog">
                         <div class="modal-dialog">
 
@@ -97,6 +106,12 @@
                                     <h4 class="modal-title" style="text-align: center">THÊM KPI</h4>
                                 </div>
                                 <div class="modal-body list-BSC form-horizontal">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Mã KPI:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control fix-width-350" id="txtma" />
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-4">Tên KPI:</label>
                                         <div class="col-sm-8">
@@ -130,6 +145,22 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Thuộc nhóm KPI:</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control fix-day" id="nhom_kpi">
+                                                <% for (int i = 0; i < dtnhom_kpi.Rows.Count; i++)
+                                                   { %>
+                                                <%
+                                                       string nhom_id = dtnhom_kpi.Rows[i]["id"].ToString();
+                                                       string kpo_ten = dtnhom_kpi.Rows[i]["ten_nhom"].ToString();
+                                                       string loaimaubsc = dtnhom_kpi.Rows[i]["loai_ten"].ToString();
+                                                %>
+                                                <option value="<%= nhom_id%>"><%= "[" + loaimaubsc + "] " + kpo_ten%></option>
+                                                <% } %>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <a class="btn btn-success" id="btnSave">Thêm KPI</a>
@@ -150,6 +181,12 @@
                                 </div>
                                 <input type="hidden" id="txtidkpi_sua" />
                                 <div class="modal-body list-BSC form-horizontal">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Mã KPI:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control fix-width-350" id="txtma_sua" />
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-4">Tên KPI:</label>
                                         <div class="col-sm-8">
@@ -178,6 +215,23 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Thuộc nhóm KPI:</label>
+                                        <div class="col-sm-8">
+                                            <%--<input type="text" class="form-control fix-width-350 fix-height-34"  id="txtthuockpo_sua" />--%>
+                                            <select class="form-control fix-day" id="nhom_kpi_edit">
+                                                <% for (int i = 0; i < dtnhom_kpi.Rows.Count; i++)
+                                                   { %>
+                                                <%
+                                                       string nhom_id = dtnhom_kpi.Rows[i]["id"].ToString();
+                                                       string kpo_ten = dtnhom_kpi.Rows[i]["ten_nhom"].ToString();
+                                                       string loaimaubsc = dtnhom_kpi.Rows[i]["loai_ten"].ToString();
+                                                %>
+                                                <option value="<%= nhom_id%>"><%= "[" + loaimaubsc + "] " + kpo_ten%></option>
+                                                <% } %>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <a class="btn btn-success" id="btnEdit">Lưu thay đổi</a>
@@ -193,9 +247,11 @@
     <script>
         function checkItemThem() {
             var kpi_ten = $("#txtten").val();
+            var kpi_ma = $("#txtma").val();
             var kpi_mota = $('#txtmota').val();
             var kpi_ngay = $("#txtngay").val();
-            if (kpi_ten == "" || kpi_mota == "" || kpi_ngay == "") {
+            var nhom_kpi = $("#nhom_kpi").val();
+            if (kpi_ten == "" || kpi_mota == "" || kpi_ngay == "" || kpi_ma == "") {
                 swal({
                     title: "Lỗi Dữ Liệu",
                     text: "Nhập thiếu trường dữ liệu!!!!",
@@ -212,7 +268,8 @@
         function checkItemSua() {
             var kpi_ten_sua = $('#txtten_sua').val();
             var kpi_mota_sua = $('#txtmota_sua').val();
-            if (kpi_ten_sua == "" || kpi_mota_sua == "") {
+            var kpi_ma_sua = $("#txtma_sua").val();
+            if (kpi_ten_sua == "" || kpi_mota_sua == "" || kpi_ma_sua == "") {
                 swal({
                     title: "Dữ liệu không được bỏ trống!!",
                     timer: 1000,
@@ -225,12 +282,14 @@
             }
         }
 
-        function editdata(kpi_id, kpi_ten, kpi_mota, kpi_ngaytao, kpi_thuockpo) {
+        function editdata(kpi_id, kpi_ten, kpi_ma, kpi_mota, kpi_ngaytao, kpi_thuockpo, nhom_kpi) {
             $('#txtidkpi_sua').val(kpi_id);
             $('#txtten_sua').val(kpi_ten);
+            $('#txtma_sua').val(kpi_ma);
             $('#txtmota_sua').val(kpi_mota);
             $('#txtngay_sua').val(kpi_ngaytao);
             $('#kpo_edit').val(kpi_thuockpo);
+            $('#nhom_kpi_edit').val(nhom_kpi);
         }
 
         function deletedata(kpi_id) {
@@ -334,18 +393,22 @@
 
             $("#btnSave").click(function () {
                 var kpi_ten = $("#txtten").val();
+                var kpi_ma = $("#txtma").val();
                 var kpi_mota = $('#txtmota').val();
                 var kpi_ngay = $("#txtngay").val();
                 var kpi_kpo = $("#kpo").val();
+                var nhom_kpi = $("#nhom_kpi").val();
                 var isCheck = checkItemThem();
                 if (!isCheck) {
                     return false;
                 }
                 var requestData = {
                     kpi_tenAprove: kpi_ten,
+                    kpi_tenMa: kpi_ma,
                     kpi_motaAprove: kpi_mota,
                     kpi_ngayAprove: kpi_ngay,
-                    kpi_kpoAprove: kpi_kpo
+                    kpi_kpoAprove: kpi_kpo,
+                    nhom_kpi: nhom_kpi
                 };
 
                 var szRequest = JSON.stringify(requestData);
@@ -379,8 +442,10 @@
             $('#btnEdit').click(function () {
                 var kpi_id_sua = $("#txtidkpi_sua").val();
                 var kpi_ten_sua = $("#txtten_sua").val();
+                var kpi_ma_sua = $("#txtma_sua").val();
                 var kpi_mota_sua = $("#txtmota_sua").val();
                 var kpi_kpo_sua = $("#kpo_edit").val();
+                var nhom_kpi_sua = $("#nhom_kpi_edit").val();
                 var isCheck = checkItemSua();
                 if (!isCheck) {
                     return false;
@@ -388,8 +453,10 @@
                 var requestData = {
                     kpi_id_suaAprove: kpi_id_sua,
                     kpi_ten_suaAprove: kpi_ten_sua,
+                    kpi_ma_suaAprove: kpi_ma_sua,
                     kpi_mota_suaAprove: kpi_mota_sua,
-                    kpi_kpo_suaAprove: kpi_kpo_sua
+                    kpi_kpo_suaAprove: kpi_kpo_sua,
+                    nhom_kpi_suaAprove: nhom_kpi_sua
                 };
 
                 var szRequest = JSON.stringify(requestData);

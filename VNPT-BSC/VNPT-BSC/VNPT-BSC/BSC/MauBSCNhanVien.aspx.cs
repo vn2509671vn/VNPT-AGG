@@ -22,6 +22,8 @@ namespace VNPT_BSC.BSC
         public static DataTable dtDVT = new DataTable();
         public static DataTable dtNVTD = new DataTable();
         public static DataTable dtMauBSC = new DataTable();
+        public static DataTable dtKhoKPI = new DataTable();
+        public static DataTable dtNhomKPI = new DataTable();
         public static int nguoitao;
         public static int donvinhan;
         public class kpiDetail
@@ -30,13 +32,14 @@ namespace VNPT_BSC.BSC
             public int tytrong { get; set; }
             public string dvt { get; set; }
             public int nvtd { get; set; }
+            public int nhom_kpi { get; set; }
         }
 
         /*List loại mẫu bsc*/
         private DataTable dsMauBSC()
         {
             DataTable dsMauBSC = new DataTable();
-            string sqlMauBSC = "select * from loaimaubsc";
+            string sqlMauBSC = "select * from loaimaubsc where loai_id not in (1,2,3)";
             try
             {
                 dsMauBSC = cn.XemDL(sqlMauBSC);
@@ -104,7 +107,7 @@ namespace VNPT_BSC.BSC
         private DataTable dsBSCDuocGiao(int donvinhan)
         {
             DataTable dsBSC = new DataTable();
-            string sqlBSCDuocGiao = "select top 24 thang,nam from giaobscdonvi where donvinhan = '" + donvinhan + "' and trangthaigiao = 1 group by thang, nam order by nam,thang DESC";
+            string sqlBSCDuocGiao = "select top 24 thang,nam from giaobscdonvi where donvinhan = '" + donvinhan + "' and trangthaigiao = 1 and trangthainhan = 1 group by thang, nam order by nam,thang DESC";
             try
             {
                 dsBSC = cn.XemDL(sqlBSCDuocGiao);
@@ -120,7 +123,7 @@ namespace VNPT_BSC.BSC
         /*Get KPI list*/
         private DataTable getKPIList(int nguoitao)
         {
-            string sqlKPI = "select kpi.kpi_id, kpo.kpo_id, kpi.kpi_ten + ' (' + kpo.kpo_ten + ')' as name from kpi, kpo where kpi.kpi_thuoc_kpo = kpo.kpo_id and kpi.kpi_nguoitao = '" + nguoitao + "' order by kpo.kpo_id ASC";
+            string sqlKPI = "select kpi.kpi_id, kpo.kpo_id, '[' + kpo.kpo_ten + '] ' + kpi.kpi_ten as name from kpi, kpo where kpi.kpi_thuoc_kpo = kpo.kpo_id and kpi.kpi_nguoitao = '" + nguoitao + "' order by kpo.kpo_id ASC";
             DataTable dtKPI = new DataTable();
             try
             {
@@ -148,25 +151,100 @@ namespace VNPT_BSC.BSC
             return dtBSC;
         }
 
+        private DataTable getKhoKPI() {
+            DataTable dtresult = new DataTable();
+            string sqlKhoKPI = "select kpi.kpi_id, kpo.kpo_id, kpi.kpi_ten as name, kpi.nhom_kpi, nhom_kpi.ten_nhom, kpo.kpo_ten ";
+            sqlKhoKPI += "from kpi, kpo, nhom_kpi ";
+            sqlKhoKPI += "where kpi.nhom_kpi = nhom_kpi.id ";
+            sqlKhoKPI += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
+            sqlKhoKPI += "and kpi.hienthi = 1 ";
+            sqlKhoKPI += "and kpi.kpi_nguoitao in (select nhanvien.nhanvien_id from nhanvien, chucvu, nhanvien_chucvu, quyen_cv where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id and chucvu.chucvu_id = quyen_cv.chucvu_id and quyen_cv.quyen_id = 2) ";
+            sqlKhoKPI += "group by kpi.kpi_id, kpo.kpo_id, kpi.kpi_ten, kpi.nhom_kpi, nhom_kpi.ten_nhom, kpo.kpo_ten ORDER BY kpo.kpo_id ASC";
+            try
+            {
+                dtresult = cn.XemDL(sqlKhoKPI);
+            }
+            catch (Exception ex){
+                throw ex;
+            }
+            return dtresult;
+        }
+
+        private DataTable getNhomKPI()
+        {
+            DataTable dtresult = new DataTable();
+            string sql = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id";
+            try
+            {
+                dtresult = cn.XemDL(sql);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dtresult;
+        }
+
         [WebMethod]
-        public static string loadKPIDuocGiao(int thang, int nam, int donvinhan)
+        public static string getNhomKPIByLoaiMauID(int loaimaubsc)
+        {
+            DataTable dtresult = new DataTable();
+            string szResult = "";
+            Connection cn = new Connection();
+            string sql = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id and loaimaubsc.loai_id = '" + loaimaubsc + "'";
+            string sqlAll = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id";
+            try
+            {
+                dtresult = cn.XemDL(sql);
+                if (dtresult.Rows.Count == 0) {
+                    dtresult = cn.XemDL(sqlAll);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            for (int i = 0; i < dtresult.Rows.Count; i++) {
+                string nhom_id = dtresult.Rows[i]["id"].ToString();
+                string nhom_name = dtresult.Rows[i]["ten_nhom"].ToString();
+                string nhom_tytrong = dtresult.Rows[i]["tytrong"].ToString();
+                string tenmau = dtresult.Rows[i]["loai_ten"].ToString();
+
+                szResult += "<option data-nhom-tytrong ='" + nhom_tytrong + "' value='" + nhom_id + "'>" + nhom_name + "</option>";
+            }
+                return szResult;
+        }
+
+        [WebMethod]
+        //public static string loadKPIDuocGiao(int thang, int nam, int donvinhan)
+        public static Dictionary<String, String> loadKPIDuocGiao(int thang, int nam, int donvinhan)
         {
             Connection cnData = new Connection();
+            Dictionary<String, String> dicOutput = new Dictionary<String, String>();
             DataTable dtKPIDuocGiao = new DataTable();
+            //DataTable dtKhoKPI = new DataTable();
             DataTable dsDonvitinh = new DataTable();
             DataTable dsNhanvienthamdinh = new DataTable();
+            DataTable dsNhomKPI = new DataTable();
             string sqlDVT = "select * from donvitinh";
+            string sqlNhomKPI = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id";
             string szOutput = "";
-            string sql = "select kpi.kpi_id, kpo.kpo_id, kpi.kpi_ten + ' (' + kpo.kpo_ten + ')' as name, bscdv.donvitinh, bscdv.trongso ";
-            sql += "from bsc_donvi bscdv, kpi, kpo ";
+
+            string sql = "select kpi.kpi_id, kpo.kpo_id, kpi.kpi_ten as name, bscdv.donvitinh, bscdv.trongso, kpi.nhom_kpi, nhom_kpi.ten_nhom, kpo.kpo_ten ";
+            sql += "from bsc_donvi bscdv, kpi, kpo, nhom_kpi ";
             sql += "where bscdv.thang = '" + thang + "' and bscdv.nam = '" + nam + "' and bscdv.donvinhan = '" + donvinhan + "' ";
             sql += "and bscdv.kpi = kpi.kpi_id ";
-            sql += "and kpi.kpi_thuoc_kpo = kpo.kpo_id";
+            sql += "and kpi.nhom_kpi = nhom_kpi.id ";
+            sql += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ORDER BY kpo.kpo_id ASC";
+
             try
             {
                 dtKPIDuocGiao = cnData.XemDL(sql);
                 dsDonvitinh = cnData.XemDL(sqlDVT);
                 dsNhanvienthamdinh = dsNVTD(donvinhan);
+                dsNhomKPI = cnData.XemDL(sqlNhomKPI);
+                //dtKhoKPI = cnData.XemDL(sqlKhoKPI);
             }
             catch (Exception ex)
             {
@@ -174,43 +252,144 @@ namespace VNPT_BSC.BSC
             }
 
             szOutput += "<table class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%' id='danhsachKPIDuocGiao'>";
+            szOutput += "<caption><strong>Danh Sách KPI Được Giao";
+            szOutput += "</strong></caption>";
             szOutput += "<thead>";
             szOutput += "<tr>";
-            szOutput += "<th><input type='checkbox' id='checkall-kpiduocgiao' onclick='check_kpi_duocgiao()'/></th>";
+            szOutput += "<th class='text-center'><input type='checkbox' id='checkall-kpiduocgiao' onclick='check_kpi_duocgiao()'/></th>";
             szOutput += "<th>KPI</th>";
+            szOutput += "<th>KPO</th>";
             szOutput += "<th>ĐVT</th>";
             szOutput += "<th>Tỷ trọng (%)</th>";
-            szOutput += "<th>Nhân viên thẩm định</th>";
+            szOutput += "<th>Nhóm KPI</th>";
+            //szOutput += "<th>Nhân viên thẩm định</th>";
             szOutput += "</tr>";
+
+            szOutput += "<tr id='filterSection_BSCDuocGiao'>";
+            szOutput += "<th></th>";
+            szOutput += "<th data-filter='filter_kpi_duocgiao' class='max-width-100'>KPI</th>";
+            szOutput += "<th data-filter='filter_kpi_duocgiao' class='max-width-100'>KPO</th>";
+            szOutput += "<th></th>";
+            szOutput += "<th></th>";
+            szOutput += "<th></th>";
+            szOutput += "</tr>";
+
             szOutput += "</thead>";
             szOutput += "<tbody>";
             for (int i = 0; i < dtKPIDuocGiao.Rows.Count; i++)
             {
                 szOutput += "<tr data-id='" + dtKPIDuocGiao.Rows[i]["kpi_id"].ToString() + "'>";
-                szOutput += "<td><input name='checkbox-kpiduocgiao' id='kpi_id_" + dtKPIDuocGiao.Rows[i]["kpi_id"].ToString() + "' type='checkbox' checked value='" + dtKPIDuocGiao.Rows[i]["kpi_id"].ToString() + "' /></td>";
-                szOutput += "<td>" + dtKPIDuocGiao.Rows[i]["name"].ToString() + "</td>";
+                szOutput += "<td class='text-center'><input name='checkbox-kpiduocgiao' id='kpi_id_" + dtKPIDuocGiao.Rows[i]["kpi_id"].ToString() + "' type='checkbox' checked value='" + dtKPIDuocGiao.Rows[i]["kpi_id"].ToString() + "' /></td>";
+                szOutput += "<td class='min-width-300'><strong>" + dtKPIDuocGiao.Rows[i]["name"].ToString() + "</strong></td>";
+                szOutput += "<td><strong>" + dtKPIDuocGiao.Rows[i]["kpo_ten"].ToString() + "</strong></td>";
                 szOutput += "<td class='text-center'>";
                 szOutput += "<select class='form-control' id='dvt_" + dtKPIDuocGiao.Rows[i]["kpi_id"].ToString() + "'>";
                 for (int nDVT = 0; nDVT < dsDonvitinh.Rows.Count; nDVT++) {
-                   szOutput += "<option value='" + dsDonvitinh.Rows[nDVT]["dvt_id"] + "'>" + dsDonvitinh.Rows[nDVT]["dvt_ten"] + "</option>";
+                    string szSelect = "";
+                    int nCboDVT = Convert.ToInt32(dsDonvitinh.Rows[nDVT]["dvt_id"].ToString());
+                    int nDonviTinh = Convert.ToInt32(dtKPIDuocGiao.Rows[i]["donvitinh"].ToString());
+                    if (nCboDVT == nDonviTinh)
+                    {
+                        szSelect = "selected";
+                    }
+                    szOutput += "<option value='" + dsDonvitinh.Rows[nDVT]["dvt_id"] + "' " + szSelect + ">" + dsDonvitinh.Rows[nDVT]["dvt_ten"] + "</option>";
                 }
                 szOutput += "</select>";
                 szOutput += "</td>";
-                szOutput += "<td class='text-center'><input type='text' class='form-control' id='tytrong_" + dtKPIDuocGiao.Rows[i]["kpi_id"].ToString() + "' size='2' value='" + dtKPIDuocGiao.Rows[i]["trongso"].ToString() + "'/></td>";
+                szOutput += "<td class='text-center'><input type='text' class='form-control' id='tytrong_" + dtKPIDuocGiao.Rows[i]["kpi_id"].ToString() + "' size='2' value='" + dtKPIDuocGiao.Rows[i]["trongso"].ToString() + "' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
+
                 szOutput += "<td class='text-center'>";
-                szOutput += "<select class='form-control' id='nvtd_" + dtKPIDuocGiao.Rows[i]["kpi_id"].ToString() + "'>";
-                for (int nNVTD = 0; nNVTD < dsNhanvienthamdinh.Rows.Count; nNVTD++)
+                szOutput += "<select class='form-control' id='nhom_kpi_" + dtKPIDuocGiao.Rows[i]["kpi_id"].ToString() + "' name='cboNhomKPI' data-nhom-id='" + dtKPIDuocGiao.Rows[i]["nhom_kpi"].ToString() + "'>";
+                for (int nNhom = 0; nNhom < dsNhomKPI.Rows.Count; nNhom++)
                 {
-                   szOutput += "<option value='" + dsNhanvienthamdinh.Rows[nNVTD]["nhanvien_id"] + "'>" + dsNhanvienthamdinh.Rows[nNVTD]["nhanvien_hoten"] + "</option>";
+                    string szSelect = "";
+                    int nCboNhom = Convert.ToInt32(dsNhomKPI.Rows[nNhom]["id"].ToString());
+                    int nNhomKPI = 0;
+                    if (dtKPIDuocGiao.Rows[i]["nhom_kpi"].ToString() != "")
+                    {
+                        nNhomKPI = Convert.ToInt32(dtKPIDuocGiao.Rows[i]["nhom_kpi"].ToString());
+                    }
+                    
+                    if (nCboNhom == nNhomKPI)
+                    {
+                        szSelect = "selected";
+                    }
+                    szOutput += "<option data-nhom-tytrong='" + dsNhomKPI.Rows[nNhom]["tytrong"] + "' value='" + dsNhomKPI.Rows[nNhom]["id"] + "' " + szSelect + ">" + dsNhomKPI.Rows[nNhom]["ten_nhom"] + "</option>";
                 }
                 szOutput += "</select>";
                 szOutput += "</td>";
+
+                //szOutput += "<td class='text-center'>";
+                //szOutput += "<select class='form-control' id='nvtd_" + dtKPIDuocGiao.Rows[i]["kpi_id"].ToString() + "'>";
+                //for (int nNVTD = 0; nNVTD < dsNhanvienthamdinh.Rows.Count; nNVTD++)
+                //{
+                //   szOutput += "<option value='" + dsNhanvienthamdinh.Rows[nNVTD]["nhanvien_id"] + "'>" + dsNhanvienthamdinh.Rows[nNVTD]["nhanvien_hoten"] + "</option>";
+                //}
+                //szOutput += "</select>";
+                //szOutput += "</td>";
                 szOutput += "</tr>";
             }
             szOutput += "</tbody>";
             szOutput += "</table>";
 
-            return szOutput;
+            dicOutput.Add("bscduocgiao", szOutput);
+
+            //szOutputKhoKPI += "<table class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%' id='danhsachKhoKPI'>";
+            //szOutputKhoKPI += "<caption><strong>Thư Viện KPI";
+            //szOutputKhoKPI += "</strong></caption>";
+            //szOutputKhoKPI += "<thead>";
+            //szOutputKhoKPI += "<tr>";
+            //szOutputKhoKPI += "<th class='text-center'><input type='checkbox' id='checkall-kpiduocgiao' onclick='check_kpi_duocgiao()'/></th>";
+            //szOutputKhoKPI += "<th>KPI</th>";
+            //szOutputKhoKPI += "<th>KPO</th>";
+            //szOutputKhoKPI += "<th>ĐVT</th>";
+            //szOutputKhoKPI += "<th>Tỷ trọng (%)</th>";
+            //szOutputKhoKPI += "<th>Nhóm KPI</th>";
+            //szOutputKhoKPI += "</tr>";
+
+            //szOutputKhoKPI += "<tr id='filterSection_KhoKPI'>";
+            //szOutputKhoKPI += "<th></th>";
+            //szOutputKhoKPI += "<th></th>";
+            //szOutputKhoKPI += "<th id='filter_kpo_kho_kpi' class='max-width-100'>KPO</th>";
+            //szOutputKhoKPI += "<th></th>";
+            //szOutputKhoKPI += "<th></th>";
+            //szOutputKhoKPI += "<th></th>";
+            //szOutputKhoKPI += "</tr>";
+
+            //szOutputKhoKPI += "</thead>";
+            //szOutputKhoKPI += "<tbody>";
+            //for (int i = 0; i < dtKhoKPI.Rows.Count; i++)
+            //{
+            //    szOutputKhoKPI += "<tr data-id='" + dtKhoKPI.Rows[i]["kpi_id"].ToString() + "'>";
+            //    szOutputKhoKPI += "<td class='text-center'><input name='checkbox-kpiduocgiao' id='kpi_id_" + dtKhoKPI.Rows[i]["kpi_id"].ToString() + "' type='checkbox' checked value='" + dtKhoKPI.Rows[i]["kpi_id"].ToString() + "' /></td>";
+            //    szOutputKhoKPI += "<td class='min-width-300'><strong>" + dtKhoKPI.Rows[i]["name"].ToString() + "</strong></td>";
+            //    szOutputKhoKPI += "<td><strong>" + dtKhoKPI.Rows[i]["kpo_ten"].ToString() + "</strong></td>";
+            //    szOutputKhoKPI += "<td class='text-center'>";
+            //    szOutputKhoKPI += "<select class='form-control' id='dvt_" + dtKhoKPI.Rows[i]["kpi_id"].ToString() + "'>";
+            //    for (int nDVT = 0; nDVT < dsDonvitinh.Rows.Count; nDVT++)
+            //    {
+            //        szOutputKhoKPI += "<option value='" + dsDonvitinh.Rows[nDVT]["dvt_id"] + "'>" + dsDonvitinh.Rows[nDVT]["dvt_ten"] + "</option>";
+            //    }
+            //    szOutputKhoKPI += "</select>";
+            //    szOutputKhoKPI += "</td>";
+            //    szOutputKhoKPI += "<td class='text-center'><input type='text' class='form-control' id='tytrong_" + dtKhoKPI.Rows[i]["kpi_id"].ToString() + "' size='2' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
+
+            //    szOutputKhoKPI += "<td class='text-center'>";
+            //    szOutputKhoKPI += "<select class='form-control' id='nhom_kpi_" + dtKhoKPI.Rows[i]["kpi_id"].ToString() + "'>";
+            //    for (int nNhom = 0; nNhom < dsNhomKPI.Rows.Count; nNhom++)
+            //    {
+            //        szOutputKhoKPI += "<option value='" + dsNhomKPI.Rows[nNhom]["id"] + "'>" + " [" + dsNhomKPI.Rows[nNhom]["loai_ten"] + "] " + dsNhomKPI.Rows[nNhom]["ten_nhom"] + "</option>";
+            //    }
+            //    szOutputKhoKPI += "</select>";
+            //    szOutputKhoKPI += "</td>";
+            //    szOutputKhoKPI += "</tr>";
+            //}
+            //szOutputKhoKPI += "</tbody>";
+            //szOutputKhoKPI += "</table>";
+
+            //dicOutput.Add("khokpi", szOutputKhoKPI);
+
+            return dicOutput;
         }
 
         [WebMethod]
@@ -230,7 +409,8 @@ namespace VNPT_BSC.BSC
                     arrKPI[i].Add("kpi_id", dtKPI.Rows[i]["kpi_id"].ToString());
                     arrKPI[i].Add("tytrong", dtKPI.Rows[i]["tytrong"].ToString());
                     arrKPI[i].Add("donvitinh", dtKPI.Rows[i]["donvitinh"].ToString());
-                    arrKPI[i].Add("nhanvienthamdinh", dtKPI.Rows[i]["nhanvienthamdinh"].ToString());
+                    arrKPI[i].Add("nhom_kpi", dtKPI.Rows[i]["nhom_kpi"].ToString());
+                    //arrKPI[i].Add("nhanvienthamdinh", dtKPI.Rows[i]["nhanvienthamdinh"].ToString());
                 }
             }
             return arrKPI;
@@ -281,8 +461,9 @@ namespace VNPT_BSC.BSC
                     int tytrong = arrKPI_ID[i].tytrong;
                     string dvt = arrKPI_ID[i].dvt;
                     int nhanvienthamdinh = arrKPI_ID[i].nvtd;
+                    int nhom_kpi = arrKPI_ID[i].nhom_kpi;
                     string curDate = DateTime.Now.ToString("yyyy-MM-dd");
-                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, nguoitao, bscduocgiao, ngaytao, donvitinh, tytrong, nhanvienthamdinh, maubsc) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '" + nguoitao + "', '" + bscduocgiao + "', '" + curDate + "', N'" + dvt + "', '" + tytrong + "', '" + nhanvienthamdinh + "', '" + maubsc + "')";
+                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, nguoitao, bscduocgiao, ngaytao, donvitinh, tytrong, nhanvienthamdinh, maubsc, nhom_kpi) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '" + nguoitao + "', '" + bscduocgiao + "', '" + curDate + "', N'" + dvt + "', '" + tytrong + "', '" + nhanvienthamdinh + "', '" + maubsc + "', '" + nhom_kpi + "')";
                     try
                     {
                         cnDanhSachBSC.ThucThiDL(sqlInsertNewData);
@@ -335,6 +516,8 @@ namespace VNPT_BSC.BSC
                     dtDVT = dsDVT();
                     dtNVTD = dsNVTD(donvinhan);
                     dtMauBSC = dsMauBSC();
+                    dtKhoKPI = getKhoKPI();
+                    dtNhomKPI = getNhomKPI();
                 }
                 catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");

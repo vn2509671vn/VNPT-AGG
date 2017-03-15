@@ -190,8 +190,8 @@ namespace VNPT_BSC.Admin
                     sqlInsertBSCDV += "and donvinhan = '" + donvinhan + "' ";
                     sqlInsertBSCDV += "and thang = '" + thang + "' ";
                     sqlInsertBSCDV += "and nam = '" + nam + "' ";
-                    sqlInsertBSCDV += "and kpi = '" + kpi_detail[i].kpi_id + "';";
-                    sqlInsertBSCDV += "EXEC sp_ketquathuchien @thang = '" + thang + "',@nam = '" + nam + "', @donvigiao = '" + donvigiao + "', @donvinhan = '" + donvinhan + "', @kpi_id = '" + kpi_detail[i].kpi_id + "'";
+                    sqlInsertBSCDV += "and kpi = '" + kpi_detail[i].kpi_id + "'";
+                    //sqlInsertBSCDV += "EXEC sp_ketquathuchien @thang = '" + thang + "',@nam = '" + nam + "', @donvigiao = '" + donvigiao + "', @donvinhan = '" + donvinhan + "', @kpi_id = '" + kpi_detail[i].kpi_id + "'";
 
                     try
                     {

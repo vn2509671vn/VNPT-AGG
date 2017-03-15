@@ -43,4 +43,38 @@ tr > td > a.btn {
 
 tr > td > input.form-control {
     text-align: center !important;
+    width: 100% !important;
+}
+
+.hide {
+    display: none !important;
+}
+
+.min-width-72 {
+    min-width: 72px !important;
+}
+
+.min-width-150 {
+    min-width: 150px !important;
+}
+
+.min-width-200 {
+    min-width: 200px !important;
+}
+
+.min-width-300 {
+    min-width: 300px !important;
+}
+
+.max-width-100 {
+    max-width: 100px !important;
+}
+
+.red-color {
+    color: red !important;
+    font-weight: bold;
+}
+
+#danhsachKPIDuocGiao_filter, #danhsachKhoKPI_filter {
+    display:    none !important;
 }

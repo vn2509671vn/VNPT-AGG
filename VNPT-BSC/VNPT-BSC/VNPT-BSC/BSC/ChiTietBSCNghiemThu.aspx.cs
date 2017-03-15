@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Text;
 using System.Web.Services;
 using System.Data;
 using System.Data.SqlClient;
@@ -25,8 +28,8 @@ namespace VNPT_BSC.BSC
             /*Lấy danh sách BSC từ bảng bsc_donvi*/
             DataTable gridData = new DataTable();
             string outputHTML = "";
-            string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, dvt.dvt_ten as donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh, bsc.kq_thuchien, bsc.diem_kpi ";
-            sqlBSC += "from bsc_donvi bsc, kpi, kpo, donvi dvgiao, donvi dvnhan, donvitinh dvt ";
+            string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, dvt.dvt_ten as donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh, bsc.kq_thuchien, bsc.diem_kpi, danhsachbsc.stt ";
+            sqlBSC += "from bsc_donvi bsc, kpi, kpo, donvi dvgiao, donvi dvnhan, donvitinh dvt, danhsachbsc ";
             sqlBSC += "where bsc.kpi = kpi.kpi_id ";
             sqlBSC += "and bsc.donvitinh = dvt.dvt_id ";
             sqlBSC += "and bsc.donvigiao = dvgiao.donvi_id ";
@@ -34,7 +37,13 @@ namespace VNPT_BSC.BSC
             sqlBSC += "and bsc.donvinhan = '" + donvinhan + "' ";
             sqlBSC += "and bsc.donvigiao = '" + donvigiao + "' ";
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
-            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "'";
+            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' ";
+            sqlBSC += "and bsc.thang = danhsachbsc.thang ";
+            sqlBSC += "and bsc.nam = danhsachbsc.nam ";
+            sqlBSC += "and bsc.loaimau = danhsachbsc.maubsc ";
+            sqlBSC += "and bsc.kpi = danhsachbsc.kpi_id  ";
+            sqlBSC += "and danhsachbsc.bscduocgiao = '' ORDER BY danhsachbsc.stt ASC ";
+
             try
             {
                 gridData = cnBSC.XemDL(sqlBSC);
@@ -68,45 +77,48 @@ namespace VNPT_BSC.BSC
             else
             {
                 int nTongTrongSo = 0;
-                decimal nTongSoDiem = 0;
+                double nTongSoDiem = 0;
                 for (int nKPI = 0; nKPI < gridData.Rows.Count; nKPI++)
                 {
-                    decimal tylethuchien = 0;
+                    double tylethuchien = 0;
+                    double diem = 0;
                     int trongso = Convert.ToInt32(gridData.Rows[nKPI]["trongso"].ToString());
-                    decimal kehoach = Convert.ToDecimal(gridData.Rows[nKPI]["kehoach"].ToString());
-                    decimal thamdinh = Convert.ToDecimal(gridData.Rows[nKPI]["thamdinh"].ToString());
-                    decimal mucdohoanthanh = Convert.ToDecimal(gridData.Rows[nKPI]["kq_thuchien"].ToString());
-                    decimal diem = Convert.ToDecimal(gridData.Rows[nKPI]["diem_kpi"].ToString());
+                    double kehoach = Convert.ToDouble(gridData.Rows[nKPI]["kehoach"].ToString());
+                    double thamdinh = Convert.ToDouble(gridData.Rows[nKPI]["thamdinh"].ToString());
+                    double mucdohoanthanh = Convert.ToDouble(gridData.Rows[nKPI]["kq_thuchien"].ToString());
+                    if (gridData.Rows[nKPI]["diem_kpi"].ToString() != "") {
+                        diem = Convert.ToDouble(gridData.Rows[nKPI]["diem_kpi"].ToString());
+                    }
 
                     tylethuchien = (thamdinh / kehoach) * 100;
                     nTongTrongSo += trongso;
-                    nTongSoDiem += diem;
+                    nTongSoDiem += (mucdohoanthanh * trongso)/100;
 
                     outputHTML += "<tr data-id='" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>";
-                    outputHTML += "<td>" + (nKPI + 1) + "</td>";
-                    outputHTML += "<td>" + gridData.Rows[nKPI]["kpi_ten"].ToString() + " (" + gridData.Rows[nKPI]["kpo_ten"].ToString() + ")" + "</td>";
-                    outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["trongso"].ToString() + "</strong></td>";
-                    outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["donvitinh"].ToString() + "</strong></td>";
-                    outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["kehoach"].ToString() + "</strong></td>";
-                    outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["thuchien"].ToString() + "</strong></td>";
-                    outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["thamdinh"].ToString() + "</strong></td>";
-                    outputHTML += "<td class='text-center'><strong>" + String.Format("{0:0.000}",tylethuchien) + "</strong></td>";
-                    outputHTML += "<td class='text-center'><strong>" + String.Format("{0:0.000}", mucdohoanthanh) + "</strong></td>";
-                    outputHTML += "<td class='text-center'><strong>" + String.Format("{0:0.000}", diem) + "</strong></td>";
+                    outputHTML += "<td style='text-align: center'>" + (nKPI + 1) + "</td>";
+                    outputHTML += "<td><strong>" + gridData.Rows[nKPI]["kpi_ten"].ToString() + "</strong></td>";
+                    outputHTML += "<td style='text-align: center'><strong>" + gridData.Rows[nKPI]["trongso"].ToString() + "</strong></td>";
+                    outputHTML += "<td><strong>" + gridData.Rows[nKPI]["donvitinh"].ToString() + "</strong></td>";
+                    outputHTML += "<td style='text-align: center'><strong>" + gridData.Rows[nKPI]["kehoach"].ToString() + "</strong></td>";
+                    outputHTML += "<td style='text-align: center'><strong>" + gridData.Rows[nKPI]["thuchien"].ToString() + "</strong></td>";
+                    outputHTML += "<td style='text-align: center'><strong>" + gridData.Rows[nKPI]["thamdinh"].ToString() + "</strong></td>";
+                    outputHTML += "<td style='text-align: center'><strong>" + String.Format("{0:0.####}", tylethuchien) + "</strong></td>";
+                    outputHTML += "<td style='text-align: center'><strong>" + String.Format("{0:0.####}", mucdohoanthanh) + "</strong></td>";
+                    outputHTML += "<td style='text-align: center'><strong>" + String.Format("{0:0.####}", diem) + "</strong></td>";
                     outputHTML += "</tr>";
                 }
 
                 outputHTML += "<tr>";
                 outputHTML += "<td></td>";
-                outputHTML += "<td class='text-center'><strong>Tỷ lệ thực hiện</strong></td>";
-                outputHTML += "<td class='text-center'><strong>" + nTongTrongSo + "%" + "</strong></td>";
+                outputHTML += "<td style='text-align: center'><strong>Tỷ lệ thực hiện</strong></td>";
+                outputHTML += "<td style='text-align: center'><strong>" + nTongTrongSo + "%" + "</strong></td>";
                 outputHTML += "<td></td>";
                 outputHTML += "<td></td>";
                 outputHTML += "<td></td>";
                 outputHTML += "<td></td>";
                 outputHTML += "<td></td>";
                 outputHTML += "<td></td>";
-                outputHTML += "<td class='text-center'><strong>" + Convert.ToInt32((nTongSoDiem * 100)) + "%" + "</strong></td>";
+                outputHTML += "<td style='text-align: center'><strong>" + String.Format("{0:0.00}", (nTongSoDiem*100)) + "%" + "</strong></td>";
                 outputHTML += "</tr>";
             }
             outputHTML += "</tbody>";
@@ -178,6 +190,30 @@ namespace VNPT_BSC.BSC
                 isSuccess = false;
             }
             return isSuccess;
+        }
+
+        [WebMethod]
+        public static void ExportExcel(string szHTML)
+        {
+            StringBuilder StrHtmlGenerate = new StringBuilder();
+            StringBuilder StrExport = new StringBuilder();
+
+            StrExport.Append(@"<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:excel' xmlns='http://www.w3.org/TR/REC-html40'><head><title>Time</title>");
+            StrExport.Append(@"<body lang=EN-US style='mso-element:header' id=h1><span style='mso--code:DATE'></span><div class=Section1>");
+            StrExport.Append("<DIV  style='font-size:12px;'><div>ABCDCESX</div>");
+            StrExport.Append(szHTML);
+            StrExport.Append("</div></body></html>");
+            string strFile = "StudentInformations_CODESCRATCHER.xls";
+            string strcontentType = "application/excel";
+            HttpContext.Current.Response.ClearContent();
+            HttpContext.Current.Response.ClearHeaders();
+            HttpContext.Current.Response.BufferOutput = true;
+            HttpContext.Current.Response.ContentType = strcontentType;
+            HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=" + strFile);
+            HttpContext.Current.Response.Write(StrExport.ToString());
+            HttpContext.Current.Response.Flush();
+            HttpContext.Current.Response.Close();
+            HttpContext.Current.Response.End();
         }
 
         protected void Page_Load(object sender, EventArgs e)

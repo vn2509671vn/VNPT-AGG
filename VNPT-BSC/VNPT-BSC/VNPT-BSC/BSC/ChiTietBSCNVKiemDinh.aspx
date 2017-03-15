@@ -40,7 +40,7 @@
               <div class="col-md-12 col-xs-12 form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-6">Ngày áp dụng:</label>
-                    <div class="col-sm-6 form-inline">
+                    <div class="col-sm-6 form-inline padding-top-7">
                         <span><strong id="ngayapdung"></strong></span>
                     </div>
                 </div>
@@ -55,6 +55,7 @@
                     <div class="col-sm-6 form-inline padding-top-7 ">
                         <span id="kiemdinhLabel" class="label label-default">Chưa thẩm định</span>
                         <a class="btn btn-success btn-xs" id="updateThamDinhStatus">Duyệt</a>
+                        <a class="btn btn-danger btn-xs" id="updateHuyTDStatus">Hủy</a>
                     </div>
                 </div>
                 <div class="form-group">
@@ -93,6 +94,7 @@
     function loadDataToPage(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh) {
         /*Hide button*/
         $("#updateThamDinhStatus").hide();
+        $("#updateHuyTDStatus").hide();
         $("#saveData").hide();
 
         var requestData = {
@@ -122,6 +124,7 @@
                 var trangthainhan = output.trangthainhan;
                 var trangthaicham = output.trangthaicham;
                 var trangthaiketthuc = output.trangthaiketthuc;
+                var trangthaidongy_kqtd = output.trangthaidongy_kqtd;
 
                 /*Fill data*/
                 $("#gridBSC").html(gridBSC);    // Fill to table
@@ -146,6 +149,13 @@
                     $("#kiemdinhLabel").addClass("label-success");
                     $("#kiemdinhLabel").text("Đã kiểm định");
                     $("#saveData").hide();
+                    // Cập nhật trạng thái kiểm định
+                    if (trangthaidongy_kqtd == "True") {
+                        $("#updateHuyTDStatus").hide();
+                    }
+                    else {
+                        $("#updateHuyTDStatus").show();
+                    }
                 }
                 else {
                     $("#kiemdinhLabel").removeClass("label-success");
@@ -183,13 +193,14 @@
         });
     }
 
-    function updateKiemDinhStatus(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh) {
+    function updateKiemDinhStatus(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh, trangthaithamdinh) {
         var requestData = {
             nhanviengiao: nhanviengiao,
             nhanviennhan: nhanviennhan,
             thang: thang,
             nam: nam,
-            nhanvienthamdinh: nhanvienthamdinh
+            nhanvienthamdinh: nhanvienthamdinh,
+            trangthaithamdinh: trangthaithamdinh
         };
 
         var szRequest = JSON.stringify(requestData);
@@ -202,17 +213,34 @@
             success: function (result) {
                 var isSuccess = result.d;
                 if (isSuccess) {
-                    swal({
-                        title: "Kiểm định BSC thành công!!",
-                        text: "",
-                        type: "success"
-                    },
-                    function () {
-                        loadDataToPage(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh);
-                    });
+                    if (trangthaithamdinh == 1) {
+                        swal({
+                            title: "Kiểm định BSC thành công!!",
+                            text: "",
+                            type: "success"
+                        },
+                        function () {
+                            loadDataToPage(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh);
+                        });
+                    }
+                    else if (trangthaithamdinh == 0) {
+                        swal({
+                            title: "Hủy kiểm định BSC thành công!!",
+                            text: "",
+                            type: "success"
+                        },
+                        function () {
+                            loadDataToPage(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh);
+                        });
+                    }
                 }
                 else {
-                    swal("Error!!!", "Kiểm định BSC không thành công!!!", "error");
+                    if (trangthaithamdinh) {
+                        swal("Error!!!", "Kiểm định BSC không thành công!!!", "error");
+                    }
+                    else {
+                        swal("Error!!!", "Hủy kiểm định BSC không thành công!!!", "error");
+                    }
                 }
             },
             error: function (msg) { alert(msg.d); }
@@ -221,7 +249,7 @@
 
     function onlyNumbers(e) {
         //if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
-        return !(e > 31 && (e < 48 || e > 57));
+        return !(e > 31 && (e < 48 || e > 57) && e != 46);
     }
 
     $(document).ready(function () {
@@ -229,14 +257,24 @@
         loadDataToPage(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh);
 
         $("#updateThamDinhStatus").click(function () {
-            updateKiemDinhStatus(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh);
+            updateKiemDinhStatus(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh, 1);
+        });
+
+        $("#updateHuyTDStatus").click(function () {
+            updateKiemDinhStatus(nhanviengiao, nhanviennhan, thang, nam, nhanvienthamdinh, 0);
         });
 
         $("#saveData").click(function () {
             var kpi_detail = [];
+            var errFormatNumber = false;
             $("#table-kpi > tbody > tr").each(function () {
                 var kpi_id = $(this).attr("data-id");
                 var thamdinh = $("#thamdinh_" + kpi_id).val();
+                if (isNaN(thamdinh)) {
+                    swal("Error!", "Sai định dạng kiểu chữ số!!!", "error");
+                    errFormatNumber = true;
+                    return false;
+                }
                 if (thamdinh == "") {
                     thamdinh = 0;
                 }
@@ -245,6 +283,10 @@
                     thamdinh: thamdinh
                 });
             });
+
+            if (errFormatNumber) {
+                return false;
+            }
 
             var requestData = {
                 nhanviengiao: nhanviengiao,

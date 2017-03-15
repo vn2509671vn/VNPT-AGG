@@ -97,10 +97,16 @@
                     "pageLength": 50,
                     "dom": 'Bfrtip',
                     "buttons": [
+                        //{
+                        //    extend: 'excelHtml5',
+                        //    text: 'Xuất file',
+                        //    title: 'Xếp hàng 11 DVHT ' + month + "-" + year
+                        //},
                         {
-                            extend: 'excelHtml5',
-                            text: 'Xuất file',
-                            title: 'Xếp hàng 11 DVHT ' + month + "-" + year
+                            text: 'Excel',
+                            action: function (e, dt, node, config) {
+                                ExportToExcelForRank('table-kpi', 'Điểm-XH', month, year);
+                            }
                         }
                     ],
                     "columnDefs": [{

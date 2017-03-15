@@ -44,6 +44,22 @@ namespace VNPT_BSC
             return dtResult;
         }
 
+        private DataTable dtSDTByMaNV(int nhanvien_id)
+        {
+            DataTable dtResult = new DataTable();
+            Connection cn = new Connection();
+            string sql = "select nhanvien_didong from nhanvien where nhanvien_id = '" + nhanvien_id + "'";
+            try
+            {
+                dtResult = cn.XemDL(sql);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dtResult;
+        }
+
         private DataTable dtSDTChuyenVienBSC()
         {
             DataTable dtResult = new DataTable();
@@ -105,6 +121,32 @@ namespace VNPT_BSC
                 string szSDT = dtSDT.Rows[i]["nhanvien_didong"].ToString().Trim();
                 string szContent = szMsgContent;
                 if (szSDT == "") {
+                    continue;
+                }
+                szTmp = svSMS.sendsms(szSDT, szContent);
+            }
+        }
+
+        // Gửi sms cho nhân viên dựa theo mã nhân viên
+        public void SendSMS_ByIDNV(int nhanvien_id, string szMsgContent)
+        {
+            Connection cn = new Connection();
+            DataTable dtSDT = new DataTable();
+            string szTmp = "";
+            SMSsv.AuthHeader authen = new SMSsv.AuthHeader();
+            authen.Username = username;
+            authen.Password = password;
+
+            SMSsv.Service1 svSMS = new SMSsv.Service1();
+            svSMS.AuthHeaderValue = authen;
+
+            dtSDT = dtSDTByMaNV(nhanvien_id);
+            for (int i = 0; i < dtSDT.Rows.Count; i++)
+            {
+                string szSDT = dtSDT.Rows[i]["nhanvien_didong"].ToString().Trim();
+                string szContent = szMsgContent;
+                if (szSDT == "")
+                {
                     continue;
                 }
                 szTmp = svSMS.sendsms(szSDT, szContent);

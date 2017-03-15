@@ -62,8 +62,8 @@
                 <div class="form-group">
                     <label class="control-label col-sm-3">Thời gian áp dụng:</label>
                     <div class="col-sm-4 form-inline">
-                        <input type="text" class="form-control number" id="month" name="month" maxlength="2" size="2" placeholder="Tháng"/>
-                        <input type="text" class="form-control number" id="year" name="year" maxlength="4" size="4" placeholder="Năm"/>
+                        <input type="text" class="form-control number" id="month" name="month" maxlength="2" size="2" placeholder="Tháng" onkeypress="return onlyNumbers(event.charCode || event.keyCode);"/>
+                        <input type="text" class="form-control number" id="year" name="year" maxlength="4" size="4" placeholder="Năm" onkeypress="return onlyNumbers(event.charCode || event.keyCode);"/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -76,6 +76,12 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group">
+                        <label class="control-label col-sm-3">Xem quy định về tỷ trọng:</label>
+                        <div class="col-sm-4 form-inline" style="padding-top: 5px">
+                           <a href="#" data-target='#quydinhNhomKPI' data-toggle='modal' class="control-label">Xem chi tiết</a>
+                        </div>
+                    </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3">KPI được giao:</label>
                     <div class="col-sm-4">
@@ -91,14 +97,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <!-- Mod start ThangTGM 02092017 - Các đơn vị huyện thị không được phép thêm kpi cá nhân -->
+                <%--<div class="form-group">
                     <label class="control-label col-sm-3">Danh sách KPI:</label>
                     <div class="col-md-12 col-xs-12">
                         <div class='table-responsive'>
                             <table class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%' id="danhsachKPI">
                                 <thead>
                                   <tr>
-                                    <th><input type="checkbox" id="checkall-kpi"/></th>
+                                    <th class='text-center'><input type="checkbox" id="checkall-kpi"/></th>
                                     <th>KPI</th>
                                     <th>ĐVT</th>
                                     <th>Tỷ trọng (%)</th>
@@ -108,9 +115,8 @@
                                 <tbody>
                                     <% for(int i = 0; i < dtKPI.Rows.Count; i++){ %>
                                         <tr data-id="<%=dtKPI.Rows[i]["kpi_id"].ToString() %>">
-                                          <td><input name="checkbox-kpi" id='kpi_id_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' type="checkbox" value="<%=dtKPI.Rows[i]["kpi_id"].ToString() %>" /></td>
+                                          <td class='text-center'><input name="checkbox-kpi" id='kpi_id_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' type="checkbox" value="<%=dtKPI.Rows[i]["kpi_id"].ToString() %>" /></td>
                                           <td><%=dtKPI.Rows[i]["name"].ToString() %></td>
-                                          <%--<td class='text-center'><input type="text" class='form-control' id='dvt_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' size="5"/></td>--%>
                                           <td class='text-center'>
                                               <select class='form-control' id='dvt_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>'>
                                                   <% for (int nDVT = 0; nDVT < dtDVT.Rows.Count; nDVT++){ %>
@@ -134,7 +140,73 @@
                             </table>
                         </div>
                     </div>
+                </div>--%>
+                <div class="form-group">
+                    <div class="col-md-12 col-xs-12 margin-top-5">
+                        <div class='table-responsive' id="kho_kpi">
+                            <table class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%' id='danhsachKhoKPI'>
+                                <caption><strong>Thư Viện KPI</strong></caption>
+                                <thead>
+                                    <tr>
+                                        <th class='text-center'><input type='checkbox' id='checkall-kpitrongkho' onclick='check_kpi_trongkho()'/></th>
+                                        <th>KPI</th>
+                                        <th>KPO</th>
+                                        <th>ĐVT</th>
+                                        <th>Tỷ trọng (%)</th>
+                                        <th>Nhóm KPI</th>
+                                    </tr>
+                                    <tr id='filterSection_KhoKPI'>
+                                        <th></th>
+                                        <th data-filter='filter_kpi_trongkho' class='max-width-100'>KPI</th>
+                                        <th data-filter='filter_kpi_trongkho' class='max-width-100'>KPO</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%for (int i = 0; i < dtKhoKPI.Rows.Count; i++){
+                                          string kpi_id = dtKhoKPI.Rows[i]["kpi_id"].ToString();
+                                          string kpi_name = dtKhoKPI.Rows[i]["name"].ToString();
+                                          string kpo_name = dtKhoKPI.Rows[i]["kpo_ten"].ToString();
+                                          string nhom_kpi = dtKhoKPI.Rows[i]["nhom_kpi"].ToString();
+                                    %>
+                                    <tr data-id='<%=kpi_id %>'>
+                                        <td class='text-center'><input name='checkbox-kpitrongkho' id='kpi_id_<%=kpi_id %>' type='checkbox' checked value='<%=kpi_id %>' /></td>
+                                        <td class='min-width-300'><strong><%=kpi_name %></strong></td>
+                                        <td><strong><%=kpo_name %></strong></td>
+                                        <td class='text-center'>
+                                            <select class='form-control' id='dvt_<%=kpi_id %>'>
+                                                <%for (int nDVT = 0; nDVT < dtDVT.Rows.Count; nDVT++){
+                                                      string dvt_id = dtDVT.Rows[nDVT]["dvt_id"].ToString();
+                                                      string dvt_name = dtDVT.Rows[nDVT]["dvt_ten"].ToString();
+                                                %>
+                                                    <option value='<%=dvt_id %>'><%=dvt_name %></option>"
+                                                <%} %>
+                                            </select>
+                                        </td>
+                                        <td class='text-center'><input type='text' class='form-control' id='tytrong_<%=kpi_id %>' size='2' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>
+                                        <td class='text-center'>
+                                            <select class='form-control' id='nhom_kpi_<%=kpi_id %>' name="cboNhomKPI" data-nhom-id='<%=nhom_kpi %>'>
+                                                <%for (int nNhom = 0; nNhom < dtNhomKPI.Rows.Count; nNhom++)
+                                                  {
+                                                      string nhom_id = dtNhomKPI.Rows[nNhom]["id"].ToString();
+                                                      string nhom_name = dtNhomKPI.Rows[nNhom]["ten_nhom"].ToString();
+                                                      string nhom_tytrong = dtNhomKPI.Rows[nNhom]["tytrong"].ToString();
+                                                      string tenmau = dtNhomKPI.Rows[nNhom]["loai_ten"].ToString();
+                                                %>
+                                                    <option data-nhom-tytrong ="<%=nhom_tytrong %>" value='<%=nhom_id %>'><%= nhom_name %></option>
+                                                <%} %>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <%} %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
+                <!-- Mod end ThangTGM 02092017 -->
                 <div class="form-group">
                     <div class="col-md-12 col-xs-12">
                         <div class="col-sm-8 col-sm-offset-3">
@@ -146,7 +218,52 @@
             </div>
           </div>
         </div>
+
+        <!----------------------------------------------------------Quy định nhóm KPI--------------------------------------------------------------->
+            <div id="quydinhNhomKPI" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content col-md-12">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" id="close_phanhoi">&times;</button>
+                            <h4 class="modal-title">Quy định tỷ trọng của nhóm KPI</h4>
+                        </div>                                    
+                        <div class="modal-body">
+                            <div class='table-responsive'>
+                            <table class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%'>
+                                <thead>
+                                    <tr>
+                                        <th>Nhóm KPI</th>
+                                        <th>Loại Mẫu</th>
+                                        <th>Tỷ Trọng (%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%for (int nNhom = 0; nNhom < dtNhomKPI.Rows.Count; nNhom++){
+                                        string nhom_id = dtNhomKPI.Rows[nNhom]["id"].ToString();
+                                        string nhom_name = dtNhomKPI.Rows[nNhom]["ten_nhom"].ToString();
+                                        string nhom_tytrong = dtNhomKPI.Rows[nNhom]["tytrong"].ToString();
+                                        string tenmau = dtNhomKPI.Rows[nNhom]["loai_ten"].ToString();
+                                     %>
+                                        <tr>
+                                            <td><strong><%=nhom_name %></strong></td>
+                                            <td><strong><%=tenmau %></strong></td>
+                                            <td class="text-center"><strong><%=nhom_tytrong %></strong></td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <!-- End Phản hồi -->
     </div>
+    <a id='checkTyTrong' class="btn btn-danger btn-md" style="position:fixed; bottom: 0px; right:0px; border-radius: 40%;">Check tỷ trọng</a>
 <script type="text/javascript">
     var donvinhan = "<%=donvinhan%>";
     var nguoitao = "<%= nguoitao%>";
@@ -166,6 +283,22 @@
             }
             else {
                 $('input[name=checkbox-kpiduocgiao]').each(function () {
+                    this.checked = false;
+                });
+            }
+        });
+    }
+
+    function check_kpi_trongkho() {
+        $("#checkall-kpitrongkho").click(function () {
+            if (this.checked) {
+                // Iterate each checkbox
+                $('input[name=checkbox-kpitrongkho]').each(function () {
+                    this.checked = true;
+                });
+            }
+            else {
+                $('input[name=checkbox-kpitrongkho]').each(function () {
                     this.checked = false;
                 });
             }
@@ -225,11 +358,13 @@
                         var KPI_ID = arrKPI[i].kpi_id;
                         var tytrong = arrKPI[i].tytrong;
                         var donvitinh = arrKPI[i].donvitinh;
-                        var nhanvienthamdinh = arrKPI[i].nhanvienthamdinh;
+                        //var nhanvienthamdinh = arrKPI[i].nhanvienthamdinh;
+                        var nhom_kpi = arrKPI[i].nhom_kpi;
                         $(":checkbox[value='" + KPI_ID + "']").prop("checked", "true");
                         $("#dvt_" + KPI_ID).val(donvitinh);
                         $("#tytrong_" + KPI_ID).val(tytrong);
-                        $("#nvtd_" + KPI_ID).val(nhanvienthamdinh);
+                        //$("#nvtd_" + KPI_ID).val(nhanvienthamdinh);
+                        $("#nhom_kpi_" + KPI_ID).val(nhom_kpi);
                     }
                 },
                 error: function (msg) { alert(msg.d); }
@@ -242,7 +377,7 @@
         var requestData = {
             thang: thang,
             nam: nam,
-            donvinhan: donvinhan,
+            donvinhan: donvinhan
         };
 
         var szRequest = JSON.stringify(requestData);
@@ -253,7 +388,66 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (result) {
-                $("#kpiduocgiao").html(result.d);
+                var output = result.d;
+                var htmlKPIDuocGiao = output.bscduocgiao;
+                $("#kpiduocgiao").html(htmlKPIDuocGiao);
+
+                // Setup - add a text input to each footer cell
+                $('#danhsachKPIDuocGiao thead tr#filterSection_BSCDuocGiao th').each(function () {
+                    if ($(this).attr("data-filter") == "filter_kpi_duocgiao") {
+                        var title = $(this).text();
+                        $(this).html('<input class="max-width-100" type="text" placeholder="Search ' + title + '"/>');
+                    }
+                });
+
+                // DataTable
+                var table = $('#danhsachKPIDuocGiao').DataTable({
+                    "bLengthChange": false,
+                    "bPaginate": false,
+                    "bSort": false
+                });
+
+                // Apply the search
+                table.columns().every(function () {
+                    var that = this;
+
+                    $('input', this.header()).on('keyup change', function () {
+                        if (that.search() !== this.value) {
+                            that
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
+
+                $("#danhsachKPIDuocGiao tbody tr").each(function () {
+                    var kpi_id = $(this).attr("data-id");
+                    $("#danhsachKhoKPI tbody tr[data-id='" + kpi_id + "']").addClass("hide");
+                })
+            },
+            error: function (msg) { alert(msg.d); }
+        });
+    }
+
+    function loadNhomKPI(loaimaubsc) {
+        var requestData = {
+            loaimaubsc: loaimaubsc
+        };
+
+        var szRequest = JSON.stringify(requestData);
+        $.ajax({
+            type: "POST",
+            url: "MauBSCNhanVien.aspx/getNhomKPIByLoaiMauID",
+            data: szRequest,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var output = result.d;
+                $("select[name='cboNhomKPI']").each(function () {
+                    $(this).html(output);
+                    var id = $(this).attr("data-nhom-id");
+                    $(this).val(id)
+                })
             },
             error: function (msg) { alert(msg.d); }
         });
@@ -261,19 +455,24 @@
 
     $(document).ready(function () {
 
-        validateNumber("month");
-        validateNumber("year");
-
         // Set thời gian hiện tại
         //var curTime = new Date();
         //var month = curTime.getMonth() + 1;
         //var year = curTime.getFullYear();
         var dateTime = $("#bscduocgiao").val();
-        var arrDate = dateTime.split("-");
-        var month = arrDate[0];
-        var year = arrDate[1];
-        var nDonvinhan = arrDate[2];
-        loadKPIDuocGiao(month, year, donvinhan);
+        if (dateTime != null) {
+            var arrDate = dateTime.split("-");
+            var month = arrDate[0];
+            var year = arrDate[1];
+            var nDonvinhan = arrDate[2];
+            var maubsc = $("#loaiMauBSC").val();
+            loadKPIDuocGiao(month, year, donvinhan);
+            loadNhomKPI(maubsc);
+        }
+        else {
+            $("#btnSave").hide();
+            $("#btnClean").hide();
+        }
 
 
         // Khi thay đổi bsc được giao
@@ -283,6 +482,7 @@
             var thang = arrDate[0];
             var nam = arrDate[1];
             var nDonvinhan = arrDate[2];
+            var maubsc = $("#loaiMauBSC").val();
             loadKPIDuocGiao(thang, nam, nDonvinhan);
         });
 
@@ -290,6 +490,7 @@
             var month = $("#month").val();
             var year = $("#year").val();
             var data = $('#bscduocgiao').val();
+            var maubsc = $("#loaiMauBSC").val();
             var arrDate = data.split("-");
             var thang = arrDate[0];
             var nam = arrDate[1];
@@ -297,6 +498,7 @@
             if (month != "" && year != "" && bscduocgiao != "") {
                 fillData(month, year, nguoitao, bscduocgiao);
             }
+            loadNhomKPI(maubsc);
         });
 
         // Khi click save
@@ -322,6 +524,28 @@
             }
 
             var arrKPI = new Array();
+            var totalTyTrong = 0;
+
+            // Clear search
+            var cleardanhsachKPIDuocGiao = $('#danhsachKPIDuocGiao').DataTable();
+            cleardanhsachKPIDuocGiao
+             .search('')
+             .columns().search('')
+             .draw();
+            $('#danhsachKPIDuocGiao thead tr#filterSection_BSCDuocGiao th input').each(function () {
+                $(this).val('');
+            });
+
+            var cleardanhsachKPIDuocGiao = $('#danhsachKhoKPI').DataTable();
+            cleardanhsachKPIDuocGiao
+             .search('')
+             .columns().search('')
+             .draw();
+            $('#danhsachKhoKPI thead tr#filterSection_KhoKPI th input').each(function () {
+                $(this).val('');
+            });
+
+
             $("#danhsachKPIDuocGiao > tbody > tr").each(function () {
                 var kpi_id = $(this).attr("data-id");
                 //var tytrong = $("#tytrong_" + kpi_id).val();
@@ -330,20 +554,33 @@
                 if (tytrong == "") {
                     tytrong = 0;
                 }
+
+                
                 var dvt = $("#dvt_" + kpi_id).val();
-                var nvtd = $("#nvtd_" + kpi_id).val();
+                //var nvtd = $("#nvtd_" + kpi_id).val();
+                var nhom_kpi = $("#nhom_kpi_" + kpi_id).val();
+                var nhom_kpi_tytrong = $("#nhom_kpi_" + kpi_id + " option:selected").attr("data-nhom-tytrong");
+                var nhom_kpi_ten = $("#nhom_kpi_" + kpi_id + " option:selected").text();
                 var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
                 if (isChecked == true) {
+                    totalTyTrong += parseInt(tytrong);
                     arrKPI.push({
                         kpi_id: kpi_id,
                         tytrong: tytrong,
                         dvt: dvt,
-                        nvtd: nvtd
+                        nhom_kpi: nhom_kpi,
+                        nhom_kpi_tytrong: nhom_kpi_tytrong,
+                        nhom_kpi_ten: nhom_kpi_ten,
+                        nvtd: nguoitao
                     });
                 }
             });
 
-            $("#danhsachKPI > tbody > tr").each(function () {
+            $("#danhsachKhoKPI > tbody > tr").each(function () {
+                var existHide = $(this).hasClass("hide");
+                if (existHide) {
+                    return;
+                }
                 var kpi_id = $(this).attr("data-id");
                 //var tytrong = $("#tytrong_" + kpi_id).val();
                 //var dvt = $("#dvt_" + kpi_id).val();
@@ -351,21 +588,54 @@
                 if (tytrong == "") {
                     tytrong = 0;
                 }
+
+                
                 var dvt = $("#dvt_" + kpi_id).val();
-                var nvtd = $("#nvtd_" + kpi_id).val();
+                //var nvtd = $("#nvtd_" + kpi_id).val();
+                var nhom_kpi = $("#nhom_kpi_" + kpi_id).val();
+                var nhom_kpi_tytrong = $("#nhom_kpi_" + kpi_id + " option:selected").attr("data-nhom-tytrong");
+                var nhom_kpi_ten = $("#nhom_kpi_" + kpi_id + " option:selected").text();
                 var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
                 if (isChecked == true) {
+                    totalTyTrong += parseInt(tytrong);
                     arrKPI.push({
                         kpi_id: kpi_id,
                         tytrong: tytrong,
                         dvt: dvt,
-                        nvtd: nvtd
+                        nhom_kpi: nhom_kpi,
+                        nhom_kpi_tytrong: nhom_kpi_tytrong,
+                        nhom_kpi_ten: nhom_kpi_ten,
+                        nvtd: nguoitao
                     });
                 }
             });
 
+            var arrNhomKPI = groupBy(arrKPI, 'nhom_kpi_ten', 'nhom_kpi_tytrong', 'tytrong');
+            var message = "";
+            for (var nIndex = 0; nIndex < arrNhomKPI.length; nIndex++) {
+                var tongtytrong = parseInt(arrNhomKPI[nIndex].tytrong);
+                var tytrongnhom = parseInt(arrNhomKPI[nIndex].nhom_kpi_tytrong);
+                if (tongtytrong != tytrongnhom) {
+                    message += arrNhomKPI[nIndex].nhom_kpi_ten + "(yêu cầu: " + arrNhomKPI[nIndex].nhom_kpi_tytrong + "): " + arrNhomKPI[nIndex].tytrong + "<br>";
+                }
+            }
+
+            if (message != "") {
+                swal({
+                    title: "Tỷ trọng của nhóm KPI không thỏa!!!",
+                    text: message,
+                    html: true
+                });
+                return false;
+            }
+
             if (arrKPI.length == 0) {
                 swal("Error", "Vui lòng chọn KPI!!!", "error");
+                return false;
+            }
+
+            if (totalTyTrong != 100) {
+                swal("Error", "Tổng tỷ trọng của các KPI phải bằng 100%. Vui lòng kiểm tra lại tỷ trọng của các KPI", "error");
                 return false;
             }
 
@@ -417,6 +687,144 @@
                     this.checked = false;
                 });
             }
+        });
+
+        // Setup - add a text input to each footer cell
+        $('#danhsachKhoKPI thead tr#filterSection_KhoKPI th').each(function () {
+            if ($(this).attr("data-filter") == "filter_kpi_trongkho") {
+                var title = $(this).text();
+                $(this).html('<input class="max-width-100" type="text" placeholder="Search ' + title + '"/>');
+            }
+        });
+
+        // DataTable
+        var tableKhoKPI = $('#danhsachKhoKPI').DataTable({
+            "bLengthChange": false,
+            "bPaginate": false,
+            "bSort": false
+        });
+
+        // Apply the search
+        tableKhoKPI.columns().every(function () {
+            var that = this;
+
+            $('input', this.header()).on('keyup change', function () {
+                if (that.search() !== this.value) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        $("#checkTyTrong").click(function () {
+            var arrKPI = new Array();
+            var totalTyTrong = 0;
+
+            // Clear search
+            var cleardanhsachKPIDuocGiao = $('#danhsachKPIDuocGiao').DataTable();
+            cleardanhsachKPIDuocGiao
+             .search('')
+             .columns().search('')
+             .draw();
+            $('#danhsachKPIDuocGiao thead tr#filterSection_BSCDuocGiao th input').each(function () {
+                $(this).val('');
+            });
+
+            var cleardanhsachKPIDuocGiao = $('#danhsachKhoKPI').DataTable();
+            cleardanhsachKPIDuocGiao
+             .search('')
+             .columns().search('')
+             .draw();
+            $('#danhsachKhoKPI thead tr#filterSection_KhoKPI th input').each(function () {
+                $(this).val('');
+            });
+
+
+            $("#danhsachKPIDuocGiao > tbody > tr").each(function () {
+                var kpi_id = $(this).attr("data-id");
+                //var tytrong = $("#tytrong_" + kpi_id).val();
+                //var dvt = $("#dvt_" + kpi_id).val();
+                var tytrong = $("#tytrong_" + kpi_id).val();
+                if (tytrong == "") {
+                    tytrong = 0;
+                }
+
+
+                var dvt = $("#dvt_" + kpi_id).val();
+                //var nvtd = $("#nvtd_" + kpi_id).val();
+                var nhom_kpi = $("#nhom_kpi_" + kpi_id).val();
+                var nhom_kpi_tytrong = $("#nhom_kpi_" + kpi_id + " option:selected").attr("data-nhom-tytrong");
+                var nhom_kpi_ten = $("#nhom_kpi_" + kpi_id + " option:selected").text();
+                var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
+                if (isChecked == true) {
+                    totalTyTrong += parseInt(tytrong);
+                    arrKPI.push({
+                        kpi_id: kpi_id,
+                        tytrong: tytrong,
+                        dvt: dvt,
+                        nhom_kpi: nhom_kpi,
+                        nhom_kpi_tytrong: nhom_kpi_tytrong,
+                        nhom_kpi_ten: nhom_kpi_ten,
+                        nvtd: nguoitao
+                    });
+                }
+            });
+
+            $("#danhsachKhoKPI > tbody > tr").each(function () {
+                var existHide = $(this).hasClass("hide");
+                if (existHide) {
+                    return;
+                }
+                var kpi_id = $(this).attr("data-id");
+                //var tytrong = $("#tytrong_" + kpi_id).val();
+                //var dvt = $("#dvt_" + kpi_id).val();
+                var tytrong = $("#tytrong_" + kpi_id).val();
+                if (tytrong == "") {
+                    tytrong = 0;
+                }
+
+
+                var dvt = $("#dvt_" + kpi_id).val();
+                //var nvtd = $("#nvtd_" + kpi_id).val();
+                var nhom_kpi = $("#nhom_kpi_" + kpi_id).val();
+                var nhom_kpi_tytrong = $("#nhom_kpi_" + kpi_id + " option:selected").attr("data-nhom-tytrong");
+                var nhom_kpi_ten = $("#nhom_kpi_" + kpi_id + " option:selected").text();
+                var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
+                if (isChecked == true) {
+                    totalTyTrong += parseInt(tytrong);
+                    arrKPI.push({
+                        kpi_id: kpi_id,
+                        tytrong: tytrong,
+                        dvt: dvt,
+                        nhom_kpi: nhom_kpi,
+                        nhom_kpi_tytrong: nhom_kpi_tytrong,
+                        nhom_kpi_ten: nhom_kpi_ten,
+                        nvtd: nguoitao
+                    });
+                }
+            });
+
+            var arrNhomKPI = groupBy(arrKPI, 'nhom_kpi_ten', 'nhom_kpi_tytrong', 'tytrong');
+            var message = "";
+            var tonghienco = 0;
+            for (var nIndex = 0; nIndex < arrNhomKPI.length; nIndex++) {
+                var tongtytrong = parseInt(arrNhomKPI[nIndex].tytrong);
+                var tytrongnhom = parseInt(arrNhomKPI[nIndex].nhom_kpi_tytrong);
+                tonghienco += tongtytrong;
+                message += "<tr>";
+                message += "<td><strong>" + arrNhomKPI[nIndex].nhom_kpi_ten + "</strong></td>";
+                message += "<td class='text-center'><strong>" + arrNhomKPI[nIndex].nhom_kpi_tytrong + "</strong></td>";
+                message += "<td class='text-center'><strong>" + arrNhomKPI[nIndex].tytrong + "</strong></td>";
+                message += "</tr>";
+            }
+
+            swal({
+                title: "Kiểm tra tỷ trọng KPI",
+                text: "<table table class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%'><caption>Tổng tỷ trọng hiện có: " + tonghienco + "</caption><thead><tr><th>Nhóm KPI</th><th>Tỷ trọng yêu cầu</th><th>Tỷ trọng hiện có</th></tr></thead><tbody>" + message + "</tbody></table>",
+                html: true
+            });
+            return false;
         });
     });
 </script>

@@ -61,6 +61,7 @@ namespace VNPT_BSC.BSC
             if (gridData.Rows.Count <= 0)
             {
                 outputHTML += "<tr><td colspan='8' class='text-center'>No item</td></tr>";
+                dicOutput.Add("isKetThucTatCa", "False");
             }
             else
             {

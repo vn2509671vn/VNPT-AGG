@@ -110,11 +110,11 @@ namespace VNPT_BSC.BSC
             return donvi_id;
         }
 
-        private bool insertGiaoBSCDonVi(int donvigiao, int donvinhan, int thang, int nam)
+        private bool insertGiaoBSCDonVi(int donvigiao, int donvinhan, int thang, int nam, int loaiMauBSC)
         {
             bool bResult = false;
-            string sql = "insert into giaobscdonvi(donvigiao, donvinhan, thang, nam, trangthaigiao, trangthainhan, trangthaicham, trangthaidongy_kqtd, trangthaiketthuc) ";
-            sql += "values('" + donvigiao + "', '" + donvinhan + "', '" + thang + "', '" + nam + "', 1, 0, 0, 0, 0)";
+            string sql = "insert into giaobscdonvi(donvigiao, donvinhan, thang, nam, trangthaigiao, trangthainhan, trangthaicham, trangthaidongy_kqtd, trangthaiketthuc, ngaytao, loaimau) ";
+            sql += "values('" + donvigiao + "', '" + donvinhan + "', '" + thang + "', '" + nam + "', 1, 0, 0, 0, 0, GETDATE(), '" + loaiMauBSC + "')";
             try
             {
                 cn.ThucThiDL(sql);
@@ -142,7 +142,7 @@ namespace VNPT_BSC.BSC
             return dtResult;
         }
 
-        private bool insertBSC_DonVi(int donvigiao, int donvinhan, int thang, int nam, int kpi_id, int kehoach, int loaiMauBSC)
+        private bool insertBSC_DonVi(int donvigiao, int donvinhan, int thang, int nam, int kpi_id, double kehoach, int loaiMauBSC)
         {
             DataTable dtKPIDetai = new DataTable();
             bool bResult = false;
@@ -154,8 +154,8 @@ namespace VNPT_BSC.BSC
                     int donvithamdinh = Convert.ToInt32(dtKPIDetai.Rows[0]["donvithamdinh"].ToString().Trim());
                     int donvitinh = Convert.ToInt32(dtKPIDetai.Rows[0]["donvitinh"].ToString().Trim());
                     int trongso = Convert.ToInt32(dtKPIDetai.Rows[0]["tytrong"].ToString().Trim());
-                    string sql = "insert into bsc_donvi(donvigiao, donvinhan, thang, nam, kpi, donvithamdinh, donvitinh, trongso, kehoach, thuchien, thamdinh, trangthaithamdinh, kq_thuchien, diem_kpi, hethong_thuchien) ";
-                    sql += "values('" + donvigiao + "', '" + donvinhan + "', '" + thang + "', '" + nam + "', '" + kpi_id + "', '" + donvithamdinh + "', '" + donvitinh + "', '" + trongso + "', '" + kehoach + "', 0, 0, 0, 0, 0, 0)";
+                    string sql = "insert into bsc_donvi(donvigiao, donvinhan, thang, nam, kpi, donvithamdinh, donvitinh, trongso, kehoach, thuchien, thamdinh, trangthaithamdinh, kq_thuchien, diem_kpi, hethong_thuchien, loaimau) ";
+                    sql += "values('" + donvigiao + "', '" + donvinhan + "', '" + thang + "', '" + nam + "', '" + kpi_id + "', '" + donvithamdinh + "', '" + donvitinh + "', '" + trongso + "', '" + kehoach + "', 0, 0, 0, 0, 0, 0, '" + loaiMauBSC + "')";
                     cn.ThucThiDL(sql);
                     bResult = true;
                 }
@@ -167,9 +167,9 @@ namespace VNPT_BSC.BSC
             return bResult;
         }
 
-        private void delBSC_DV(int donvigiao, int thang, int nam)
+        private void delBSC_DV(int donvigiao, int thang, int nam, int loaiMauBSC)
         {
-            string sql = "delete bsc_donvi where donvigiao = '" + donvigiao + "' and thang = '" + thang + "' and nam = '" + nam + "'";
+            string sql = "delete bsc_donvi where donvigiao = '" + donvigiao + "' and thang = '" + thang + "' and nam = '" + nam + "' and loaimau = '" + loaiMauBSC + "'";
             try
             {
                 cn.ThucThiDL(sql);
@@ -180,9 +180,9 @@ namespace VNPT_BSC.BSC
             }
         }
 
-        private void delGiaoBSCDV(int donvigiao, int thang, int nam)
+        private void delGiaoBSCDV(int donvigiao, int thang, int nam, int loaiMauBSC)
         {
-            string sql = "delete giaobscdonvi where donvigiao = '" + donvigiao + "' and thang = '" + thang + "' and nam = '" + nam + "'";
+            string sql = "delete giaobscdonvi where donvigiao = '" + donvigiao + "' and thang = '" + thang + "' and nam = '" + nam + "' and loaimau = '" + loaiMauBSC + "'";
             try
             {
                 cn.ThucThiDL(sql);
@@ -314,7 +314,7 @@ namespace VNPT_BSC.BSC
                 int donvinhan_id = 0;
                 bool bResultGiaoBSCDV = false;
                 donvinhan_id = getDvIdByMaDV(ma_dv);
-                bResultGiaoBSCDV = insertGiaoBSCDonVi(gDonvigiao, donvinhan_id, thang, nam);
+                bResultGiaoBSCDV = insertGiaoBSCDonVi(gDonvigiao, donvinhan_id, thang, nam, loaiMauBSC);
                 if (bResultGiaoBSCDV == false)
                 {
                     isExist = true;
@@ -325,22 +325,23 @@ namespace VNPT_BSC.BSC
                 for (int nRowIndex = 0; nRowIndex < dtResult.Rows.Count; nRowIndex++)
                 {
                     bool bResultBSCDV = false;
-                    int kpi_id, kehoach;
+                    int kpi_id;
+                    double kehoach;
                     string szKeHoach = dtResult.Rows[nRowIndex][nColIndex].ToString();
                     if (szKeHoach == "")
                     {
                         kehoach = 0;
                     }
                     else {
-                        decimal tmpKehoach = Convert.ToDecimal(dtResult.Rows[nRowIndex][nColIndex].ToString().Trim());
-                        kehoach = Convert.ToInt32(tmpKehoach);
+                        double tmpKehoach = Convert.ToDouble(dtResult.Rows[nRowIndex][nColIndex].ToString().Trim());
+                        kehoach = Convert.ToDouble(tmpKehoach);
                     }
                     kpi_id = Convert.ToInt32(dtResult.Rows[nRowIndex][0].ToString().Trim());
 
                     bResultBSCDV = insertBSC_DonVi(gDonvigiao, donvinhan_id, thang, nam, kpi_id, kehoach, loaiMauBSC);
                     if (bResultBSCDV == false)
                     {
-                        delBSC_DV(gDonvigiao, thang, nam);
+                        delBSC_DV(gDonvigiao, thang, nam, loaiMauBSC);
                         bImport = false;
                         //Response.Write("<script>alert('Import không thành công!!! Cấu trúc hoặc dữ liệu trong file không đúng định dạng')</script>");
                         break;
@@ -373,7 +374,7 @@ namespace VNPT_BSC.BSC
                 }
                 else
                 {
-                    delGiaoBSCDV(gDonvigiao, thang, nam);
+                    delGiaoBSCDV(gDonvigiao, thang, nam, loaiMauBSC);
                     Response.Write("<script>alert('Import không thành công!!! Cấu trúc hoặc dữ liệu trong file không đúng định dạng')</script>");
                 }
             }
@@ -390,6 +391,14 @@ namespace VNPT_BSC.BSC
                 throw ex;
             }
             return dtResult;
+        }
+
+        protected void btnGetDate_Click(object sender, EventArgs e)
+        {
+            string month = DateTime.Now.Month.ToString();
+            string year = DateTime.Now.Year.ToString();
+            DropDownListMonth.SelectedValue = month;
+            DropDownListYear.SelectedValue = year;
         }
     }
 }

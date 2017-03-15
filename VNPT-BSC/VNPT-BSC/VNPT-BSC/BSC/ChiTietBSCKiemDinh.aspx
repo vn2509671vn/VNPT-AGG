@@ -66,7 +66,7 @@
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Danh sách KPI
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Danh sách KPI <span class="red-color" id="ten_dvn"></span>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body" id="gridBSC">
@@ -183,6 +183,7 @@
                 var gridBSC = output.gridBSC;
                 var donvigiao = output.donvigiao;
                 var donvinhan = output.donvinhan;
+                var donvinhan_ten = output.donvinhan_ten;
                 var thang = output.thang;
                 var nam = output.nam;
                 var soluong_kpi_dathamdinh = output.soluong_kpi_dathamdinh;
@@ -194,6 +195,7 @@
 
                 /*Fill data*/
                 $("#gridBSC").html(gridBSC);    // Fill to table
+                $("#ten_dvn").html(donvinhan_ten);
                 // Fill ngày áp dụng
                 $("#ngayapdung").text(thang + "/" + nam);
 
@@ -290,7 +292,7 @@
 
     function onlyNumbers(e) {
         //if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
-        return !(e > 31 && (e < 48 || e > 57));
+        return !(e > 31 && (e < 48 || e > 57) && e != 46);
     }
 
     $(document).ready(function () {

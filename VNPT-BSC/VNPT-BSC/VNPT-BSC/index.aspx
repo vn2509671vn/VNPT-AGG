@@ -17,7 +17,7 @@
     <script src="../Bootstrap/dataTables.bootstrap.js"></script>
 
     <script src="../Bootstrap/Alert.js"></script>
-
+    <script src="Bootstrap/function.js"></script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -92,7 +92,7 @@
      <div class="col-md-12 col-xs-12" id="Div3">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Danh sách KPI thẩm định</h3>
+                <h3 class="panel-title">Danh sách thẩm định BSC nhân viên</h3>
             </div>
             <div class="panel-body">
                 <div class="col-md-12 col-xs-12" id="gridBSCnhanvienthamdinh">
@@ -122,12 +122,25 @@
                 success: function (result) {
                     var output = result.d;
                     var gridBSC = output.gridBSC;
+                    var dv_nhan = output.donvinhan;
 
                     $("#gridBSC").html(gridBSC);
                     $("#table-bsclist").DataTable({
-                        "searching": true,
-                        "info": true,
-                        "lengthMenu": [5, 10, 20]
+                        "order": [],
+                        "pageLength": 50,
+                        "dom": 'Bfrtip',
+                        "columnDefs": [{
+                            "targets": 'no-sort',
+                            "orderable": false,
+                        }],
+                        "buttons": [
+                            {
+                                text: 'Excel',
+                                action: function (e, dt, node, config) {
+                                    ExportToExcel('table-bsclist', dv_nhan, month, year);
+                                }
+                            }
+                        ]
                     });
                 },
                 error: function (msg) { alert(msg.d); }
@@ -156,7 +169,8 @@
                     $("#table-bscnhanvienlist").DataTable({
                         "searching": true,
                         "info": true,
-                        "lengthMenu": [5, 10, 20]
+                        "lengthMenu": [5, 10, 20],
+                        "pageLength": 20
                     });
                 },
                 error: function (msg) { alert(msg.d); }
@@ -184,7 +198,8 @@
                     $("#table-bscnhanvienthamdinh").DataTable({
                         "searching": true,
                         "info": true,
-                        "lengthMenu": [5, 10, 20]
+                        "lengthMenu": [5, 10, 20],
+                        "pageLength": 20
                     });
                 },
                 error: function (msg) { alert(msg.d); }

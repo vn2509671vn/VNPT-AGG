@@ -278,7 +278,7 @@
 
     function onlyNumbers(e) {
         //if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
-        return !(e > 31 && (e < 48 || e > 57));
+        return !(e > 31 && (e < 48 || e > 57) && e != 46);
     }
 
     $(document).ready(function () {
@@ -300,13 +300,17 @@
             var thang = $("input[name=optradioBSC]:checked").attr("data-thang");
             var nam = $("input[name=optradioBSC]:checked").attr("data-nam");
             var loaimau = $("input[name=optradioBSC]:checked").attr("data-loaimau");
+            var thang_giao = $("#month").val();
+            var nam_giao = $("#year").val();
 
             var requestData = {
                 thang: thang,
                 nam: nam,
                 nguoitao: nhanviengiao,
                 donvi: donvi,
-                loaiMauBSC: loaimau
+                loaiMauBSC: loaimau,
+                thang_giao: thang_giao,
+                nam_giao: nam_giao
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({
@@ -332,36 +336,72 @@
             var nhanviennhan = $("#nhanviennhan").val();
             var thang = $("#month").val();
             var nam = $("#year").val();
+            var loaimau = $("#table-kpi").attr("data-loaimau");
             if (nhanviennhan == null || nhanviennhan == "") {
                 swal("Error!", "Vui lòng nhập các trường bắt buộc!!!", "error");
                 return false;
             }
 
             var kpi_detail = [];
+            var tongtytrong = 0;
             $("#table-kpi > tbody > tr").each(function () {
                 var kpi_id = $(this).attr("data-id");
                 var tytrong = $("#tytrong_" + kpi_id).val();
                 var dvt = $("#dvt_" + kpi_id).val();
                 var kehoach = $("#kehoach_" + kpi_id).val();
+                var nhom_kpi_id = $(this).attr("data-nhom-kpi-id");
+                var nhom_kpi_ten = $(this).attr("data-nhom-kpi");
+                var nhom_kpi_tytrong = $(this).attr("data-nhom-kpi-tytrong");
+
                 if (kehoach == "") {
                     kehoach = 0;
                 }
+
+                tongtytrong += parseInt(tytrong);
                 var nhanvienthamdinh = $("#nvtd_" + kpi_id).val();
                 kpi_detail.push({
                     kpi_id: kpi_id,
                     tytrong: tytrong,
                     dvt: dvt,
                     kehoach: kehoach,
-                    nhanvienthamdinh: nhanvienthamdinh
+                    nhanvienthamdinh: nhanvienthamdinh,
+                    nhom_kpi_id: nhom_kpi_id,
+                    nhom_kpi_ten: nhom_kpi_ten,
+                    nhom_kpi_tytrong: nhom_kpi_tytrong
                 });
             });
+
+            var arrNhomKPI = groupBy(kpi_detail, 'nhom_kpi_ten', 'nhom_kpi_tytrong', 'tytrong');
+            var message = "";
+            for (var nIndex = 0; nIndex < arrNhomKPI.length; nIndex++) {
+                var tongtytrong_nhom = parseInt(arrNhomKPI[nIndex].tytrong);
+                var tytrongnhom = parseInt(arrNhomKPI[nIndex].nhom_kpi_tytrong);
+                if (tongtytrong_nhom != tytrongnhom) {
+                    message += arrNhomKPI[nIndex].nhom_kpi_ten + "(yêu cầu: " + arrNhomKPI[nIndex].nhom_kpi_tytrong + "): " + arrNhomKPI[nIndex].tytrong + "<br>";
+                }
+            }
+
+            if (message != "") {
+                swal({
+                    title: "Tỷ trọng của nhóm KPI không thỏa!!!",
+                    text: message,
+                    html: true
+                });
+                return false;
+            }
+
+            if (tongtytrong != 100) {
+                swal("Error", "Tổng tỷ trọng phải bằng 100!! Vui lòng kiểm tra lại", "error");
+                return false;
+            }
 
             var requestData = {
                 nhanviengiao: nhanviengiao,
                 nhanviennhan: nhanviennhan,
                 thang: thang,
                 nam: nam,
-                kpi_detail: kpi_detail
+                kpi_detail: kpi_detail,
+                loaimau: loaimau
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({
@@ -415,7 +455,7 @@
                         });
                     }
                     else {
-                        swal("Error!!!", "Giao BSC không thành công!!!", "error");
+                        swal("Error!!!", "Giao BSC không thành công!!! Vui lòng save lại trước khi giao", "error");
                     }
                 },
                 error: function (msg) { alert(msg.d); }

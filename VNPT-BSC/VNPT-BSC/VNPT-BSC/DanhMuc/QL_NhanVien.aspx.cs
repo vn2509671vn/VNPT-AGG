@@ -6,7 +6,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.Sql;
-using DevExpress.Web.ASPxEditors;
 using System.Text;
 using System.Web.Services;
 using System.Web.Script.Services;
@@ -94,11 +93,14 @@ namespace VNPT_BSC.DanhMuc
         {
             Connection nv_delete = new Connection();
             bool output = false;
-            string sqldeleteData = "";
+            string sqldeleteData1 = "";
+            string sqldeleteData2 = "";
             try
             {
-                sqldeleteData = "delete nhanvien where nhanvien_id = '" + nv_id_xoaAprove + "'";
-                nv_delete.ThucThiDL(sqldeleteData);
+                sqldeleteData1 = "delete nhanvien where nhanvien_id = '" + nv_id_xoaAprove + "'";
+                sqldeleteData2 = "delete nhanvien_chucvu where nhanvien_id = '" + nv_id_xoaAprove + "'";
+                nv_delete.ThucThiDL(sqldeleteData2);
+                nv_delete.ThucThiDL(sqldeleteData1);
                 output = true;
             }
             catch

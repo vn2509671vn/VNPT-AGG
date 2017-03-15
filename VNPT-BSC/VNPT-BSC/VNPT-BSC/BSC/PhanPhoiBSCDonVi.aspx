@@ -365,7 +365,7 @@
 
     function onlyNumbers(e) {
         //if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
-        return !(e > 31 && (e < 48 || e > 57));
+        return !(e > 31 && (e < 48 || e > 57) && e != 46);
     }
 
     $(document).ready(function () {
@@ -416,6 +416,7 @@
             var donvinhan = $("#donvi").val();
             var thang = $("#month").val();
             var nam = $("#year").val();
+            var loaimau = $("#table-kpi").attr("data-loaimau");
             if (donvinhan == "") {
                 swal("Error!", "Vui lòng nhập các trường bắt buộc!!!", "error");
                 return false;
@@ -427,6 +428,11 @@
                 var tytrong = $("#tytrong_" + kpi_id).val();
                 var dvt = $("#dvt_" + kpi_id).val();
                 var kehoach = $("#kehoach_" + kpi_id).val();
+                if (isNaN(kehoach)) {
+                    swal("Error!", "Sai định dạng kiểu chữ số!!!", "error");
+                    return false;
+                }
+
                 if (kehoach == "") {
                     kehoach = 0;
                 }
@@ -445,7 +451,8 @@
                 donvinhan: donvinhan,
                 thang: thang,
                 nam: nam,
-                kpi_detail: kpi_detail
+                kpi_detail: kpi_detail,
+                loaimau: loaimau
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({
@@ -549,6 +556,11 @@
             var kpi_id = $('#edit_kpi_id').val();
             var kehoach_cuoicung = "";
             kehoach_cuoicung = $('#edit_kehoach_cuoicung').val();
+
+            if (isNaN(kehoach_cuoicung)) {
+                swal("Error!!!", "Sai định dạng kiểu chữ số!!!", "error");
+                return;
+            }
 
             if (kehoach_cuoicung == "") {
                 swal("Error!!!", "Vui lòng nhập giá trị kế hoạch cuối cùng!!!", "error");

@@ -7,7 +7,6 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.Sql;
-using DevExpress.Web.ASPxEditors;
 using System.Text;
 using System.Web.Services;
 using System.Web.Script.Services;
@@ -21,6 +20,8 @@ namespace VNPT_BSC
         public static List<int> quyenHeThong = new List<int>();
         public static JavaScriptSerializer javaSerial = new JavaScriptSerializer();
         public static string userName = "";
+        public static int userID = 0;
+        public static int userDonVi = 0;
         public static DataTable dtPhanHoiGiao = new DataTable();
         public static DataTable dtPhanHoiThamDinh = new DataTable();
 
@@ -108,6 +109,8 @@ namespace VNPT_BSC
 
             userName = nhanvien.nhanvien_hoten;
             nNumRole = nhanvien.nhanvien_chucvu_id.Length;
+            userID = nhanvien.nhanvien_id;
+            userDonVi = nhanvien.nhanvien_donvi_id;
 
             dtPhanHoiGiao = getPhanHoiGiao();
             dtPhanHoiThamDinh = getPhanHoiThamDinh(nhanvien.nhanvien_donvi_id);

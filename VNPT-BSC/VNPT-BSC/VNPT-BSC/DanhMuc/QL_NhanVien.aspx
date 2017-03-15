@@ -14,6 +14,7 @@
     <link href="../Bootstrap/hien_custom.css" rel="stylesheet" />
     <script src="../Bootstrap/jquery.js"></script>
     <script src="../Bootstrap/function.js"></script>
+    <script src="../Bootstrap/Alert.js"></script>
     <!-- Plugin for datatable-->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>

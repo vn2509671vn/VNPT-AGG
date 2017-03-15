@@ -107,12 +107,12 @@ namespace VNPT_BSC.BSC
         /*Get KPI list*/
         private DataTable getKPIList()
         {
-            string sqlKPI = "select kpi.kpi_id, kpo.kpo_id, kpi.kpi_ten + ' (' + kpo.kpo_ten + ')' as name from kpi, kpo where kpi.kpi_thuoc_kpo = kpo.kpo_id and kpi.kpi_nguoitao ";
+            string sqlKPI = "select kpi.kpi_id, kpo.kpo_id, kpi.kpi_ten as name, kpo.kpo_ten from kpi, kpo where kpi.kpi_thuoc_kpo = kpo.kpo_id and kpi.kpi_nguoitao ";
             sqlKPI += "in (select nhanvien.nhanvien_id from nhanvien, chucvu, nhanvien_chucvu, quyen_cv ";
             sqlKPI += "where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id ";
             sqlKPI += "and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id ";
             sqlKPI += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
-            sqlKPI += "and quyen_cv.quyen_id = 2) order by kpo.kpo_id ASC";
+            sqlKPI += "and quyen_cv.quyen_id = 2) and kpi.hienthi = 1 order by kpo.kpo_id, kpi.kpi_id ASC";
 
             DataTable dtKPI = new DataTable();
             try

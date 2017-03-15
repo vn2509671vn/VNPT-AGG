@@ -40,7 +40,7 @@ namespace VNPT_BSC.BSC
         {
             Connection cnBSC = new Connection();
             DataTable dsKPIByTimeAndKPO = new DataTable();
-            string sqlKPIByTimeAndKPO = "select kpi.kpi_id, kpi.kpi_ten, dvt.dvt_ten, danhsachbsc.tytrong ";
+            string sqlKPIByTimeAndKPO = "select kpi.kpi_id, kpi.kpi_ten, dvt.dvt_ten, danhsachbsc.tytrong, danhsachbsc.stt ";
             sqlKPIByTimeAndKPO += "from kpo, kpi, danhsachbsc, donvitinh dvt ";
             sqlKPIByTimeAndKPO += "where danhsachbsc.kpi_id = kpi.kpi_id ";
             sqlKPIByTimeAndKPO += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
@@ -56,7 +56,7 @@ namespace VNPT_BSC.BSC
             sqlKPIByTimeAndKPO += "and quyen_cv.quyen_id = 2) ";
             sqlKPIByTimeAndKPO += "and danhsachbsc.bscduocgiao = '' ";
             sqlKPIByTimeAndKPO += "and danhsachbsc.maubsc = '" + loaiMauBSC + "'";
-            sqlKPIByTimeAndKPO += "group by kpi.kpi_id, kpi.kpi_ten, dvt.dvt_ten, danhsachbsc.tytrong";
+            sqlKPIByTimeAndKPO += "group by kpi.kpi_id, kpi.kpi_ten, dvt.dvt_ten, danhsachbsc.tytrong, danhsachbsc.stt ORDER BY danhsachbsc.stt ASC";
             try
             {
                 dsKPIByTimeAndKPO = cnBSC.XemDL(sqlKPIByTimeAndKPO);
@@ -116,6 +116,9 @@ namespace VNPT_BSC.BSC
             outputHTML += "<th class='no-sort'>ĐVT</th>";
             outputHTML += "<th class='no-sort'>Trọng số (%)</th>";
             // 11 đơn vị huyện thị và KHTCDN
+            // Add start ThangTGM 02282017: bổ sung Trung tâm kinh doanh
+            outputHTML += "<th class='no-sort'>TTKD</th>";
+            // Add end ThangTGM 02282017: bổ sung Trung tâm kinh doanh
             outputHTML += "<th class='no-sort'>APU</th>";
             outputHTML += "<th class='no-sort'>CDC</th>";
             outputHTML += "<th class='no-sort'>CPU</th>";
@@ -134,7 +137,10 @@ namespace VNPT_BSC.BSC
 
             if (dsKPOByTime.Rows.Count <= 0)
             {
-                outputHTML += "<tr><td colspan='" + (12 + 4) + "' class='text-center'>No item</td></tr>";
+                // Mod start ThangTGM 02282017: Bổ sung TTKD
+                //outputHTML += "<tr><td colspan='" + (12 + 4) + "' class='text-center'>No item</td></tr>";
+                outputHTML += "<tr><td colspan='" + (13 + 4) + "' class='text-center'>No item</td></tr>";
+                // Mod end ThangTGM 02282017: Bổ sung TTKD
             }
             else
             {
@@ -147,7 +153,10 @@ namespace VNPT_BSC.BSC
                     dsKPIByTimeAndKPO = getKPIByTimeAndKPO(thang, nam, kpo_id, loaiMauBSC);
                     if (dsKPIByTimeAndKPO.Rows.Count <= 0)
                     {
-                        outputHTML += "<tr><td colspan='" + (12 + 4) + "' class='text-center'>No item</td></tr>";
+                        // Mod start ThangTGM 02282017: Bổ sung TTKD
+                        //outputHTML += "<tr><td colspan='" + (12 + 4) + "' class='text-center'>No item</td></tr>";
+                        outputHTML += "<tr><td colspan='" + (13 + 4) + "' class='text-center'>No item</td></tr>";
+                        // Mod end ThangTGM 02282017: Bổ sung TTKD
                     }
                     else
                     {
@@ -161,11 +170,14 @@ namespace VNPT_BSC.BSC
                             outputHTML += "<tr>";
                             outputHTML += "<td class='text-center'>" + kpi_id + "</td>";
                             outputHTML += "<td><strong>" + kpi_ten + "</strong></td>";
-                            outputHTML += "<td class='text-center'><strong>" + dvt_ten + "</strong></td>";
+                            outputHTML += "<td><strong>" + dvt_ten + "</strong></td>";
                             outputHTML += "<td class='text-center'><strong>" + trongso + "</strong></td>";
 
                             // 11 đơn vị huyện thị và KHTCDN
-                            for (int nTmp = 0; nTmp < 12; nTmp++)
+                            // Mod start ThangTGM 02282017: Bổ sung TTKD
+                            //for (int nTmp = 0; nTmp < 12; nTmp++)
+                            for (int nTmp = 0; nTmp < 13; nTmp++)
+                            // Mod end ThangTGM 02282017: Bổ sung TTKD
                             {
                                 outputHTML += "<td class='text-center'></td>";
                             }

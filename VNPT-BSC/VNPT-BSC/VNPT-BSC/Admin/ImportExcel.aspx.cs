@@ -71,8 +71,8 @@ namespace VNPT_BSC.Admin
 
         private bool insertGiaoBSCDonVi(int donvigiao, int donvinhan, int thang, int nam) {
             bool bResult = false;
-            string sql = "insert into giaobscdonvi(donvigiao, donvinhan, thang, nam, trangthaigiao, trangthainhan, trangthaicham, trangthaidongy_kqtd, trangthaiketthuc) ";
-            sql += "values('" + donvigiao + "', '" + donvinhan + "', '" + thang + "', '" + nam + "', 1, 0, 0, 0, 0)";
+            string sql = "insert into giaobscdonvi(donvigiao, donvinhan, thang, nam, trangthaigiao, trangthainhan, trangthaicham, trangthaidongy_kqtd, trangthaiketthuc, ngaytao) ";
+            sql += "values('" + donvigiao + "', '" + donvinhan + "', '" + thang + "', '" + nam + "', 1, 0, 0, 0, 0, GETDATE())";
             try
             {
                 cn.ThucThiDL(sql);

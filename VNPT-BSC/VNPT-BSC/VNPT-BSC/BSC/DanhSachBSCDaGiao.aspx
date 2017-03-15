@@ -67,6 +67,16 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-6">Loại mẫu:</label>
+                    <div class="col-sm-4 form-inline">
+                        <select class='form-control' id='loaiMauBSC'>
+                            <% for (int nMauBSC = 0; nMauBSC < dtMauBSC.Rows.Count; nMauBSC++){ %>
+                            <option value="<% =dtMauBSC.Rows[nMauBSC]["loai_id"].ToString() %>"><% =dtMauBSC.Rows[nMauBSC]["loai_ten"].ToString() %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
               </div>
               <div class="col-md-12 col-xs-12" id="gridBSC">
 
@@ -76,10 +86,12 @@
     </div>
 
 <script type="text/javascript">
-    function loadBSCByYear(month, year) {
+    function loadBSCByYear(month, year, loaibsc) {
+        var ten_mau = $("#loaiMauBSC option:selected").text();
         var requestData = {
             thang: month,
-            nam: year
+            nam: year,
+            loaibsc: loaibsc
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
@@ -100,11 +112,11 @@
                     "buttons": [
                         {
                             extend: 'excelHtml5',
-                            title: 'Giao BSC/KPI ' + month + "-" + year
+                            title: 'Giao BSC-KPI ' + ten_mau + "-" + month + "-" + year
                         },
                         {
                             extend: 'pdfHtml5',
-                            title: 'Giao BSC/KPI ' + month + "-" + year,
+                            title: 'Giao BSC-KPI ' + ten_mau + "-" + month + "-" + year,
                             orientation: 'landscape',
                             pageSize: 'LEGAL'
                         }
@@ -122,20 +134,30 @@
     $(document).ready(function () {
 
         // Load grid lần đầu
-        loadBSCByYear($("#month").val(), $("#year").val());
+        loadBSCByYear($("#month").val(), $("#year").val(), $("#loaiMauBSC").val());
 
         // Load grid khi năm thay đổi
         $("#year").change(function () {
             var thang = $("#month").val();
             var nam = $(this).val();
-            loadBSCByYear(thang, nam);
+            var loaimau = $("#loaiMauBSC").val();
+            loadBSCByYear(thang, nam, loaimau);
         });
 
         // Load grid khi tháng thay đổi
         $("#month").change(function () {
             var nam = $("#year").val();
             var thang = $(this).val();
-            loadBSCByYear(thang, nam);
+            var loaimau = $("#loaiMauBSC").val();
+            loadBSCByYear(thang, nam, loaimau);
+        });
+
+        // Load grid khi tháng thay đổi
+        $("#loaiMauBSC").change(function () {
+            var nam = $("#year").val();
+            var thang = $("#month").val();
+            var loaimau = $(this).val();
+            loadBSCByYear(thang, nam, loaimau);
         });
     });
 </script>

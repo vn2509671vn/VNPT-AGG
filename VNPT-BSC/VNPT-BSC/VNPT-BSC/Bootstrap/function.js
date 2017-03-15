@@ -39,3 +39,168 @@ function clearInputs() {
         $(this).attr("checked", false);
     });
 }
+
+// Export to excel for nghiệm thu 11 đơn vị huyện thị
+function ExportToExcel(table, sheetName, month, year) {
+    var uri = 'data:application/vnd.ms-excel;base64,';
+    var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>';
+    var base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) };
+    var format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
+    if (!table.nodeType) table = document.getElementById(table);
+    var ctx = { worksheet: sheetName || 'Worksheet', table: table.innerHTML };
+    template += '<body>';
+
+    // Phần header
+    template += '<table>';
+    template += '<thead>';
+
+    template += '<tr>';
+    template += '<th rowspan="2" colspan="2" style="text-align: center">TRUNG TÂM KINH DOANH VNPT - AN GIANG </th>';
+    template += '<th></th><th></th>';
+    template += '<th colspan="6" style="text-align: center">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM </th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th></th><th></th>';
+    template += '<th colspan="6" style="text-align: center">Độc lập - Tự do - Hạnh phúc </th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th colspan="2" style="text-align: center"> ' + sheetName + ' </th>';
+    template += '<th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th colspan="10" style="text-align: center"> BÁO CÁO KẾT QUẢ THỰC HIỆN CHỈ TIÊU BSC/KPI </th>';
+    template += '</tr>';
+    
+    template += '<tr>';
+    template += '<th colspan="10" style="text-align: center"> Tháng ' + month + ' ' + "/" + ' ' + year + '</th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '</tr>';
+
+    template += '</thead>';
+    template += '</table>';
+
+    // Phần nội dung
+    template += '<table border="1">{table}</table>';
+
+    // Phần ký tên
+    template += '<table>';
+    template += '<thead>';
+    template += '<tr>';
+    template += '<th></th><th></th><th></th><th></th><th></th><th></th>';
+    template += '<th colspan="4" style="text-align: center">...., ngày .... tháng .... năm ' + year + '</th>';
+    template += '</tr>';
+    template += '<tr>';
+    template += '<th></th>';
+    template += '<th style="text-align: center">Người lập biểu</th>';
+    template += '<th></th><th></th><th></th><th></th>';
+    template += '<th colspan="4" style="text-align: center">Lãnh đạo đơn vị</th>';
+    template += '</tr>';
+    template += '</body></html>';
+    return window.location.href = uri + base64(format(template, ctx));
+};
+
+// Export to excel for bảng xếp hạng 11 đơn vị huyện thị
+function ExportToExcelForRank(table, sheetName, month, year) {
+    var uri = 'data:application/vnd.ms-excel;base64,';
+    var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>';
+    var base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) };
+    var format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
+    if (!table.nodeType) table = document.getElementById(table);
+    var ctx = { worksheet: sheetName || 'Worksheet', table: table.innerHTML };
+    template += '<body>';
+
+    // Phần header
+    template += '<table>';
+    template += '<thead>';
+
+    template += '<tr>';
+    template += '<th rowspan="2" colspan="2" style="text-align: center">TỔNG CÔNG TY DỊCH VỤ VIỄN THÔNG  TRUNG TÂM KINH DOANH VNPT - AN GIANG </th>';
+    template += '<th colspan="3" style="text-align: center">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM </th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th colspan="3" style="text-align: center">Độc lập - Tự do - Hạnh phúc </th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th colspan="2" style="text-align: center"> Số:   /KQ-TTKD AGG-KHKT </th>';
+    template += '<th></th><th></th><th></th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th colspan="5" style="text-align: center"> KẾT QUẢ THẨM ĐỊNH </th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th colspan="5" style="text-align: center"> THỰC HIỆN CHỈ TIÊU KẾ HOẠCH BSC/KPI THÁNG ' + month + ' ' + "/" + ' ' + year + '</th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '</tr>';
+
+    template += '</thead>';
+    template += '</table>';
+
+    // Phần nội dung
+    template += '<table border="1">{table}</table>';
+
+    // Phần ký tên
+    template += '<table>';
+    template += '<thead>';
+    template += '<tr></tr>';
+    template += '<tr>';
+    template += '<th></th><th></th>';
+    template += '<th colspan="3" style="text-align: center">An Giang, ngày .... tháng .... năm ' + year + '</th>';
+    template += '</tr>';
+    template += '<tr>';
+    template += '<th></th>';
+    template += '<th colspan="2" style="text-align: center">Lập bảng</th>';
+    template += '<th colspan="2" style="text-align: center">GIÁM ĐỐC</th>';
+    template += '</tr>';
+    template += '<th><tr></tr></th>';
+    template += '<th>';
+    template += '<tr><td>Nơi nhận</td></tr>';
+    template += '<tr><td>- GĐ VTAG;</td></tr>';
+    template += '<tr><td>- Ban GĐ TTKD;</td></tr>';
+    template += '<tr><td>- Các đơn vị trực thuộc;</td></tr>';
+    template += '<tr><td>- Lưu: VT.</td></tr>';
+    template += '</th>';
+    template += '</body></html>';
+    return window.location.href = uri + base64(format(template, ctx));
+};
+
+// Export to excel for bảng xếp hạng 11 đơn vị huyện thị
+function ExportTableToExcel(table, sheetName) {
+    var uri = 'data:application/vnd.ms-excel;base64,';
+    var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>';
+    var base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) };
+    var format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
+    if (!table.nodeType) table = document.getElementById(table);
+    var ctx = { worksheet: sheetName || 'Worksheet', table: table.innerHTML };
+    template += '<body>';
+    // Phần nội dung
+    template += '<table border="1">{table}</table>';
+    template += '</body></html>';
+    return window.location.href = uri + base64(format(template, ctx));
+};
+
+// Link: http://stackoverflow.com/questions/14446511/what-is-the-most-efficient-method-to-groupby-on-a-javascript-array-of-objects
+function groupBy(array, col, col2, value) {
+    var r = [], o = {};
+    array.forEach(function (a) {
+        if (!o[a[col]]) {
+            o[a[col]] = {};
+            o[a[col]][col] = a[col];
+            o[a[col]][col2] = a[col2];
+            o[a[col]][value] = 0;
+            r.push(o[a[col]]);
+        }
+        o[a[col]][value] += +a[value];
+    });
+    return r;
+};

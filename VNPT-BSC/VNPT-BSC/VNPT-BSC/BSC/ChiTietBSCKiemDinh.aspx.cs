@@ -32,11 +32,13 @@ namespace VNPT_BSC.BSC
 
             /*Lấy danh sách các thông tin còn lại ở bảng giaobscdonvi*/
             DataTable dtGiaoBSCDV = new DataTable();
-            string sqlGiaoBSCDV = "select * from giaobscdonvi ";
-            sqlGiaoBSCDV += "where donvigiao = '" + donvigiao + "' ";
-            sqlGiaoBSCDV += "and donvinhan = '" + donvinhan + "'";
-            sqlGiaoBSCDV += "and thang = '" + thang + "'";
-            sqlGiaoBSCDV += "and nam = '" + nam + "'";
+            string sqlGiaoBSCDV = "select giaobscdonvi.*, donvi.donvi_ten  from giaobscdonvi, donvi ";
+            sqlGiaoBSCDV += "where giaobscdonvi.donvigiao = '" + donvigiao + "' ";
+            sqlGiaoBSCDV += "and giaobscdonvi.donvinhan = '" + donvinhan + "' ";
+            sqlGiaoBSCDV += "and giaobscdonvi.thang = '" + thang + "' ";
+            sqlGiaoBSCDV += "and giaobscdonvi.nam = '" + nam + "' ";
+            sqlGiaoBSCDV += "and giaobscdonvi.donvinhan = donvi.donvi_id ";
+
             try
             {
                 dtGiaoBSCDV = cnBSC.XemDL(sqlGiaoBSCDV);
@@ -50,6 +52,7 @@ namespace VNPT_BSC.BSC
             {
                 dicOutput.Add("donvigiao", dtGiaoBSCDV.Rows[0]["donvigiao"].ToString());
                 dicOutput.Add("donvinhan", dtGiaoBSCDV.Rows[0]["donvinhan"].ToString());
+                dicOutput.Add("donvinhan_ten", dtGiaoBSCDV.Rows[0]["donvi_ten"].ToString());
                 dicOutput.Add("thang", dtGiaoBSCDV.Rows[0]["thang"].ToString());
                 dicOutput.Add("nam", dtGiaoBSCDV.Rows[0]["nam"].ToString());
                 dicOutput.Add("trangthaigiao", dtGiaoBSCDV.Rows[0]["trangthaigiao"].ToString());
@@ -62,6 +65,7 @@ namespace VNPT_BSC.BSC
             {
                 dicOutput.Add("donvigiao", donvigiao.ToString());
                 dicOutput.Add("donvinhan", donvinhan.ToString());
+                dicOutput.Add("donvinhan_ten", "");
                 dicOutput.Add("thang", "0");
                 dicOutput.Add("nam", "0");
                 dicOutput.Add("trangthaigiao", "0");
@@ -74,8 +78,8 @@ namespace VNPT_BSC.BSC
             /*Lấy danh sách BSC từ bảng bsc_donvi*/
             DataTable gridData = new DataTable();
             string outputHTML = "";
-            string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, dvt.dvt_ten as donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh, bsc.trangthaithamdinh, bsc.phanhoi_thamdinh_dexuat, bsc.phanhoi_thamdinh_lydo, bsc.phanhoi_thamdinh_daxuly ";
-            sqlBSC += "from bsc_donvi bsc, kpi, kpo, donvi dvgiao, donvi dvnhan, donvitinh dvt ";
+            string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, dvt.dvt_ten as donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh, bsc.trangthaithamdinh, bsc.phanhoi_thamdinh_dexuat, bsc.phanhoi_thamdinh_lydo, bsc.phanhoi_thamdinh_daxuly, danhsachbsc.stt ";
+            sqlBSC += "from bsc_donvi bsc, kpi, kpo, donvi dvgiao, donvi dvnhan, donvitinh dvt, danhsachbsc ";
             sqlBSC += "where bsc.kpi = kpi.kpi_id ";
             sqlBSC += "and bsc.donvitinh = dvt.dvt_id ";
             sqlBSC += "and bsc.donvigiao = dvgiao.donvi_id ";
@@ -84,7 +88,13 @@ namespace VNPT_BSC.BSC
             sqlBSC += "and bsc.donvigiao = '" + donvigiao + "' ";
             sqlBSC += "and bsc.donvithamdinh = '" + donvithamdinh + "' ";
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
-            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "'";
+            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' ";
+            sqlBSC += "and bsc.thang = danhsachbsc.thang ";
+            sqlBSC += "and bsc.nam = danhsachbsc.nam ";
+            sqlBSC += "and bsc.loaimau = danhsachbsc.maubsc ";
+            sqlBSC += "and bsc.kpi = danhsachbsc.kpi_id  ";
+            sqlBSC += "and danhsachbsc.bscduocgiao = '' ORDER BY danhsachbsc.stt ASC ";
+
             try
             {
                 gridData = cnBSC.XemDL(sqlBSC);
@@ -153,9 +163,9 @@ namespace VNPT_BSC.BSC
                     outputHTML += "<tr class='" + trangthai_xuly_phanhoi + "' data-id='" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>";
                     outputHTML += "<input type='hidden' value='" + dataTmp + "' id='idPhanHoi_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'/>";
                     outputHTML += "<td class='text-center'>" + (nKPI + 1) + "</td>";
-                    outputHTML += "<td><strong>" + gridData.Rows[nKPI]["kpi_ten"].ToString() + " (" + gridData.Rows[nKPI]["kpo_ten"].ToString() + ")" + "</strong></td>";
+                    outputHTML += "<td><strong>" + gridData.Rows[nKPI]["kpi_ten"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["trongso"].ToString() + "</strong></td>";
-                    outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["donvitinh"].ToString() + "</strong></td>";
+                    outputHTML += "<td><strong>" + gridData.Rows[nKPI]["donvitinh"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["kehoach"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["thuchien"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><input type='text' class='form-control' name='thamdinh' id='thamdinh_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["thamdinh"].ToString() + "' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
@@ -185,12 +195,15 @@ namespace VNPT_BSC.BSC
         public static bool updateKiemDinhStatus(int donvigiao, int donvinhan, int thang, int nam, int donvithamdinh)
         {
             Connection cnNhanBSC = new Connection();
+            Message msg = new Message();
+            string szMsgContent = "BSC cua don vi da duoc tham dinh!!! Ban vui long vao kiem tra lai.";
             bool isSuccess = false;
 
             string sqlGiaoBSC = "update bsc_donvi set trangthaithamdinh = 1 where donvigiao = '" + donvigiao + "' and donvinhan = '" + donvinhan + "' and thang = '" + thang + "' and nam = '" + nam + "' and donvithamdinh = '" + donvithamdinh + "'";
             try
             {
                 cnNhanBSC.ThucThiDL(sqlGiaoBSC);
+                msg.SendSMS_ByIDDV(donvinhan, szMsgContent);
                 isSuccess = true;
             }
             catch
@@ -214,8 +227,8 @@ namespace VNPT_BSC.BSC
                     sqlInsertBSCDV += "and donvinhan = '" + donvinhan + "' ";
                     sqlInsertBSCDV += "and thang = '" + thang + "' ";
                     sqlInsertBSCDV += "and nam = '" + nam + "' ";
-                    sqlInsertBSCDV += "and kpi = '" + kpi_detail[i].kpi_id + "';";
-                    sqlInsertBSCDV += "EXEC sp_ketquathuchien @thang = '" + thang + "',@nam = '" + nam + "', @donvigiao = '" + donvigiao + "', @donvinhan = '" + donvinhan + "', @kpi_id = '" + kpi_detail[i].kpi_id + "'";
+                    sqlInsertBSCDV += "and kpi = '" + kpi_detail[i].kpi_id + "'";
+                    //sqlInsertBSCDV += "EXEC sp_ketquathuchien @thang = '" + thang + "',@nam = '" + nam + "', @donvigiao = '" + donvigiao + "', @donvinhan = '" + donvinhan + "', @kpi_id = '" + kpi_detail[i].kpi_id + "'";
                     try
                     {
                         cnData.ThucThiDL(sqlInsertBSCDV);
@@ -250,8 +263,8 @@ namespace VNPT_BSC.BSC
                 sqlUpdatePhanHoi += "and thang = '" + thang + "' ";
                 sqlUpdatePhanHoi += "and nam = '" + nam + "' ";
                 sqlUpdatePhanHoi += "and kpi = '" + kpi_id + "' ";
-                sqlUpdatePhanHoi += "and trangthaithamdinh = 1;";
-                sqlUpdatePhanHoi += "EXEC sp_ketquathuchien @thang = '" + thang + "',@nam = '" + nam + "', @donvigiao = '" + donvigiao + "', @donvinhan = '" + donvinhan + "', @kpi_id = '" + kpi_id + "'";
+                sqlUpdatePhanHoi += "and trangthaithamdinh = 1";
+                //sqlUpdatePhanHoi += "EXEC sp_ketquathuchien @thang = '" + thang + "',@nam = '" + nam + "', @donvigiao = '" + donvigiao + "', @donvinhan = '" + donvinhan + "', @kpi_id = '" + kpi_id + "'";
 
                 try
                 {

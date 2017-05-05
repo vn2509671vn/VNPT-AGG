@@ -185,12 +185,6 @@
                                 ExportToExcel('table-kpi', ten_dvn, thang, nam);
                             }
                         }
-                        //{
-                        //    extend: 'pdfHtml5',
-                        //    title: 'Nghiệm thu đơn vị ' + ten_dvn,
-                        //    orientation: 'landscape',
-                        //    pageSize: 'LEGAL'
-                        //}
                     ],
                     "columnDefs": [{
                         "targets": 'no-sort',

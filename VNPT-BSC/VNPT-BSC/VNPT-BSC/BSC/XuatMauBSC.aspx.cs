@@ -36,7 +36,7 @@ namespace VNPT_BSC.BSC
         }
 
         // Lấy ra danh sách các KPI, DVT, Trọng số theo tháng, năm và KPO
-        public static DataTable getKPIByTimeAndKPO(int thang, int nam, int kpo_id, int loaiMauBSC)
+        public static DataTable getKPIByTimeAndKPO(int thang, int nam, int loaiMauBSC)
         {
             Connection cnBSC = new Connection();
             DataTable dsKPIByTimeAndKPO = new DataTable();
@@ -47,7 +47,7 @@ namespace VNPT_BSC.BSC
             sqlKPIByTimeAndKPO += "and danhsachbsc.donvitinh = dvt.dvt_id ";
             sqlKPIByTimeAndKPO += "and danhsachbsc.thang = '" + thang + "' ";
             sqlKPIByTimeAndKPO += "and danhsachbsc.nam = '" + nam + "' ";
-            sqlKPIByTimeAndKPO += "and kpo.kpo_id = '" + kpo_id + "' ";
+            //sqlKPIByTimeAndKPO += "and kpo.kpo_id = '" + kpo_id + "' ";
             sqlKPIByTimeAndKPO += "and danhsachbsc.nguoitao  ";
             sqlKPIByTimeAndKPO += "in (select nhanvien.nhanvien_id from nhanvien, chucvu, nhanvien_chucvu, quyen_cv ";
             sqlKPIByTimeAndKPO += "where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id ";
@@ -81,30 +81,30 @@ namespace VNPT_BSC.BSC
 
             string outputHTML = "";
 
-            string sqlKPOByTime = "select kpo.kpo_id, kpo.kpo_ten ";
-            sqlKPOByTime += "from kpo, kpi, danhsachbsc ";
-            sqlKPOByTime += "where danhsachbsc.kpi_id = kpi.kpi_id ";
-            sqlKPOByTime += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
-            sqlKPOByTime += "and danhsachbsc.thang = '" + thang + "' ";
-            sqlKPOByTime += "and danhsachbsc.nam = '" + nam + "' ";
-            sqlKPOByTime += "and danhsachbsc.nguoitao in (select nhanvien.nhanvien_id ";
-            sqlKPOByTime += "from nhanvien, chucvu, nhanvien_chucvu, quyen_cv ";
-            sqlKPOByTime += "where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id ";
-            sqlKPOByTime += "and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id ";
-            sqlKPOByTime += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
-            sqlKPOByTime += "and quyen_cv.quyen_id = 2) ";
-            sqlKPOByTime += "and danhsachbsc.bscduocgiao = '' ";
-            sqlKPOByTime += "and danhsachbsc.maubsc = '" + loaiMauBSC + "' ";
-            sqlKPOByTime += "group by kpo.kpo_id, kpo.kpo_ten ";
+            //string sqlKPOByTime = "select kpo.kpo_id, kpo.kpo_ten ";
+            //sqlKPOByTime += "from kpo, kpi, danhsachbsc ";
+            //sqlKPOByTime += "where danhsachbsc.kpi_id = kpi.kpi_id ";
+            //sqlKPOByTime += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
+            //sqlKPOByTime += "and danhsachbsc.thang = '" + thang + "' ";
+            //sqlKPOByTime += "and danhsachbsc.nam = '" + nam + "' ";
+            //sqlKPOByTime += "and danhsachbsc.nguoitao in (select nhanvien.nhanvien_id ";
+            //sqlKPOByTime += "from nhanvien, chucvu, nhanvien_chucvu, quyen_cv ";
+            //sqlKPOByTime += "where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id ";
+            //sqlKPOByTime += "and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id ";
+            //sqlKPOByTime += "and chucvu.chucvu_id = quyen_cv.chucvu_id ";
+            //sqlKPOByTime += "and quyen_cv.quyen_id = 2) ";
+            //sqlKPOByTime += "and danhsachbsc.bscduocgiao = '' ";
+            //sqlKPOByTime += "and danhsachbsc.maubsc = '" + loaiMauBSC + "' ";
+            //sqlKPOByTime += "group by kpo.kpo_id, kpo.kpo_ten ";
 
-            try
-            {
-                dsKPOByTime = cnBSC.XemDL(sqlKPOByTime);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            //try
+            //{
+            //    dsKPOByTime = cnBSC.XemDL(sqlKPOByTime);
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
 
 
             outputHTML += "<div class='table-responsive padding-top-10'>";
@@ -135,22 +135,22 @@ namespace VNPT_BSC.BSC
             outputHTML += "</thead>";
             outputHTML += "<tbody>";
 
-            if (dsKPOByTime.Rows.Count <= 0)
-            {
-                // Mod start ThangTGM 02282017: Bổ sung TTKD
-                //outputHTML += "<tr><td colspan='" + (12 + 4) + "' class='text-center'>No item</td></tr>";
-                outputHTML += "<tr><td colspan='" + (13 + 4) + "' class='text-center'>No item</td></tr>";
-                // Mod end ThangTGM 02282017: Bổ sung TTKD
-            }
-            else
-            {
-                // Hiển thị các KPO
-                for (int nIndexKPO = 0; nIndexKPO < dsKPOByTime.Rows.Count; nIndexKPO++)
-                {
-                    int kpo_id = Convert.ToInt32(dsKPOByTime.Rows[nIndexKPO]["kpo_id"].ToString());
+            //if (dsKPOByTime.Rows.Count <= 0)
+            //{
+            //    // Mod start ThangTGM 02282017: Bổ sung TTKD
+            //    //outputHTML += "<tr><td colspan='" + (12 + 4) + "' class='text-center'>No item</td></tr>";
+            //    outputHTML += "<tr><td colspan='" + (13 + 4) + "' class='text-center'>No item</td></tr>";
+            //    // Mod end ThangTGM 02282017: Bổ sung TTKD
+            //}
+            //else
+            //{
+            //    // Hiển thị các KPO
+            //    for (int nIndexKPO = 0; nIndexKPO < dsKPOByTime.Rows.Count; nIndexKPO++)
+            //    {
+            //        int kpo_id = Convert.ToInt32(dsKPOByTime.Rows[nIndexKPO]["kpo_id"].ToString());
 
                     // Hiển thị các KPI, DVT, Trọng số theo KPO
-                    dsKPIByTimeAndKPO = getKPIByTimeAndKPO(thang, nam, kpo_id, loaiMauBSC);
+                    dsKPIByTimeAndKPO = getKPIByTimeAndKPO(thang, nam, loaiMauBSC);
                     if (dsKPIByTimeAndKPO.Rows.Count <= 0)
                     {
                         // Mod start ThangTGM 02282017: Bổ sung TTKD
@@ -184,8 +184,8 @@ namespace VNPT_BSC.BSC
                             outputHTML += "</tr>";
                         }
                     }
-                }
-            }
+            //    }
+            //}
             outputHTML += "</tbody>";
             outputHTML += "</table>";
             dicOutput.Add("gridBSC", outputHTML);

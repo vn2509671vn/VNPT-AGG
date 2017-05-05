@@ -26,7 +26,7 @@
     <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">Xuất mẫu BSC đơn vị</h3>
+            <h3 class="panel-title">XUẤT MẪU BSC NHÂN VIÊN</h3>
           </div>
           <div class="panel-body">
               <div class="col-md-12 col-xs-12 form-horizontal">
@@ -79,7 +79,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Danh sách mẫu BSC</h4>
+                                <h4 class="modal-title">Danh sách nhân viên</h4>
                                 </div>
                                 <div class="modal-body">
                                 <% for (int nNhanVien = 0; nNhanVien < dtNhanVien.Rows.Count; nNhanVien++){ %>

@@ -32,12 +32,12 @@
                         <table id="table-kpi" class="table table-striped table-bordered table-full-width" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Mã loại quyền</th>
-                                    <th>Tên loại quyền</th>
-                                    <th>Mô tả loại quyền</th>
-                                    <th>Nhóm quyền</th>
-                                    <th class="fix-table-edit-edit">Chỉnh sửa</th>
+                                    <th class='text-center'>ID</th>
+                                    <th class='text-center'>Mã loại quyền</th>
+                                    <th class='text-center'>Tên loại quyền</th>
+                                    <th class='text-center'>Mô tả loại quyền</th>
+                                    <th class='text-center'>Nhóm quyền</th>
+                                    <th class="fix-table-edit-edit text-center">Chỉnh sửa</th>
                                 </tr>
                             </thead>
                             <tbody>

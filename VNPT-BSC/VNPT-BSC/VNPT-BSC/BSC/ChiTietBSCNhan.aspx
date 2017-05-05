@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-6">Đồng ý KQTĐ:</label>
+                    <label class="control-label col-sm-6">Đồng ý kết quả thẩm định:</label>
                     <div class="col-sm-6 form-inline padding-top-7 ">
                         <span class="label label-default" id="dongyLabel">Chưa đồng ý</span>
                         <a class="btn btn-success btn-xs" id="updateDongYStatus">Đồng ý</a>
@@ -133,13 +133,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4">Kế hoạch được giao:</label>
+                                <label class="control-label col-md-4">Chỉ tiêu được giao:</label>
                                 <div class="col-md-8">
                                     <input type="text" class="form-control fix-width-350" id="edit_kehoach_duocgiao" readonly/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4 ">Kế hoạch đề xuất:</label>
+                                <label class="control-label col-md-4 ">Chỉ tiêu đề xuất:</label>
                                 <div class="col-md-8">
                                     <input type="text" class="form-control fix-width-350 " id="edit_kehoach_dexuat" onkeypress="return onlyNumbers(event.charCode || event.keyCode);"/>
                                 </div>
@@ -636,7 +636,7 @@
             }
 
             if (kehoach_dexuat == "") {
-                swal("Error!!!", "Vui lòng nhập giá trị kế hoạch đề xuất!!!", "error");
+                swal("Error!!!", "Vui lòng nhập giá trị chỉ tiêu đề xuất!!!", "error");
                 return;
             }
 
@@ -691,7 +691,7 @@
             }
 
             if (thamdinh_dexuat == "") {
-                swal("Error!!!", "Vui lòng nhập giá trị kế hoạch đề xuất!!!", "error");
+                swal("Error!!!", "Vui lòng nhập giá trị chỉ tiêu đề xuất!!!", "error");
                 return;
             }
 

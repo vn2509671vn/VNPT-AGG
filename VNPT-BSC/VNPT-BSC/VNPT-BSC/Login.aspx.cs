@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.SessionState;
 using System.Data;
 using System.Data.Sql;
 using System.Text;
@@ -67,8 +68,9 @@ namespace VNPT_BSC
                 dt = cn.XemDL(sqlllogin);
                 if (dt.Rows.Count > 0) {
                     output = true;
-                    nv.nhanvien_id = Convert.ToInt32(dt.Rows[0][0].ToString());
-                    nv.nhanvien_hoten = dt.Rows[0][1].ToString();
+                    nv.nhanvien_id = Convert.ToInt32(dt.Rows[0]["nhanvien_id"].ToString());
+                    nv.nhanvien_manv = dt.Rows[0]["nhanvien_manv"].ToString();
+                    nv.nhanvien_hoten = dt.Rows[0]["nhanvien_hoten"].ToString();
                     nv.nhanvien_donvi = dt.Rows[0]["donvi_ten"].ToString();
                     nv.nhanvien_donvi_id = Convert.ToInt32(dt.Rows[0]["nhanvien_donvi"].ToString());
                     objp.Session.SetCurrentUser(nv);

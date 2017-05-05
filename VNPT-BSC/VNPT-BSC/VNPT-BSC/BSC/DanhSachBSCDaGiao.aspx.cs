@@ -21,7 +21,7 @@ namespace VNPT_BSC.BSC
         {
             DataTable dsMauBSC = new DataTable();
             Connection cn = new Connection();
-            string sqlMauBSC = "select * from loaimaubsc";
+            string sqlMauBSC = "select * from loaimaubsc where loai_id = 1";
             try
             {
                 dsMauBSC = cn.XemDL(sqlMauBSC);
@@ -169,7 +169,7 @@ namespace VNPT_BSC.BSC
                 {
                     int kpo_id = Convert.ToInt32(dsKPOByTime.Rows[nIndexKPO]["kpo_id"].ToString());
                     string kpo_ten = dsKPOByTime.Rows[nIndexKPO]["kpo_ten"].ToString();
-                    outputHTML += "<tr>";
+                    outputHTML += "<tr style = 'background-color: burlywood;'>";
                     outputHTML += "<td colspan='" + (slDonvi + 4) + "'><strong>" + kpo_ten + "</strong></td>";
                     outputHTML += "<td style='display: none;'></td>";
                     outputHTML += "<td style='display: none;'></td>";
@@ -222,6 +222,7 @@ namespace VNPT_BSC.BSC
             }
             outputHTML += "</tbody>";
             outputHTML += "</table>";
+            outputHTML += "</div>";
             dicOutput.Add("gridBSC", outputHTML);
 
             return dicOutput;

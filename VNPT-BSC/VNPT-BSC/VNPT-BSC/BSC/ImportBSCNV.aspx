@@ -26,7 +26,7 @@
     <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">Giao BSC đơn vị bằng Excel</h3>
+            <h3 class="panel-title">GIAO BSC NHÂN VIÊN BẰNG FILE EXCEL</h3>
           </div>
           <div class="panel-body">
               <div class="col-md-12 col-xs-12 form-horizontal">

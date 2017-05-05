@@ -77,7 +77,7 @@
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Danh sách KPI
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Danh sách KPI <span class="red-color" id="ten_nv"></span>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body" id="gridBSC">
@@ -128,9 +128,13 @@
                 var trangthaidongy_kqtd = output.trangthaidongy_kqtd;
                 var trangthaiketthuc = output.trangthaiketthuc;
                 var nv_nhan = output.nv_nhan;
+                var loaimaubsc = output.loaimaubsc;
+                var donvi_ten = output.donvi_ten;
+                var ma_nhanviennhan = output.ma_nv;
 
                 /*Fill data*/
                 $("#gridBSC").html(gridBSC);    // Fill to table
+                $("#ten_nv").html(nv_nhan);
                 // Fill ngày áp dụng
                 $("#ngayapdung").text(thang + "/" + nam);
 
@@ -182,18 +186,14 @@
                     "dom": 'Bfrtip',
                     "buttons": [
                         {
-                            extend: 'excelHtml5',
-                            title: 'Nghiệm thu nhân viên ' + nv_nhan + ' ' + thang + '-' + nam
-                        },
-                        {
-                            extend: 'pdfHtml5',
-                            title: 'Nghiệm thu nhân viên ' + nv_nhan + ' ' + thang + '-' + nam,
-                            orientation: 'landscape',
-                            pageSize: 'LEGAL'
+                            text: 'Excel',
+                            action: function (e, dt, node, config) {
+                                Export_NghiemThuBSCNV_ToExcel('table-kpi', ma_nhanviennhan, nv_nhan, donvi_ten, thang, nam, loaimaubsc);
+                            }
                         }
                     ],
                     "columnDefs": [{
-                        "targets": 'no-sort',
+                        "targets": [0,1,2,3,4,5,6,7,8,9],
                         "orderable": false,
                     }]
                 });

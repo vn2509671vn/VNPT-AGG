@@ -31,10 +31,10 @@
                     <table id="table-kpi" class="table table-striped table-bordered table-full-width" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th>Quyền</th>
-                                <th>Chức vụ</th>
-                                <th>Mô tả</th>
-                                <th class="fix-table-edit-edit">Chỉnh sửa</th>
+                                <th class='text-center'>Quyền</th>
+                                <th class='text-center'>Chức vụ</th>
+                                <th class='text-center'>Mô tả</th>
+                                <th class="fix-table-edit-edit text-center">Chỉnh sửa</th>
                             </tr>
                         </thead>
                          <tbody>

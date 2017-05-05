@@ -33,8 +33,8 @@ namespace VNPT_BSC.BSC
             /*Lấy danh sách BSC từ bảng bsc_nhanvien*/
             DataTable gridData = new DataTable();
             string outputHTML = "";
-            string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, dvt.dvt_ten as donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh, bsc.trangthaithamdinh ";
-            sqlBSC += "from bsc_nhanvien bsc, kpi, kpo, nhanvien nvgiao, nhanvien nvnhan, donvitinh dvt ";
+            string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, dvt.dvt_ten as donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh, bsc.trangthaithamdinh, bsc.ghichu, nhom_kpi.id as nhom, bsc.diem_kpi ";
+            sqlBSC += "from bsc_nhanvien bsc, kpi, kpo, nhanvien nvgiao, nhanvien nvnhan, donvitinh dvt, nhom_kpi ";
             sqlBSC += "where bsc.kpi = kpi.kpi_id ";
             sqlBSC += "and bsc.donvitinh = dvt.dvt_id ";
             sqlBSC += "and bsc.nhanviengiao = nvgiao.nhanvien_id ";
@@ -43,7 +43,8 @@ namespace VNPT_BSC.BSC
             sqlBSC += "and bsc.nhanviennhan = '" + nhanviennhan + "' ";
             sqlBSC += "and bsc.nhanvienthamdinh = '" + nhanvienthamdinh + "' ";
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
-            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' ORDER BY kpo.kpo_id ASC";
+            sqlBSC += "and kpi.nhom_kpi = nhom_kpi.id ";
+            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' ORDER BY nhom_kpi.id ASC";
             try
             {
                 gridData = cnBSC.XemDL(sqlBSC);
@@ -57,30 +58,39 @@ namespace VNPT_BSC.BSC
             outputHTML += "<table id='table-kpi' class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%'>";
             outputHTML += "<thead>";
             outputHTML += "<tr>";
-            outputHTML += "<th>STT</th>";
-            outputHTML += "<th>Chỉ tiêu</th>";
-            outputHTML += "<th>Tỷ trọng (%)</th>";
-            outputHTML += "<th>ĐVT</th>";
-            outputHTML += "<th>Kế hoạch</th>";
-            outputHTML += "<th>Thực hiện</th>";
-            outputHTML += "<th>Thẩm định</th>";
+            outputHTML += "<th class='text-center'>STT</th>";
+            outputHTML += "<th class='text-center'>Chỉ tiêu</th>";
+            outputHTML += "<th class='text-center'>Tỷ trọng (%)</th>";
+            outputHTML += "<th class='text-center'>ĐVT</th>";
+            outputHTML += "<th class='text-center'>Chỉ tiêu</th>";
+            outputHTML += "<th class='text-center'>Thực hiện</th>";
+            outputHTML += "<th class='text-center'>Thẩm định</th>";
+            outputHTML += "<th class='text-center'>T/gian giao</th>";
             outputHTML += "</tr>";
             outputHTML += "</thead>";
             outputHTML += "<tbody>";
             if (gridData.Rows.Count <= 0)
             {
-                outputHTML += "<tr><td colspan='7' class='text-center'>No item</td></tr>";
+                outputHTML += "<tr><td colspan='8' class='text-center'>No item</td></tr>";
             }
             else
             {
+                double tongdiem_diem_kpi = 0;
                 for (int nKPI = 0; nKPI < gridData.Rows.Count; nKPI++)
                 {
+                    double diem_kpi = 0;
+                    if (gridData.Rows[nKPI]["diem_kpi"].ToString() != "")
+                    {
+                        diem_kpi = Convert.ToDouble(gridData.Rows[nKPI]["diem_kpi"].ToString());
+                    }
+                    tongdiem_diem_kpi += diem_kpi;
+
                     if (gridData.Rows[nKPI]["trangthaithamdinh"].ToString() == "True")
                     {
                         soluong_kpi_dathamdinh += 1;
                     }
 
-                    outputHTML += "<tr data-id='" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>";
+                    outputHTML += "<tr class='nhom-" + gridData.Rows[nKPI]["nhom"].ToString() + "' data-id='" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>";
                     outputHTML += "<td class='text-center'>" + (nKPI + 1) + "</td>";
                     outputHTML += "<td><strong>" +  gridData.Rows[nKPI]["kpi_ten"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["trongso"].ToString() + "</strong></td>";
@@ -88,8 +98,19 @@ namespace VNPT_BSC.BSC
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["kehoach"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["thuchien"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><input type='text' class='form-control' name='thamdinh' id='thamdinh_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["thamdinh"].ToString() + "' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
+                    outputHTML += "<td><strong>" + gridData.Rows[nKPI]["ghichu"].ToString() + "</strong></td>";
                     outputHTML += "</tr>";
                 }
+                outputHTML += "<tr data-id='999999'>";
+                outputHTML += "<td></td>";
+                outputHTML += "<td style='text-align: center;'><strong class='red-900'>Tổng điểm:</strong></td>";
+                outputHTML += "<td></td>";
+                outputHTML += "<td></td>";
+                outputHTML += "<td></td>";
+                outputHTML += "<td></td>";
+                outputHTML += "<td style='text-align: center;'><strong class='red-900'>" + String.Format("{0:0.####}", tongdiem_diem_kpi) + "</strong></td>";
+                outputHTML += "<td></td>";
+                outputHTML += "</tr>";
             }
             outputHTML += "</tbody>";
             outputHTML += "</table>";
@@ -100,11 +121,12 @@ namespace VNPT_BSC.BSC
 
             /*Lấy danh sách các thông tin còn lại ở bảng giaobscnhanvien*/
             DataTable dtGiaoBSCDV = new DataTable();
-            string sqlGiaoBSCDV = "select * from giaobscnhanvien ";
-            sqlGiaoBSCDV += "where nhanviengiao = '" + nhanviengiao + "' ";
-            sqlGiaoBSCDV += "and nhanviennhan = '" + nhanviennhan + "'";
-            sqlGiaoBSCDV += "and thang = '" + thang + "'";
-            sqlGiaoBSCDV += "and nam = '" + nam + "'";
+            string sqlGiaoBSCDV = "select giaobscnhanvien.*, nv.nhanvien_hoten from giaobscnhanvien, nhanvien nv ";
+            sqlGiaoBSCDV += "where giaobscnhanvien.nhanviengiao = '" + nhanviengiao + "' ";
+            sqlGiaoBSCDV += "and giaobscnhanvien.nhanviennhan = '" + nhanviennhan + "' ";
+            sqlGiaoBSCDV += "and giaobscnhanvien.thang = '" + thang + "' ";
+            sqlGiaoBSCDV += "and giaobscnhanvien.nam = '" + nam + "' ";
+            sqlGiaoBSCDV += "and giaobscnhanvien.nhanviennhan = nv.nhanvien_id";
             try
             {
                 dtGiaoBSCDV = cnBSC.XemDL(sqlGiaoBSCDV);
@@ -125,6 +147,7 @@ namespace VNPT_BSC.BSC
                 dicOutput.Add("trangthaicham", dtGiaoBSCDV.Rows[0]["trangthaicham"].ToString());
                 dicOutput.Add("trangthaiketthuc", dtGiaoBSCDV.Rows[0]["trangthaiketthuc"].ToString());
                 dicOutput.Add("trangthaidongy_kqtd", dtGiaoBSCDV.Rows[0]["trangthaidongy_kqtd"].ToString());
+                dicOutput.Add("ten_nv_nhan", dtGiaoBSCDV.Rows[0]["nhanvien_hoten"].ToString());
             }
             else
             {
@@ -137,6 +160,7 @@ namespace VNPT_BSC.BSC
                 dicOutput.Add("trangthaicham", "0");
                 dicOutput.Add("trangthaiketthuc", "0");
                 dicOutput.Add("trangthaidongy_kqtd", "0");
+                dicOutput.Add("ten_nv_nhan", "");
             }
 
             return dicOutput;

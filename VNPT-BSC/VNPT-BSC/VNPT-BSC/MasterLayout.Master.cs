@@ -96,33 +96,26 @@ namespace VNPT_BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Nhanvien nhanvien = new Nhanvien();
-            DataTable dtQuyen = new DataTable();
-            int nNumRole = 0;
-            //string szChucVu = "";
-            nhanvien = Session.GetCurrentUser();
-            quyenHeThong = Session.GetRole();
-            if (nhanvien == null)
-            {
-                Response.Redirect("~/Login.aspx");
+            if (!IsPostBack) {
+                Nhanvien nhanvien = new Nhanvien();
+                DataTable dtQuyen = new DataTable();
+                int nNumRole = 0;
+                //string szChucVu = "";
+                nhanvien = Session.GetCurrentUser();
+                quyenHeThong = Session.GetRole();
+                if (nhanvien == null)
+                {
+                    Response.Redirect("~/Login.aspx");
+                }
+
+                userName = nhanvien.nhanvien_hoten;
+                nNumRole = nhanvien.nhanvien_chucvu_id.Length;
+                userID = nhanvien.nhanvien_id;
+                userDonVi = nhanvien.nhanvien_donvi_id;
+
+                dtPhanHoiGiao = getPhanHoiGiao();
+                dtPhanHoiThamDinh = getPhanHoiThamDinh(nhanvien.nhanvien_donvi_id);
             }
-
-            userName = nhanvien.nhanvien_hoten;
-            nNumRole = nhanvien.nhanvien_chucvu_id.Length;
-            userID = nhanvien.nhanvien_id;
-            userDonVi = nhanvien.nhanvien_donvi_id;
-
-            dtPhanHoiGiao = getPhanHoiGiao();
-            dtPhanHoiThamDinh = getPhanHoiThamDinh(nhanvien.nhanvien_donvi_id);
-            //for (int nIndex = 0; nIndex < nNumRole; nIndex++)
-            //{
-            //    int chucvu_id = nhanvien.nhanvien_chucvu_id[nIndex];
-            //    szChucVu += getTenChucVu(chucvu_id);
-            //    if (nIndex < nNumRole - 1)
-            //    {
-            //        szChucVu += ",";
-            //    }
-            //}
         }
     }
 }

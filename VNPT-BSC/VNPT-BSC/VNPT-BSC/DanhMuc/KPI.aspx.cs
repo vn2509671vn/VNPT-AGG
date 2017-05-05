@@ -21,10 +21,29 @@ namespace VNPT_BSC.DanhMuc
         public static DataTable dtkpi_kpo = new DataTable();
         public static DataTable dtnhom_kpi = new DataTable();
 
-        private DataTable getkpiList()
+        private DataTable getkpiList(bool nFindResultBSCDonVi)
         {
             Nhanvien nhanvien = Session.GetCurrentUser();
-            string sqlkpi = "select a.kpi_id,a.kpi_ten,a.kpi_mota,a.kpi_ngaytao,c.nhanvien_hoten,b.kpo_ten,b.kpo_id,c.nhanvien_id, d.ten_nhom, d.id, a.kpi_ma from kpi a,kpo b,nhanvien c, nhom_kpi d where a.kpi_nguoitao = c.nhanvien_id and a.kpi_thuoc_kpo = b.kpo_id and a.kpi_nguoitao = '" + nhanvien.nhanvien_id + "' and d.id = a.nhom_kpi and a.hienthi = 1";
+            string sqlkpi = "";
+            if (nFindResultBSCDonVi)
+            {
+                sqlkpi = "select a.kpi_id,a.kpi_ten,a.kpi_mota,a.kpi_ngaytao,c.nhanvien_hoten,b.kpo_ten,b.kpo_id,c.nhanvien_id, d.ten_nhom, d.id, a.kpi_ma ";
+                sqlkpi += "from kpi a,kpo b,nhanvien c, nhom_kpi d ";
+                sqlkpi += "where a.kpi_nguoitao = c.nhanvien_id ";
+                sqlkpi += "and a.kpi_thuoc_kpo = b.kpo_id ";
+                sqlkpi += "and a.kpi_nguoitao in (select nhanvien.nhanvien_id from nhanvien, chucvu, nhanvien_chucvu, quyen_cv where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id and chucvu.chucvu_id = nhanvien_chucvu.chucvu_id and chucvu.chucvu_id = quyen_cv.chucvu_id and quyen_cv.quyen_id = 2) ";
+                sqlkpi += "and d.id = a.nhom_kpi and a.hienthi = 1";
+            }
+            else { 
+                sqlkpi = "select a.kpi_id,a.kpi_ten,a.kpi_mota,a.kpi_ngaytao,c.nhanvien_hoten,b.kpo_ten,b.kpo_id,c.nhanvien_id, d.ten_nhom, d.id, a.kpi_ma ";
+                sqlkpi += "from kpi a,kpo b,nhanvien c, nhom_kpi d ";
+                sqlkpi += "where a.kpi_nguoitao = c.nhanvien_id ";
+                sqlkpi += "and a.kpi_thuoc_kpo = b.kpo_id ";
+                sqlkpi += "and a.kpi_nguoitao = '" + nhanvien.nhanvien_id + "' ";
+                sqlkpi += "and d.id = a.nhom_kpi and a.hienthi = 1";
+            }
+            
+            
             DataTable dtkpi = new DataTable();
             try
             {
@@ -131,7 +150,7 @@ namespace VNPT_BSC.DanhMuc
                     string sqlnhom_kpi = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id";
 
                     dtkpi = new DataTable();
-                    dtkpi = getkpiList();
+                    dtkpi = getkpiList(nFindResultBSCDonVi);
                     dtnhanvien_kpi = cn.XemDL(sqlnhanvien);
                     dtkpi_kpo = cn.XemDL(sqlkpo);
                     dtnhom_kpi = cn.XemDL(sqlnhom_kpi);

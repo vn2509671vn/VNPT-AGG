@@ -61,7 +61,7 @@ namespace VNPT_BSC.BSC
             outputHTML += "<th class='no-sort'>Chỉ tiêu</th>";
             outputHTML += "<th class='no-sort'>Tỷ trọng (%)</th>";
             outputHTML += "<th class='no-sort'>ĐVT</th>";
-            outputHTML += "<th class='no-sort'>Kế hoạch</th>";
+            outputHTML += "<th class='no-sort'>Chỉ tiêu</th>";
             outputHTML += "<th class='no-sort'>Thực hiện</th>";
             outputHTML += "<th class='no-sort'>Thẩm định</th>";
             outputHTML += "<th class='no-sort'>Tỷ lệ thực hiện (%)</th>";
@@ -226,12 +226,20 @@ namespace VNPT_BSC.BSC
                     Nhanvien nhanvien = new Nhanvien();
                     nhanvien = Session.GetCurrentUser();
 
+                    // Khai báo các biến cho việc kiểm tra quyền
+                    List<int> quyenHeThong = new List<int>();
+                    bool nFindResult = false;
+                    quyenHeThong = Session.GetRole();
+
+                    /*Kiểm tra nếu không có quyền giao bsc đơn vị (id của quyền là 2) thì đẩy ra trang đăng nhập*/
+                    nFindResult = quyenHeThong.Contains(2);
+
                     donvigiao = Request.QueryString["donvigiao"];
                     donvinhan = Request.QueryString["donvinhan"];
                     thang = Request.QueryString["thang"];
                     nam = Request.QueryString["nam"];
 
-                    if (donvigiao == null || donvinhan == null || thang == null || nam == null || nhanvien.nhanvien_donvi_id != Convert.ToInt32(donvigiao))
+                    if (donvigiao == null || donvinhan == null || thang == null || nam == null || !nFindResult)
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                         Response.Write("<script>window.location.href='../Login.aspx';</script>");

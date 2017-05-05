@@ -152,6 +152,7 @@
     <Content Include="Bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Bootstrap\function.js" />
     <Content Include="Bootstrap\hien_custom.css" />
+    <Content Include="Bootstrap\jquery.autocomplete.js" />
     <Content Include="Bootstrap\jquery.js" />
     <Content Include="Bootstrap\menu.css" />
     <Content Include="Bootstrap\sweetalert-dev.js" />
@@ -161,6 +162,7 @@
     <Content Include="BSC\ChiTietBSCKiemDinh.aspx" />
     <Content Include="BSC\ChiTietBSCNghiemThu.aspx" />
     <Content Include="BSC\ChiTietBSCNhan.aspx" />
+    <Content Include="BSC\ChiTietBSCNV.aspx" />
     <Content Include="BSC\ChiTietBSCNVKiemDinh.aspx" />
     <Content Include="BSC\ChiTietBSCNVNghiemThu.aspx" />
     <Content Include="BSC\ChiTietBSCNVNhan.aspx" />
@@ -168,8 +170,11 @@
     <Content Include="BSC\DanhSachBSCDaGiao_ThamDinh.aspx" />
     <Content Include="BSC\DanhSachBSCDaGiao_ThucTrang.aspx" />
     <Content Include="BSC\DanhSachBSCNVDaGiao.aspx" />
+    <Content Include="BSC\DanhSachBSCNVDaGiao_ThucTrang.aspx" />
+    <Content Include="BSC\DanhSachBSCTatCaNV.aspx" />
     <Content Include="BSC\ImportBSC.aspx" />
     <Content Include="BSC\ImportBSCNV.aspx" />
+    <Content Include="BSC\KetQuaNghiemThuDV.aspx" />
     <Content Include="BSC\KiemDinhBSCDonVi.aspx" />
     <Content Include="BSC\KiemDinhBSCNhanVien.aspx" />
     <Content Include="BSC\MauBSC.aspx" />
@@ -180,7 +185,10 @@
     <Content Include="BSC\NhanBSCNhanVien.aspx" />
     <Content Include="BSC\PhanPhoiBSCDonVi.aspx" />
     <Content Include="BSC\PhanPhoiBSCNhanVien.aspx" />
+    <Content Include="BSC\PhanPhoiBSCNhanVien_PBCN.aspx" />
+    <Content Include="BSC\PhanPhoiBSCNhanVien_Tmp.aspx" />
     <Content Include="BSC\XepHangBSC.aspx" />
+    <Content Include="BSC\XepHangBSCNV.aspx" />
     <Content Include="BSC\XuatMauBSC.aspx" />
     <Content Include="BSC\XuatMauBSCNV.aspx" />
     <Content Include="build\css\custom.css" />
@@ -287,6 +295,7 @@
     <Content Include="Images\bullet.png" />
     <Content Include="Images\heroAccent.png" />
     <Content Include="Images\Logo\logo.jpg" />
+    <Content Include="Images\Logo\logo.png" />
     <Content Include="Images\orderedList0.png" />
     <Content Include="Images\orderedList1.png" />
     <Content Include="Images\orderedList2.png" />
@@ -414,6 +423,11 @@
     <Content Include="Global.asax" />
     <Content Include="src\js\custom.js" />
     <Content Include="src\js\helpers\smartresize.js" />
+    <Content Include="TinhLuong\BacLuong.aspx" />
+    <Content Include="TinhLuong\ChiTietTapThe.aspx" />
+    <Content Include="TinhLuong\DiemBSCNV.aspx" />
+    <Content Include="TinhLuong\NhanSu.aspx" />
+    <Content Include="TinhLuong\TinhLuong.aspx" />
     <Content Include="vendors\animate.css\animate.css" />
     <Content Include="vendors\animate.css\animate.min.css" />
     <Content Include="vendors\animate.css\gulpfile.js" />
@@ -3867,6 +3881,13 @@
     <Compile Include="BSC\ChiTietBSCNhan.aspx.designer.cs">
       <DependentUpon>ChiTietBSCNhan.aspx</DependentUpon>
     </Compile>
+    <Compile Include="BSC\ChiTietBSCNV.aspx.cs">
+      <DependentUpon>ChiTietBSCNV.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\ChiTietBSCNV.aspx.designer.cs">
+      <DependentUpon>ChiTietBSCNV.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BSC\ChiTietBSCNVKiemDinh.aspx.cs">
       <DependentUpon>ChiTietBSCNVKiemDinh.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -3916,6 +3937,20 @@
     <Compile Include="BSC\DanhSachBSCNVDaGiao.aspx.designer.cs">
       <DependentUpon>DanhSachBSCNVDaGiao.aspx</DependentUpon>
     </Compile>
+    <Compile Include="BSC\DanhSachBSCNVDaGiao_ThucTrang.aspx.cs">
+      <DependentUpon>DanhSachBSCNVDaGiao_ThucTrang.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\DanhSachBSCNVDaGiao_ThucTrang.aspx.designer.cs">
+      <DependentUpon>DanhSachBSCNVDaGiao_ThucTrang.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\DanhSachBSCTatCaNV.aspx.cs">
+      <DependentUpon>DanhSachBSCTatCaNV.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\DanhSachBSCTatCaNV.aspx.designer.cs">
+      <DependentUpon>DanhSachBSCTatCaNV.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BSC\ImportBSC.aspx.cs">
       <DependentUpon>ImportBSC.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -3929,6 +3964,13 @@
     </Compile>
     <Compile Include="BSC\ImportBSCNV.aspx.designer.cs">
       <DependentUpon>ImportBSCNV.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\KetQuaNghiemThuDV.aspx.cs">
+      <DependentUpon>KetQuaNghiemThuDV.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\KetQuaNghiemThuDV.aspx.designer.cs">
+      <DependentUpon>KetQuaNghiemThuDV.aspx</DependentUpon>
     </Compile>
     <Compile Include="BSC\KiemDinhBSCDonVi.aspx.cs">
       <DependentUpon>KiemDinhBSCDonVi.aspx</DependentUpon>
@@ -4000,12 +4042,33 @@
     <Compile Include="BSC\PhanPhoiBSCNhanVien.aspx.designer.cs">
       <DependentUpon>PhanPhoiBSCNhanVien.aspx</DependentUpon>
     </Compile>
+    <Compile Include="BSC\PhanPhoiBSCNhanVien_PBCN.aspx.cs">
+      <DependentUpon>PhanPhoiBSCNhanVien_PBCN.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\PhanPhoiBSCNhanVien_PBCN.aspx.designer.cs">
+      <DependentUpon>PhanPhoiBSCNhanVien_PBCN.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\PhanPhoiBSCNhanVien_Tmp.aspx.cs">
+      <DependentUpon>PhanPhoiBSCNhanVien_Tmp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\PhanPhoiBSCNhanVien_Tmp.aspx.designer.cs">
+      <DependentUpon>PhanPhoiBSCNhanVien_Tmp.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BSC\XepHangBSC.aspx.cs">
       <DependentUpon>XepHangBSC.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="BSC\XepHangBSC.aspx.designer.cs">
       <DependentUpon>XepHangBSC.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BSC\XepHangBSCNV.aspx.cs">
+      <DependentUpon>XepHangBSCNV.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\XepHangBSCNV.aspx.designer.cs">
+      <DependentUpon>XepHangBSCNV.aspx</DependentUpon>
     </Compile>
     <Compile Include="BSC\XuatMauBSC.aspx.cs">
       <DependentUpon>XuatMauBSC.aspx</DependentUpon>
@@ -4152,6 +4215,41 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="TinhLuong\BacLuong.aspx.cs">
+      <DependentUpon>BacLuong.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TinhLuong\BacLuong.aspx.designer.cs">
+      <DependentUpon>BacLuong.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TinhLuong\ChiTietTapThe.aspx.cs">
+      <DependentUpon>ChiTietTapThe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TinhLuong\ChiTietTapThe.aspx.designer.cs">
+      <DependentUpon>ChiTietTapThe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TinhLuong\DiemBSCNV.aspx.cs">
+      <DependentUpon>DiemBSCNV.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TinhLuong\DiemBSCNV.aspx.designer.cs">
+      <DependentUpon>DiemBSCNV.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TinhLuong\NhanSu.aspx.cs">
+      <DependentUpon>NhanSu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TinhLuong\NhanSu.aspx.designer.cs">
+      <DependentUpon>NhanSu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TinhLuong\TinhLuong.aspx.cs">
+      <DependentUpon>TinhLuong.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TinhLuong\TinhLuong.aspx.designer.cs">
+      <DependentUpon>TinhLuong.aspx</DependentUpon>
     </Compile>
     <Compile Include="Web References\SMSsv\Reference.cs">
       <AutoGen>True</AutoGen>

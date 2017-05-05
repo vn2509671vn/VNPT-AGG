@@ -149,11 +149,11 @@
                                 <thead>
                                     <tr>
                                         <th class='text-center'><input type='checkbox' id='checkall-kpitrongkho' onclick='check_kpi_trongkho()'/></th>
-                                        <th>KPI</th>
-                                        <th>KPO</th>
-                                        <th>ĐVT</th>
-                                        <th>Tỷ trọng (%)</th>
-                                        <th>Nhóm KPI</th>
+                                        <th class='text-center'>KPI</th>
+                                        <th class='text-center'>KPO</th>
+                                        <th class='text-center'>ĐVT</th>
+                                        <th class='text-center'>Tỷ trọng (%)</th>
+                                        <th class='text-center'>Nhóm KPI</th>
                                     </tr>
                                     <tr id='filterSection_KhoKPI'>
                                         <th></th>
@@ -172,7 +172,7 @@
                                           string nhom_kpi = dtKhoKPI.Rows[i]["nhom_kpi"].ToString();
                                     %>
                                     <tr data-id='<%=kpi_id %>'>
-                                        <td class='text-center'><input name='checkbox-kpitrongkho' id='kpi_id_<%=kpi_id %>' type='checkbox' checked value='<%=kpi_id %>' /></td>
+                                        <td class='text-center'><input name='checkbox-kpitrongkho' id='kpi_id_<%=kpi_id %>' type='checkbox' value='<%=kpi_id %>' /></td>
                                         <td class='min-width-300'><strong><%=kpi_name %></strong></td>
                                         <td><strong><%=kpo_name %></strong></td>
                                         <td class='text-center'>
@@ -185,7 +185,7 @@
                                                 <%} %>
                                             </select>
                                         </td>
-                                        <td class='text-center'><input type='text' class='form-control' id='tytrong_<%=kpi_id %>' size='2' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>
+                                        <td class='text-center'><input type='text' class='form-control cls_tytrong' id='tytrong_<%=kpi_id %>' size='2' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>
                                         <td class='text-center'>
                                             <select class='form-control' id='nhom_kpi_<%=kpi_id %>' name="cboNhomKPI" data-nhom-id='<%=nhom_kpi %>'>
                                                 <%for (int nNhom = 0; nNhom < dtNhomKPI.Rows.Count; nNhom++)
@@ -231,12 +231,12 @@
                         </div>                                    
                         <div class="modal-body">
                             <div class='table-responsive'>
-                            <table class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%'>
+                            <table class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%' id="tbQuyDinhTyTrong">
                                 <thead>
                                     <tr>
-                                        <th>Nhóm KPI</th>
-                                        <th>Loại Mẫu</th>
-                                        <th>Tỷ Trọng (%)</th>
+                                        <th class='text-center'>Nhóm KPI</th>
+                                        <th class='text-center'>Loại Mẫu</th>
+                                        <th class='text-center'>Tỷ Trọng (%)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -263,10 +263,11 @@
             </div>
     <!-- End Phản hồi -->
     </div>
-    <a id='checkTyTrong' class="btn btn-danger btn-md" style="position:fixed; bottom: 0px; right:0px; border-radius: 40%;">Check tỷ trọng</a>
+    <a id='checkTyTrong' class="btn btn-danger btn-md" style="position:fixed; bottom: 0px; right:0px; border-radius: 40%;">Kiểm tra tỷ trọng</a>
 <script type="text/javascript">
     var donvinhan = "<%=donvinhan%>";
     var nguoitao = "<%= nguoitao%>";
+    var arrKPITmp = new Array();
 
     function onlyNumbers(e) {
         //if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
@@ -274,7 +275,7 @@
     }
 
     function check_kpi_duocgiao() {
-        $("#checkall-kpiduocgiao").click(function () {
+        $(document).on("click", "#checkall-kpiduocgiao", function () {
             if (this.checked) {
                 // Iterate each checkbox
                 $('input[name=checkbox-kpiduocgiao]').each(function () {
@@ -290,7 +291,7 @@
     }
 
     function check_kpi_trongkho() {
-        $("#checkall-kpitrongkho").click(function () {
+        $(document).on("click", "#checkall-kpitrongkho", function () {
             if (this.checked) {
                 // Iterate each checkbox
                 $('input[name=checkbox-kpitrongkho]').each(function () {
@@ -307,6 +308,7 @@
 
     // Fill data khi click danh sách mẫu bsc
     function fillData(month, year, nguoitao, bscduocgiao) {
+        arrKPITmp = [];
         $("input[type=text]").each(function () {
             $(this).val("");
         });
@@ -342,7 +344,7 @@
             timer: 2000,
             showConfirmButton: false
         });
-
+        loadNhomKPI(loaiMauBSC);
         setTimeout(function () {
             $.ajax({
                 type: "POST",
@@ -365,6 +367,17 @@
                         $("#tytrong_" + KPI_ID).val(tytrong);
                         //$("#nvtd_" + KPI_ID).val(nhanvienthamdinh);
                         $("#nhom_kpi_" + KPI_ID).val(nhom_kpi);
+                        var nhom_kpi_tytrong = $("#nhom_kpi_" + KPI_ID + " option:selected").attr("data-nhom-tytrong");
+                        var nhom_kpi_ten = $("#nhom_kpi_" + KPI_ID + " option:selected").text();
+
+                        arrKPITmp.push({
+                            kpi_id: KPI_ID,
+                            tytrong: tytrong,
+                            dvt: donvitinh,
+                            nhom_kpi: nhom_kpi,
+                            nhom_kpi_tytrong: nhom_kpi_tytrong,
+                            nhom_kpi_ten: nhom_kpi_ten
+                        });
                     }
                 },
                 error: function (msg) { alert(msg.d); }
@@ -389,8 +402,7 @@
             dataType: "json",
             success: function (result) {
                 var output = result.d;
-                var htmlKPIDuocGiao = output.bscduocgiao;
-                $("#kpiduocgiao").html(htmlKPIDuocGiao);
+                $("#kpiduocgiao").html(output);
 
                 // Setup - add a text input to each footer cell
                 $('#danhsachKPIDuocGiao thead tr#filterSection_BSCDuocGiao th').each(function () {
@@ -423,7 +435,7 @@
                 $("#danhsachKPIDuocGiao tbody tr").each(function () {
                     var kpi_id = $(this).attr("data-id");
                     $("#danhsachKhoKPI tbody tr[data-id='" + kpi_id + "']").addClass("hide");
-                })
+                });
             },
             error: function (msg) { alert(msg.d); }
         });
@@ -435,26 +447,28 @@
         };
 
         var szRequest = JSON.stringify(requestData);
-        $.ajax({
-            type: "POST",
-            url: "MauBSCNhanVien.aspx/getNhomKPIByLoaiMauID",
-            data: szRequest,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (result) {
-                var output = result.d;
-                $("select[name='cboNhomKPI']").each(function () {
-                    $(this).html(output);
-                    var id = $(this).attr("data-nhom-id");
-                    $(this).val(id)
-                })
-            },
-            error: function (msg) { alert(msg.d); }
-        });
+        setTimeout(function () {
+            $.ajax({
+                type: "POST",
+                url: "MauBSCNhanVien.aspx/getNhomKPIByLoaiMauID",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var output = result.d;
+                    $("select[name='cboNhomKPI']").each(function () {
+                        $(this).html(output);
+                        var id = $(this).attr("data-nhom-id");
+                        $(this).val(id)
+                    })
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        }, 2000);
     }
 
     $(document).ready(function () {
-
+        
         // Set thời gian hiện tại
         //var curTime = new Date();
         //var month = curTime.getMonth() + 1;
@@ -477,6 +491,7 @@
 
         // Khi thay đổi bsc được giao
         $("#bscduocgiao").change(function () {
+            arrKPITmp = [];
             var data = $(this).val();
             var arrDate = data.split("-");
             var thang = arrDate[0];
@@ -498,7 +513,9 @@
             if (month != "" && year != "" && bscduocgiao != "") {
                 fillData(month, year, nguoitao, bscduocgiao);
             }
-            loadNhomKPI(maubsc);
+            else {
+                loadNhomKPI(maubsc);
+            }
         });
 
         // Khi click save
@@ -718,96 +735,15 @@
         });
 
         $("#checkTyTrong").click(function () {
-            var arrKPI = new Array();
-            var totalTyTrong = 0;
-
-            // Clear search
-            var cleardanhsachKPIDuocGiao = $('#danhsachKPIDuocGiao').DataTable();
-            cleardanhsachKPIDuocGiao
-             .search('')
-             .columns().search('')
-             .draw();
-            $('#danhsachKPIDuocGiao thead tr#filterSection_BSCDuocGiao th input').each(function () {
-                $(this).val('');
-            });
-
-            var cleardanhsachKPIDuocGiao = $('#danhsachKhoKPI').DataTable();
-            cleardanhsachKPIDuocGiao
-             .search('')
-             .columns().search('')
-             .draw();
-            $('#danhsachKhoKPI thead tr#filterSection_KhoKPI th input').each(function () {
-                $(this).val('');
-            });
-
-
-            $("#danhsachKPIDuocGiao > tbody > tr").each(function () {
-                var kpi_id = $(this).attr("data-id");
-                //var tytrong = $("#tytrong_" + kpi_id).val();
-                //var dvt = $("#dvt_" + kpi_id).val();
-                var tytrong = $("#tytrong_" + kpi_id).val();
-                if (tytrong == "") {
-                    tytrong = 0;
-                }
-
-
-                var dvt = $("#dvt_" + kpi_id).val();
-                //var nvtd = $("#nvtd_" + kpi_id).val();
-                var nhom_kpi = $("#nhom_kpi_" + kpi_id).val();
-                var nhom_kpi_tytrong = $("#nhom_kpi_" + kpi_id + " option:selected").attr("data-nhom-tytrong");
-                var nhom_kpi_ten = $("#nhom_kpi_" + kpi_id + " option:selected").text();
-                var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
-                if (isChecked == true) {
-                    totalTyTrong += parseInt(tytrong);
-                    arrKPI.push({
-                        kpi_id: kpi_id,
-                        tytrong: tytrong,
-                        dvt: dvt,
-                        nhom_kpi: nhom_kpi,
-                        nhom_kpi_tytrong: nhom_kpi_tytrong,
-                        nhom_kpi_ten: nhom_kpi_ten,
-                        nvtd: nguoitao
-                    });
-                }
-            });
-
-            $("#danhsachKhoKPI > tbody > tr").each(function () {
-                var existHide = $(this).hasClass("hide");
-                if (existHide) {
-                    return;
-                }
-                var kpi_id = $(this).attr("data-id");
-                //var tytrong = $("#tytrong_" + kpi_id).val();
-                //var dvt = $("#dvt_" + kpi_id).val();
-                var tytrong = $("#tytrong_" + kpi_id).val();
-                if (tytrong == "") {
-                    tytrong = 0;
-                }
-
-
-                var dvt = $("#dvt_" + kpi_id).val();
-                //var nvtd = $("#nvtd_" + kpi_id).val();
-                var nhom_kpi = $("#nhom_kpi_" + kpi_id).val();
-                var nhom_kpi_tytrong = $("#nhom_kpi_" + kpi_id + " option:selected").attr("data-nhom-tytrong");
-                var nhom_kpi_ten = $("#nhom_kpi_" + kpi_id + " option:selected").text();
-                var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
-                if (isChecked == true) {
-                    totalTyTrong += parseInt(tytrong);
-                    arrKPI.push({
-                        kpi_id: kpi_id,
-                        tytrong: tytrong,
-                        dvt: dvt,
-                        nhom_kpi: nhom_kpi,
-                        nhom_kpi_tytrong: nhom_kpi_tytrong,
-                        nhom_kpi_ten: nhom_kpi_ten,
-                        nvtd: nguoitao
-                    });
-                }
-            });
-
-            var arrNhomKPI = groupBy(arrKPI, 'nhom_kpi_ten', 'nhom_kpi_tytrong', 'tytrong');
+            var arrNhomKPI = groupByThreeCol(arrKPITmp, 'nhom_kpi_ten', 'nhom_kpi_tytrong', 'nhom_kpi', 'tytrong');
             var message = "";
             var tonghienco = 0;
+            arrNhomKPI.sort(function (a, b) {
+                var a1 = parseInt(a.nhom_kpi), b1 = parseInt(b.nhom_kpi);
+                if (a1 == b1) return 0;
+                return a1 > b1 ? 1 : -1;
+            });
+
             for (var nIndex = 0; nIndex < arrNhomKPI.length; nIndex++) {
                 var tongtytrong = parseInt(arrNhomKPI[nIndex].tytrong);
                 var tytrongnhom = parseInt(arrNhomKPI[nIndex].nhom_kpi_tytrong);
@@ -825,6 +761,99 @@
                 html: true
             });
             return false;
+        });
+
+        $("#tbQuyDinhTyTrong").DataTable();
+
+        $(document).on("click", "input[type='checkbox']", function () {
+            var kpi_id = $(this).val();
+            var isChecked = $(this).is(":checked");
+            if (isChecked) {
+                if (kpi_id !== "on") {
+                    $("table > tbody > tr[data-id='" + kpi_id + "']").each(function () {
+                        var existHide = $(this).hasClass("hide");
+                        if (existHide) {
+                            return;
+                        }
+                        var tytrong = $("#tytrong_" + kpi_id).val();
+                        if (tytrong == "") {
+                            tytrong = 0;
+                        }
+
+
+                        var dvt = $("#dvt_" + kpi_id).val();
+                        var nhom_kpi = $("#nhom_kpi_" + kpi_id).val();
+                        var nhom_kpi_tytrong = $("#nhom_kpi_" + kpi_id + " option:selected").attr("data-nhom-tytrong");
+                        var nhom_kpi_ten = $("#nhom_kpi_" + kpi_id + " option:selected").text();
+
+                        arrKPITmp.push({
+                            kpi_id: kpi_id,
+                            tytrong: tytrong,
+                            dvt: dvt,
+                            nhom_kpi: nhom_kpi,
+                            nhom_kpi_tytrong: nhom_kpi_tytrong,
+                            nhom_kpi_ten: nhom_kpi_ten
+                        });
+                    });                    
+                }
+            }
+            else {
+                arrKPITmp = $.grep(arrKPITmp, function (e,i) {
+                    return +e.kpi_id != kpi_id;
+                });
+            }
+        });
+
+        $(document).on("change", "select", function () {
+            var kpi_id = $(this).closest('tr').attr("data-id");
+            var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
+            if (isChecked) {
+                if (kpi_id !== "on") {
+                    $("table > tbody > tr[data-id='" + kpi_id + "']").each(function () {
+                        var existHide = $(this).hasClass("hide");
+                        if (existHide) {
+                            return;
+                        }
+                        var tytrong = $("#tytrong_" + kpi_id).val();
+                        if (tytrong == "") {
+                            tytrong = 0;
+                        }
+
+
+                        var dvt = $("#dvt_" + kpi_id).val();
+                        var nhom_kpi = $("#nhom_kpi_" + kpi_id).val();
+                        var nhom_kpi_tytrong = $("#nhom_kpi_" + kpi_id + " option:selected").attr("data-nhom-tytrong");
+                        var nhom_kpi_ten = $("#nhom_kpi_" + kpi_id + " option:selected").text();
+
+                        arrKPITmp = $.grep(arrKPITmp, function (e, i) {
+                            return +e.kpi_id != kpi_id;
+                        });
+
+                        arrKPITmp.push({
+                            kpi_id: kpi_id,
+                            tytrong: tytrong,
+                            dvt: dvt,
+                            nhom_kpi: nhom_kpi,
+                            nhom_kpi_tytrong: nhom_kpi_tytrong,
+                            nhom_kpi_ten: nhom_kpi_ten
+                        });
+                    });
+                }
+            }
+            else {
+                arrKPITmp = $.grep(arrKPITmp, function (e, i) {
+                    return +e.kpi_id != kpi_id;
+                });
+            }
+        });
+
+        $(document).on("keyup", ".cls_tytrong", function () {
+            var kpi_id = $(this).closest('tr').attr("data-id");
+            var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
+            if (isChecked) {
+                var objIndex = arrKPITmp.findIndex((obj => obj.kpi_id == kpi_id));
+                arrKPITmp[objIndex].tytrong = $(this).val();
+            }
         });
     });
 </script>

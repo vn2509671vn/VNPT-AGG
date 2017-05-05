@@ -87,11 +87,11 @@
                                 <thead>
                                   <tr>
                                     <th class='text-center'><input type="checkbox" id="checkall-kpi"/></th>
-                                    <th>KPI</th>
-                                    <th>KPO</th>
-                                    <th>ĐVT</th>
-                                    <th>Tỷ trọng (%)</th>
-                                    <th>Đơn vị thẩm định</th>
+                                    <th class='text-center'>KPI</th>
+                                    <th class='text-center'>KPO</th>
+                                    <th class='text-center'>ĐVT</th>
+                                    <th class='text-center'>Tỷ trọng (%)</th>
+                                    <th class='text-center'>Đơn vị thẩm định</th>
                                   </tr>
                                   <tr id="thSearch">
                                     <th></th>

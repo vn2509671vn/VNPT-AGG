@@ -41,10 +41,10 @@ namespace VNPT_BSC.Admin
             outputHTML += "<table id='table-bsclist' class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%'>";
             outputHTML += "<thead>";
             outputHTML += "<tr>";
-            outputHTML += "<th>STT</th>";
-            outputHTML += "<th>Đơn vị giao</th>";
-            outputHTML += "<th>Đơn vị nhận</th>";
-            outputHTML += "<th>Ngày áp dụng</th>";
+            outputHTML += "<th class='text-center'>STT</th>";
+            outputHTML += "<th class='text-center'>Đơn vị giao</th>";
+            outputHTML += "<th class='text-center'>Đơn vị nhận</th>";
+            outputHTML += "<th class='text-center'>Ngày áp dụng</th>";
             outputHTML += "<th></th>";
             outputHTML += "</tr>";
             outputHTML += "</thead>";

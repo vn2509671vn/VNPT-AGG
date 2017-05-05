@@ -14,10 +14,10 @@ namespace VNPT_BSC.BSC
 {
     public partial class NghiemThuBSCDonVi : System.Web.UI.Page
     {
-        public static string donvigiao;
+        //public static string donvigiao;
         /*Lấy danh sách BSC được giao theo năm*/
         [WebMethod]
-        public static Dictionary<String, String> loadBSCByYear(int thang, int nam, int donvigiao)
+        public static Dictionary<String, String> loadBSCByYear(int thang, int nam)
         {
             Dictionary<String, String> dicOutput = new Dictionary<string, string>();
             Connection cnBSC = new Connection();
@@ -31,7 +31,6 @@ namespace VNPT_BSC.BSC
             sqlBSC += "and giaobsc.donvinhan = dvnhan.donvi_id ";
             sqlBSC += "and giaobsc.thang = '" + thang + "' ";
             sqlBSC += "and giaobsc.nam = '" + nam + "' ";
-            sqlBSC += "and giaobsc.donvigiao = '" + donvigiao + "' ";
 
             try
             {
@@ -46,13 +45,13 @@ namespace VNPT_BSC.BSC
             outputHTML += "<table id='table-bsclist' class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%'>";
             outputHTML += "<thead>";
             outputHTML += "<tr>";
-            outputHTML += "<th>STT</th>";
-            outputHTML += "<th>Đơn vị nhận</th>";
-            outputHTML += "<th>Ngày áp dụng</th>";
-            outputHTML += "<th>Trạng thái nhận</th>";
-            outputHTML += "<th>Trạng thái nộp</th>";
-            outputHTML += "<th>Trạng thái đồng ý KQTĐ</th>";
-            outputHTML += "<th>Trạng thái kết thúc</th>";
+            outputHTML += "<th class='text-center'>STT</th>";
+            outputHTML += "<th class='text-center'>Đơn vị nhận</th>";
+            outputHTML += "<th class='text-center'>Ngày áp dụng</th>";
+            outputHTML += "<th class='text-center'>Trạng thái nhận</th>";
+            outputHTML += "<th class='text-center'>Trạng thái nộp</th>";
+            outputHTML += "<th class='text-center'>Đồng ý kết quả thẩm định</th>";
+            outputHTML += "<th class='text-center'>Trạng thái kết thúc</th>";
             outputHTML += "<th></th>";
             outputHTML += "</tr>";
             outputHTML += "</thead>";
@@ -139,10 +138,10 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static bool nghiemthuTatCa(int donvigiao, int thang, int nam) {
+        public static bool nghiemthuTatCa(int thang, int nam) {
             Connection cn = new Connection();
             bool bResult = false;
-            string sql = "update giaobscdonvi set trangthaiketthuc = 1 where donvigiao = '" + donvigiao + "' and thang = '" + thang + "' and nam = '" + nam + "'";
+            string sql = "update giaobscdonvi set trangthaiketthuc = 1 where thang = '" + thang + "' and nam = '" + nam + "'";
             try
             {
                 cn.ThucThiDL(sql);
@@ -177,7 +176,7 @@ namespace VNPT_BSC.BSC
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                         Response.Write("<script>window.location.href='../Login.aspx';</script>");
                     }
-                    donvigiao = nhanvien.nhanvien_donvi_id.ToString();
+                    //donvigiao = nhanvien.nhanvien_donvi_id.ToString();
                 }
                 catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");

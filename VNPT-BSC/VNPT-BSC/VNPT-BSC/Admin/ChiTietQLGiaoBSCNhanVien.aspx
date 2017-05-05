@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-6">Nhân viên giao:</label>
+                    <label class="control-label col-sm-6">Lãnh đạo giao:</label>
                     <div class="col-sm-6 form-inline padding-top-7 ">
                         <span><strong id="nhanviengiao"></strong></span>
                     </div>

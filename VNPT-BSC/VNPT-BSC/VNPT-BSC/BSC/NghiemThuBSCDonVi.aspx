@@ -73,9 +73,8 @@
         window.location.replace("ChiTietBSCNghiemThu.aspx?donvigiao=" + donvigiao + "&donvinhan=" + donvinhan + "&thang=" + thang + "&nam=" + nam);
     }
 
-    function loadBSCByYear(month, year, donvigiao) {
+    function loadBSCByYear(month, year) {
         var requestData = {
-            donvigiao: donvigiao,
             thang: month,
             nam: year
         };
@@ -110,23 +109,22 @@
     }
 
     $(document).ready(function () {
-        var donvigiao = '<%=donvigiao %>';
 
         // Load grid lần đầu
-        loadBSCByYear($("#month").val(), $("#year").val(), donvigiao);
+        loadBSCByYear($("#month").val(), $("#year").val());
 
         // Load grid khi năm thay đổi
         $("#year").change(function () {
             var thang = $("#month").val();
             var nam = $(this).val();
-            loadBSCByYear(thang, nam, donvigiao);
+            loadBSCByYear(thang, nam);
         });
 
         // Load grid khi tháng thay đổi
         $("#month").change(function () {
             var nam = $("#year").val();
             var thang = $(this).val();
-            loadBSCByYear(thang, nam, donvigiao);
+            loadBSCByYear(thang, nam);
         });
 
         $("#nghiemthuTatCa").click(function () {
@@ -153,7 +151,7 @@
                             type: "success"
                         },
                         function () {
-                            loadBSCByYear(thang, nam, donvigiao);
+                            loadBSCByYear(thang, nam);
                         });
                     }
                     else {

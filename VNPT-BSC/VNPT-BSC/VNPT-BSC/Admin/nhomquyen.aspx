@@ -30,11 +30,11 @@
                         <table id="table-nhomquyen" class="table table-striped table-bordered table-full-width" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Mã nhóm quyền</th>
-                                    <th>Tên nhóm quyền</th>
-                                    <th>Mô tả nhóm quyền</th>
-                                    <th>Edit</th>
+                                    <th class='text-center'>ID</th>
+                                    <th class='text-center'>Mã nhóm quyền</th>
+                                    <th class='text-center'>Tên nhóm quyền</th>
+                                    <th class='text-center'>Mô tả nhóm quyền</th>
+                                    <th class='text-center'>Edit</th>
                                 </tr>
                             </thead>
                             <tbody>

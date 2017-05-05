@@ -65,7 +65,7 @@ namespace VNPT_BSC
             outputHTML += "<th class='no-sort'>Đơn vị thẩm định</th>";
             outputHTML += "<th class='no-sort'>Đơn vị tính</th>";
             outputHTML += "<th class='no-sort'>Trọng số</th>";
-            outputHTML += "<th class='no-sort'>Kế hoạch</th>";
+            outputHTML += "<th class='no-sort'>Chỉ tiêu</th>";
             outputHTML += "<th class='no-sort'>Thực hiện</th>";
             outputHTML += "<th class='no-sort'>Thẩm định</th>";
             outputHTML += "<th class='no-sort'>Trạng thái thẩm định</th>";
@@ -187,12 +187,12 @@ namespace VNPT_BSC
             outputHTML += "<thead>";
             outputHTML += "<tr>";
             outputHTML += "<th>STT</th>";
-            outputHTML += "<th>Nhân viên giao</th>";
+            outputHTML += "<th>Lãnh đạo giao</th>";
             outputHTML += "<th>Tên KPI</th>";
             outputHTML += "<th>Nhân viên thẩm định</th>";
             outputHTML += "<th>Đơn vị tính</th>";
             outputHTML += "<th>Trọng số</th>";
-            outputHTML += "<th>Kế hoạch</th>";
+            outputHTML += "<th>Chỉ tiêu</th>";
             outputHTML += "<th>Thực hiện</th>";
             outputHTML += "<th>Thẩm định</th>";
             outputHTML += "<th>Trạng thái thẩm định</th>";
@@ -286,7 +286,7 @@ namespace VNPT_BSC
             outputHTML += "<thead>";
             outputHTML += "<tr>";
             outputHTML += "<th>STT</th>";
-            outputHTML += "<th>Nhân viên giao</th>";
+            outputHTML += "<th>Lãnh đạo giao</th>";
             outputHTML += "<th>Nhân viên nhận</th>";
             outputHTML += "<th>Trạng thái chấm</th>";
             outputHTML += "<th>Trạng thái đồng ý KQKĐ</th>";

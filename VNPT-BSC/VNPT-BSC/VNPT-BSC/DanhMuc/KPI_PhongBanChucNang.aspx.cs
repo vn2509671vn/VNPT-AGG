@@ -23,7 +23,8 @@ namespace VNPT_BSC.DanhMuc
         private DataTable getkpiList()
         {
             Nhanvien nhanvien = Session.GetCurrentUser();
-            string sqlkpi = "select a.kpi_id,a.kpi_ten,a.kpi_mota,a.kpi_ngaytao,c.nhanvien_hoten,b.kpo_ten,b.kpo_id,c.nhanvien_id, a.kpi_ma from kpi a,kpo b,nhanvien c where a.kpi_nguoitao = c.nhanvien_id and a.kpi_thuoc_kpo = b.kpo_id and a.kpi_nguoitao = '" + nhanvien.nhanvien_id + "' and a.hienthi = 1";
+            //string sqlkpi = "select a.kpi_id,a.kpi_ten,a.kpi_mota,a.kpi_ngaytao,c.nhanvien_hoten,b.kpo_ten,b.kpo_id,c.nhanvien_id, a.kpi_ma, d.id, d.ten_nhom from kpi a,kpo b,nhanvien c, nhom_kpi d where a.kpi_nguoitao = c.nhanvien_id and a.kpi_thuoc_kpo = b.kpo_id and a.kpi_nguoitao = '" + nhanvien.nhanvien_id + "' and a.hienthi = 1 and a.nhom_kpi = d.id order by d.id, a.kpi_ma asc";
+            string sqlkpi = "select a.kpi_id,a.kpi_ten,a.kpi_mota,a.kpi_ngaytao,c.nhanvien_hoten,b.kpo_ten,b.kpo_id,c.nhanvien_id, a.kpi_ma, d.id, d.ten_nhom from kpi a,kpo b,nhanvien c, nhom_kpi d where a.kpi_nguoitao = c.nhanvien_id and a.kpi_thuoc_kpo = b.kpo_id and c.nhanvien_donvi = '" + nhanvien.nhanvien_donvi_id + "' and a.hienthi = 1 and a.nhom_kpi = d.id order by d.id, a.kpi_ma asc";
             DataTable dtkpi = new DataTable();
             try
             {
@@ -46,7 +47,7 @@ namespace VNPT_BSC.DanhMuc
             string sqlInsertNewData = "";
             try
             {
-                sqlInsertNewData = "insert into kpi(kpi_ten, kpi_ma, kpi_mota, kpi_ngaytao,kpi_nguoitao,kpi_thuoc_kpo, hienthi) values(N'" + kpi_tenAprove + "', '" + kpi_tenMa + "', N'" + kpi_motaAprove + "', '" + kpi_ngayAprove + "','" + nhanvien.nhanvien_id + "','" + kpi_kpoAprove + "', 1)";
+                sqlInsertNewData = "insert into kpi(kpi_ten, kpi_ma, kpi_mota, kpi_ngaytao,kpi_nguoitao,kpi_thuoc_kpo, hienthi, nhom_kpi) values(N'" + kpi_tenAprove + "', '" + kpi_tenMa + "', N'" + kpi_motaAprove + "', '" + kpi_ngayAprove + "','" + nhanvien.nhanvien_id + "',2023, 1, '" + kpi_kpoAprove + "')";
                 kpi.ThucThiDL(sqlInsertNewData);
                 output = true;
             }
@@ -67,7 +68,7 @@ namespace VNPT_BSC.DanhMuc
             string sqlUpdateData = "";
             try
             {
-                sqlUpdateData = "Update kpi set kpi_ten = N'" + kpi_ten_suaAprove + "', kpi_ma = '" + kpi_ma_suaAprove + "', kpi_mota = N'" + kpi_mota_suaAprove + "', kpi_nguoitao = '" + nhanvien.nhanvien_id + "', kpi_thuoc_kpo = '" + kpi_kpo_suaAprove + "' where kpi_id = '" + kpi_id_suaAprove + "'";
+                sqlUpdateData = "Update kpi set kpi_ten = N'" + kpi_ten_suaAprove + "', kpi_ma = '" + kpi_ma_suaAprove + "', kpi_mota = N'" + kpi_mota_suaAprove + "', kpi_nguoitao = '" + nhanvien.nhanvien_id + "', nhom_kpi = '" + kpi_kpo_suaAprove + "' where kpi_id = '" + kpi_id_suaAprove + "'";
                 kpi_edit.ThucThiDL(sqlUpdateData);
                 output = true;
             }
@@ -126,12 +127,12 @@ namespace VNPT_BSC.DanhMuc
                     }
 
                     string sqlnhanvien = "select * from nhanvien";
-                    string sqlkpo = "select * from kpo where kpo_id in (2015, 2016, 2017)";
+                    string sqlnhom_kpi = "select * from nhom_kpi where loaimaubsc_id = 16";
 
                     dtkpi = new DataTable();
                     dtkpi = getkpiList();
                     dtnhanvien_kpi = cn.XemDL(sqlnhanvien);
-                    dtkpi_kpo = cn.XemDL(sqlkpo);
+                    dtnhom_kpi = cn.XemDL(sqlnhom_kpi);
                 }
                 catch (Exception ex)
                 {

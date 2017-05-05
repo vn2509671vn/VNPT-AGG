@@ -33,7 +33,7 @@
                                 <th>Tên KPI</th>
                                 <th>Mô tả KPI</th>
                                 <th>Ngày tạo KPI</th>
-                                <th>Thuộc nhóm KPO</th>
+                                <th>Thuộc nhóm KPI</th>
                                 <th class="fix-table-edit-edit">Chỉnh sửa</th>
                             </tr>
                             <tr id="filterSection">
@@ -68,6 +68,8 @@
                                     string kpi_thuockpo = dtkpi.Rows[i]["kpo_ten"].ToString();
                                     string kpo_id = dtkpi.Rows[i]["kpo_id"].ToString();
                                     string nhanvien_id = dtkpi.Rows[i]["nhanvien_id"].ToString();
+                                    string nhom_kpi_id = dtkpi.Rows[i]["id"].ToString();
+                                    string nhom_kpi_ten = dtkpi.Rows[i]["ten_nhom"].ToString();
                             %>
                             <tr>
                                 <td><%= kpi_id %></td>
@@ -75,9 +77,9 @@
                                 <td><strong><%= kpi_ten%></strong></td>
                                 <td><%= kpi_mota%></td>
                                 <td><%= kpi_ngaytao %></td>
-                                <td><%= kpi_thuockpo%></td>
+                                <td><%= nhom_kpi_ten%></td>
                                 <td>
-                                    <a class="btn btn-primary btn-xs" type="button" data-target="#Editkpi" data-toggle="modal" onclick="editdata('<%=kpi_id %>','<%=kpi_ten%>','<%=kpi_ma%>','<%=kpi_mota%>','<%=kpi_ngaytao%>','<%=kpo_id%>')">Chỉnh sửa</a>
+                                    <a class="btn btn-primary btn-xs" type="button" data-target="#Editkpi" data-toggle="modal" onclick="editdata('<%=kpi_id %>','<%=kpi_ten%>','<%=kpi_ma%>','<%=kpi_mota%>','<%=kpi_ngaytao%>','<%=nhom_kpi_id%>')">Chỉnh sửa</a>
                                     <a class="btn btn-danger btn-xs" type="button" id="btnXoa" onclick="deletedata('<%=kpi_id %>')">Xóa</a>
 
                                 </td>
@@ -122,16 +124,16 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-4">Thuộc nhóm KPO:</label>
+                                        <label class="control-label col-sm-4">Thuộc nhóm KPI:</label>
                                         <div class="col-sm-8">
                                             <select class="form-control fix-day" id="kpo">
-                                                <% for (int i = 0; i < dtkpi_kpo.Rows.Count; i++)
+                                                <% for (int i = 0; i < dtnhom_kpi.Rows.Count; i++)
                                                    { %>
                                                 <%
-                                                        string kpo_id = dtkpi_kpo.Rows[i]["kpo_id"].ToString();
-                                                        string kpo_ten = dtkpi_kpo.Rows[i]["kpo_ten"].ToString();
+                                                       string nhom_id = dtnhom_kpi.Rows[i]["id"].ToString();
+                                                       string nhom_ten = dtnhom_kpi.Rows[i]["ten_nhom"].ToString();
                                                 %>
-                                                <option value="<%= kpo_id%>"><%= kpo_ten%></option>
+                                                <option value="<%= nhom_id%>"><%= nhom_ten%></option>
                                                 <% } %>
                                             </select>
                                         </div>
@@ -175,17 +177,17 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-4">Thuộc nhóm KPO:</label>
+                                        <label class="control-label col-sm-4">Thuộc nhóm KPI:</label>
                                         <div class="col-sm-8">
                                             <%--<input type="text" class="form-control fix-width-350 fix-height-34"  id="txtthuockpo_sua" />--%>
                                             <select class="form-control fix-day" id="kpo_edit">
-                                                <% for (int i = 0; i < dtkpi_kpo.Rows.Count; i++)
+                                                <% for (int i = 0; i < dtnhom_kpi.Rows.Count; i++)
                                                    { %>
                                                 <%
-                                                        string kpo_id = dtkpi_kpo.Rows[i]["kpo_id"].ToString();
-                                                        string kpo_ten = dtkpi_kpo.Rows[i]["kpo_ten"].ToString();
+                                                       string nhom_id = dtnhom_kpi.Rows[i]["id"].ToString();
+                                                       string nhom_ten = dtnhom_kpi.Rows[i]["ten_nhom"].ToString();
                                                 %>
-                                                <option value="<%= kpo_id%>"><%= kpo_ten%></option>
+                                                <option value="<%= nhom_id%>"><%= nhom_ten%></option>
                                                 <% } %>
                                             </select>
                                         </div>

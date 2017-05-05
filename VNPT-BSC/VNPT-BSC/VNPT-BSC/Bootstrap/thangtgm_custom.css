@@ -75,6 +75,35 @@ tr > td > input.form-control {
     font-weight: bold;
 }
 
-#danhsachKPIDuocGiao_filter, #danhsachKhoKPI_filter {
+#danhsachKPIDuocGiao_filter, #danhsachKhoKPI_filter, #danhsachKPI_filter {
     display:    none !important;
+}
+
+#table-list-kpi_filter {
+    float:left !important;
+}
+
+.width-750 {
+    width: 750px !important;
+}
+
+.nhom-40 {
+    background-color: #e4fbac !important;
+}
+
+.nhom-41 {
+    background-color: #97f570 !important;
+}
+
+.nhom-42 {
+    background-color: #91f5f5 !important;
+}
+
+.nhom-43 {
+    background-color: #c8e816 !important;
+}
+
+.red-900 {
+    color: red !important;
+    font-weight: 900;
 }

@@ -67,7 +67,7 @@
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Danh sách KPI
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Danh sách KPI <span class="red-color" id="ten_nv"></span>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body" id="gridBSC">
@@ -125,9 +125,11 @@
                 var trangthaicham = output.trangthaicham;
                 var trangthaiketthuc = output.trangthaiketthuc;
                 var trangthaidongy_kqtd = output.trangthaidongy_kqtd;
+                var nv_nhan = output.ten_nv_nhan;
 
                 /*Fill data*/
                 $("#gridBSC").html(gridBSC);    // Fill to table
+                $("#ten_nv").html(nv_nhan);
                 // Fill ngày áp dụng
                 $("#ngayapdung").text(thang + "/" + nam);
 
@@ -184,8 +186,7 @@
                 }
 
                 $("#table-kpi").DataTable({
-                    "searching": true,
-                    "info": true,
+                    "bSort": false,
                     "pageLength": 50
                 });
             },
@@ -269,6 +270,9 @@
             var errFormatNumber = false;
             $("#table-kpi > tbody > tr").each(function () {
                 var kpi_id = $(this).attr("data-id");
+                if (kpi_id == 999999) {
+                    return;
+                }
                 var thamdinh = $("#thamdinh_" + kpi_id).val();
                 if (isNaN(thamdinh)) {
                     swal("Error!", "Sai định dạng kiểu chữ số!!!", "error");

@@ -108,13 +108,13 @@ namespace VNPT_BSC.BSC
             outputHTML += "<table id='table-kpi' class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%'>";
             outputHTML += "<thead>";
             outputHTML += "<tr>";
-            outputHTML += "<th>STT</th>";
-            outputHTML += "<th>Chỉ tiêu</th>";
-            outputHTML += "<th>Tỷ trọng (%)</th>";
-            outputHTML += "<th>ĐVT</th>";
-            outputHTML += "<th>Kế hoạch</th>";
-            outputHTML += "<th>Thực hiện</th>";
-            outputHTML += "<th>Thẩm định</th>";
+            outputHTML += "<th class='text-center'>STT</th>";
+            outputHTML += "<th class='text-center'>Chỉ tiêu</th>";
+            outputHTML += "<th class='text-center'>Tỷ trọng (%)</th>";
+            outputHTML += "<th class='text-center'>ĐVT</th>";
+            outputHTML += "<th class='text-center'>Chỉ tiêu</th>";
+            outputHTML += "<th class='text-center'>Thực hiện</th>";
+            outputHTML += "<th class='text-center'>Thẩm định</th>";
             if (dicOutput["trangthaidongy_kqtd"] == "False")
             {
                 outputHTML += "<th>Chức năng</th>";

@@ -54,7 +54,7 @@ namespace VNPT_BSC.BSC
         }
 
         // Lấy ra danh sách các KPI, DVT, Trọng số theo tháng, năm và KPO
-        public static DataTable getKPIByTimeAndKPO(int thang, int nam, int kpo_id, int loaiMauBSC, int nguoitao)
+        public static DataTable getKPIByTimeAndNhom(int thang, int nam, int nhom_id, int loaiMauBSC, int nguoitao)
         {
             Connection cnBSC = new Connection();
             DataTable dsKPIByTimeAndKPO = new DataTable();
@@ -65,7 +65,7 @@ namespace VNPT_BSC.BSC
             sqlKPIByTimeAndKPO += "and danhsachbsc.donvitinh = dvt.dvt_id ";
             sqlKPIByTimeAndKPO += "and danhsachbsc.thang = '" + thang + "' ";
             sqlKPIByTimeAndKPO += "and danhsachbsc.nam = '" + nam + "' ";
-            sqlKPIByTimeAndKPO += "and kpo.kpo_id = '" + kpo_id + "' ";
+            sqlKPIByTimeAndKPO += "and danhsachbsc.nhom_kpi = '" + nhom_id + "' ";
             sqlKPIByTimeAndKPO += "and danhsachbsc.nguoitao = '" + nguoitao + "' ";
             sqlKPIByTimeAndKPO += "and danhsachbsc.bscduocgiao != '' ";
             sqlKPIByTimeAndKPO += "and danhsachbsc.maubsc = '" + loaiMauBSC + "'";
@@ -88,13 +88,13 @@ namespace VNPT_BSC.BSC
             Dictionary<String, String> dicOutput = new Dictionary<string, string>();
             Connection cnBSC = new Connection();
             DataTable dsDonViByTime = new DataTable();
-            DataTable dsKPOByTime = new DataTable();
-            DataTable dsKPIByTimeAndKPO = new DataTable();
+            DataTable dsNhomByTime = new DataTable();
+            DataTable dsKPIByTimeAndNhom = new DataTable();
             DataTable dsDetailByTimeAndKPI = new DataTable();
 
             string outputHTML = "";
 
-            string sqlKPOByTime = "select kpo.kpo_id, kpo.kpo_ten ";
+            string sqlKPOByTime = "select danhsachbsc.nhom_kpi ";
             sqlKPOByTime += "from kpo, kpi, danhsachbsc ";
             sqlKPOByTime += "where danhsachbsc.kpi_id = kpi.kpi_id ";
             sqlKPOByTime += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
@@ -103,11 +103,11 @@ namespace VNPT_BSC.BSC
             sqlKPOByTime += "and danhsachbsc.nguoitao = '" + nguoitao + "' ";
             sqlKPOByTime += "and danhsachbsc.bscduocgiao != '' ";
             sqlKPOByTime += "and danhsachbsc.maubsc = '" + loaiMauBSC + "' ";
-            sqlKPOByTime += "group by kpo.kpo_id, kpo.kpo_ten ";
+            sqlKPOByTime += "group by danhsachbsc.nhom_kpi ORDER BY danhsachbsc.nhom_kpi ASC ";
 
             try
             {
-                dsKPOByTime = cnBSC.XemDL(sqlKPOByTime);
+                dsNhomByTime = cnBSC.XemDL(sqlKPOByTime);
             }
             catch (Exception ex)
             {
@@ -128,32 +128,32 @@ namespace VNPT_BSC.BSC
             outputHTML += "</thead>";
             outputHTML += "<tbody>";
 
-            if (dsKPOByTime.Rows.Count <= 0)
+            if (dsNhomByTime.Rows.Count <= 0)
             {
                 outputHTML += "<tr><td colspan='" + (12 + 4) + "' class='text-center'>No item</td></tr>";
             }
             else
             {
                 // Hiển thị các KPO
-                for (int nIndexKPO = 0; nIndexKPO < dsKPOByTime.Rows.Count; nIndexKPO++)
+                for (int nIndexNhom = 0; nIndexNhom < dsNhomByTime.Rows.Count; nIndexNhom++)
                 {
-                    int kpo_id = Convert.ToInt32(dsKPOByTime.Rows[nIndexKPO]["kpo_id"].ToString());
+                    int nhom_id = Convert.ToInt32(dsNhomByTime.Rows[nIndexNhom]["nhom_kpi"].ToString());
 
                     // Hiển thị các KPI, DVT, Trọng số theo KPO
-                    dsKPIByTimeAndKPO = getKPIByTimeAndKPO(thang, nam, kpo_id, loaiMauBSC, nguoitao);
-                    if (dsKPIByTimeAndKPO.Rows.Count <= 0)
+                    dsKPIByTimeAndNhom = getKPIByTimeAndNhom(thang, nam, nhom_id, loaiMauBSC, nguoitao);
+                    if (dsKPIByTimeAndNhom.Rows.Count <= 0)
                     {
                         outputHTML += "<tr><td colspan='" + (12 + 4) + "' class='text-center'>No item</td></tr>";
                     }
                     else
                     {
-                        for (int nIndexKPI = 0; nIndexKPI < dsKPIByTimeAndKPO.Rows.Count; nIndexKPI++)
+                        for (int nIndexKPI = 0; nIndexKPI < dsKPIByTimeAndNhom.Rows.Count; nIndexKPI++)
                         {
-                            int kpi_id = Convert.ToInt32(dsKPIByTimeAndKPO.Rows[nIndexKPI]["kpi_id"].ToString());
-                            string kpi_ten = dsKPIByTimeAndKPO.Rows[nIndexKPI]["kpi_ten"].ToString();
-                            string dvt_ten = dsKPIByTimeAndKPO.Rows[nIndexKPI]["dvt_ten"].ToString();
-                            string trongso = dsKPIByTimeAndKPO.Rows[nIndexKPI]["tytrong"].ToString();
-                            string nhom_kpi = dsKPIByTimeAndKPO.Rows[nIndexKPI]["nhom_kpi"].ToString();
+                            int kpi_id = Convert.ToInt32(dsKPIByTimeAndNhom.Rows[nIndexKPI]["kpi_id"].ToString());
+                            string kpi_ten = dsKPIByTimeAndNhom.Rows[nIndexKPI]["kpi_ten"].ToString();
+                            string dvt_ten = dsKPIByTimeAndNhom.Rows[nIndexKPI]["dvt_ten"].ToString();
+                            string trongso = dsKPIByTimeAndNhom.Rows[nIndexKPI]["tytrong"].ToString();
+                            string nhom_kpi = dsKPIByTimeAndNhom.Rows[nIndexKPI]["nhom_kpi"].ToString();
 
                             outputHTML += "<tr>";
                             outputHTML += "<td class='text-center'>" + kpi_id + "</td>";

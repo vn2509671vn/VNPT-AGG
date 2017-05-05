@@ -77,6 +77,51 @@
                       <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-bar-chart-o fa-fw"></i> Danh sách KPI
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#listBSC" id="btnMauBSC">
+                                        Chọn KPI
+                                    </a>
+                                    <!-- Modal for BSC list -->
+                                    <div id="listBSC" class="modal fade" role="dialog">
+                                      <div class="modal-dialog width-750">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Danh sách KPI</h4>
+                                          </div>
+                                          <div class="modal-body list-BSC">
+                                              <div class='table-responsive'>
+                                                  <table id='table-list-kpi' class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%'>
+                                                      <thead>
+                                                          <th class='text-center'><input type="checkbox" id="checkall-kpi"/></th>
+                                                          <th class='text-center'>KPI</th>
+                                                          <th class='text-center'>Nhóm KPI</th>
+                                                      </thead>
+                                                      <tbody>
+                                                          <% for (int nIndex = 0; nIndex < dtBSC.Rows.Count; nIndex++ ){ %>
+                                                            <tr data-id="<%=dtBSC.Rows[nIndex]["kpi_id"].ToString()%>">
+                                                                <td class='text-center'><input name="checkbox-kpi" id='kpi_id_<%=dtBSC.Rows[nIndex]["kpi_id"].ToString() %>' type="checkbox" value="<%=dtBSC.Rows[nIndex]["kpi_ten"].ToString() %>" data-nhom-kpi = "<%=dtBSC.Rows[nIndex]["ten_nhom"].ToString() %>" data-nhom-kpi-tytrong = "<%=dtBSC.Rows[nIndex]["tytrong"].ToString() %>" data-nhom-kpi-id = "<%=dtBSC.Rows[nIndex]["id"].ToString() %>"/></td>
+                                                                <td class="min-width-130"><strong><%=dtBSC.Rows[nIndex]["kpi_ten"].ToString() %></strong></td>
+                                                                <td><strong><%=dtBSC.Rows[nIndex]["ten_nhom"].ToString() %></strong></td>
+                                                            </tr>
+                                                          <%} %>
+                                                      </tbody>
+                                                  </table>
+                                              </div>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-success" data-dismiss="modal" id="loadBSC">Load</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                          </div>
+                                        </div>
+
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body" id="gridBSC">
@@ -230,6 +275,67 @@
             changeInputData();
         });
 
+        $("#loadBSC").click(function () {
+            var kpiHTML = "";
+            var nIndex = 0;
+            kpiHTML += "<div class='table-responsive padding-top-10'>";
+            kpiHTML += "<table id='table-kpi' class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%'>";
+            kpiHTML += "<thead>";
+            kpiHTML += "<tr>";
+            kpiHTML += "<th class='text-center'>STT</th>";
+            kpiHTML += "<th class='text-center'>Chỉ tiêu</th>";
+            kpiHTML += "<th class='text-center'>Nhóm KPI</th>";
+            kpiHTML += "<th class='text-center'>Tỷ trọng (%)</th>";
+            kpiHTML += "<th class='text-center'>ĐVT</th>";
+            kpiHTML += "<th class='text-center'>Chỉ tiêu</th>";
+            kpiHTML += "<th class='text-center'>T/gian giao</th>";
+            kpiHTML += "</tr>";
+            kpiHTML += "</thead>";
+            kpiHTML += "<tbody>";
+
+            $("#table-list-kpi > tbody > tr").each(function () {
+                var kpi_id = $(this).attr("data-id");
+                var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
+                var kpi_ten = $("#kpi_id_" + kpi_id).val();
+                var nhom_kpi_ten = $("#kpi_id_" + kpi_id).attr("data-nhom-kpi");
+                var nhom_kpi_tytrong = $("#kpi_id_" + kpi_id).attr("data-nhom-kpi-tytrong");
+                var nhom_kpi_id = $("#kpi_id_" + kpi_id).attr("data-nhom-kpi-id");
+                if (isChecked == true) {
+                    kpiHTML += "<tr data-id='" + kpi_id + "' data-nhom-kpi = '" + nhom_kpi_ten + "' data-nhom-kpi-tytrong = '" + nhom_kpi_tytrong + "' data-nhom-kpi-id = '" + nhom_kpi_id + "'>";
+                    kpiHTML += "<td class='text-center'>" + (nIndex + 1) + "</td>";
+                    kpiHTML += "<td><strong>" + kpi_ten + "</strong></td>";
+                    kpiHTML += "<td><strong>" + nhom_kpi_ten + "</strong></td>";
+                    kpiHTML += "<td class='text-center'><input type='text' class='form-control' name='tytrong' id='tytrong_" + kpi_id + "' size='2' maxlength='2' value='0'/></td>";
+                    kpiHTML += "<td class='text-center'>";
+                    kpiHTML += "<select class='form-control' id='dvt_" + kpi_id + "'>";
+                    <% for (int nDVT = 0; nDVT < dtDVT.Rows.Count; nDVT++){
+                           string szSelected = "";
+                           int dvt = Convert.ToInt32(dtDVT.Rows[nDVT]["dvt_id"].ToString());
+                           if (dvt == 2)
+                           {
+                               szSelected = "selected";
+                           }
+                    %>
+                        kpiHTML += "<option value='<%=dvt%>' <%=szSelected%>> <%=dtDVT.Rows[nDVT]["dvt_ten"]%></option>";
+                    <% } %>
+                    kpiHTML += "</select>";
+                    kpiHTML += "</td>";
+                    kpiHTML += "<td class='text-center'><input type='text' class='form-control' name='kehoach' id='kehoach_" + kpi_id + "' size='2' value='100' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
+                    kpiHTML += "<td class='text-center'><input type='text' class='form-control min-width-300' name='ghichu' id='ghichu_" + kpi_id + "'/></td>";
+                    nIndex++;
+                }
+            });
+
+            kpiHTML += "</tbody>";
+            kpiHTML += "</table>";
+            $("#gridBSC").html(kpiHTML);
+            $("#table-kpi").DataTable({
+                "searching": true,
+                "info": true,
+                "pageLength": 50
+            });
+        });
+
         $("#saveData").click(function () {
             var nhanviennhan = $("#nhanviennhan").val();
             var thang = $("#month").val();
@@ -256,13 +362,12 @@
                 }
 
                 tongtytrong += parseInt(tytrong);
-                var nhanvienthamdinh = $("#nvtd_" + kpi_id).val();
                 kpi_detail.push({
                     kpi_id: kpi_id,
                     tytrong: tytrong,
                     dvt: dvt,
                     kehoach: kehoach,
-                    nhanvienthamdinh: nhanvienthamdinh,
+                    nhanvienthamdinh: nhanviengiao,
                     nhom_kpi_id: nhom_kpi_id,
                     nhom_kpi_ten: nhom_kpi_ten,
                     nhom_kpi_tytrong: nhom_kpi_tytrong
@@ -298,8 +403,7 @@
                 nhanviennhan: nhanviennhan,
                 thang: thang,
                 nam: nam,
-                kpi_detail: kpi_detail,
-                loaimau: loaimau
+                kpi_detail: kpi_detail
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({
@@ -336,7 +440,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "PhanPhoiBSCNhanVien.aspx/giaoBSC",
+                url: "PhanPhoiBSCNhanVien_PBCN.aspx/giaoBSC",
                 data: szRequest,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -375,7 +479,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "PhanPhoiBSCNhanVien.aspx/huygiaoBSC",
+                url: "PhanPhoiBSCNhanVien_PBCN.aspx/huygiaoBSC",
                 data: szRequest,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -394,6 +498,27 @@
                 },
                 error: function (msg) { alert(msg.d); }
             });
+        });
+
+        // Check all kpi của bản thân
+        $("#checkall-kpi").click(function () {
+            if (this.checked) {
+                // Iterate each checkbox
+                $('input[name=checkbox-kpi]').each(function () {
+                    this.checked = true;
+                });
+            }
+            else {
+                $('input[name=checkbox-kpi]').each(function () {
+                    this.checked = false;
+                });
+            }
+        });
+
+        $("#table-list-kpi").DataTable({
+            "bSort": false,
+            "bPaginate": false,
+            "bLengthChange": false
         });
     });
 </script>

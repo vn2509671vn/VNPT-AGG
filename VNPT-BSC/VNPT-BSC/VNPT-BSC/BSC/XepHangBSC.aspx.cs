@@ -91,7 +91,7 @@ namespace VNPT_BSC.BSC
                     {
                         diem = Convert.ToDecimal(gridDataTTKD.Rows[nKPITTKD]["diem"].ToString()) * 100;
                     }
-                    arrOutput += "<tr class='hide'>";
+                    arrOutput += "<tr>";
                     arrOutput += "<td class='text-center'></td>";
                     arrOutput += "<td class='min-width-130'><strong>" + gridDataTTKD.Rows[nKPITTKD]["donvi_ten"].ToString() + "</strong></td>";
                     arrOutput += "<td style='text-align: center'><strong>" + String.Format("{0:0.00}", diem) + "%" + "</strong></td>";

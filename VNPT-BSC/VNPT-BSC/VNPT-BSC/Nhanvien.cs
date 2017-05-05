@@ -9,6 +9,7 @@ namespace VNPT_BSC
     {
      
         public int nhanvien_id {get;set;}
+        public string nhanvien_manv { get; set; }
         public string nhanvien_taikhoan { get; set; }
         public string nhanvien_matkhau { get; set; }
         public string nhanvien_hoten { get; set; }

@@ -11,6 +11,7 @@ namespace VNPT_BSC
         public static void SetCurrentUser(this HttpSessionState session, Nhanvien nhanvien)
         {
             session["currentUser"] = nhanvien;
+            session.Timeout = 90;
         }
 
         public static Nhanvien GetCurrentUser(this HttpSessionState session)
@@ -21,6 +22,7 @@ namespace VNPT_BSC
         public static void SetRole(this HttpSessionState session, List<int> role)
         {
             session["role"] = role;
+            session.Timeout = 90;
         }
 
         public static List<int> GetRole(this HttpSessionState session)

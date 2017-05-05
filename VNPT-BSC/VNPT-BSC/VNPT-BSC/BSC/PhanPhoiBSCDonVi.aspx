@@ -183,7 +183,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4">Kế hoạch đề xuất:</label>
+                                <label class="control-label col-md-4">Chỉ tiêu đề xuất:</label>
                                 <div class="col-md-8">
                                     <input type="text" class="form-control fix-width-350" id="edit_kehoach_dexuat" readonly/>
                                 </div>
@@ -197,7 +197,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4 ">Kế hoạch cuối cùng:</label>
+                                <label class="control-label col-md-4 ">Chỉ tiêu cuối cùng:</label>
                                 <div class="col-md-8">
                                     <input type="text" class="form-control fix-width-350 " id="edit_kehoach_cuoicung" onkeypress="return onlyNumbers(event.charCode || event.keyCode);"/>
                                 </div>
@@ -563,7 +563,7 @@
             }
 
             if (kehoach_cuoicung == "") {
-                swal("Error!!!", "Vui lòng nhập giá trị kế hoạch cuối cùng!!!", "error");
+                swal("Error!!!", "Vui lòng nhập giá trị chỉ tiêu cuối cùng!!!", "error");
                 return;
             }
 

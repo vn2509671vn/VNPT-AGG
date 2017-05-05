@@ -67,6 +67,11 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-bar-chart-o fa-fw"></i> Danh sách KPI <span class="red-color" id="ten_dvn"></span>
+                            <div class="pull-right">
+                                <a class="btn btn-primary btn-xs" id="copyKDtoTD">
+                                        T.Hiện => T.Định
+                                </a>
+                            </div>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body" id="gridBSC">
@@ -398,6 +403,15 @@
             });
         });
 
+        $("#copyKDtoTD").click(function () {
+            if ($("#table-kpi").length > 0) {
+                $("#table-kpi tbody tr").each(function () {
+                    var tr_id = $(this).data("id");
+                    var thuchien = $(this).children('td:eq(5)').text();
+                    $("#thamdinh_" + tr_id).val(thuchien);
+                })
+            }
+        });
     });
 
 </script>

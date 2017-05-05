@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-6">Đồng ý KQTĐ:</label>
+                    <label class="control-label col-sm-6">Đồng ý kết quả thẩm định:</label>
                     <div class="col-sm-6 form-inline padding-top-7 ">
                         <span class="label label-default" id="dongyLabel">Chưa đồng ý</span>
                         <a class="btn btn-success btn-xs" id="updateDongYStatus">Đồng ý</a>
@@ -95,7 +95,7 @@
                 </div>
                 <div class="col-md-12 col-xs-12 text-center">
                     <!-- Mod start ThangTGM 02092017 - Không cho nhân viên tự chấm bsc -->
-                    <%--<a class="btn btn-success" id="saveData">Save</a>--%>
+                    <a class="btn btn-success" id="saveData">Save</a>
                     <!-- Mod end -->
                 </div>
               </div>
@@ -219,6 +219,7 @@
                 }
 
                 $("#table-kpi").DataTable({
+                    "bSort": false,
                     "searching": true,
                     "info": true,
                     "pageLength": 50

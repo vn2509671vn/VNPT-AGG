@@ -91,6 +91,20 @@
                             
                         </div>
                         <!-- /.panel-body -->
+                        <div class="panel-footer">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Lãnh đạo giao:</label>
+                                <div class="col-sm-6 form-inline padding-top-7 ">
+                                    <span id="lanhdaoky" class="red-color">Chưa ký</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Nhân viên ký nhận:</label>
+                                <div class="col-sm-6 form-inline padding-top-7 ">
+                                    <span id="nhanvienky" class="red-color">Chưa ký</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-12 col-xs-12 text-center">
@@ -151,11 +165,17 @@
                 $("#ngayapdung").text(thang + "/" + nam);
                 $("#soluong_kpi_dathamdinh").text(soluong_kpi_dathamdinh);
 
+                // Cập nhật trạng thái giao
+                if (trangthainhan == "True") {
+                    $("#lanhdaoky").text("Đã ký");
+                }
+
                 // Cập nhật trạng thái nhận
                 if (trangthainhan == "True") {
                     $("#nhanLabel").removeClass("label-default");
                     $("#nhanLabel").addClass("label-success");
                     $("#nhanLabel").text("Đã nhận");
+                    $("#nhanvienky").text("Đã ký");
                     $("#updateNhanStatus").hide();
                     if (trangthaicham != "True") {
                         $("#saveData").show();

@@ -48,8 +48,10 @@ namespace VNPT_BSC
             DataTable dtQuyen = new DataTable();
             int nNumRole = 0;
             string szChucVu = "";
-            nhanvien = Session.GetCurrentUser();
-            quyenHeThong = Session.GetRole();
+            //nhanvien = Session.GetCurrentUser();
+            nhanvien = (Nhanvien)Session["nhanvien"];
+
+            quyenHeThong = (List<int>)Session["quyenhethong"];
             if(nhanvien == null){
                 Response.Redirect("~/Login.aspx");
             }

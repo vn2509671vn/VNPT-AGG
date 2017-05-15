@@ -57,6 +57,16 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-6">Đơn vị:</label>
+                    <div class="col-sm-6 form-inline">
+                        <select class="form-control" id="donvi">
+                            <% for (int i = 0; i < dtDonvi.Rows.Count; i++){ %>
+                            <option value="<%=dtDonvi.Rows[i]["donvi_id"].ToString() %>"><%=dtDonvi.Rows[i]["donvi_ten"].ToString() %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
               </div>
               <div class="col-md-12 col-xs-12" id="gridNV">
 
@@ -66,10 +76,11 @@
     </div>
 
 <script type="text/javascript">
-    function loadDanhSach(month, year) {
+    function loadDanhSach(month, year, donvi) {
         var requestData = {
             thang: month,
             nam: year,
+            donvi: donvi
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
@@ -91,20 +102,30 @@
     $(document).ready(function () {
 
         // Load grid lần đầu
-        loadDanhSach($("#month").val(), $("#year").val());
+        loadDanhSach($("#month").val(), $("#year").val(), $("#donvi").val());
 
         // Load grid khi năm thay đổi
         $("#year").change(function () {
             var thang = $("#month").val();
             var nam = $(this).val();
-            loadDanhSach(thang, nam);
+            var donvi = $("#donvi").val();
+            loadDanhSach(thang, nam, donvi);
         });
 
         // Load grid khi tháng thay đổi
         $("#month").change(function () {
             var nam = $("#year").val();
             var thang = $(this).val();
-            loadDanhSach(thang, nam);
+            var donvi = $("#donvi").val();
+            loadDanhSach(thang, nam, donvi);
+        });
+
+        // Load grid khi đơn vị thay đổi
+        $("#donvi").change(function () {
+            var nam = $("#year").val();
+            var donvi = $(this).val();
+            var thang = $("#month").val();
+            loadDanhSach(thang, nam, donvi);
         });
 
         $(document).on('click', '.detail', function () {

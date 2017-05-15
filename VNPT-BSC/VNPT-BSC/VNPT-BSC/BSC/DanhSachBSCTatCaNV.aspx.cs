@@ -14,7 +14,24 @@ namespace VNPT_BSC.BSC
 {
     public partial class DanhSachBSCTatCaNV : System.Web.UI.Page
     {
-        public static DataTable dsNhanVienNhanBSC(int thang, int nam) {
+        public static DataTable dtDonvi = new DataTable();
+
+        public static DataTable dsDonvi() {
+            DataTable dtResult = new DataTable();
+            Connection cn = new Connection();
+            string sql = "select * from donvi where donvi_id not in (1,2)";
+            try
+            {
+                dtResult = cn.XemDL(sql);
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+            return dtResult;
+        }
+
+        public static DataTable dsNhanVienNhanBSC(int thang, int nam, int donvi)
+        {
             DataTable dtResult = new DataTable();
             Connection cn = new Connection();
             string sql = "select nv.nhanvien_id, nv.nhanvien_manv, nv.nhanvien_hoten, dv.donvi_ten, bsc.trangthaigiao, bsc.trangthainhan ";
@@ -23,6 +40,7 @@ namespace VNPT_BSC.BSC
             sql += "and nv.nhanvien_donvi = dv.donvi_id ";
             sql += "and bsc.thang = '" + thang + "' ";
             sql += "and bsc.nam = '" + nam + "' ";
+            sql += "and nv.nhanvien_donvi = '" + donvi + "' ";
             sql += "order by dv.donvi_id asc";
             try
             {
@@ -35,10 +53,10 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static string loadDanhSach(int thang, int nam) {
+        public static string loadDanhSach(int thang, int nam, int donvi) {
             string outputHTML = "";
             DataTable dtDanhSach = new DataTable();
-            dtDanhSach = dsNhanVienNhanBSC(thang, nam);
+            dtDanhSach = dsNhanVienNhanBSC(thang, nam, donvi);
             outputHTML += "<div class='table-responsive padding-top-10'>";
             outputHTML += "<table id='table-nv' class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%'>";
             outputHTML += "<thead>";
@@ -92,7 +110,7 @@ namespace VNPT_BSC.BSC
             this.Title = "Danh sách nhân viên đã nhận bsc";
             try
             {
-
+                dtDonvi = dsDonvi();
             }
             catch
             {

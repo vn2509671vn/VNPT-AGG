@@ -64,8 +64,9 @@ namespace VNPT_BSC.DanhMuc
             string nv_email_suaA, string nv_diachi_suaA, string nv_dantoc_suaA, string nv_tongiao_suaA, string nv_trinhdo_suaA, string nv_gioitinh_suaA, string nv_datenganh_suaA, string nv_doan_suaA, string nv_cmnd_suaA,
             string nv_ngaycmnd_suaA, string nv_noicmnd_suaA, string nv_noisinh_suaA, string nv_quequan_suaA, int nv_id_suaA)
         {
-            Page objp = new Page();
-            Nhanvien nhanvien = objp.Session.GetCurrentUser();
+            Nhanvien nhanvien = new Nhanvien();
+            nhanvien = (Nhanvien)HttpContext.Current.Session["nhanvien"];
+
             Connection kpi_edit = new Connection();
             bool output = false;
             string sqlUpdateData = "";
@@ -113,8 +114,8 @@ namespace VNPT_BSC.DanhMuc
         protected void Page_Load(object sender, EventArgs e)
         {
             this.Title = "Quản lý nhân viên";
-            if (!IsPostBack)
-            {
+            //if (!IsPostBack)
+            //{
                 /*Get list BSC*/
                 dtnhanvien = new DataTable();
                 dtnhanvien = getnhanvienList();
@@ -124,12 +125,13 @@ namespace VNPT_BSC.DanhMuc
                     string sqlchucvu = "select * from chucvu";
                     string sqlchucdanh = "select * from chucdanh";
                     Nhanvien nhanvien = new Nhanvien();
-                    nhanvien = Session.GetCurrentUser();
+                    //nhanvien = Session.GetCurrentUser();
+                    nhanvien = (Nhanvien)Session["nhanvien"];
 
                     // Khai báo các biến cho việc kiểm tra quyền
                     List<int> quyenHeThong = new List<int>();
                     bool nFindResult = false;
-                    quyenHeThong = Session.GetRole();
+                    quyenHeThong = (List<int>)Session["quyenhethong"];
 
                     /*Kiểm tra nếu không có quyền admin (id của quyền là 1) thì đẩy ra trang đăng nhập*/
                     nFindResult = quyenHeThong.Contains(1);
@@ -153,7 +155,7 @@ namespace VNPT_BSC.DanhMuc
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
 
-            }
+            //}
         }
     }
 }

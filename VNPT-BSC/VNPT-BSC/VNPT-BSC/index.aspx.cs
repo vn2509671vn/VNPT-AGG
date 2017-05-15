@@ -356,12 +356,13 @@ namespace VNPT_BSC
         protected void Page_Load(object sender, EventArgs e)
         {
             this.Title = "Trang chủ";
-            if (!IsPostBack)
-            {
+            //if (!IsPostBack)
+            //{
                 try
                 {
                     Nhanvien nhanvien = new Nhanvien();
-                    nhanvien = Session.GetCurrentUser();
+                    //nhanvien = Session.GetCurrentUser();
+                    nhanvien = (Nhanvien)Session["nhanvien"];
 
                     if (nhanvien == null)
                     {
@@ -387,7 +388,7 @@ namespace VNPT_BSC
                 catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
-            }
+            //}
         }
     }
 }

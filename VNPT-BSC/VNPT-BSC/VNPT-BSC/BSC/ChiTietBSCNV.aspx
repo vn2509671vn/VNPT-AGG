@@ -26,7 +26,7 @@
     <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            Chi tiết BSC
+            Chi tiết BSC <span><%=thang %>/<%=nam %></span>
           </div>
           <div class="panel-body">
               <div class="col-md-12 col-xs-12 form-horizontal">
@@ -44,18 +44,38 @@
                                             <th class="text-center">KPI</th>
                                             <th class="text-center">Nhóm</th>
                                             <th class="text-center">Tỷ trọng</th>
+                                            <th class="text-center">ĐVT</th>
                                             <th class="text-center">Chỉ tiêu</th>
+                                            <th class="text-center">Thẩm định</th>
+                                            <th class="text-center">Hệ số quy đổi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% for(int nIndex = 0; nIndex < dtChiTiet.Rows.Count; nIndex++){ %>
+                                        <% decimal tongdiem = 0; %>
+                                        <% for(int nIndex = 0; nIndex < dtChiTiet.Rows.Count; nIndex++){
+                                               if (dtChiTiet.Rows[nIndex]["diem_kpi"].ToString() != "") {
+                                                   tongdiem += Convert.ToDecimal(dtChiTiet.Rows[nIndex]["diem_kpi"].ToString());
+                                               }
+                                        %>
                                         <tr>
                                             <td><strong><%= dtChiTiet.Rows[nIndex]["kpi_ten"] %></strong></td>
                                             <td><%= dtChiTiet.Rows[nIndex]["ten_nhom"] %></td>
                                             <td class="text-center"><strong><%= dtChiTiet.Rows[nIndex]["trongso"] %></strong></td>
+                                            <td class="text-center"><strong><%= dtChiTiet.Rows[nIndex]["dvt_ten"] %></strong></td>
                                             <td class="text-center"><strong><%= dtChiTiet.Rows[nIndex]["kehoach"] %></strong></td>
+                                            <td class="text-center"><strong><%= dtChiTiet.Rows[nIndex]["thamdinh"] %></strong></td>
+                                            <td class="text-center"><strong><%= dtChiTiet.Rows[nIndex]["diem_kpi"] %></strong></td>
                                         </tr>
                                         <% } %>
+                                        <tr>
+                                            <td class="text-center"><strong> Tổng: </strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-center"><strong> <%=tongdiem %></strong></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -70,7 +90,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#table-chitiet").DataTable();
+        //$("#table-chitiet").DataTable();
     });
 </script>
 </asp:Content>

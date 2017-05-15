@@ -23,7 +23,9 @@ namespace VNPT_BSC.DanhMuc
 
         private DataTable getkpiList(bool nFindResultBSCDonVi)
         {
-            Nhanvien nhanvien = Session.GetCurrentUser();
+            Nhanvien nhanvien = new Nhanvien();
+            nhanvien = (Nhanvien)Session["nhanvien"];
+
             string sqlkpi = "";
             if (nFindResultBSCDonVi)
             {
@@ -56,11 +58,12 @@ namespace VNPT_BSC.DanhMuc
             return dtkpi;
         }
 
-        [WebMethod]
+        [WebMethod(EnableSession=true)]
         public static bool SaveData(string kpi_tenAprove, string kpi_tenMa, string kpi_motaAprove, string kpi_ngayAprove, int kpi_kpoAprove, int nhom_kpi)
         {
-            Page objp = new Page();
-            Nhanvien nhanvien = objp.Session.GetCurrentUser();
+            Nhanvien nhanvien = new Nhanvien();
+            nhanvien = (Nhanvien)HttpContext.Current.Session["nhanvien"];
+
             Connection kpi = new Connection();
             bool output = false;
             string sqlInsertNewData = "";
@@ -77,11 +80,12 @@ namespace VNPT_BSC.DanhMuc
             return output;
         }
 
-        [WebMethod]
+        [WebMethod(EnableSession=true)]
         public static bool EditData(string kpi_ten_suaAprove, string kpi_ma_suaAprove, string kpi_mota_suaAprove, string kpi_kpo_suaAprove, int kpi_id_suaAprove, int nhom_kpi_suaAprove)
         {
-            Page objp = new Page();
-            Nhanvien nhanvien = objp.Session.GetCurrentUser();
+            Nhanvien nhanvien = new Nhanvien();
+            nhanvien = (Nhanvien)HttpContext.Current.Session["nhanvien"];
+
             Connection kpi_edit = new Connection();
             bool output = false;
             string sqlUpdateData = "";
@@ -120,19 +124,20 @@ namespace VNPT_BSC.DanhMuc
         protected void Page_Load(object sender, EventArgs e)
         {
             this.Title = "Quản lý KPI";
-            if (!IsPostBack)
-            {
+            //if (!IsPostBack)
+            //{
                 try
                 {
                     Nhanvien nhanvien = new Nhanvien();
-                    nhanvien = Session.GetCurrentUser();
+                    //nhanvien = Session.GetCurrentUser();
+                    nhanvien = (Nhanvien)Session["nhanvien"];
 
                     // Khai báo các biến cho việc kiểm tra quyền
                     List<int> quyenHeThong = new List<int>();
                     bool nFindResultAdmin = false;
                     bool nFindResultBSCDonVi = false;
                     bool nFindResultBSCNhanVien = false;
-                    quyenHeThong = Session.GetRole();
+                    quyenHeThong = (List<int>)Session["quyenhethong"];
 
                     /*Kiểm tra nếu không có quyền admin, bsc đơn vị, bsc nhân viên (id của quyền là 1) thì đẩy ra trang đăng nhập*/
                     nFindResultAdmin = quyenHeThong.Contains(1);
@@ -160,7 +165,7 @@ namespace VNPT_BSC.DanhMuc
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
 
-            }
+            //}
         }
     }
 }

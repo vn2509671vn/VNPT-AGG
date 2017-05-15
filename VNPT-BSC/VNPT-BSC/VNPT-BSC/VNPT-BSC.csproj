@@ -426,6 +426,7 @@
     <Content Include="TinhLuong\BacLuong.aspx" />
     <Content Include="TinhLuong\ChiTietTapThe.aspx" />
     <Content Include="TinhLuong\DiemBSCNV.aspx" />
+    <Content Include="TinhLuong\KiemNhiem.aspx" />
     <Content Include="TinhLuong\NhanSu.aspx" />
     <Content Include="TinhLuong\TinhLuong.aspx" />
     <Content Include="vendors\animate.css\animate.css" />
@@ -4236,6 +4237,13 @@
     </Compile>
     <Compile Include="TinhLuong\DiemBSCNV.aspx.designer.cs">
       <DependentUpon>DiemBSCNV.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TinhLuong\KiemNhiem.aspx.cs">
+      <DependentUpon>KiemNhiem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TinhLuong\KiemNhiem.aspx.designer.cs">
+      <DependentUpon>KiemNhiem.aspx</DependentUpon>
     </Compile>
     <Compile Include="TinhLuong\NhanSu.aspx.cs">
       <DependentUpon>NhanSu.aspx</DependentUpon>

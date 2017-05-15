@@ -19,6 +19,7 @@ namespace VNPT_BSC.BSC
     {
         public static DataTable dtChiTiet = new DataTable();
         public static string ten_nhanvien = "";
+        public static int thang, nam;
 
         public static string getTenNhanVien(int id_nv) {
             string szName = "";
@@ -43,13 +44,14 @@ namespace VNPT_BSC.BSC
         public static DataTable ChiTiet(int id_nv, int thang, int nam) {
             Connection cn = new Connection();
             DataTable dtResult = new DataTable();
-            string sql = "select kpi.kpi_ten, nhom.ten_nhom , bsc.* ";
-            sql += "from bsc_nhanvien bsc, kpi, nhom_kpi nhom ";
+            string sql = "select kpi.kpi_ten, nhom.ten_nhom , bsc.*, dvt.dvt_ten ";
+            sql += "from bsc_nhanvien bsc, kpi, nhom_kpi nhom, donvitinh dvt ";
             sql += "where bsc.nhanviennhan = '" + id_nv + "' ";
             sql += "and bsc.thang = '" + thang + "' ";
             sql += "and bsc.nam = '" + nam + "' ";
             sql += "and bsc.kpi = kpi.kpi_id ";
             sql += "and bsc.nhom_kpi = nhom.id ";
+            sql += "and bsc.donvitinh = dvt.dvt_id ";
             sql += "order by nhom.id asc";
             try
             {
@@ -65,13 +67,13 @@ namespace VNPT_BSC.BSC
         protected void Page_Load(object sender, EventArgs e)
         {
             this.Title = "Chi tiết bsc của nhân viên";
-            if (!IsPostBack)
-            {
+            //if (!IsPostBack)
+            //{
                 try
                 {
                     int id_nv = Convert.ToInt32(Request.QueryString["nhanviennhan"]);
-                    int thang = Convert.ToInt32(Request.QueryString["thang"]);
-                    int nam = Convert.ToInt32(Request.QueryString["nam"]);
+                    thang = Convert.ToInt32(Request.QueryString["thang"]);
+                    nam = Convert.ToInt32(Request.QueryString["nam"]);
                     ten_nhanvien = getTenNhanVien(id_nv);
                     dtChiTiet = ChiTiet(id_nv, thang, nam);
                 }
@@ -79,7 +81,7 @@ namespace VNPT_BSC.BSC
                 {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
-            }
+            //}
         }
     }
 }

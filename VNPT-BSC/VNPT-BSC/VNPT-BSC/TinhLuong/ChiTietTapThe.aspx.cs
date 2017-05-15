@@ -105,7 +105,19 @@ namespace VNPT_BSC.TinhLuong
                 outputHTML += "<td></td>";
                 outputHTML += "<td></td>";
                 outputHTML += "</tr>";
+
+                double tongluongphanphoi = 0;
+                double tongluongduytri = 0;
+                double tongluongp3 = 0;
+                double tongluongpttb = 0;
+                double tongluongdatrubh = 0;
                 for (int nChiTiet = 0; nChiTiet < dtChiTiet.Rows.Count; nChiTiet++) {
+                    tongluongduytri += Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_duytri"].ToString());
+                    tongluongp3 += Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_p3"].ToString());
+                    tongluongpttb += Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_phattrien_tb"].ToString());
+                    tongluongphanphoi += Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luongphanphoi"].ToString());
+                    tongluongdatrubh += Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luongtong"].ToString());
+
                     outputHTML += "<tr>";
                     outputHTML += "<td style='text-align: center;'><strong>" + (nNhom + 1) + "." + (nChiTiet + 1) + "</strong></td>";
                     outputHTML += "<td style='text-align: center;'><strong>" + dtChiTiet.Rows[nChiTiet]["ma_nhanvien"].ToString() + "</strong></td>";
@@ -125,6 +137,24 @@ namespace VNPT_BSC.TinhLuong
                     outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luongtong"].ToString())) + "</td>";
                     outputHTML += "</tr>";
                 }
+                outputHTML += "<tr>";
+                outputHTML += "<td style='text-align: center;'></td>";
+                outputHTML += "<td style='text-align: center;'></td>";
+                outputHTML += "<td class='min-width-130' style='color: red;'><strong>" + "Cộng: " + dtChiTiet.Rows.Count + " nhân sự" + "</strong></td>";
+                outputHTML += "<td style='text-align: center;'></td>";
+                outputHTML += "<td style='text-align: center;'></td>";
+                outputHTML += "<td style='text-align: center;'></td>";
+                outputHTML += "<td style='text-align: center;'></td>";
+                outputHTML += "<td style='text-align: center;'></td>";
+                outputHTML += "<td style='text-align: center;'><strong>" + String.Format("{0:0,0}", tongluongduytri) + "</strong></td>";
+                outputHTML += "<td style='text-align: center;'><strong>" + String.Format("{0:0,0}", tongluongp3) + "</strong></td>";
+                outputHTML += "<td style='text-align: center;'><strong>" + String.Format("{0:0,0}", tongluongpttb) + "</strong></td>";
+                outputHTML += "<td style='text-align: center;'><strong>" + String.Format("{0:0,0}", tongluongphanphoi) + "</strong></td>";
+                outputHTML += "<td style='text-align: center;'></td>";
+                outputHTML += "<td style='text-align: center;'></td>";
+                outputHTML += "<td style='text-align: center;'></td>";
+                outputHTML += "<td style='text-align: center;'><strong>" + String.Format("{0:0,0}", tongluongdatrubh) + "</strong></td>";
+                outputHTML += "</tr>";
             }
             outputHTML += "</tbody>";
             outputHTML += "</table>";
@@ -136,8 +166,8 @@ namespace VNPT_BSC.TinhLuong
         protected void Page_Load(object sender, EventArgs e)
         {
             this.Title = "Chi tiết lương tổng hợp (3PS) của nhân viên";
-            if (!IsPostBack)
-            {
+            //if (!IsPostBack)
+            //{
                 try
                 {
                     thang = DateTime.Now.Month.ToString();
@@ -152,7 +182,7 @@ namespace VNPT_BSC.TinhLuong
                 {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
-            }
+            //}
         }
     }
 }

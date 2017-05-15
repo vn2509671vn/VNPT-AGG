@@ -49,10 +49,10 @@ namespace VNPT_BSC
             return dtResult;
         }
 
-        [WebMethod]
+        [WebMethod(EnableSession = true)]
         public static bool dangnhap(string idApprove, string passApprove)
         {
-            Page objp = new Page();
+            //Page objp = new Page();
             Connection cn = new Connection();
             Nhanvien nv = new Nhanvien();
             DataTable dt = new DataTable();
@@ -73,7 +73,8 @@ namespace VNPT_BSC
                     nv.nhanvien_hoten = dt.Rows[0]["nhanvien_hoten"].ToString();
                     nv.nhanvien_donvi = dt.Rows[0]["donvi_ten"].ToString();
                     nv.nhanvien_donvi_id = Convert.ToInt32(dt.Rows[0]["nhanvien_donvi"].ToString());
-                    objp.Session.SetCurrentUser(nv);
+                    //objp.Session.SetCurrentUser(nv);
+                    HttpContext.Current.Session["nhanvien"] = nv;
 
                     dtChucVu = getListChucVu(nv.nhanvien_id);
                     int numChucVu = dtChucVu.Rows.Count;
@@ -95,7 +96,8 @@ namespace VNPT_BSC
                         }
                     }
                     
-                    objp.Session.SetRole(quyenHeThong);
+                    //objp.Session.SetRole(quyenHeThong);
+                    HttpContext.Current.Session["quyenhethong"] = quyenHeThong;
                 }
                 else{
                     output = false;

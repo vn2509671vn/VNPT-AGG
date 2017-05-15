@@ -219,17 +219,19 @@ namespace VNPT_BSC.BSC
         protected void Page_Load(object sender, EventArgs e)
         {
             this.Title = "Chi tiết nghiệm thu";
-            if (!IsPostBack)
-            {
+            //if (!IsPostBack)
+            //{
                 try
                 {
                     Nhanvien nhanvien = new Nhanvien();
-                    nhanvien = Session.GetCurrentUser();
+                    //nhanvien = Session.GetCurrentUser();
+                    nhanvien = (Nhanvien)Session["nhanvien"];
 
                     // Khai báo các biến cho việc kiểm tra quyền
                     List<int> quyenHeThong = new List<int>();
                     bool nFindResult = false;
-                    quyenHeThong = Session.GetRole();
+                    //quyenHeThong = Session.GetRole();
+                    quyenHeThong = (List<int>)Session["quyenhethong"];
 
                     /*Kiểm tra nếu không có quyền giao bsc đơn vị (id của quyền là 2) thì đẩy ra trang đăng nhập*/
                     nFindResult = quyenHeThong.Contains(2);
@@ -248,7 +250,7 @@ namespace VNPT_BSC.BSC
                 catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
-            }
+            //}
         }
     }
 }

@@ -111,8 +111,8 @@ namespace VNPT_BSC.DanhMuc
         protected void Page_Load(object sender, EventArgs e)
         {
             this.Title = "Quản lý chức vụ của nhân viên";
-            if (!IsPostBack)
-            {
+            //if (!IsPostBack)
+            //{
                 dtnv_cv = new DataTable();
                 dtnv_cv = getnv_cvList();
                 try
@@ -128,7 +128,7 @@ namespace VNPT_BSC.DanhMuc
                 {
                     throw ex;
                 }
-            }
+            //}
         }
     }
 }

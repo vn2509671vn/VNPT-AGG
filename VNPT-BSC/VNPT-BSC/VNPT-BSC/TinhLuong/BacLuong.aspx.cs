@@ -83,12 +83,12 @@ namespace VNPT_BSC.TinhLuong
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
+            //if (!IsPostBack)
+            //{
                 this.Title = "Quản Lý Bậc Lương";
                 dtBacLuong = getListBacLuong();
                 dtChucDanh = getListChucDanh();
-            }
+            //}
         }
     }
 }

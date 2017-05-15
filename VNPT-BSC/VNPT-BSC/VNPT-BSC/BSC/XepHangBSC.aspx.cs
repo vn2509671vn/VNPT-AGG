@@ -111,7 +111,8 @@ namespace VNPT_BSC.BSC
             try
             {
                 Nhanvien nhanvien = new Nhanvien();
-                nhanvien = Session.GetCurrentUser();
+                //nhanvien = Session.GetCurrentUser();
+                nhanvien = (Nhanvien)Session["nhanvien"];
 
                 //// Khai báo các biến cho việc kiểm tra quyền
                 //List<int> quyenHeThong = new List<int>();

@@ -364,6 +364,25 @@ namespace VNPT_BSC.TinhLuong
             return dResult;
         }
 
+        public static decimal getHeSoPhuCapKiemNhiemNhanVien(int id_nv) {
+            decimal dResult = 0;
+            Connection cn = new Connection();
+            DataTable tmp = new DataTable();
+            string sql = "select max(qlns_phucapkiemnhiem.heso_phucap) from qlns_kiemnhiem_nhanvien, qlns_phucapkiemnhiem where qlns_kiemnhiem_nhanvien.id_kiemnhiem = qlns_phucapkiemnhiem.id and qlns_kiemnhiem_nhanvien.id_nhanvien = '" + id_nv + "'";
+            try
+            {
+                tmp = cn.XemDL(sql);
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+
+            if (tmp.Rows.Count > 0) {
+                dResult = Convert.ToDecimal(tmp.Rows[0][0].ToString());
+            }
+            return dResult;
+        }
+
         public static DataTable getListNhomDonVi()
         {
             DataTable dtResult = new DataTable();
@@ -516,12 +535,14 @@ namespace VNPT_BSC.TinhLuong
                     int id_nhanvien = Convert.ToInt32(dtNhanVien.Rows[nIndex]["id"].ToString());
                     dtNhanVienChiTiet = getNhanVienDetail(id_nhanvien, thang, nam);
                     if (dtNhanVienChiTiet.Rows.Count > 0) {
+                        bool dangvien = Convert.ToBoolean(dtNhanVienChiTiet.Rows[0]["dangvien"].ToString());
                         int nhom_donvi = Convert.ToInt32(dtNhanVienChiTiet.Rows[0]["id_nhom_donvi"].ToString());
                         int id_donvi = Convert.ToInt32(dtNhanVienChiTiet.Rows[0]["donvi"].ToString());
                         int ngaycong_bhxh = Convert.ToInt32(dtNhanVienChiTiet.Rows[0]["ngaycong_bhxh"].ToString());
                         int ngaycong_thucte = Convert.ToInt32(dtNhanVienChiTiet.Rows[0]["ngaycong_thucte"].ToString());
                         decimal tienluong = Convert.ToDecimal(dtNhanVienChiTiet.Rows[0]["luong_duytri"].ToString());
                         decimal diem_bsc = getDiemBSCNhanVien(thang, nam, id_nhanvien, nhom_donvi, id_donvi);
+                        decimal heso_phucap_kiemnhiem = getHeSoPhuCapKiemNhiemNhanVien(id_nhanvien);
                         decimal heso_bacluong_duytri = 0;
                         decimal heso_bacluong_p3 = 0;
                         if (ngaycong_bhxh != 0)
@@ -551,13 +572,29 @@ namespace VNPT_BSC.TinhLuong
                         decimal phi_bhtn = 0;
                         decimal phi_bhxh = 0;
                         decimal phi_bhyt = 0;
+                        decimal phi_congdoan = 0;
+                        decimal phi_dangvien = 0;
 
                         phi_bhtn = tienluong * baohiem.bhtn;
                         phi_bhxh = tienluong * baohiem.bhxh;
                         phi_bhyt = tienluong * baohiem.bhyt;
+                        if ((luong_duytri_canhan + luong_p3_canhan + luong_phattrien_tb_canhan - phi_bhtn - phi_bhxh - phi_bhyt) > 12100000)
+                        {
+                            phi_congdoan = 121000;
+                        }
+                        else {
+                            phi_congdoan = (luong_duytri_canhan + luong_p3_canhan + luong_phattrien_tb_canhan - phi_bhtn - phi_bhxh - phi_bhyt) * Convert.ToDecimal(0.01);
+                        }
 
-                        string sqlInsert = "insert into qlns_bangluong_chitiet(thang, nam, nhanvien, heso_bsc, luong_duytri, luong_p3, luong_phattrien_tb, bhtn, bhxh, bhyt) ";
-                        sqlInsert += "values('" + thang + "', '" + nam + "', '" + id_nhanvien + "', '" + diem_bsc + "', '" + luong_duytri_canhan + "', '" + luong_p3_canhan + "', '" + luong_phattrien_tb_canhan + "', '" + phi_bhtn + "', '" + phi_bhxh + "', '" + phi_bhyt + "')";
+                        if (dangvien) {
+                            phi_dangvien = (luong_duytri_canhan + luong_p3_canhan + luong_phattrien_tb_canhan) * Convert.ToDecimal(0.01);
+                        }
+
+                        decimal tongtien_kiemnhiem = 0;
+                        tongtien_kiemnhiem = heso_phucap_kiemnhiem * 1210000;
+
+                        string sqlInsert = "insert into qlns_bangluong_chitiet(thang, nam, nhanvien, heso_bsc, luong_duytri, luong_p3, luong_phattrien_tb, bhtn, bhxh, bhyt, congdoan_phi, dang_phi, phucap_kiemnhiem) ";
+                        sqlInsert += "values('" + thang + "', '" + nam + "', '" + id_nhanvien + "', '" + diem_bsc + "', '" + luong_duytri_canhan + "', '" + luong_p3_canhan + "', '" + luong_phattrien_tb_canhan + "', '" + phi_bhtn + "', '" + phi_bhxh + "', '" + phi_bhyt + "', '" + phi_congdoan + "', '" + phi_dangvien + "', '" + tongtien_kiemnhiem + "')";
 
                         try
                         {
@@ -1095,8 +1132,22 @@ namespace VNPT_BSC.TinhLuong
 
         public static void ChamCong(int thang, int nam, ngaycongNhanVien[] arrChamCong) {
             Connection cn = new Connection();
+            int dem = 0;
+            DateTime f = new DateTime(nam, thang, 01);
+            int x = f.Month + 1;
+            while (f.Month < x)
+            {
+                dem = dem + 1;
+                if (f.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    dem = dem - 1;
+                }
+                f = f.AddDays(1);
+            }
             for (int nIndex = 0; nIndex < arrChamCong.Length; nIndex++) {
-                string sql = "insert into qlns_chamcong(thang, nam, nhanvien, ngaycong_bhxh, ngaycong_thucte) values ('" + thang + "', '" + nam + "', '" + arrChamCong[nIndex].id_nv + "', '" + arrChamCong[nIndex].ngaycongBHXH + "', '" + arrChamCong[nIndex].ngaycongTT + "')";
+                decimal binhquan = Math.Round(Convert.ToDecimal(730000 / dem),2);
+                decimal thuclinh = Math.Round(Convert.ToDecimal(binhquan * arrChamCong[nIndex].ngaycongTT), 1);
+                string sql = "insert into qlns_chamcong(thang, nam, nhanvien, ngaycong_bhxh, ngaycong_thucte, giuaca_ngay, giuaca_thuclanh) values ('" + thang + "', '" + nam + "', '" + arrChamCong[nIndex].id_nv + "', '" + arrChamCong[nIndex].ngaycongBHXH + "', '" + arrChamCong[nIndex].ngaycongTT + "', '" + binhquan + "', '" + thuclinh + "')";
                 try
                 {
                     cn.ThucThiDL(sql);
@@ -1173,10 +1224,10 @@ namespace VNPT_BSC.TinhLuong
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack) {
+            //if (!IsPostBack) {
                 this.Title = "Tính Lương Nhân Viên";
                 dtNhanVien = getDsNhanVien();
-            }
+            //}
         }
     }
 }

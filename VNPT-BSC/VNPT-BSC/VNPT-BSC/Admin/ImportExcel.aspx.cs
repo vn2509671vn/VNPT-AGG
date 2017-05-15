@@ -152,14 +152,17 @@ namespace VNPT_BSC.Admin
                 Nhanvien nhanvien = new Nhanvien();
                 DataTable dtDonvi = new DataTable();
                 DataTable dtChuyenVienBSC = new DataTable();
-                nhanvien = Session.GetCurrentUser();
+                //nhanvien = Session.GetCurrentUser();
+                nhanvien = (Nhanvien)Session["nhanvien"];
+
                 dtDonvi = getListDV();
                 dtChuyenVienBSC = getChuyenVienBSC();
 
                 // Khai báo các biến cho việc kiểm tra quyền
                 List<int> quyenHeThong = new List<int>();
                 bool nFindResult = false;
-                quyenHeThong = Session.GetRole();
+                //quyenHeThong = Session.GetRole();
+                quyenHeThong = (List<int>)Session["quyenhethong"];
 
                 /*Kiểm tra nếu không có quyền admin (id của quyền là 1) thì đẩy ra trang đăng nhập*/
                 nFindResult = quyenHeThong.Contains(1);

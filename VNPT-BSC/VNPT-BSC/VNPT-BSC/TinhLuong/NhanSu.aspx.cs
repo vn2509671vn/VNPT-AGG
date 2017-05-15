@@ -19,6 +19,22 @@ namespace VNPT_BSC.TinhLuong
         public static DataTable dtDonvi = new DataTable();
         public static DataTable dtNhomDonvi = new DataTable();
         public static DataTable dtNhanVien = new DataTable();
+        public static DataTable dtKiemNhiem = new DataTable();
+
+        public static DataTable getListKiemNhiem() {
+            Connection cn = new Connection();
+            DataTable tmp = new DataTable();
+            string sql = "select * from qlns_phucapkiemnhiem";
+            try
+            {
+                tmp = cn.XemDL(sql);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return tmp;
+        }
 
         public static DataTable getListBacLuong()
         {
@@ -101,7 +117,7 @@ namespace VNPT_BSC.TinhLuong
         }
 
         [WebMethod]
-        public static bool saveData(int id_nv, int donvi, int nhomdonvi, int chucdanh, int bacluong, string stk, double hesoluong, bool chinhthuc, bool thaisan)
+        public static bool saveData(int id_nv, int donvi, int nhomdonvi, int chucdanh, int bacluong, string stk, double hesoluong, bool chinhthuc, bool thaisan, bool dangvien)
         {
             bool bResult = false;
             Connection cn = new Connection();
@@ -109,7 +125,7 @@ namespace VNPT_BSC.TinhLuong
             double luong_duytri = 0;
             luong_p3 = hesoluong * 1150000;
             luong_duytri = hesoluong * 3500000;
-            string sql = "update qlns_nhanvien set donvi = '" + donvi + "', chucdanh = '" + chucdanh + "', sotaikhoan = '" + stk + "', hesoluong = '" + hesoluong + "', luong_p3 = '" + luong_p3 + "', luong_duytri = '" + luong_duytri + "', id_bacluong = '" + bacluong + "', id_nhom_donvi = '" + nhomdonvi + "', chinhthuc = '" + chinhthuc + "', thaisan = '" + thaisan + "' where id = '" + id_nv + "'";
+            string sql = "update qlns_nhanvien set donvi = '" + donvi + "', chucdanh = '" + chucdanh + "', sotaikhoan = '" + stk + "', hesoluong = '" + hesoluong + "', luong_p3 = '" + luong_p3 + "', luong_duytri = '" + luong_duytri + "', id_bacluong = '" + bacluong + "', id_nhom_donvi = '" + nhomdonvi + "', chinhthuc = '" + chinhthuc + "', thaisan = '" + thaisan + "', dangvien = '" + dangvien + "' where id = '" + id_nv + "'";
             try
             {
                 cn.ThucThiDL(sql);
@@ -121,17 +137,67 @@ namespace VNPT_BSC.TinhLuong
             return bResult;
         }
 
+        [WebMethod]
+        public static List<int> loadKiemNhiem(int id_nv)
+        {
+            List<int> lResult = new List<int>();
+            Connection cn = new Connection();
+            DataTable tmp = new DataTable();
+            string sql = "select * from qlns_kiemnhiem_nhanvien where id_nhanvien = '" + id_nv + "'";
+            try
+            {
+                tmp = cn.XemDL(sql);
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+
+            for (int i = 0; i < tmp.Rows.Count; i++) {
+                lResult.Add(Convert.ToInt32(tmp.Rows[i]["id_kiemnhiem"].ToString()));
+            }
+
+            return lResult;
+        }
+
+        [WebMethod]
+        public static bool SaveKiemNhiem(int id_nv, int[] chucvu) {
+            bool bResult = false;
+            Connection cn = new Connection();
+            string sqlDel = "delete qlns_kiemnhiem_nhanvien where id_nhanvien = '" + id_nv + "'";
+            try
+            {
+                cn.ThucThiDL(sqlDel);
+                for (int i = 0; i < chucvu.Length; i++) {
+                    string sql = "insert into qlns_kiemnhiem_nhanvien(id_nhanvien, id_kiemnhiem) values('" + id_nv + "', '" + chucvu[i] + "')";
+                    try
+                    {
+                        cn.ThucThiDL(sql);
+                    }
+                    catch (Exception ex) {
+                        throw ex;
+                    }
+                }
+                bResult = true;
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+
+            return bResult;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
+            //if (!IsPostBack)
+            //{
                 this.Title = "Quản Lý Nhân Sự";
                 dtBacLuong = getListBacLuong();
                 dtChucDanh = getListChucDanh();
                 dtDonvi = getListDonvi();
                 dtNhomDonvi = getListNhomDonvi();
                 dtNhanVien = getListNhanvien();
-            }
+                dtKiemNhiem = getListKiemNhiem();
+            //}
         }
     }
 }

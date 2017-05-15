@@ -45,6 +45,7 @@
                                 <th class="text-center">Lương duy trì</th>
                                 <th class="text-center">Lương P3</th>
                                 <th class="text-center">Chính thức</th>
+                                <th class="text-center">Đảng viên</th>
                                 <th class="text-center">Nghỉ thai sản</th>
                                 <th class="text-center">Tác vụ</th>
                             </tr>
@@ -72,6 +73,12 @@
                                    if (Convert.ToBoolean(thaisan))
                                    {
                                        szThaiSan = "checked";
+                                   }
+                                   string dangvien = dtNhanVien.Rows[i]["dangvien"].ToString();
+                                   string szDangVien = "";
+                                   if (Convert.ToBoolean(dangvien))
+                                   {
+                                       szDangVien = "checked";
                                    }
                             %>
                             <tr data-id="<%=id %>">
@@ -146,12 +153,42 @@
                                 <td class="text-center" id="luong_p3_<%=id %>"><%=luong_p3 %></td>
                                 <td class="text-center" id="luong_duytri_<%=id %>"><%=luong_duytri %></td>
                                 <td><input class="form-control" type="checkbox"  id="chinhthuc_<%=id %>" <%=szChinhThuc %>/></td>
+                                <td><input class="form-control" type="checkbox"  id="dangvien_<%=id %>" <%=szDangVien %>/></td>
                                 <td><input class="form-control" type="checkbox"  id="thaisan_<%=id %>" <%=szThaiSan %>/></td>
-                                <td class="text-center"><a class="btn btn-primary btn-xs btn-action">Lưu</a></td>
+                                <td class="text-center min-width-150">
+                                    <a class="btn btn-warning btn-xs btn-kiemnhiem" data-target="#KiemNhiem" data-toggle="modal">Kiêm Nhiệm</a>
+                                    <a class="btn btn-primary btn-xs btn-action">Lưu</a>
+                                </td>
                             </tr>
                             <% } %>
                         </tbody>
                     </table>
+
+                    <!-- EDIT ---->
+                    <div id="KiemNhiem" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content col-md-12">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title" style="text-align: center">CHỨC VỤ KIÊM NHIỆM</h4>
+                                </div>
+                                <input type="hidden" id="txt_id" />
+                                <div class="modal-body form-horizontal">
+                                    <% for (int nIndex = 0; nIndex < dtKiemNhiem.Rows.Count; nIndex++ ){ %>
+                                        <div class="checkbox">
+                                          <label><input type="checkbox" name="chucvu" value="<%=dtKiemNhiem.Rows[nIndex]["id"].ToString() %>" /><%=dtKiemNhiem.Rows[nIndex]["chucvu_kiemnhiem"].ToString() %></label>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-success" id="btnLuu">Lưu</a>
+                                    <a class="btn btn-default" data-dismiss="modal">Đóng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -163,7 +200,8 @@
     });
     function getListBacLuong() {
         var arrTmp = new Array();
-        <% for (int nBacluong = 0; nBacluong < dtBacLuong.Rows.Count; nBacluong++) { %>
+        <% for (int nBacluong = 0; nBacluong < dtBacLuong.Rows.Count; nBacluong++)
+           { %>
         arrTmp.push({
             id: '<%=dtBacLuong.Rows[nBacluong]["id"].ToString()%>',
             ten_bacluong: '<%=dtBacLuong.Rows[nBacluong]["ten_bacluong"].ToString()%>',
@@ -209,6 +247,7 @@
             var stk = $("#stk_" + id_nv).val();
             var hesoluong = $("#hesoluong_" + id_nv).val();
             var chinhthuc = $("#chinhthuc_" + id_nv).is(":checked");
+            var dangvien = $("#dangvien_" + id_nv).is(":checked");
             var thaisan = $("#thaisan_" + id_nv).is(":checked");
 
             var requestData = {
@@ -220,6 +259,7 @@
                 stk: stk,
                 hesoluong: hesoluong,
                 chinhthuc: chinhthuc,
+                dangvien: dangvien,
                 thaisan: thaisan
             };
             var szRequest = JSON.stringify(requestData);
@@ -240,6 +280,76 @@
                     }
                     else {
                         swal("Error!!!", "Lưu không thành công!!!", "error");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        });
+
+        $(document).on("click", '.btn-kiemnhiem', function () {
+            var id_nv = $(this).closest("tr").attr("data-id");
+            $("input[name=chucvu]").each(function () {
+                this.checked = false;
+            });
+
+            $("#txt_id").val(id_nv);
+            var requestData = {
+                id_nv: id_nv
+            };
+            var szRequest = JSON.stringify(requestData);
+            $.ajax({
+                type: "POST",
+                url: "NhanSu.aspx/loadKiemNhiem",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var arrKPI = new Array();
+                    arrKPI = result.d;
+                    for (var i = 0; i < arrKPI.length; i++) {
+                        var KPI_ID = arrKPI[i];
+                        $(":checkbox[value='" + KPI_ID + "']").prop("checked", "true");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        });
+
+        $("#btnLuu").click(function () {
+            var id = $("#txt_id").val();
+            var chucvu = new Array();
+            $("input[name=chucvu]").each(function () {
+                var isChecked = $(this).is(":checked");
+                if (isChecked) {
+                    chucvu.push($(this).val());
+                }
+            });
+
+            var requestData = {
+                id_nv: id,
+                chucvu: chucvu
+            };
+
+            var szRequest = JSON.stringify(requestData);
+            $.ajax({
+                type: "POST",
+                url: "NhanSu.aspx/SaveKiemNhiem",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result.d) {
+                        swal({
+                            title: "Lưu dữ liệu thành công!!!",
+                            text: "",
+                            type: "success"
+                        },
+                        function () {
+                            //window.location.reload();
+                        });
+                    }
+                    else {
+                        swal("Error", "Vui lòng check lại!!!", "error");
                     }
                 },
                 error: function (msg) { alert(msg.d); }

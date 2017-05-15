@@ -379,6 +379,18 @@
 
         $(document).on('click', '.btnRemove', function () {
             $(this).closest('tr').addClass('hide');
+            var tong = 0;
+            $('input[name="tytrong"]').each(function () {
+                var isRemove = $(this).closest("tr").hasClass('hide');
+                if (isRemove) {
+                    return;
+                }
+                var value = $(this).val();
+                if (!isNaN(value)) {
+                    tong += parseInt(value);
+                }
+            });
+            $("#tongTyTrong").text(tong);
         });
 
         /*Hide button*/
@@ -483,7 +495,7 @@
                         swal("Lưu thành công!!", "", "success");
                     }
                     else {
-                        swal("Error!!!", "Lưu không thành công!!!", "error");
+                        swal("Error!!!", "Lưu không thành công!!! Vui lòng kiểm tra lại xem KPI có bị trùng hay không?", "error");
                     }
                 },
                 error: function (msg) { alert(msg.d); }
@@ -671,6 +683,10 @@
         $(document).on('change', 'input[name="tytrong"]', function () {
             var tong = 0;
             $('input[name="tytrong"]').each(function () {
+                var isRemove = $(this).closest("tr").hasClass('hide');
+                if (isRemove) {
+                    return;
+                }
                 var value = $(this).val();
                 if (!isNaN(value)) {
                     tong += parseInt(value);

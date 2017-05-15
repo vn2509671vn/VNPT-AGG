@@ -521,11 +521,12 @@ namespace VNPT_BSC.BSC
         protected void Page_Load(object sender, EventArgs e)
         {
             this.Title = "Chi tiết nhận bsc";
-            if (!IsPostBack) {
+            //if (!IsPostBack) {
                 try
                 {
                     Nhanvien nhanvien = new Nhanvien();
-                    nhanvien = Session.GetCurrentUser();
+                    //nhanvien = Session.GetCurrentUser();
+                    nhanvien = (Nhanvien)Session["nhanvien"];
 
                     donvigiao = Request.QueryString["donvigiao"];
                     donvinhan = Request.QueryString["donvinhan"];
@@ -541,7 +542,7 @@ namespace VNPT_BSC.BSC
                 catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
-            }
+            //}
         }
     }
 }

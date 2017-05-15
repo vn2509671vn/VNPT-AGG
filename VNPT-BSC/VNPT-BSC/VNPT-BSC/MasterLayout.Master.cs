@@ -96,13 +96,17 @@ namespace VNPT_BSC
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack) {
+            //if (!IsPostBack) {
                 Nhanvien nhanvien = new Nhanvien();
                 DataTable dtQuyen = new DataTable();
                 int nNumRole = 0;
                 //string szChucVu = "";
-                nhanvien = Session.GetCurrentUser();
-                quyenHeThong = Session.GetRole();
+                //nhanvien = Session.GetCurrentUser();
+                //quyenHeThong = Session.GetRole();
+
+                nhanvien = (Nhanvien)Session["nhanvien"];
+                quyenHeThong = (List<int>)Session["quyenhethong"];
+
                 if (nhanvien == null)
                 {
                     Response.Redirect("~/Login.aspx");
@@ -115,7 +119,7 @@ namespace VNPT_BSC
 
                 dtPhanHoiGiao = getPhanHoiGiao();
                 dtPhanHoiThamDinh = getPhanHoiThamDinh(nhanvien.nhanvien_donvi_id);
-            }
+            //}
         }
     }
 }

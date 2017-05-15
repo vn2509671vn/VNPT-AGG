@@ -66,6 +66,7 @@
                     <ul class="nav child_menu">
                       <li><a href="/TinhLuong/DiemBSCNV.aspx"> Điểm BSC </a></li>
                       <li><a href="/TinhLuong/BacLuong.aspx"> Bậc Lương </a></li>
+                      <li><a href="/TinhLuong/KiemNhiem.aspx"> Chức Vụ Kiêm Nhiệm </a></li>
                       <li><a href="/TinhLuong/NhanSu.aspx"> Nhân Sự </a></li>
                       <li><a href="/TinhLuong/TinhLuong.aspx"> Tính Lương </a></li>
                       <li><a href="/TinhLuong/ChiTietTapThe.aspx"> Lương Tổng Hợp (3PS) </a></li>
@@ -328,8 +329,8 @@
         $(".thongke > ul > li#ketqua_nghiemthu_dv").show();
         $(".thongke > ul > li#xephang_bsc").show();
 
-        // Chức năng dành riêng cho ban giám đốc
-        <%if (userDonVi == 2){%>
+        // Chức năng dành riêng cho ban giám đốc và chị Uyên và anh Hùng
+        <%if (userDonVi == 2 || userID == 185 || userID == 195){%>
         $(".thongke > ul > li#danhsach_bsc_dagiao_thuctrang").show();
         $(".thongke > ul > li#danhsach_bsc_dagiao_thamdinh").show();
         <%}%>
@@ -347,6 +348,7 @@
                 $(".qlybsc_dv > ul > li#xuatmaubsc_donvi").show();
                 $(".qlybsc_dv > ul > li#import_bsc").show();
                 $(".qlybsc_dv > ul > li#phanphoibsc_donvi").show();
+                $(".qlybsc_dv > ul > li#nghiemthubsc_donvi").show();
                 $("#phanhoiGiao").show();
             }
 

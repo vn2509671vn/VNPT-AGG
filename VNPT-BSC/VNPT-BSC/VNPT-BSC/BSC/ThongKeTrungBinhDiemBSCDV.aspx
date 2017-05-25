@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="DiemBSCNV.aspx.cs" Inherits="VNPT_BSC.TinhLuong.DiemBSCNV" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="ThongKeTrungBinhDiemBSCDV.aspx.cs" Inherits="VNPT_BSC.BSC.ThongKeTrungBinhDiemBSCDV" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
     <script src="../Bootstrap/jquery.js"></script>
@@ -26,24 +26,26 @@
     <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">Điểm BSC nhân viên</h3>
+            <h3 class="panel-title">Trung binh điểm BSC đơn vị</h3>
           </div>
           <div class="panel-body">
               <div class="col-md-12 col-xs-12 form-horizontal">
                 <div class="form-group">
-                    <label class="control-label col-sm-6">Lọc theo tháng/năm:</label>
-                    <div class="col-sm-6 form-inline">
-                        <select class="form-control" id="month">
-                            <% for(int i = 1; i <= 12; i++){ 
-                                string selectOption = "";
-                                int month =  Convert.ToInt32(DateTime.Now.ToString("MM"));
-                                if(i == month){
-                                    selectOption = "selected";
-                                }
+                    <label class="control-label col-sm-4">Đơn vị:</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" id="donvi">
+                            <option value="0">Tất cả</option>
+                            <% for (int i = 0; i < dtDonVi.Rows.Count; i++)
+                               { 
                             %>
-                            <option value="<%=i %>" <%=selectOption %>><%=i %></option>
+                            <option value="<%=dtDonVi.Rows[i]["donvi_id"].ToString() %>"><%=dtDonVi.Rows[i]["donvi_ten"].ToString() %></option>
                             <% } %>
                         </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Năm:</label>
+                    <div class="col-sm-6">
                         <select class="form-control" id="year">
                             <% for(int i = 2016; i <= 2100; i++){ 
                                 string selectOption = "";
@@ -57,6 +59,31 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Quý:</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" id="quy">
+                            <option value="0" selected>Tất cả</option>
+                            <option value="1">I</option>
+                            <option value="2">II</option>
+                            <option value="3">III</option>
+                            <option value="4">IV</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Tháng:</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" id="month">
+                            <option value="0" selected>Tất cả</option>
+                            <% for(int i = 1; i <= 12; i++)
+                               {
+                            %>
+                            <option value="<%=i %>"><%=i %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
               </div>
               <div class="col-md-12 col-xs-12" id="gridBSC">
 
@@ -66,21 +93,27 @@
     </div>
 
 <script type="text/javascript">
-    function loadBSC(month, year) {
+    function loadBSC() {
+        var donvi = $("#donvi").val();
+        var nam = $("#year").val();
+        var quy = $("#quy").val();
+        var thang = $("#month").val();
+
         var requestData = {
-            thang: month,
-            nam: year
+            donvi: donvi,
+            nam: nam,
+            quy: quy,
+            thang: thang
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
             type: "POST",
-            url: "DiemBSCNV.aspx/loadBSC",
+            url: "ThongKeTrungBinhDiemBSCDV.aspx/loadBSC",
             data: szRequest,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (result) {
                 var output = result.d;
-
                 $("#gridBSC").html(output);
                 $("#table-kpi").DataTable({
                     "pageLength": 100,
@@ -88,11 +121,11 @@
                     "buttons": [
                         {
                             extend: 'excelHtml5',
-                            title: 'Điểm BSC/KPI ' + month + "-" + year
+                            title: 'Điểm TB BSC/KPI'
                         },
                         {
                             extend: 'pdfHtml5',
-                            title: 'Điểm BSC/KPI ' + month + "-" + year,
+                            title: 'Điểm TB BSC/KPI',
                             orientation: 'landscape',
                             pageSize: 'LEGAL'
                         }
@@ -105,20 +138,55 @@
 
     $(document).ready(function () {
         // Load grid lần đầu
-        loadBSC($("#month").val(), $("#year").val());
+        loadBSC();
 
         // Load grid khi năm thay đổi
         $("#year").change(function () {
-            var thang = $("#month").val();
-            var nam = $(this).val();
-            loadBSC(thang, nam);
+            loadBSC();
         });
 
         // Load grid khi tháng thay đổi
-        $("#month").change(function () {
-            var nam = $("#year").val();
-            var thang = $(this).val();
-            loadBSC(thang, nam);
+        $(document).on('change', '#month', function () {
+            loadBSC();
+        });
+
+        $("#quy").change(function () {
+            $("#month").find("option").remove();
+            var szOption = "<option value='0'>Tất cả</option>";
+            var quy = $(this).val();
+            if (quy == 0) {
+                for (var i = 1; i <= 12; i++) {
+                    szOption += "<option value='" + i + "'>" + i + "</option>";
+                }
+            }
+            else if (quy == 1) {
+                for (var i = 1; i <= 3; i++) {
+                    szOption += "<option value='" + i + "'>" + i + "</option>";
+                }
+            }
+            else if (quy == 2) {
+                for (var i = 4; i <= 6; i++) {
+                    szOption += "<option value='" + i + "'>" + i + "</option>";
+                }
+            }
+            else if (quy == 3) {
+                for (var i = 7; i <= 9; i++) {
+                    szOption += "<option value='" + i + "'>" + i + "</option>";
+                }
+            }
+            else {
+                for (var i = 10; i <= 12; i++) {
+                    szOption += "<option value='" + i + "'>" + i + "</option>";
+                }
+            }
+
+            $("#month").append(szOption);
+
+            loadBSC();
+        });
+
+        $("#donvi").change(function () {
+            loadBSC();
         });
     });
 </script>

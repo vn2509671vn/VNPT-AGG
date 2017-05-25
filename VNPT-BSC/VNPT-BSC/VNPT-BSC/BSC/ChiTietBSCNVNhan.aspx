@@ -93,15 +93,31 @@
                         <!-- /.panel-body -->
                         <div class="panel-footer">
                             <div class="form-group">
-                                <label class="control-label col-sm-2">Lãnh đạo giao:</label>
-                                <div class="col-sm-6 form-inline padding-top-7 ">
-                                    <span id="lanhdaoky" class="red-color">Chưa ký</span>
+                                <div class="col-md-6 col-xs-12">
+                                    <label class="text-center col-sm-12">KÝ XÁC NHẬN CỦA CÁ NHÂN NHẬN VIỆC</label>
+                                    <div class="col-sm-12 form-inline padding-top-7 text-center">
+                                        <span id="nhanvienky" class="red-color">Chưa ký</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xs-12">
+                                    <label class="text-center col-sm-12">LÃNH ĐẠO ĐƠN VỊ KÝ GIAO VIỆC</label>
+                                    <div class="col-sm-12 form-inline padding-top-7 text-center">
+                                        <span id="lanhdaoky" class="red-color">Chưa ký</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2">Nhân viên ký nhận:</label>
-                                <div class="col-sm-6 form-inline padding-top-7 ">
-                                    <span id="nhanvienky" class="red-color">Chưa ký</span>
+                                <div class="col-md-6 col-xs-12">
+                                    <label class="text-center col-sm-12">KÝ XÁC NHẬN KẾT QUẢ ĐẠT ĐƯỢC CỦA CÁ NHÂN</label>
+                                    <div class="col-sm-12 form-inline padding-top-7 text-center">
+                                        <span id="nhanvienkyxacnhan" class="red-color">Chưa ký</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xs-12">
+                                    <label class="text-center col-sm-12">LÃNH ĐẠO ĐƠN VỊ KÝ XÁC NHẬN KẾT QUẢ</label>
+                                    <div class="col-sm-12 form-inline padding-top-7 text-center">
+                                        <span id="lanhdaokyxacnhan" class="red-color">Chưa ký</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -216,6 +232,7 @@
                     $("#ketthucLabel").removeClass("label-default");
                     $("#ketthucLabel").addClass("label-success");
                     $("#ketthucLabel").text("Đã kết thúc");
+                    $("#lanhdaokyxacnhan").text("Đã ký");
                 }
                 else {
                     $("#ketthucLabel").removeClass("label-success");
@@ -228,6 +245,7 @@
                     $("#dongyLabel").removeClass("label-default");
                     $("#dongyLabel").addClass("label-success");
                     $("#dongyLabel").text("Đồng ý");
+                    $("#nhanvienkyxacnhan").text("Đã ký");
                 }
                 else {
                     $("#dongyLabel").removeClass("label-success");

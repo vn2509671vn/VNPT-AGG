@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="DiemBSCNV.aspx.cs" Inherits="VNPT_BSC.TinhLuong.DiemBSCNV" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="PhatTrienThueBao.aspx.cs" Inherits="VNPT_BSC.TinhLuong.PhatTrienThueBao" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
     <script src="../Bootstrap/jquery.js"></script>
@@ -26,7 +26,7 @@
     <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">Điểm BSC nhân viên</h3>
+            <h3 class="panel-title">Số lượng phát triển TB</h3>
           </div>
           <div class="panel-body">
               <div class="col-md-12 col-xs-12 form-horizontal">
@@ -74,7 +74,7 @@
         var szRequest = JSON.stringify(requestData);
         $.ajax({
             type: "POST",
-            url: "DiemBSCNV.aspx/loadBSC",
+            url: "PhatTrienThueBao.aspx/loadTB",
             data: szRequest,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -88,11 +88,11 @@
                     "buttons": [
                         {
                             extend: 'excelHtml5',
-                            title: 'Điểm BSC/KPI ' + month + "-" + year
+                            title: 'Phát triển TB ' + month + "-" + year
                         },
                         {
                             extend: 'pdfHtml5',
-                            title: 'Điểm BSC/KPI ' + month + "-" + year,
+                            title: 'Phát triển TB ' + month + "-" + year,
                             orientation: 'landscape',
                             pageSize: 'LEGAL'
                         }

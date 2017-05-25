@@ -74,6 +74,36 @@
                             
                         </div>
                         <!-- /.panel-body -->
+                        <div class="panel-footer">
+                            <div class="form-group">
+                                <div class="col-md-6 col-xs-12">
+                                    <label class="text-center col-sm-12">KÝ XÁC NHẬN CỦA CÁ NHÂN NHẬN VIỆC</label>
+                                    <div class="col-sm-12 form-inline padding-top-7 text-center">
+                                        <span id="nhanvienky" class="red-color">Chưa ký</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xs-12">
+                                    <label class="text-center col-sm-12">LÃNH ĐẠO ĐƠN VỊ KÝ GIAO VIỆC</label>
+                                    <div class="col-sm-12 form-inline padding-top-7 text-center">
+                                        <span id="lanhdaoky" class="red-color">Chưa ký</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6 col-xs-12">
+                                    <label class="text-center col-sm-12">KÝ XÁC NHẬN KẾT QUẢ ĐẠT ĐƯỢC CỦA CÁ NHÂN</label>
+                                    <div class="col-sm-12 form-inline padding-top-7 text-center">
+                                        <span id="nhanvienkyxacnhan" class="red-color">Chưa ký</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xs-12">
+                                    <label class="text-center col-sm-12">LÃNH ĐẠO ĐƠN VỊ KÝ XÁC NHẬN KẾT QUẢ</label>
+                                    <div class="col-sm-12 form-inline padding-top-7 text-center">
+                                        <span id="lanhdaokyxacnhan" class="red-color">Chưa ký</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-12 col-xs-12 text-center">
@@ -132,6 +162,18 @@
                 $("#ten_nv").html(nv_nhan);
                 // Fill ngày áp dụng
                 $("#ngayapdung").text(thang + "/" + nam);
+                
+                if (trangthaigiao == "True") {
+                    $("#lanhdaoky").text("Đã ký");
+                }
+
+                if (trangthainhan == "True") {
+                    $("#nhanvienky").text("Đã ký");
+                }
+
+                if (trangthaidongy_kqtd == "True") {
+                    $("#nhanvienkyxacnhan").text("Đã ký");
+                }
 
                 // Cập nhật trạng thái chấm
                 if (trangthaicham == "True") {
@@ -178,6 +220,7 @@
                     $("#ketthucLabel").removeClass("label-default");
                     $("#ketthucLabel").addClass("label-success");
                     $("#ketthucLabel").text("Đã kết thúc");
+                    $("#lanhdaokyxacnhan").text("Đã ký");
                 }
                 else {
                     $("#ketthucLabel").removeClass("label-success");

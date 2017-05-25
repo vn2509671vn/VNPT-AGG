@@ -336,7 +336,8 @@ namespace VNPT_BSC.TinhLuong
             decimal dResult = 0;
             string sql = "";
             if (id_nhom != 17 && id_nhom != 18 && id_nhom != 19) {
-                sql = "select sum(diem_kpi) as diem from bsc_nhanvien where thang = '" + thang + "' and nam = '" + nam + "' and nhanviennhan = '" + id_nhanvien + "'";
+                //sql = "select sum(diem_kpi) as diem from bsc_nhanvien where thang = '" + thang + "' and nam = '" + nam + "' and nhanviennhan = '" + id_nhanvien + "'";
+                sql = "select tongdiem_bsc as diem from tmp_tongbsc_nhanvien where thang = '" + thang + "' and nam = '" + nam + "' and id_nhanvien = '" + id_nhanvien + "'";
             }
             else if (id_nhom == 18) {
                 sql = "select sum(diem_kpi) as diem from bsc_donvi where thang = '" + thang + "' and nam = '" + nam + "' and donvinhan = '" + id_donvi + "'";
@@ -377,7 +378,8 @@ namespace VNPT_BSC.TinhLuong
                 throw ex;
             }
 
-            if (tmp.Rows.Count > 0) {
+            if (tmp.Rows.Count > 0 && tmp.Rows[0][0].ToString() != "")
+            {
                 dResult = Convert.ToDecimal(tmp.Rows[0][0].ToString());
             }
             return dResult;
@@ -535,9 +537,11 @@ namespace VNPT_BSC.TinhLuong
                     int id_nhanvien = Convert.ToInt32(dtNhanVien.Rows[nIndex]["id"].ToString());
                     dtNhanVienChiTiet = getNhanVienDetail(id_nhanvien, thang, nam);
                     if (dtNhanVienChiTiet.Rows.Count > 0) {
+                        string id_pttb = dtNhanVienChiTiet.Rows[0]["id_pttb"].ToString();
                         bool dangvien = Convert.ToBoolean(dtNhanVienChiTiet.Rows[0]["dangvien"].ToString());
                         int nhom_donvi = Convert.ToInt32(dtNhanVienChiTiet.Rows[0]["id_nhom_donvi"].ToString());
                         int id_donvi = Convert.ToInt32(dtNhanVienChiTiet.Rows[0]["donvi"].ToString());
+                        int chucdanh = Convert.ToInt32(dtNhanVienChiTiet.Rows[0]["chucdanh"].ToString());
                         int ngaycong_bhxh = Convert.ToInt32(dtNhanVienChiTiet.Rows[0]["ngaycong_bhxh"].ToString());
                         int ngaycong_thucte = Convert.ToInt32(dtNhanVienChiTiet.Rows[0]["ngaycong_thucte"].ToString());
                         decimal tienluong = Convert.ToDecimal(dtNhanVienChiTiet.Rows[0]["luong_duytri"].ToString());
@@ -559,7 +563,7 @@ namespace VNPT_BSC.TinhLuong
 
                         decimal luong_duytri_canhan = 0;
                         decimal luong_p3_canhan = 0;
-                        decimal luong_phattrien_tb_canhan = 0;
+                        decimal luong_phattrien_tb_canhan = tongtien_pttb(id_pttb, thang, nam);
                         
                         if (tong_heso_luongduytri != 0) {
                             luong_duytri_canhan = tong_luongduytri / tong_heso_luongduytri * heso_bacluong_duytri;
@@ -567,6 +571,10 @@ namespace VNPT_BSC.TinhLuong
 
                         if (tong_heso_p3 != 0) {
                             luong_p3_canhan = tong_luongp3 / tong_heso_p3 * heso_bacluong_p3;
+                        }
+
+                        if (chucdanh == 7 || chucdanh == 8) {
+                            luong_phattrien_tb_canhan = luong_phattrien_tb_canhan * Convert.ToDecimal(0.9);
                         }
 
                         decimal phi_bhtn = 0;
@@ -1014,7 +1022,8 @@ namespace VNPT_BSC.TinhLuong
             {
                 sql = "select sum(qlns_bacluong.heso_bacluong*qlns_chamcong.ngaycong_bhxh/qlns_chamcong.ngaycong_bhxh*tmp.diem) as tong ";
                 sql += "from qlns_nhanvien, qlns_bacluong, qlns_chamcong, ";
-                sql += "(select nhanviennhan, sum(diem_kpi) as diem from bsc_nhanvien where thang = '" + thang + "' and nam = '" + nam + "' group by nhanviennhan) tmp ";
+                //sql += "(select nhanviennhan, sum(diem_kpi) as diem from bsc_nhanvien where thang = '" + thang + "' and nam = '" + nam + "' group by nhanviennhan) tmp ";
+                sql += "(select id_nhanvien, tongdiem_bsc as diem from tmp_tongbsc_nhanvien where thang = '" + thang + "' and nam = '" + nam + "') tmp ";
                 sql += "where qlns_nhanvien.id_bacluong = qlns_bacluong.id ";
                 sql += "and qlns_nhanvien.id = qlns_chamcong.nhanvien ";
                 sql += "and qlns_chamcong.ngaycong_thucte != 0 ";
@@ -1022,7 +1031,8 @@ namespace VNPT_BSC.TinhLuong
                 sql += "and qlns_chamcong.thang = '" + thang + "' ";
                 sql += "and qlns_chamcong.nam = '" + nam + "' ";
                 sql += "and qlns_nhanvien.id_nhom_donvi = '" + id_nhom + "' ";
-                sql += "and qlns_nhanvien.id = tmp.nhanviennhan ";
+                //sql += "and qlns_nhanvien.id = tmp.nhanviennhan ";
+                sql += "and qlns_nhanvien.id = tmp.id_nhanvien ";
                 sql += "and qlns_nhanvien.chinhthuc = 1";
             }
             else if (id_nhom == 18)
@@ -1126,6 +1136,30 @@ namespace VNPT_BSC.TinhLuong
             if (tmp.Rows.Count > 0)
             {
                 dResult = Convert.ToDecimal(tmp.Rows[0]["luong_p3"].ToString());
+            }
+            return dResult;
+        }
+
+        public static decimal tongtien_pttb(string nv_id_pttb, int thang, int nam)
+        {
+            Connection cn = new Connection();
+            DataTable tmp = new DataTable();
+            decimal dResult = 0;
+            string timekey = "";
+            timekey = nam.ToString() + thang.ToString("00");
+            string sql = "select (tongtien_lt_220 + tongtien_gt_220 + tongtiendidong + tongtienmytv + tongtienezcom) as luong_pttb from tmp_nhanvien_pttb where nhanvien_id = '" + nv_id_pttb + "' and timekey = '" + timekey + "'";
+            try
+            {
+                tmp = cn.XemDL(sql);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if (tmp.Rows.Count > 0)
+            {
+                dResult = Convert.ToDecimal(tmp.Rows[0]["luong_pttb"].ToString());
             }
             return dResult;
         }

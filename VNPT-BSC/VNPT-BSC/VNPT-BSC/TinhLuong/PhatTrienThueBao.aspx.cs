@@ -12,27 +12,22 @@ using System.Globalization;
 
 namespace VNPT_BSC.TinhLuong
 {
-    public partial class DiemBSCNV : System.Web.UI.Page
+    public partial class PhatTrienThueBao : System.Web.UI.Page
     {
         [WebMethod]
-        public static string loadBSC(int thang, int nam)
+        public static string loadTB(int thang, int nam)
         {
-            Connection cnBSC = new Connection();
+            Connection cn = new Connection();
             DataTable gridData = new DataTable();
-            DataTable gridDataTTKD = new DataTable();
-
-            string sqlBSC = "select nv.nhanvien_manv, nv.nhanvien_hoten, dv.donvi_ten, sum(bsc.diem_kpi) as diem ";
-            sqlBSC += "from bsc_nhanvien bsc, nhanvien nv, donvi dv ";
-            sqlBSC += "where bsc.nhanviennhan = nv.nhanvien_id ";
-            sqlBSC += "and bsc.thang = '" + thang + "' ";
-            sqlBSC += "and bsc.nam = '" + nam + "' ";
-            sqlBSC += "and nv.nhanvien_donvi = dv.donvi_id ";
-            sqlBSC += "group by nv.nhanvien_manv, nv.nhanvien_hoten, dv.donvi_ten ";
-            sqlBSC += "order by diem DESC";
+            string timekey = nam.ToString() + thang.ToString("00");
+            string sqlBSC = "select nv.ma_nhanvien , pttb.* ";
+            sqlBSC += "from tmp_nhanvien_pttb pttb, qlns_nhanvien nv ";
+            sqlBSC += "where pttb.nhanvien_id = nv.id_pttb ";
+            sqlBSC += "and pttb.timekey = '" + timekey + "' ";
 
             try
             {
-                gridData = cnBSC.XemDL(sqlBSC);
+                gridData = cn.XemDL(sqlBSC);
             }
             catch (Exception ex)
             {
@@ -44,35 +39,32 @@ namespace VNPT_BSC.TinhLuong
             arrOutput += "<table id='table-kpi' class='table table-striped table-bordered table-full-width' cellspacing='0' width='100%'>";
             arrOutput += "<thead>";
             arrOutput += "<tr>";
-            arrOutput += "<th class='text-center'>STT</th>";
             arrOutput += "<th class='text-center'>Mã NV</th>";
             arrOutput += "<th class='text-center'>Nhân viên</th>";
-            arrOutput += "<th class='text-center'>Đơn vị</th>";
-            arrOutput += "<th class='text-center'>Điểm</th>";
-            arrOutput += "<th class='hide'>Chú thích</th>";
+            arrOutput += "<th class='text-center'>Fiber (< 200k)</th>";
+            arrOutput += "<th class='text-center'>Fiber (>= 200k)</th>";
+            arrOutput += "<th class='text-center'>Di động</th>";
+            arrOutput += "<th class='text-center'>MyTV</th>";
+            arrOutput += "<th class='text-center'>Ezcom</th>";
             arrOutput += "</tr>";
             arrOutput += "</thead>";
             arrOutput += "<tbody>";
             if (gridData.Rows.Count <= 0)
             {
-                arrOutput += "<tr><td colspan='4' class='text-center'>No item</td></tr>";
+                arrOutput += "<tr><td colspan='7' class='text-center'>No item</td></tr>";
             }
             else
             {
                 for (int nKPI = 0; nKPI < gridData.Rows.Count; nKPI++)
                 {
-                    decimal diem = 0;
-                    if (gridData.Rows[nKPI]["diem"].ToString() != "")
-                    {
-                        diem = Convert.ToDecimal(gridData.Rows[nKPI]["diem"].ToString());
-                    }
                     arrOutput += "<tr>";
-                    arrOutput += "<td style='text-align: center'>" + (nKPI + 1) + "</td>";
-                    arrOutput += "<td style='text-align: center'><strong>" + gridData.Rows[nKPI]["nhanvien_manv"].ToString() + "</strong></td>";
-                    arrOutput += "<td class='min-width-130'><strong>" + gridData.Rows[nKPI]["nhanvien_hoten"].ToString() + "</strong></td>";
-                    arrOutput += "<td><strong>" + gridData.Rows[nKPI]["donvi_ten"].ToString() + "</strong></td>";
-                    arrOutput += "<td style='text-align: center'><strong>" + String.Format("{0:0.0000}", diem) + "</strong></td>";
-                    arrOutput += "<td class='hide'></td>";
+                    arrOutput += "<td style='text-align: center'><strong>" + gridData.Rows[nKPI]["ma_nhanvien"].ToString() + "</strong></td>";
+                    arrOutput += "<td class='min-width-130'><strong>" + gridData.Rows[nKPI]["ten_nv"].ToString() + "</strong></td>";
+                    arrOutput += "<td style='text-align: center'><strong>" + gridData.Rows[nKPI]["fiber_lt_220"].ToString() + "</strong></td>";
+                    arrOutput += "<td style='text-align: center'><strong>" + gridData.Rows[nKPI]["fiber_gt_220"].ToString() + "</strong></td>";
+                    arrOutput += "<td style='text-align: center'><strong>" + gridData.Rows[nKPI]["didong"].ToString() + "</strong></td>";
+                    arrOutput += "<td style='text-align: center'><strong>" + gridData.Rows[nKPI]["mytv"].ToString() + "</strong></td>";
+                    arrOutput += "<td style='text-align: center'><strong>" + gridData.Rows[nKPI]["ezcom"].ToString() + "</strong></td>";
                     arrOutput += "</tr>";
                 }
             }
@@ -83,7 +75,7 @@ namespace VNPT_BSC.TinhLuong
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.Title = "Điểm BSC Nhân Viên";
+            this.Title = "Số lượng phát triển thuê bao";
             try
             {
                 Nhanvien nhanvien = new Nhanvien();

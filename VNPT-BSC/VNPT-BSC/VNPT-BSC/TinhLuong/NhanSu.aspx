@@ -27,7 +27,7 @@
     <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">DANH MỤC BẬC LƯƠNG</h3>
+                <h3 class="panel-title">Danh mục nhân sự</h3>
             </div>
             <div class="panel-body">
                 <div class="col-md-12 col-xs-12 table-responsive">
@@ -44,6 +44,7 @@
                                 <th class="text-center">Hệ số lương</th>
                                 <th class="text-center">Lương duy trì</th>
                                 <th class="text-center">Lương P3</th>
+                                <th class="text-center">Ngày vào ngành</th>
                                 <th class="text-center">Chính thức</th>
                                 <th class="text-center">Đảng viên</th>
                                 <th class="text-center">Nghỉ thai sản</th>
@@ -64,6 +65,7 @@
                                    string luong_p3 = dtNhanVien.Rows[i]["luong_p3"].ToString();
                                    string luong_duytri = dtNhanVien.Rows[i]["luong_duytri"].ToString();
                                    string chinhthuc = dtNhanVien.Rows[i]["chinhthuc"].ToString();
+                                   string ngaykyhd = dtNhanVien.Rows[i]["ngaykyhd"].ToString();
                                    string szChinhThuc = "";
                                    if (Convert.ToBoolean(chinhthuc)) {
                                        szChinhThuc = "checked";
@@ -131,7 +133,7 @@
                                     </select>
                                 </td>
                                 <!-- Bậc lương -->
-                                <td>
+                                <td class="text-center">
                                     <select class="form-control" id="bacluong_<%=id %>">
                                         <% for (int nBacluong = 0; nBacluong < dtBacLuong.Rows.Count; nBacluong++)
                                            {
@@ -144,14 +146,15 @@
                                                }
                                                if (id_chucdanh == Convert.ToInt32(chucdanh)){
                                         %>
-                                        <option <%=szSelected %> value="<%=blValue %>"><%= dtBacLuong.Rows[nBacluong]["ten_bacluong"] %></option>
+                                        <option <%=szSelected %> value="<%=blValue %>">Bậc <%= dtBacLuong.Rows[nBacluong]["ten_bacluong"] %></option>
                                         <% }} %>
                                     </select>
                                 </td>
                                 <td><input class="form-control min-width-150" type="text" id="stk_<%=id %>" value="<%=so_tk %>"/></td>
                                 <td><input class="form-control cls-hesoluong" type="number" min="0" id="hesoluong_<%=id %>" value="<%=hesoluong %>"/></td>
-                                <td class="text-center" id="luong_p3_<%=id %>"><%=luong_p3 %></td>
                                 <td class="text-center" id="luong_duytri_<%=id %>"><%=luong_duytri %></td>
+                                <td class="text-center" id="luong_p3_<%=id %>"><%=luong_p3 %></td>
+                                <td><input id="ngaykyhd_<%=id %>" class="date-picker form-control col-md-7 col-xs-12 ngaykyhd min-width-130" required="required" type="text" value="<%=ngaykyhd %>"/></td>
                                 <td><input class="form-control" type="checkbox"  id="chinhthuc_<%=id %>" <%=szChinhThuc %>/></td>
                                 <td><input class="form-control" type="checkbox"  id="dangvien_<%=id %>" <%=szDangVien %>/></td>
                                 <td><input class="form-control" type="checkbox"  id="thaisan_<%=id %>" <%=szThaiSan %>/></td>
@@ -354,6 +357,15 @@
                 },
                 error: function (msg) { alert(msg.d); }
             });
+        });
+
+        $(".date-picker").daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+                format: 'DD/MM/YYYY'
+            },
+            maxDate: new Date()
         });
     });
 </script>

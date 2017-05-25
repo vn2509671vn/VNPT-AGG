@@ -47,7 +47,7 @@
                             <% for (int i = 0; i < dtBacLuong.Rows.Count; i++){%>
                             <tr data-id="<%=dtBacLuong.Rows[i]["id"].ToString() %>">
                                 <td class="ten_chucdanh" data-id-chucdanh="<%=dtBacLuong.Rows[i]["id_chucdanh"].ToString() %>"><strong><%=dtBacLuong.Rows[i]["ten_chucdanh"].ToString() %></strong></td>
-                                <td class="bacluong"><strong><%=dtBacLuong.Rows[i]["ten_bacluong"].ToString() %></strong></td>
+                                <td class="bacluong" data-bac="<%=dtBacLuong.Rows[i]["ten_bacluong"].ToString() %>"><strong>Bậc <%=dtBacLuong.Rows[i]["ten_bacluong"].ToString() %></strong></td>
                                 <td class="text-center heso"><strong><%=dtBacLuong.Rows[i]["heso_bacluong"].ToString() %></strong></td>
                                 <td class="text-center"><a class="btn btn-primary btn-xs btn-action" data-target="#Editbl" data-toggle="modal">Sửa</a></td>
                             </tr>
@@ -65,18 +65,6 @@
                                 </div>
                                 <div class="modal-body list-BSC form-horizontal">
                                     <div class="form-group">
-                                        <label class="control-label col-sm-4">Tên bậc lương:</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control fix-width-350" id="txtten" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-4">Hệ số lương:</label>
-                                        <div class="col-sm-8">
-                                            <input type="number" min="0" class="form-control fix-width-350" id="txtheso" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
                                         <label class="control-label col-sm-4">Chức danh:</label>
                                         <div class="col-sm-8">
                                             <select class="form-control fix-day" id="chucdanh">
@@ -89,6 +77,24 @@
                                                 <option value="<%= id%>"><%= ten_chucdanh%></option>
                                                 <% } %>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Tên bậc lương:</label>
+                                        <div class="col-sm-8">
+                                            <%--<input type="text" class="form-control fix-width-350" id="txtten" />--%>
+                                            <select class="form-control" id="txtten">
+                                                <option value="1">Bậc 1</option>
+                                                <option value="2">Bậc 2</option>
+                                                <option value="3">Bậc 3</option>
+                                                <option value="4">Bậc 4</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Hệ số lương:</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" min="0" class="form-control fix-width-350" id="txtheso" />
                                         </div>
                                     </div>
                                 </div>
@@ -111,18 +117,6 @@
                                 <input type="hidden" id="txt_id_bacluong" />
                                 <div class="modal-body form-horizontal">
                                     <div class="form-group">
-                                        <label class="control-label col-sm-4">Tên bậc:</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control fix-width-350" id="txtten_sua" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-4">Hệ số lương:</label>
-                                        <div class="col-sm-8">
-                                            <input type="number" min="0" class="form-control fix-width-350" id="txtheso_sua" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
                                         <label class="control-label col-sm-4">Chức danh:</label>
                                         <div class="col-sm-8">
                                             <select class="form-control fix-day" id="chucdanh_sua">
@@ -135,6 +129,24 @@
                                                 <option value="<%= id%>"><%= ten_chucdanh%></option>
                                                 <% } %>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Tên bậc:</label>
+                                        <div class="col-sm-8">
+                                            <%--<input type="text" class="form-control fix-width-350" id="txtten_sua" />--%>
+                                            <select class="form-control" id="txtten_sua">
+                                                <option value="1">Bậc 1</option>
+                                                <option value="2">Bậc 2</option>
+                                                <option value="3">Bậc 3</option>
+                                                <option value="4">Bậc 4</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Hệ số lương:</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" min="0" class="form-control fix-width-350" id="txtheso_sua" />
                                         </div>
                                     </div>
                                 </div>
@@ -190,7 +202,7 @@
 
         $(document).on('click', '.btn-action', function () {
             var id_bacluong = $(this).closest("tr").attr("data-id");
-            var ten_bacluong = $("tr[data-id=" + id_bacluong + "] > td.bacluong").text();
+            var ten_bacluong = $("tr[data-id=" + id_bacluong + "] > td.bacluong").attr("data-bac");
             var heso = $("tr[data-id=" + id_bacluong + "] > td.heso").text();
             var id_chucdanh = $("tr[data-id=" + id_bacluong + "] > td.ten_chucdanh").attr("data-id-chucdanh");
 

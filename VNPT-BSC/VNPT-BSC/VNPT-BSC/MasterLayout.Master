@@ -19,7 +19,8 @@
     <link href="/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet" />
     <link href="/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet" />
     <link href="/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet" />
-
+    <!-- bootstrap-daterangepicker -->
+    <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
     <!-- Custom Theme Style -->
     <link href="/build/css/custom.css" rel="stylesheet" />
 
@@ -58,13 +59,17 @@
               <div class="menu_section">
                 <ul class="nav side-menu">
                   <li><a href="/index.aspx"><i class="fa fa-home"></i> Trang Chủ </a></li>
-                  <% if (userID == 195){ %>
+                  <% if (userID == 195 || userID == 196)
+                     { %>
                   <li><a href="/BSC/DanhSachBSCTatCaNV.aspx"><i class="fa fa-list"></i> Kiểm Tra Giao BSC/KPI </a></li>
+                  <li><a href="/BSC/ThongKeTrungBinhDiemBSCDV.aspx"><i class="fa fa-area-chart"></i> TKê ĐTB BSC/KPI ĐV </a></li>
+                  <li><a href="/BSC/ThongKeTrungBinhDiemBSCNV.aspx"><i class="fa fa-area-chart"></i> TKê ĐTB BSC/KPI NV </a></li>
                   <% } %>
                   <% if (userID == 196){ %>
                   <li class="qlns"><a><i class="fa fa-users"></i> Nhân Sự <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="/TinhLuong/DiemBSCNV.aspx"> Điểm BSC </a></li>
+                      <li><a href="/TinhLuong/PhatTrienThueBao.aspx"> Phát Triển TB </a></li>
                       <li><a href="/TinhLuong/BacLuong.aspx"> Bậc Lương </a></li>
                       <li><a href="/TinhLuong/KiemNhiem.aspx"> Chức Vụ Kiêm Nhiệm </a></li>
                       <li><a href="/TinhLuong/NhanSu.aspx"> Nhân Sự </a></li>
@@ -301,6 +306,9 @@
     <script src="/vendors/pdfmake/build/vfs_fonts.js"></script>
     <!-- Autocomplete -->
     <script src="../Bootstrap/jquery.autocomplete.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="/vendors/moment/min/moment.min.js"></script>
+    <script src="/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="/build/js/custom.min.js"></script>
   </body>

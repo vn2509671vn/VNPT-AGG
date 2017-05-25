@@ -10,24 +10,86 @@ using System.Data.SqlClient;
 using System.Web.Script.Services;
 using System.Globalization;
 
-namespace VNPT_BSC.TinhLuong
+namespace VNPT_BSC.BSC
 {
-    public partial class DiemBSCNV : System.Web.UI.Page
+    public partial class ThongKeTrungBinhDiemBSCNV : System.Web.UI.Page
     {
+        public static DataTable dtDonVi = new DataTable();
+
+        public static DataTable dsDonVi() {
+            DataTable tmp = new DataTable();
+            Connection cn = new Connection();
+            string sql = "select * from donvi where donvi_id not in (1,2)";
+            try
+            {
+                tmp = cn.XemDL(sql);
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+
+            return tmp;
+        }
+
         [WebMethod]
-        public static string loadBSC(int thang, int nam)
+        public static string loadBSC(int donvi, int nam, int quy, int thang, int loainv)
         {
             Connection cnBSC = new Connection();
             DataTable gridData = new DataTable();
             DataTable gridDataTTKD = new DataTable();
+            string szThang = "";
+            int tongsothang = 1;
+            if (thang == 0)
+            {
+                if (quy == 0)
+                {
+                    szThang = "1,2,3,4,5,6,7,8,9,10,11,12";
+                    tongsothang = 12;
+                }
+                else if (quy == 1)
+                {
+                    szThang = "1,2,3";
+                    tongsothang = 3;
+                }
+                else if (quy == 2)
+                {
+                    szThang = "4,5,6";
+                    tongsothang = 3;
+                }
+                else if (quy == 3)
+                {
+                    szThang = "7,8,9";
+                    tongsothang = 3;
+                }
+                else if (quy == 4)
+                {
+                    szThang = "10,11,12";
+                    tongsothang = 3;
+                }
+            }
+            else {
+                szThang = thang.ToString();
+            }
 
-            string sqlBSC = "select nv.nhanvien_manv, nv.nhanvien_hoten, dv.donvi_ten, sum(bsc.diem_kpi) as diem ";
-            sqlBSC += "from bsc_nhanvien bsc, nhanvien nv, donvi dv ";
-            sqlBSC += "where bsc.nhanviennhan = nv.nhanvien_id ";
-            sqlBSC += "and bsc.thang = '" + thang + "' ";
+            string sqlBSC = "select nv.nhanvien_manv, nv.nhanvien_hoten, dv.donvi_ten, (bsc.tongdiem_bsc/" + tongsothang + ") as diem ";
+            //sqlBSC += "from bsc_nhanvien bsc, nhanvien nv, donvi dv ";
+            sqlBSC += "from tmp_tongbsc_nhanvien bsc, nhanvien nv, donvi dv ";
+            sqlBSC += "where bsc.id_nhanvien = nv.nhanvien_id ";
+            sqlBSC += "and bsc.thang in (" + szThang + ") ";
             sqlBSC += "and bsc.nam = '" + nam + "' ";
             sqlBSC += "and nv.nhanvien_donvi = dv.donvi_id ";
-            sqlBSC += "group by nv.nhanvien_manv, nv.nhanvien_hoten, dv.donvi_ten ";
+            if (donvi != 0) {
+                sqlBSC += "and dv.donvi_id = '" + donvi + "' ";
+            }
+
+            if (loainv == 1) {
+                sqlBSC += "and nv.nhanvien_manv is not null ";
+            }
+            else if (loainv == 2) {
+                sqlBSC += "and nv.nhanvien_manv is null ";
+            }
+
+            //sqlBSC += "group by nv.nhanvien_manv, nv.nhanvien_hoten, dv.donvi_ten ";
             sqlBSC += "order by diem DESC";
 
             try
@@ -48,14 +110,14 @@ namespace VNPT_BSC.TinhLuong
             arrOutput += "<th class='text-center'>Mã NV</th>";
             arrOutput += "<th class='text-center'>Nhân viên</th>";
             arrOutput += "<th class='text-center'>Đơn vị</th>";
-            arrOutput += "<th class='text-center'>Điểm</th>";
+            arrOutput += "<th class='text-center'>Điểm TB</th>";
             arrOutput += "<th class='hide'>Chú thích</th>";
             arrOutput += "</tr>";
             arrOutput += "</thead>";
             arrOutput += "<tbody>";
             if (gridData.Rows.Count <= 0)
             {
-                arrOutput += "<tr><td colspan='4' class='text-center'>No item</td></tr>";
+                arrOutput += "<tr><td colspan='5' class='text-center'>No item</td></tr>";
             }
             else
             {
@@ -83,7 +145,7 @@ namespace VNPT_BSC.TinhLuong
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.Title = "Điểm BSC Nhân Viên";
+            this.Title = "Trung bình điểm BSC Nhân Viên";
             try
             {
                 Nhanvien nhanvien = new Nhanvien();
@@ -103,6 +165,9 @@ namespace VNPT_BSC.TinhLuong
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
 
+                dtDonVi = dsDonVi();
+                string sql = "";
+                sql.ToString();
             }
             catch (Exception ex)
             {

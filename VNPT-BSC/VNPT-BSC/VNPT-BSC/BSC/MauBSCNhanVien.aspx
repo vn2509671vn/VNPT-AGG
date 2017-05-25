@@ -77,11 +77,17 @@
                     </div>
                 </div>
                 <div class="form-group">
-                        <label class="control-label col-sm-3">Xem quy định về tỷ trọng:</label>
-                        <div class="col-sm-4 form-inline" style="padding-top: 5px">
-                           <a href="#" data-target='#quydinhNhomKPI' data-toggle='modal' class="control-label">Xem chi tiết</a>
-                        </div>
+                    <label class="control-label col-sm-3">Xem quy định về tỷ trọng:</label>
+                    <div class="col-sm-4 form-inline" style="padding-top: 5px">
+                        <a href="#" data-target='#quydinhNhomKPI' data-toggle='modal' class="control-label">Xem chi tiết</a>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Chỉ xem KPI được chọn:</label>
+                    <div class="col-sm-4 form-inline" style="padding-top: 5px">
+                        <input type='checkbox' id='checkGomGon'/>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3">KPI được giao:</label>
                     <div class="col-sm-4">
@@ -306,6 +312,34 @@
         });
     }
 
+    function gomGonKPIDaChon(){
+        var gomgon = $("#checkGomGon").is(":checked");
+        if(gomgon){
+            $("input[name=checkbox-kpiduocgiao]").each(function(){
+                var checked = $(this).is(":checked");
+                if(!checked){
+                    $(this).closest("tr").addClass("cus_hide");
+                }
+            });
+
+            $("input[name=checkbox-kpitrongkho]").each(function(){
+                var checked = $(this).is(":checked");
+                if(!checked){
+                    $(this).closest("tr").addClass("cus_hide");
+                }
+            });
+        }
+        else {
+            $("input[name=checkbox-kpiduocgiao]").each(function(){
+                $(this).closest("tr").removeClass("cus_hide");
+            });
+
+            $("input[name=checkbox-kpitrongkho]").each(function(){
+                $(this).closest("tr").removeClass("cus_hide");
+            });
+        }
+    }
+
     // Fill data khi click danh sách mẫu bsc
     function fillData(month, year, nguoitao, bscduocgiao) {
         arrKPITmp = [];
@@ -482,6 +516,7 @@
             var maubsc = $("#loaiMauBSC").val();
             loadKPIDuocGiao(month, year, donvinhan);
             loadNhomKPI(maubsc);
+            gomGonKPIDaChon();
         }
         else {
             $("#btnSave").hide();
@@ -491,6 +526,7 @@
 
         // Khi thay đổi bsc được giao
         $("#bscduocgiao").change(function () {
+            $("#checkGomGon").prop("checked",false);
             arrKPITmp = [];
             var data = $(this).val();
             var arrDate = data.split("-");
@@ -499,9 +535,11 @@
             var nDonvinhan = arrDate[2];
             var maubsc = $("#loaiMauBSC").val();
             loadKPIDuocGiao(thang, nam, nDonvinhan);
+            gomGonKPIDaChon();
         });
 
         $("#loaiMauBSC").change(function () {
+            $("#checkGomGon").prop("checked",false);
             var month = $("#month").val();
             var year = $("#year").val();
             var data = $('#bscduocgiao').val();
@@ -516,6 +554,8 @@
             else {
                 loadNhomKPI(maubsc);
             }
+
+            gomGonKPIDaChon();
         });
 
         // Khi click save
@@ -854,6 +894,10 @@
                 var objIndex = arrKPITmp.findIndex((obj => obj.kpi_id == kpi_id));
                 arrKPITmp[objIndex].tytrong = $(this).val();
             }
+        });
+
+        $("#checkGomGon").change(function(){
+            gomGonKPIDaChon();
         });
     });
 </script>

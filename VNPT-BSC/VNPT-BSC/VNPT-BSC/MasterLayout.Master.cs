@@ -94,32 +94,59 @@ namespace VNPT_BSC
             return szResult;
         }
 
+        protected override void OnInit(EventArgs e)
+        {
+            Nhanvien nhanvien = new Nhanvien();
+            DataTable dtQuyen = new DataTable();
+            int nNumRole = 0;
+            //string szChucVu = "";
+            //nhanvien = Session.GetCurrentUser();
+            //quyenHeThong = Session.GetRole();
+
+            nhanvien = (Nhanvien)Session["nhanvien"];
+            quyenHeThong = (List<int>)Session["quyenhethong"];
+
+            if (nhanvien == null)
+            {
+                Response.Redirect("~/Login.aspx");
+            }
+
+            userName = nhanvien.nhanvien_hoten;
+            nNumRole = nhanvien.nhanvien_chucvu_id.Length;
+            userID = nhanvien.nhanvien_id;
+            userDonVi = nhanvien.nhanvien_donvi_id;
+
+            dtPhanHoiGiao = getPhanHoiGiao();
+            dtPhanHoiThamDinh = getPhanHoiThamDinh(nhanvien.nhanvien_donvi_id);
+            base.OnInit(e);
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (!IsPostBack) {
-                Nhanvien nhanvien = new Nhanvien();
-                DataTable dtQuyen = new DataTable();
-                int nNumRole = 0;
-                //string szChucVu = "";
-                //nhanvien = Session.GetCurrentUser();
-                //quyenHeThong = Session.GetRole();
+            ////if (!IsPostBack) {
+            //    Nhanvien nhanvien = new Nhanvien();
+            //    DataTable dtQuyen = new DataTable();
+            //    int nNumRole = 0;
+            //    //string szChucVu = "";
+            //    //nhanvien = Session.GetCurrentUser();
+            //    //quyenHeThong = Session.GetRole();
 
-                nhanvien = (Nhanvien)Session["nhanvien"];
-                quyenHeThong = (List<int>)Session["quyenhethong"];
+            //    nhanvien = (Nhanvien)Session["nhanvien"];
+            //    quyenHeThong = (List<int>)Session["quyenhethong"];
 
-                if (nhanvien == null)
-                {
-                    Response.Redirect("~/Login.aspx");
-                }
+            //    if (nhanvien == null)
+            //    {
+            //        Response.Redirect("~/Login.aspx");
+            //    }
 
-                userName = nhanvien.nhanvien_hoten;
-                nNumRole = nhanvien.nhanvien_chucvu_id.Length;
-                userID = nhanvien.nhanvien_id;
-                userDonVi = nhanvien.nhanvien_donvi_id;
+            //    userName = nhanvien.nhanvien_hoten;
+            //    nNumRole = nhanvien.nhanvien_chucvu_id.Length;
+            //    userID = nhanvien.nhanvien_id;
+            //    userDonVi = nhanvien.nhanvien_donvi_id;
 
-                dtPhanHoiGiao = getPhanHoiGiao();
-                dtPhanHoiThamDinh = getPhanHoiThamDinh(nhanvien.nhanvien_donvi_id);
-            //}
+            //    dtPhanHoiGiao = getPhanHoiGiao();
+            //    dtPhanHoiThamDinh = getPhanHoiThamDinh(nhanvien.nhanvien_donvi_id);
+            ////}
         }
     }
 }

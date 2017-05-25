@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="DiemBSCNV.aspx.cs" Inherits="VNPT_BSC.TinhLuong.DiemBSCNV" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="TuDongCapNhatBacLuong.aspx.cs" Inherits="VNPT_BSC.TinhLuong.TuDongCapNhatBacLuong" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
     <script src="../Bootstrap/jquery.js"></script>
@@ -26,24 +26,13 @@
     <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">Điểm BSC nhân viên</h3>
+            <h3 class="panel-title">Cập nhật hệ số lương mới theo quý</h3>
           </div>
           <div class="panel-body">
               <div class="col-md-12 col-xs-12 form-horizontal">
                 <div class="form-group">
-                    <label class="control-label col-sm-6">Lọc theo tháng/năm:</label>
-                    <div class="col-sm-6 form-inline">
-                        <select class="form-control" id="month">
-                            <% for(int i = 1; i <= 12; i++){ 
-                                string selectOption = "";
-                                int month =  Convert.ToInt32(DateTime.Now.ToString("MM"));
-                                if(i == month){
-                                    selectOption = "selected";
-                                }
-                            %>
-                            <option value="<%=i %>" <%=selectOption %>><%=i %></option>
-                            <% } %>
-                        </select>
+                    <label class="control-label col-sm-4">Năm:</label>
+                    <div class="col-sm-6">
                         <select class="form-control" id="year">
                             <% for(int i = 2016; i <= 2100; i++){ 
                                 string selectOption = "";
@@ -57,8 +46,24 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Quý:</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" id="quy">
+                            <option value="1">I</option>
+                            <option value="2">II</option>
+                            <option value="3">III</option>
+                            <option value="4">IV</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-6 col-sm-4 form-inline">
+                        <a class="btn btn-success" id="capnhatBL">Cập nhật</a>
+                    </div>
+                </div>
               </div>
-              <div class="col-md-12 col-xs-12" id="gridBSC">
+              <div class="col-md-12 col-xs-12" id="gridBL">
 
               </div>
           </div>
@@ -66,33 +71,34 @@
     </div>
 
 <script type="text/javascript">
-    function loadBSC(month, year) {
+    function loadHeSoLuongMoi() {
+        var nam = $("#year").val();
+        var quy = $("#quy").val();
+
         var requestData = {
-            thang: month,
-            nam: year
+            nam: nam,
+            quy: quy
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
             type: "POST",
-            url: "DiemBSCNV.aspx/loadBSC",
+            url: "TuDongCapNhatBacLuong.aspx/loadHeSoLuongMoi",
             data: szRequest,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (result) {
                 var output = result.d;
-
-                $("#gridBSC").html(output);
-                $("#table-kpi").DataTable({
-                    "pageLength": 100,
+                $("#gridBL").html(output);
+                $("#table-bacluong").DataTable({
                     "dom": 'Bfrtip',
                     "buttons": [
                         {
                             extend: 'excelHtml5',
-                            title: 'Điểm BSC/KPI ' + month + "-" + year
+                            title: 'Hệ số lương mới quý ' + quy + ' năm ' + nam
                         },
                         {
                             extend: 'pdfHtml5',
-                            title: 'Điểm BSC/KPI ' + month + "-" + year,
+                            title: 'Hệ số lương mới quý ' + quy + ' năm ' + nam,
                             orientation: 'landscape',
                             pageSize: 'LEGAL'
                         }
@@ -104,21 +110,8 @@
     }
 
     $(document).ready(function () {
-        // Load grid lần đầu
-        loadBSC($("#month").val(), $("#year").val());
-
-        // Load grid khi năm thay đổi
-        $("#year").change(function () {
-            var thang = $("#month").val();
-            var nam = $(this).val();
-            loadBSC(thang, nam);
-        });
-
-        // Load grid khi tháng thay đổi
-        $("#month").change(function () {
-            var nam = $("#year").val();
-            var thang = $(this).val();
-            loadBSC(thang, nam);
+        $("#capnhatBL").click(function () {
+            loadHeSoLuongMoi();
         });
     });
 </script>

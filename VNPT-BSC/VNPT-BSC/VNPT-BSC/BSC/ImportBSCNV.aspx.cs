@@ -19,6 +19,7 @@ namespace VNPT_BSC.BSC
     {
         Connection cn = new Connection();
         public static int gNguoitao;
+        public static int gDonvi;
 
         /*List loại mẫu bsc*/
         private DataTable dsMauBSC()
@@ -121,8 +122,8 @@ namespace VNPT_BSC.BSC
                     int nhanvienthamdinh = Convert.ToInt32(dtKPIDetai.Rows[0]["nhanvienthamdinh"].ToString().Trim());
                     int donvitinh = Convert.ToInt32(dtKPIDetai.Rows[0]["donvitinh"].ToString().Trim());
                     int trongso = Convert.ToInt32(dtKPIDetai.Rows[0]["tytrong"].ToString().Trim());
-                    string sql = "insert into bsc_nhanvien(nhanviengiao, nhanviennhan, thang, nam, kpi, nhanvienthamdinh, donvitinh, trongso, kehoach, thuchien, thamdinh, trangthaithamdinh, kq_thuchien, diem_kpi, hethong_thuchien, loaimau, nhom_kpi) ";
-                    sql += "values('" + nhanviengiao + "', '" + nhanviennhan + "', '" + thang + "', '" + nam + "', '" + kpi_id + "', '" + nhanvienthamdinh + "', '" + donvitinh + "', '" + trongso + "', '" + kehoach + "', 0, 0, 0, 0, 0, 0, '" + loaiMauBSC + "', '" + nNhomKPI + "')";
+                    string sql = "insert into bsc_nhanvien(nhanviengiao, nhanviennhan, thang, nam, kpi, nhanvienthamdinh, donvitinh, trongso, kehoach, thuchien, thamdinh, trangthaithamdinh, kq_thuchien, diem_kpi, hethong_thuchien, loaimau, nhom_kpi, donvi) ";
+                    sql += "values('" + nhanviengiao + "', '" + nhanviennhan + "', '" + thang + "', '" + nam + "', '" + kpi_id + "', '" + nhanvienthamdinh + "', '" + donvitinh + "', '" + trongso + "', '" + kehoach + "', 0, 0, 0, 0, 0, 0, '" + loaiMauBSC + "', '" + nNhomKPI + "', '"+gDonvi+"')";
                     cn.ThucThiDL(sql);
                     bResult = true;
                 }
@@ -187,6 +188,7 @@ namespace VNPT_BSC.BSC
                 }
 
                 gNguoitao = nhanvien.nhanvien_id;
+                gDonvi = nhanvien.nhanvien_donvi_id;
                 dtMauBSC = dsMauBSC();
 
                 DropDownListLoaiMauBSC.DataSource = dtMauBSC;

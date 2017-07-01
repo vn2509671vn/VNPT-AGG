@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="PhanPhoiBSCNhanVien_Tmp.aspx.cs" Inherits="VNPT_BSC.BSC.PhanPhoiBSCNhanVien_Tmp" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="PhanPhoiBSCNhanVien_GianTiepLXN.aspx.cs" Inherits="VNPT_BSC.BSC.PhanPhoiBSCNhanVien_PBCN" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
     <script src="../Bootstrap/jquery.js"></script>
@@ -48,7 +48,20 @@
                                 <option <%=selectOption %>><%= nYear %></option>
                             <% } %>
                         </select>
-                        <%--<a class="btn btn-warning" id="getCurrentDate">Hiện tại</a>--%>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Loại mẫu:</label>
+                    <div class="col-sm-8 form-inline">
+                        <select class="form-control" id="loaimaubsc">
+                            <% for (int i = 0; i < dtLoaiMauBSC.Rows.Count; i++){ %>
+                                <%
+                                   string id = dtLoaiMauBSC.Rows[i]["loai_id"].ToString();
+                                   string loai_ten = dtLoaiMauBSC.Rows[i]["loai_ten"].ToString();
+                                %>
+                                <option value="<%= id%>"><%= loai_ten%></option>
+                            <% } %>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -136,6 +149,7 @@
 <script type="text/javascript">
     var nhanviengiao = "<%=nhanvienquanly%>";
     var donvi = "<%=donvi%>";
+    var szOptionNhomKPI = "";
     function getCurrentDate() {
         var curMonth = "<%= DateTime.Now.ToString("%M") %>";
         var curYear = "<%= DateTime.Now.ToString("yyyy") %>";
@@ -160,7 +174,7 @@
         var szRequest = JSON.stringify(requestData);
         $.ajax({
             type: "POST",
-            url: "PhanPhoiBSCNhanVien_Tmp.aspx/loadBSCByCondition",
+            url: "PhanPhoiBSCNhanVien_GianTiepLXN.aspx/loadBSCByCondition",
             data: szRequest,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -257,7 +271,7 @@
         var szRequest = JSON.stringify(requestData);
         $.ajax({
             type: "POST",
-            url: "PhanPhoiBSCNhanVien_Tmp.aspx/loadBSCByCondition",
+            url: "PhanPhoiBSCNhanVien_GianTiepLXN.aspx/loadBSCByCondition",
             data: szRequest,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -324,7 +338,32 @@
         return arrResult;
     }
 
+
+    function createOptionNhomKPI(id) {
+        var requestData = {
+            loaimaubsc: id
+        };
+        var szRequest = JSON.stringify(requestData);
+
+        $.ajax({
+            type: "POST",
+            url: "PhanPhoiBSCNhanVien_GianTiepLXN.aspx/getOptionNhomKPI",
+            data: szRequest,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var data = result.d;
+                szOptionNhomKPI = data;
+                $("select[name=nhom_kpi]").each(function () {
+                    $(this).html(szOptionNhomKPI);
+                });
+            },
+            error: function (msg) { alert(msg.d); }
+        });
+    }
+
     $(document).ready(function () {
+        createOptionNhomKPI($("#loaimaubsc").val());
         $(document).on('focus', '.cls-kpi', function () {
             var dataTmp = createDataForAuto();
             // initialize autocomplete with custom appendTo
@@ -356,19 +395,8 @@
             szHTML += "<textarea type='text' class='form-control cls-kpi min-width-300' size='50' id='kpi_" + stt + "' rows='1'></textarea>";
             szHTML += "</td>";
             szHTML += "<td class='text-center'>";
-            szHTML += "<select class='form-control' id='nhom_kpi_" + stt + "'>";
-                    <% for (int nIndex = 0; nIndex < dtNhomKPI.Rows.Count; nIndex++)
-                       {
-                           string szSelected = "";
-                           int id_nhom = Convert.ToInt32(dtNhomKPI.Rows[nIndex]["id"].ToString());
-                           int tytrong_nhom = Convert.ToInt32(dtNhomKPI.Rows[nIndex]["tytrong"].ToString());
-                           if (id_nhom == 2)
-                           {
-                               szSelected = "selected";
-                           }
-                    %>
-            szHTML += "<option data-tytrong-nhom='<%= tytrong_nhom%>' value='<%=id_nhom%>' <%=szSelected%>><%=dtNhomKPI.Rows[nIndex]["ten_nhom"].ToString().Trim()%></option>";
-                    <% } %>
+            szHTML += "<select class='form-control' name='nhom_kpi' id='nhom_kpi_" + stt + "'>";
+            szHTML += szOptionNhomKPI;
             szHTML += "</select>";
             szHTML += "</td>";
             szHTML += "<td><input type='text' name='tytrong' id='tytrong_" + stt + "' maxlength='2' value='0' size='2' class='form-control'/></td>";
@@ -426,7 +454,7 @@
             var nhanviennhan = $("#nhanviennhan").val();
             var thang = $("#month").val();
             var nam = $("#year").val();
-            var loaimau = '16';
+            var loaimaubsc = $("#loaimaubsc").val();
             if (nhanviennhan == null || nhanviennhan == "") {
                 swal("Error!", "Vui lòng nhập các trường bắt buộc!!!", "error");
                 return false;
@@ -497,12 +525,13 @@
                 nhanviennhan: nhanviennhan,
                 thang: thang,
                 nam: nam,
+                loaimaubsc: loaimaubsc,
                 kpi_detail: kpi_detail
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({
                 type: "POST",
-                url: "PhanPhoiBSCNhanVien_Tmp.aspx/saveData",
+                url: "PhanPhoiBSCNhanVien_GianTiepLXN.aspx/saveData",
                 data: szRequest,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -523,7 +552,7 @@
             var nhanviennhan = $("#nhanviennhan").val();
             var thang = $("#month").val();
             var nam = $("#year").val();
-            var loaimau = '16';
+            var loaimaubsc = $("#loaimaubsc").val();
             if (nhanviennhan == null || nhanviennhan == "") {
                 swal("Error!", "Vui lòng nhập các trường bắt buộc!!!", "error");
                 return false;
@@ -594,12 +623,13 @@
                 nhanviennhan: nhanviennhan,
                 thang: thang,
                 nam: nam,
+                loaimaubsc: loaimaubsc,
                 kpi_detail: kpi_detail
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({
                 type: "POST",
-                url: "PhanPhoiBSCNhanVien_Tmp.aspx/saveData",
+                url: "PhanPhoiBSCNhanVien_GianTiepLXN.aspx/saveData",
                 data: szRequest,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -616,7 +646,7 @@
 
                         $.ajax({
                             type: "POST",
-                            url: "PhanPhoiBSCNhanVien_Tmp.aspx/giaoBSC",
+                            url: "PhanPhoiBSCNhanVien_GianTiepLXN.aspx/giaoBSC",
                             data: szRequestUpdate,
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
@@ -663,7 +693,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "PhanPhoiBSCNhanVien_Tmp.aspx/huygiaoBSC",
+                url: "PhanPhoiBSCNhanVien_GianTiepLXN.aspx/huygiaoBSC",
                 data: szRequest,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -711,6 +741,11 @@
                 }
             });
             $("#tongTyTrong").text(tong);
+        });
+
+        $(document).on('change', '#loaimaubsc', function () {
+            var id = $(this).val();
+            createOptionNhomKPI(id);
         });
     });
 </script>

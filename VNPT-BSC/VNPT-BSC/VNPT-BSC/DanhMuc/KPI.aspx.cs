@@ -152,7 +152,7 @@ namespace VNPT_BSC.DanhMuc
 
                     string sqlnhanvien = "select * from nhanvien";
                     string sqlkpo = "select * from kpo";
-                    string sqlnhom_kpi = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id";
+                    string sqlnhom_kpi = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id and nhom_kpi.hienthi = 1 order by loaimaubsc.loai_id,nhom_kpi.thutuhienthi asc";
 
                     dtkpi = new DataTable();
                     dtkpi = getkpiList(nFindResultBSCDonVi);

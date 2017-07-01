@@ -255,11 +255,11 @@ namespace VNPT_BSC.BSC
                 ///*Kiểm tra nếu không có quyền giao bsc đơn vị (id của quyền là 2) thì đẩy ra trang đăng nhập*/
                 //nFindResult = quyenHeThong.Contains(2);
 
-                if (nhanvien == null)
-                {
-                    Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
-                }
+                //if (nhanvien == null)
+                //{
+                //    Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                //    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                //}
 
                 dtMauBSC = dsMauBSC();
             }

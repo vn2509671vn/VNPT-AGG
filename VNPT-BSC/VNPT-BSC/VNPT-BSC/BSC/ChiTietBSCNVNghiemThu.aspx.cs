@@ -29,7 +29,7 @@ namespace VNPT_BSC.BSC
             sqlBSC += "and bsc.nhanviennhan = '" + nhanviennhan + "' ";
             sqlBSC += "and bsc.nhom_kpi = nhom_kpi.id ";
             sqlBSC += "and bsc.nhom_kpi = '" + nhom_kpi + "' ";
-            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' ORDER BY kpi.kpi_ma ASC";
+            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' ORDER BY bsc.stt ASC";
 
             try
             {
@@ -66,7 +66,7 @@ namespace VNPT_BSC.BSC
             //sqlBSC += "and kpi.nhom_kpi = nhom_kpi.id ";
             //sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' ORDER BY nhom_kpi.id ASC";
 
-            string sqlNhomKPIByTime = "select nhom_kpi.id, nhom_kpi.ten_nhom, nhom_kpi.tytrong ";
+            string sqlNhomKPIByTime = "select nhom_kpi.id, nhom_kpi.ten_nhom, nhom_kpi.tytrong, nhom_kpi.thutuhienthi ";
             sqlNhomKPIByTime += "from bsc_nhanvien, nhom_kpi, kpi ";
             sqlNhomKPIByTime += "where bsc_nhanvien.kpi = kpi.kpi_id ";
             //sqlNhomKPIByTime += "and kpi.nhom_kpi = nhom_kpi.id ";
@@ -74,8 +74,8 @@ namespace VNPT_BSC.BSC
             sqlNhomKPIByTime += "and bsc_nhanvien.thang = '" + thang + "' ";
             sqlNhomKPIByTime += "and bsc_nhanvien.nam = '" + nam + "' ";
             sqlNhomKPIByTime += "and bsc_nhanvien.nhanviennhan = '" + nhanviennhan + "' ";
-            sqlNhomKPIByTime += "group by nhom_kpi.id, nhom_kpi.ten_nhom, nhom_kpi.tytrong ";
-            sqlNhomKPIByTime += "ORDER BY nhom_kpi.id ASC ";
+            sqlNhomKPIByTime += "group by nhom_kpi.id, nhom_kpi.ten_nhom, nhom_kpi.tytrong, nhom_kpi.thutuhienthi ";
+            sqlNhomKPIByTime += "ORDER BY nhom_kpi.thutuhienthi ASC ";
 
             try
             {
@@ -201,14 +201,16 @@ namespace VNPT_BSC.BSC
 
             /*Lấy danh sách các thông tin còn lại ở bảng giaobscdonvi*/
             DataTable dtGiaoBSCDV = new DataTable();
-            string sqlGiaoBSCDV = "select giaobscnhanvien.*, nhanvien.nhanvien_hoten as nv_nhan, loaimaubsc.loai_ten, donvi.donvi_ten, nhanvien.nhanvien_manv from giaobscnhanvien, nhanvien, loaimaubsc, donvi ";
+            string sqlGiaoBSCDV = "select giaobscnhanvien.*, nhanvien.nhanvien_hoten as ten_nvn, loaimaubsc.loai_ten, donvi.donvi_ten, nhanvien.nhanvien_manv, nvgiao.nhanvien_hoten as ten_nvg from giaobscnhanvien, nhanvien, loaimaubsc, donvi, nhanvien nvgiao ";
             sqlGiaoBSCDV += "where giaobscnhanvien.nhanviengiao = '" + nhanviengiao + "' ";
             sqlGiaoBSCDV += "and giaobscnhanvien.nhanviennhan = '" + nhanviennhan + "'";
             sqlGiaoBSCDV += "and giaobscnhanvien.thang = '" + thang + "'";
             sqlGiaoBSCDV += "and giaobscnhanvien.nam = '" + nam + "'";
             sqlGiaoBSCDV += "and giaobscnhanvien.loaimau = loaimaubsc.loai_id ";
             sqlGiaoBSCDV += "and giaobscnhanvien.nhanviennhan = nhanvien.nhanvien_id ";
+            sqlGiaoBSCDV += "and giaobscnhanvien.nhanviengiao = nvgiao.nhanvien_id ";
             sqlGiaoBSCDV += "and nhanvien.nhanvien_donvi = donvi.donvi_id";
+
             try
             {
                 dtGiaoBSCDV = cnBSC.XemDL(sqlGiaoBSCDV);
@@ -220,8 +222,11 @@ namespace VNPT_BSC.BSC
 
             if (dtGiaoBSCDV.Rows.Count > 0)
             {
+                dicOutput.Add("tendonvigiao", dtGiaoBSCDV.Rows[0]["donvi_ten"].ToString());
                 dicOutput.Add("nhanviengiao", dtGiaoBSCDV.Rows[0]["nhanviengiao"].ToString());
+                dicOutput.Add("tennhanviengiao", dtGiaoBSCDV.Rows[0]["ten_nvg"].ToString());
                 dicOutput.Add("nhanviennhan", dtGiaoBSCDV.Rows[0]["nhanviennhan"].ToString());
+                dicOutput.Add("tennhanviennhan", dtGiaoBSCDV.Rows[0]["ten_nvn"].ToString());
                 dicOutput.Add("thang", dtGiaoBSCDV.Rows[0]["thang"].ToString());
                 dicOutput.Add("nam", dtGiaoBSCDV.Rows[0]["nam"].ToString());
                 dicOutput.Add("trangthaigiao", dtGiaoBSCDV.Rows[0]["trangthaigiao"].ToString());
@@ -229,15 +234,17 @@ namespace VNPT_BSC.BSC
                 dicOutput.Add("trangthaicham", dtGiaoBSCDV.Rows[0]["trangthaicham"].ToString());
                 dicOutput.Add("trangthaidongy_kqtd", dtGiaoBSCDV.Rows[0]["trangthaidongy_kqtd"].ToString());
                 dicOutput.Add("trangthaiketthuc", dtGiaoBSCDV.Rows[0]["trangthaiketthuc"].ToString());
-                dicOutput.Add("nv_nhan", dtGiaoBSCDV.Rows[0]["nv_nhan"].ToString());
                 dicOutput.Add("loaimaubsc", dtGiaoBSCDV.Rows[0]["loai_ten"].ToString());
                 dicOutput.Add("donvi_ten", dtGiaoBSCDV.Rows[0]["donvi_ten"].ToString());
                 dicOutput.Add("ma_nv", dtGiaoBSCDV.Rows[0]["nhanvien_manv"].ToString());
             }
             else
             {
+                dicOutput.Add("tendonvigiao", "");
                 dicOutput.Add("nhanviengiao", nhanviengiao.ToString());
+                dicOutput.Add("tennhanviengiao", "");
                 dicOutput.Add("nhanviennhan", nhanviennhan.ToString());
+                dicOutput.Add("tennhanviennhan", "");
                 dicOutput.Add("thang", "0");
                 dicOutput.Add("nam", "0");
                 dicOutput.Add("trangthaigiao", "0");
@@ -245,7 +252,6 @@ namespace VNPT_BSC.BSC
                 dicOutput.Add("trangthaicham", "0");
                 dicOutput.Add("trangthaidongy_kqtd", "0");
                 dicOutput.Add("trangthaiketthuc", "0");
-                dicOutput.Add("nv_nhan", "");
                 dicOutput.Add("loaimaubsc", "");
                 dicOutput.Add("donvi_ten", "");
                 dicOutput.Add("ma_nv", "");

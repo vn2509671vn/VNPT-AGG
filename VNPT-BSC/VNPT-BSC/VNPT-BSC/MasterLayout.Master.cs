@@ -96,28 +96,28 @@ namespace VNPT_BSC
 
         protected override void OnInit(EventArgs e)
         {
-            Nhanvien nhanvien = new Nhanvien();
+            Nhanvien tmpNhanvien = new Nhanvien();
             DataTable dtQuyen = new DataTable();
             int nNumRole = 0;
             //string szChucVu = "";
             //nhanvien = Session.GetCurrentUser();
             //quyenHeThong = Session.GetRole();
 
-            nhanvien = (Nhanvien)Session["nhanvien"];
+            tmpNhanvien = (Nhanvien)Session["nhanvien"];
             quyenHeThong = (List<int>)Session["quyenhethong"];
 
-            if (nhanvien == null)
+            if (tmpNhanvien == null)
             {
                 Response.Redirect("~/Login.aspx");
             }
 
-            userName = nhanvien.nhanvien_hoten;
-            nNumRole = nhanvien.nhanvien_chucvu_id.Length;
-            userID = nhanvien.nhanvien_id;
-            userDonVi = nhanvien.nhanvien_donvi_id;
+            userName = tmpNhanvien.nhanvien_hoten;
+            nNumRole = tmpNhanvien.nhanvien_chucvu_id.Length;
+            userID = tmpNhanvien.nhanvien_id;
+            userDonVi = tmpNhanvien.nhanvien_donvi_id;
 
             dtPhanHoiGiao = getPhanHoiGiao();
-            dtPhanHoiThamDinh = getPhanHoiThamDinh(nhanvien.nhanvien_donvi_id);
+            dtPhanHoiThamDinh = getPhanHoiThamDinh(tmpNhanvien.nhanvien_donvi_id);
             base.OnInit(e);
         }
 

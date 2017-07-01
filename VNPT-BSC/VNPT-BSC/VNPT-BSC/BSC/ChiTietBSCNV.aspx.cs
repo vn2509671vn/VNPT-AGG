@@ -52,7 +52,7 @@ namespace VNPT_BSC.BSC
             sql += "and bsc.kpi = kpi.kpi_id ";
             sql += "and bsc.nhom_kpi = nhom.id ";
             sql += "and bsc.donvitinh = dvt.dvt_id ";
-            sql += "order by nhom.id asc";
+            sql += "order by nhom.thutuhienthi asc";
             try
             {
                 dtResult = cn.XemDL(sql);

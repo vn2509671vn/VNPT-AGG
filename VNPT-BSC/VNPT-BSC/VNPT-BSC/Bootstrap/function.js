@@ -113,7 +113,9 @@ function ExportToExcel(table, sheetName, month, year) {
     template += '<th colspan="4" style="text-align: center">Lãnh đạo đơn vị</th>';
     template += '</tr>';
     template += '</body></html>';
-    return window.location.href = uri + base64(format(template, ctx));
+    //return window.location.href = uri + base64(format(template, ctx));
+    var dataUri = uri + base64(format(template, ctx));
+    return $("<a download='Nghiệm thu " + month + "-" + year + "-" + sheetName + "' href='" + dataUri + "'></a>")[0].click();
 };
 
 // Export to excel for bảng xếp hạng 11 đơn vị huyện thị
@@ -183,7 +185,9 @@ function ExportToExcelForRank(table, sheetName, month, year) {
     template += '<tr><td>- Lưu: VT.</td></tr>';
     template += '</th>';
     template += '</body></html>';
-    return window.location.href = uri + base64(format(template, ctx));
+    //return window.location.href = uri + base64(format(template, ctx));
+    var dataUri = uri + base64(format(template, ctx));
+    return $("<a download='Điểm xếp hạng " + month + "-" + year + "' href='" + dataUri + "'></a>")[0].click();
 };
 
 // Export to excel for bảng xếp hạng 11 đơn vị huyện thị
@@ -198,7 +202,10 @@ function ExportTableToExcel(table, sheetName) {
     // Phần nội dung
     template += '<table border="1">{table}</table>';
     template += '</body></html>';
-    return window.location.href = uri + base64(format(template, ctx));
+
+    var dataUri = uri + base64(format(template, ctx));
+    //return window.location.href = uri + base64(format(template, ctx));
+    return $("<a download='" + sheetName + "' href='" + dataUri + "'></a>")[0].click();
 };
 
 function Export_NghiemThuBSCNV_ToExcel(table, nhanviennhan_ma, nhanviennhan_ten, tendonvi, thang, nam, loaimaubsc) {
@@ -268,8 +275,140 @@ function Export_NghiemThuBSCNV_ToExcel(table, nhanviennhan_ma, nhanviennhan_ten,
     template += '</thead>';
 
     template += '</body></html>';
-    return window.location.href = uri + base64(format(template, ctx));
+    var dataUri = uri + base64(format(template, ctx));
+    //return window.location.href = uri + base64(format(template, ctx));
+    return $("<a download='Nghiệm Thu BSC " + thang + "-" + thang + "-" + nhanviennhan_ten + "' href='" + dataUri + "'></a>")[0].click();
 }
+
+// Export to excel danh sách chi tiết CTV PTTB
+function ExportToExcel_CTV_PTTB_TongHop(table, sheetName, month, year) {
+    var uri = 'data:application/vnd.ms-excel;base64,';
+    var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>';
+    var base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) };
+    var format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
+    if (!table.nodeType) table = document.getElementById(table);
+    var ctx = { worksheet: sheetName || 'Worksheet', table: table.innerHTML };
+    template += '<body>';
+
+    // Phần header
+    template += '<table>';
+    template += '<thead>';
+
+    template += '<tr>';
+    template += '<th rowspan="4" colspan="3" style="text-align: center">TỔNG CÔNG TY<BR> DỊCH VỤ VIỄN THÔNG<BR> TRUNG TÂM<BR> KINH DOANH VNPT - AN GIANG </th>';
+    template += '<th></th>';
+    template += '<th colspan="3" style="text-align: center">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM </th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th></th>';
+    template += '<th colspan="3" style="text-align: center">Độc lập - Tự do - Hạnh phúc </th>';
+    template += '</tr>';
+
+    template += '<tr></tr><tr></tr>';
+
+    template += '<tr>';
+    template += '<th colspan="7" style="text-align: center"><h2>DANH SÁCH TỔNG HỢP CTV PHÁT TRIỂN TB TRẢ TRƯỚC<h2></th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th colspan="7" style="text-align: center">PHÒNG BÁN HÀNG ' + sheetName.toUpperCase() + '</th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th colspan="7" style="text-align: center"> Tháng ' + month + ' ' + "/" + ' ' + year + '</th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th colspan="7" style="text-align: center"><i>(Ban hành kèm theo số CV ....../TTKD AGG-ĐHNV của Giám đốc Trung tâm kinh doanh VNPT An Giang)</i></th>';
+    template += '</tr>';
+
+    template += '</thead>';
+    template += '</table>';
+
+    // Phần nội dung
+    template += '<table>{table}</table>';
+
+    // Phần ký tên
+    template += '<table>';
+    template += '<thead>';
+    template += '<tr></tr>';
+    template += '<tr>';
+    template += '<th></th>';
+    template += '<th style="text-align: center">LẬP BIỂU</th>';
+    template += '<th></th><th></th><th></th>';
+    template += '<th style="text-align: center">GIÁM ĐỐC</th>';
+    template += '</tr>';
+    template += '</body></html>';
+    //return window.location.href = uri + base64(format(template, ctx));
+    var dataUri = uri + base64(format(template, ctx));
+    return $("<a download='Tổng Hợp CTV PTTB TT " + month + "-" + year + "-" + sheetName + "' href='" + dataUri + "'></a>")[0].click();
+};
+
+// Export to excel danh sách chi tiết CTV PTTB
+function ExportToExcel_CTV_PTTB_ChiTiet(table, sheetName, month, year) {
+    var uri = 'data:application/vnd.ms-excel;base64,';
+    var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>';
+    var base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) };
+    var format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
+    if (!table.nodeType) table = document.getElementById(table);
+    var ctx = { worksheet: sheetName || 'Worksheet', table: table.innerHTML };
+    template += '<body>';
+
+    // Phần header
+    template += '<table>';
+    template += '<thead>';
+
+    template += '<tr>';
+    template += '<th rowspan="4" colspan="3" style="text-align: center">TỔNG CÔNG TY<BR> DỊCH VỤ VIỄN THÔNG<BR> TRUNG TÂM<BR> KINH DOANH VNPT - AN GIANG </th>';
+    template += '<th></th><th></th>';
+    template += '<th colspan="3" style="text-align: center">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM </th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th></th><th></th>';
+    template += '<th colspan="3" style="text-align: center">Độc lập - Tự do - Hạnh phúc </th>';
+    template += '</tr>';
+
+    template += '<tr></tr><tr></tr>';
+
+    template += '<tr>';
+    template += '<th colspan="8" style="text-align: center"><h2>DANH SÁCH CHI TIẾT CTV PHÁT TRIỂN TB TRẢ TRƯỚC<h2></th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th colspan="8" style="text-align: center">PHÒNG BÁN HÀNG ' + sheetName.toUpperCase() + '</th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th colspan="8" style="text-align: center"> Tháng ' + month + ' ' + "/" + ' ' + year + '</th>';
+    template += '</tr>';
+
+    template += '<tr>';
+    template += '<th colspan="8" style="text-align: center"><i>(Ban hành kèm theo số CV ....../TTKD AGG-ĐHNV của Giám đốc Trung tâm kinh doanh VNPT An Giang)</i></th>';
+    template += '</tr>';
+
+    template += '</thead>';
+    template += '</table>';
+
+    // Phần nội dung
+    template += '<table border="1">{table}</table>';
+
+    // Phần ký tên
+    template += '<table>';
+    template += '<thead>';
+    template += '<tr></tr>';
+    template += '<tr>';
+    template += '<th></th>';
+    template += '<th style="text-align: center">LẬP BIỂU</th>';
+    template += '<th></th><th></th><th></th><th></th><th></th>';
+    template += '<th style="text-align: center">GIÁM ĐỐC</th>';
+    template += '</tr>';
+    template += '</body></html>';
+    //return window.location.href = uri + base64(format(template, ctx));
+    var dataUri = uri + base64(format(template, ctx));
+    return $("<a download='Chi Tiết CTV PTTB TT " + month + "-" + year + "-" + sheetName + "' href='" + dataUri + "'></a>")[0].click();
+};
 
 // Link: http://stackoverflow.com/questions/14446511/what-is-the-most-efficient-method-to-groupby-on-a-javascript-array-of-objects
 function groupBy(array, col, col2, value) {

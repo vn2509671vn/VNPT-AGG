@@ -44,7 +44,7 @@ namespace VNPT_BSC.BSC
             sqlBSC += "and bsc.nhanvienthamdinh = '" + nhanvienthamdinh + "' ";
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
             sqlBSC += "and kpi.nhom_kpi = nhom_kpi.id ";
-            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' ORDER BY nhom_kpi.id ASC";
+            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' ORDER BY nhom_kpi.thutuhienthi, bsc.stt ASC";
             try
             {
                 gridData = cnBSC.XemDL(sqlBSC);
@@ -98,7 +98,7 @@ namespace VNPT_BSC.BSC
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["kehoach"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["thuchien"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><input type='text' class='form-control' name='thamdinh' id='thamdinh_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["thamdinh"].ToString() + "' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
-                    outputHTML += "<td><strong>" + gridData.Rows[nKPI]["ghichu"].ToString() + "</strong></td>";
+                    outputHTML += "<td><textarea>" + gridData.Rows[nKPI]["ghichu"].ToString() + "</textarea></td>";
                     outputHTML += "</tr>";
                 }
                 outputHTML += "<tr data-id='999999'>";
@@ -121,12 +121,15 @@ namespace VNPT_BSC.BSC
 
             /*Lấy danh sách các thông tin còn lại ở bảng giaobscnhanvien*/
             DataTable dtGiaoBSCDV = new DataTable();
-            string sqlGiaoBSCDV = "select giaobscnhanvien.*, nv.nhanvien_hoten from giaobscnhanvien, nhanvien nv ";
+            string sqlGiaoBSCDV = "select giaobscnhanvien.*, dv.donvi_ten, nvgiao.nhanvien_hoten as ten_nvg, nvnhan.nhanvien_hoten as ten_nvn from giaobscnhanvien, nhanvien nvgiao, nhanvien nvnhan, donvi dv ";
             sqlGiaoBSCDV += "where giaobscnhanvien.nhanviengiao = '" + nhanviengiao + "' ";
             sqlGiaoBSCDV += "and giaobscnhanvien.nhanviennhan = '" + nhanviennhan + "' ";
             sqlGiaoBSCDV += "and giaobscnhanvien.thang = '" + thang + "' ";
             sqlGiaoBSCDV += "and giaobscnhanvien.nam = '" + nam + "' ";
-            sqlGiaoBSCDV += "and giaobscnhanvien.nhanviennhan = nv.nhanvien_id";
+            sqlGiaoBSCDV += "and giaobscnhanvien.nhanviengiao = nvgiao.nhanvien_id ";
+            sqlGiaoBSCDV += "and giaobscnhanvien.nhanviennhan = nvnhan.nhanvien_id ";
+            sqlGiaoBSCDV += "and nvgiao.nhanvien_donvi = dv.donvi_id";
+
             try
             {
                 dtGiaoBSCDV = cnBSC.XemDL(sqlGiaoBSCDV);
@@ -138,8 +141,11 @@ namespace VNPT_BSC.BSC
 
             if (dtGiaoBSCDV.Rows.Count > 0)
             {
+                dicOutput.Add("tendonvigiao", dtGiaoBSCDV.Rows[0]["donvi_ten"].ToString());
                 dicOutput.Add("nhanviengiao", dtGiaoBSCDV.Rows[0]["nhanviengiao"].ToString());
+                dicOutput.Add("tennhanviengiao", dtGiaoBSCDV.Rows[0]["ten_nvg"].ToString());
                 dicOutput.Add("nhanviennhan", dtGiaoBSCDV.Rows[0]["nhanviennhan"].ToString());
+                dicOutput.Add("tennhanviennhan", dtGiaoBSCDV.Rows[0]["ten_nvn"].ToString());
                 dicOutput.Add("thang", dtGiaoBSCDV.Rows[0]["thang"].ToString());
                 dicOutput.Add("nam", dtGiaoBSCDV.Rows[0]["nam"].ToString());
                 dicOutput.Add("trangthaigiao", dtGiaoBSCDV.Rows[0]["trangthaigiao"].ToString());
@@ -147,12 +153,14 @@ namespace VNPT_BSC.BSC
                 dicOutput.Add("trangthaicham", dtGiaoBSCDV.Rows[0]["trangthaicham"].ToString());
                 dicOutput.Add("trangthaiketthuc", dtGiaoBSCDV.Rows[0]["trangthaiketthuc"].ToString());
                 dicOutput.Add("trangthaidongy_kqtd", dtGiaoBSCDV.Rows[0]["trangthaidongy_kqtd"].ToString());
-                dicOutput.Add("ten_nv_nhan", dtGiaoBSCDV.Rows[0]["nhanvien_hoten"].ToString());
             }
             else
             {
+                dicOutput.Add("tendonvigiao", "");
                 dicOutput.Add("nhanviengiao", nhanviengiao.ToString());
+                dicOutput.Add("tennhanviengiao", "");
                 dicOutput.Add("nhanviennhan", nhanviennhan.ToString());
+                dicOutput.Add("tennhanviennhan", "");
                 dicOutput.Add("thang", "0");
                 dicOutput.Add("nam", "0");
                 dicOutput.Add("trangthaigiao", "0");
@@ -160,7 +168,6 @@ namespace VNPT_BSC.BSC
                 dicOutput.Add("trangthaicham", "0");
                 dicOutput.Add("trangthaiketthuc", "0");
                 dicOutput.Add("trangthaidongy_kqtd", "0");
-                dicOutput.Add("ten_nv_nhan", "");
             }
 
             return dicOutput;

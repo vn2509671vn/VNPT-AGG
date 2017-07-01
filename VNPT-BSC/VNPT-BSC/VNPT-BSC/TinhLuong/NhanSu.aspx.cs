@@ -104,7 +104,7 @@ namespace VNPT_BSC.TinhLuong
         {
             Connection cn = new Connection();
             DataTable tmp = new DataTable();
-            string sql = "select * from qlns_nhanvien";
+            string sql = "select * from qlns_nhanvien where nghiviec = 0";
             try
             {
                 tmp = cn.XemDL(sql);
@@ -117,21 +117,37 @@ namespace VNPT_BSC.TinhLuong
         }
 
         [WebMethod]
-        public static bool saveData(int id_nv, int donvi, int nhomdonvi, int chucdanh, int bacluong, string stk, double hesoluong, bool chinhthuc, bool thaisan, bool dangvien)
+        public static bool saveData(int id_nv, int donvi, int nhomdonvi, int chucdanh, int bacluong, string stk, double hesoluong, bool chinhthuc, bool dangvien)
         {
             bool bResult = false;
             Connection cn = new Connection();
-            double luong_p3 = 0;
-            double luong_duytri = 0;
-            luong_p3 = hesoluong * 1150000;
-            luong_duytri = hesoluong * 3500000;
-            string sql = "update qlns_nhanvien set donvi = '" + donvi + "', chucdanh = '" + chucdanh + "', sotaikhoan = '" + stk + "', hesoluong = '" + hesoluong + "', luong_p3 = '" + luong_p3 + "', luong_duytri = '" + luong_duytri + "', id_bacluong = '" + bacluong + "', id_nhom_donvi = '" + nhomdonvi + "', chinhthuc = '" + chinhthuc + "', thaisan = '" + thaisan + "', dangvien = '" + dangvien + "' where id = '" + id_nv + "'";
+            double luongcoban = 0;
+            luongcoban = hesoluong * 3500000;
+            string sql = "update qlns_nhanvien set donvi = '" + donvi + "', chucdanh = '" + chucdanh + "', sotaikhoan = '" + stk + "', hesoluong = '" + hesoluong + "', luongcoban = '" + luongcoban + "', id_bacluong = '" + bacluong + "', id_nhom_donvi = '" + nhomdonvi + "', chinhthuc = '" + chinhthuc + "', dangvien = '" + dangvien + "' where id = '" + id_nv + "'";
             try
             {
                 cn.ThucThiDL(sql);
                 bResult = true;
             }
             catch (Exception ex) {
+                throw ex;
+            }
+            return bResult;
+        }
+
+        [WebMethod]
+        public static bool delNV(int id_nv)
+        {
+            bool bResult = false;
+            Connection cn = new Connection();
+            string sql = "update qlns_nhanvien set nghiviec = '1' where id = '" + id_nv + "'";
+            try
+            {
+                cn.ThucThiDL(sql);
+                bResult = true;
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
             return bResult;

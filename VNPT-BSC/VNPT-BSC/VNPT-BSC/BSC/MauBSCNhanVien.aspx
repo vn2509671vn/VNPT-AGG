@@ -192,8 +192,8 @@
                                             </select>
                                         </td>
                                         <td class='text-center'><input type='text' class='form-control cls_tytrong' id='tytrong_<%=kpi_id %>' size='2' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>
-                                        <td class='text-center'>
-                                            <select class='form-control' id='nhom_kpi_<%=kpi_id %>' name="cboNhomKPI" data-nhom-id='<%=nhom_kpi %>'>
+                                        <td class='text-center min-width-200'>
+                                            <select style="width: 100% !important;" class='form-control' id='nhom_kpi_<%=kpi_id %>' name="cboNhomKPI" data-nhom-id='<%=nhom_kpi %>'>
                                                 <%for (int nNhom = 0; nNhom < dtNhomKPI.Rows.Count; nNhom++)
                                                   {
                                                       string nhom_id = dtNhomKPI.Rows[nNhom]["id"].ToString();
@@ -540,6 +540,10 @@
 
         $("#loaiMauBSC").change(function () {
             $("#checkGomGon").prop("checked",false);
+            arrKPITmp = [];
+            $("input[type=checkbox]").each(function(){
+                $(this).prop("checked",false);
+            });
             var month = $("#month").val();
             var year = $("#year").val();
             var data = $('#bscduocgiao').val();

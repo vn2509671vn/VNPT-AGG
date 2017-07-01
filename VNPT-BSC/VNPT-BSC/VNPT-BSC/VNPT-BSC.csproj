@@ -166,6 +166,7 @@
     <Content Include="BSC\ChiTietBSCNVKiemDinh.aspx" />
     <Content Include="BSC\ChiTietBSCNVNghiemThu.aspx" />
     <Content Include="BSC\ChiTietBSCNVNhan.aspx" />
+    <Content Include="BSC\CTV_PTTB.aspx" />
     <Content Include="BSC\DanhSachBSCDaGiao.aspx" />
     <Content Include="BSC\DanhSachBSCDaGiao_ThamDinh.aspx" />
     <Content Include="BSC\DanhSachBSCDaGiao_ThucTrang.aspx" />
@@ -177,6 +178,7 @@
     <Content Include="BSC\KetQuaNghiemThuDV.aspx" />
     <Content Include="BSC\KiemDinhBSCDonVi.aspx" />
     <Content Include="BSC\KiemDinhBSCNhanVien.aspx" />
+    <Content Include="BSC\LuongPTTB.aspx" />
     <Content Include="BSC\MauBSC.aspx" />
     <Content Include="BSC\MauBSCNhanVien.aspx" />
     <Content Include="BSC\NghiemThuBSCDonVi.aspx" />
@@ -185,7 +187,7 @@
     <Content Include="BSC\NhanBSCNhanVien.aspx" />
     <Content Include="BSC\PhanPhoiBSCDonVi.aspx" />
     <Content Include="BSC\PhanPhoiBSCNhanVien.aspx" />
-    <Content Include="BSC\PhanPhoiBSCNhanVien_PBCN.aspx" />
+    <Content Include="BSC\PhanPhoiBSCNhanVien_GianTiepLXN.aspx" />
     <Content Include="BSC\PhanPhoiBSCNhanVien_Tmp.aspx" />
     <Content Include="BSC\ThongKeTrungBinhDiemBSCDV.aspx" />
     <Content Include="BSC\ThongKeTrungBinhDiemBSCNV.aspx" />
@@ -296,6 +298,7 @@
     <Content Include="Images\baner_moi.PNG" />
     <Content Include="Images\bullet.png" />
     <Content Include="Images\heroAccent.png" />
+    <Content Include="Images\Loading\ajax-loader.gif" />
     <Content Include="Images\Logo\logo.jpg" />
     <Content Include="Images\Logo\logo.png" />
     <Content Include="Images\orderedList0.png" />
@@ -426,11 +429,13 @@
     <Content Include="src\js\custom.js" />
     <Content Include="src\js\helpers\smartresize.js" />
     <Content Include="TinhLuong\BacLuong.aspx" />
+    <Content Include="TinhLuong\CapNhatNhanSu.aspx" />
     <Content Include="TinhLuong\ChiTietTapThe.aspx" />
     <Content Include="TinhLuong\DiemBSCNV.aspx" />
     <Content Include="TinhLuong\KiemNhiem.aspx" />
     <Content Include="TinhLuong\NhanSu.aspx" />
     <Content Include="TinhLuong\PhatTrienThueBao.aspx" />
+    <Content Include="TinhLuong\ThemNhanSu.aspx" />
     <Content Include="TinhLuong\TinhLuong.aspx" />
     <Content Include="TinhLuong\TuDongCapNhatBacLuong.aspx" />
     <Content Include="vendors\animate.css\animate.css" />
@@ -3914,6 +3919,13 @@
     <Compile Include="BSC\ChiTietBSCNVNhan.aspx.designer.cs">
       <DependentUpon>ChiTietBSCNVNhan.aspx</DependentUpon>
     </Compile>
+    <Compile Include="BSC\CTV_PTTB.aspx.cs">
+      <DependentUpon>CTV_PTTB.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\CTV_PTTB.aspx.designer.cs">
+      <DependentUpon>CTV_PTTB.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BSC\DanhSachBSCDaGiao.aspx.cs">
       <DependentUpon>DanhSachBSCDaGiao.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -3991,6 +4003,13 @@
     <Compile Include="BSC\KiemDinhBSCNhanVien.aspx.designer.cs">
       <DependentUpon>KiemDinhBSCNhanVien.aspx</DependentUpon>
     </Compile>
+    <Compile Include="BSC\LuongPTTB.aspx.cs">
+      <DependentUpon>LuongPTTB.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BSC\LuongPTTB.aspx.designer.cs">
+      <DependentUpon>LuongPTTB.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BSC\MauBSC.aspx.cs">
       <DependentUpon>MauBSC.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -4047,12 +4066,12 @@
     <Compile Include="BSC\PhanPhoiBSCNhanVien.aspx.designer.cs">
       <DependentUpon>PhanPhoiBSCNhanVien.aspx</DependentUpon>
     </Compile>
-    <Compile Include="BSC\PhanPhoiBSCNhanVien_PBCN.aspx.cs">
-      <DependentUpon>PhanPhoiBSCNhanVien_PBCN.aspx</DependentUpon>
+    <Compile Include="BSC\PhanPhoiBSCNhanVien_GianTiepLXN.aspx.cs">
+      <DependentUpon>PhanPhoiBSCNhanVien_GianTiepLXN.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="BSC\PhanPhoiBSCNhanVien_PBCN.aspx.designer.cs">
-      <DependentUpon>PhanPhoiBSCNhanVien_PBCN.aspx</DependentUpon>
+    <Compile Include="BSC\PhanPhoiBSCNhanVien_GianTiepLXN.aspx.designer.cs">
+      <DependentUpon>PhanPhoiBSCNhanVien_GianTiepLXN.aspx</DependentUpon>
     </Compile>
     <Compile Include="BSC\PhanPhoiBSCNhanVien_Tmp.aspx.cs">
       <DependentUpon>PhanPhoiBSCNhanVien_Tmp.aspx</DependentUpon>
@@ -4242,6 +4261,13 @@
     <Compile Include="TinhLuong\BacLuong.aspx.designer.cs">
       <DependentUpon>BacLuong.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TinhLuong\CapNhatNhanSu.aspx.cs">
+      <DependentUpon>CapNhatNhanSu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TinhLuong\CapNhatNhanSu.aspx.designer.cs">
+      <DependentUpon>CapNhatNhanSu.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TinhLuong\ChiTietTapThe.aspx.cs">
       <DependentUpon>ChiTietTapThe.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -4276,6 +4302,13 @@
     </Compile>
     <Compile Include="TinhLuong\PhatTrienThueBao.aspx.designer.cs">
       <DependentUpon>PhatTrienThueBao.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TinhLuong\ThemNhanSu.aspx.cs">
+      <DependentUpon>ThemNhanSu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TinhLuong\ThemNhanSu.aspx.designer.cs">
+      <DependentUpon>ThemNhanSu.aspx</DependentUpon>
     </Compile>
     <Compile Include="TinhLuong\TinhLuong.aspx.cs">
       <DependentUpon>TinhLuong.aspx</DependentUpon>

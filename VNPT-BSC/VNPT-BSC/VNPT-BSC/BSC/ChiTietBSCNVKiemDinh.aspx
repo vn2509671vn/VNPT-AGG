@@ -31,7 +31,7 @@
             <div class="pull-right">
                 <div class="btn-group">
                     <a class="btn btn-warning btn-xs" href="KiemDinhBSCNhanVien.aspx">
-                        Back
+                        <i class="fa fa-reply" aria-hidden="true"></i>
                     </a>
                 </div>
             </div>
@@ -39,10 +39,12 @@
           <div class="panel-body">
               <div class="col-md-12 col-xs-12 form-horizontal">
                 <div class="form-group">
-                    <label class="control-label col-sm-6">Ngày áp dụng:</label>
+                    <%--<label class="control-label col-sm-6">Ngày áp dụng:</label>
                     <div class="col-sm-6 form-inline padding-top-7">
                         <span><strong id="ngayapdung"></strong></span>
-                    </div>
+                    </div>--%>
+                    <h4 class="text-center">BẢNG GIAO VÀ KẾT QUẢ THỰC HIỆN BSC/KPI THÁNG <span class="red-color"><strong id="ngayapdung"></strong></span></h4>
+                    <h4 class="text-center">ĐƠN VỊ: <span class="red-color"><strong id="tendonvigiao"></strong></span></h4>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-6">Trạng thái nộp:</label>
@@ -67,7 +69,7 @@
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Danh sách KPI <span class="red-color" id="ten_nv"></span>
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Nhân viên nhận: <span class="red-color" id="ten_nv"></span>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body" id="gridBSC">
@@ -79,13 +81,15 @@
                                 <div class="col-md-6 col-xs-12">
                                     <label class="text-center col-sm-12">KÝ XÁC NHẬN CỦA CÁ NHÂN NHẬN VIỆC</label>
                                     <div class="col-sm-12 form-inline padding-top-7 text-center">
-                                        <span id="nhanvienky" class="red-color">Chưa ký</span>
+                                        <h5><span id="nhanvienky" class="red-color">Chưa ký</span></h5>
+                                        <h5><strong class="ten_nvn"></strong></h5>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-xs-12">
                                     <label class="text-center col-sm-12">LÃNH ĐẠO ĐƠN VỊ KÝ GIAO VIỆC</label>
                                     <div class="col-sm-12 form-inline padding-top-7 text-center">
-                                        <span id="lanhdaoky" class="red-color">Chưa ký</span>
+                                        <h5><span id="lanhdaoky" class="red-color">Chưa ký</span></h5>
+                                        <h5><strong class="ten_nvg"></strong></h5>
                                     </div>
                                 </div>
                             </div>
@@ -93,13 +97,15 @@
                                 <div class="col-md-6 col-xs-12">
                                     <label class="text-center col-sm-12">KÝ XÁC NHẬN KẾT QUẢ ĐẠT ĐƯỢC CỦA CÁ NHÂN</label>
                                     <div class="col-sm-12 form-inline padding-top-7 text-center">
-                                        <span id="nhanvienkyxacnhan" class="red-color">Chưa ký</span>
+                                        <h5><span id="nhanvienkyxacnhan" class="red-color">Chưa ký</span></h5>
+                                        <h5><strong class="ten_nvn"></strong></h5>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-xs-12">
                                     <label class="text-center col-sm-12">LÃNH ĐẠO ĐƠN VỊ KÝ XÁC NHẬN KẾT QUẢ</label>
                                     <div class="col-sm-12 form-inline padding-top-7 text-center">
-                                        <span id="lanhdaokyxacnhan" class="red-color">Chưa ký</span>
+                                        <h5><span id="lanhdaokyxacnhan" class="red-color">Chưa ký</span></h5>
+                                        <h5><strong class="ten_nvg"></strong></h5>
                                     </div>
                                 </div>
                             </div>
@@ -155,11 +161,17 @@
                 var trangthaicham = output.trangthaicham;
                 var trangthaiketthuc = output.trangthaiketthuc;
                 var trangthaidongy_kqtd = output.trangthaidongy_kqtd;
-                var nv_nhan = output.ten_nv_nhan;
+
+                var tennhanviengiao = output.tennhanviengiao;
+                var tennhanviennhan = output.tennhanviennhan;
+                var tendonvigiao = output.tendonvigiao;
 
                 /*Fill data*/
                 $("#gridBSC").html(gridBSC);    // Fill to table
-                $("#ten_nv").html(nv_nhan);
+                $("#ten_nv").html(tennhanviennhan);
+                $("#tendonvigiao").text(tendonvigiao);
+                $(".ten_nvg").text(tennhanviengiao);
+                $(".ten_nvn").text(tennhanviennhan);
                 // Fill ngày áp dụng
                 $("#ngayapdung").text(thang + "/" + nam);
                 

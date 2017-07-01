@@ -22,9 +22,8 @@ namespace VNPT_BSC.DanhMuc
         private DataTable getnhanvienList()
         {
             string sqlBSC =
-            "SELECT a.nhanvien_id,a.nhanvien_hoten,a.nhanvien_ngaysinh,b.donvi_ten,b.donvi_id,a.nhanvien_dantoc,a.nhanvien_tongiao,a.nhanvien_trinhdo,a.nhanvien_gioitinh,a.nhanvien_noisinh, "
-            + "a.nhanvien_quequan,a.nhanvien_diachi,a.nhanvien_cmnd,a.nhanvien_ngaycapcmnd,a.nhanvien_noicapcmnd,a.nhanvien_doanvien,a.nhanvien_dangvien,a.nhanvien_ngayvaodang,a.nhanvien_ngayvaonganh,a.nhanvien_didong,"
-            + "a.nhanvien_email,d.chucdanh_ten,d.chucdanh_id,a.nhanvien_taikhoan,a.nhanvien_matkhau"
+            "SELECT a.*, "
+            + "d.chucdanh_ten,d.chucdanh_id"
             + " FROM nhanvien a, donvi b, chucdanh d "
             + "WHERE a.nhanvien_donvi = b.donvi_id and  a.nhanvien_chucdanh = d.chucdanh_id ";
             dtnhanvien = new DataTable();

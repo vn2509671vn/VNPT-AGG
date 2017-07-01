@@ -2117,11 +2117,13 @@ input.parsley-error, textarea.parsley-error, select.parsley-error {
 .autocomplete-suggestion {
   padding: 2px 5px;
   font-size: 1.2em;
-  white-space: nowrap;
+  /*white-space: nowrap;*/
   overflow: hidden; }
 
 .autocomplete-selected {
-  background: #f0f0f0; }
+  /*background: #f0f0f0;*/ 
+  background: orange;
+}
 
 .autocomplete-suggestions strong {
   font-weight: normal;

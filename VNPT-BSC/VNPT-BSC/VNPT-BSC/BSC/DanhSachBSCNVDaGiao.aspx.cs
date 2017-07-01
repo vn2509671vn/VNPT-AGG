@@ -107,7 +107,7 @@ namespace VNPT_BSC.BSC
             sqlNhanVienByTime += "and bsc_nhanvien.nhanviennhan = nhanvien.nhanvien_id ";
             sqlNhanVienByTime += "group by bsc_nhanvien.nhanviennhan, nhanvien.nhanvien_taikhoan ";
 
-            string sqlNhomByTime = "select nhom_kpi.id, nhom_kpi.ten_nhom ";
+            string sqlNhomByTime = "select nhom_kpi.id, nhom_kpi.ten_nhom, nhom_kpi.thutuhienthi ";
             sqlNhomByTime += "from kpo, kpi, bsc_nhanvien, nhom_kpi ";
             sqlNhomByTime += "where bsc_nhanvien.kpi = kpi.kpi_id ";
             //sqlNhomByTime += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
@@ -117,7 +117,7 @@ namespace VNPT_BSC.BSC
             sqlNhomByTime += "and bsc_nhanvien.loaimau = '" + loaimaubsc + "' ";
             sqlNhomByTime += "and nhom_kpi.id = bsc_nhanvien.nhom_kpi  ";
             //sqlNhomByTime += "and nhom_kpi.loaimaubsc_id = '" + loaimaubsc + "' ";
-            sqlNhomByTime += "group by nhom_kpi.id, nhom_kpi.ten_nhom order by nhom_kpi.id asc";
+            sqlNhomByTime += "group by nhom_kpi.id, nhom_kpi.ten_nhom , nhom_kpi.thutuhienthi order by nhom_kpi.thutuhienthi asc";
 
             try
             {
@@ -246,7 +246,7 @@ namespace VNPT_BSC.BSC
                 /*Kiểm tra nếu không có quyền giao bsc nhân viên (id của quyền là 3) thì đẩy ra trang đăng nhập*/
                 nFindResult = quyenHeThong.Contains(3);
 
-                if (nhanvien == null)
+                if (!nFindResult)
                 {
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");

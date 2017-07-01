@@ -173,7 +173,8 @@ namespace VNPT_BSC.BSC
         private DataTable getNhomKPI()
         {
             DataTable dtresult = new DataTable();
-            string sql = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id";
+            //string sql = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id";
+            string sql = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id and nhom_kpi.hienthi = 1 order by nhom_kpi.thutuhienthi asc";
             try
             {
                 dtresult = cn.XemDL(sql);
@@ -191,8 +192,10 @@ namespace VNPT_BSC.BSC
             DataTable dtresult = new DataTable();
             string szResult = "";
             Connection cn = new Connection();
-            string sql = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id and loaimaubsc.loai_id = '" + loaimaubsc + "'";
-            string sqlAll = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id";
+            //string sql = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id and loaimaubsc.loai_id = '" + loaimaubsc + "'";
+            //string sqlAll = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id";
+            string sql = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id and loaimaubsc.loai_id = '" + loaimaubsc + "' and nhom_kpi.hienthi = 1 order by nhom_kpi.thutuhienthi asc";
+            string sqlAll = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id and nhom_kpi.hienthi = 1 order by nhom_kpi.thutuhienthi asc";
             try
             {
                 dtresult = cn.XemDL(sql);
@@ -225,7 +228,8 @@ namespace VNPT_BSC.BSC
             DataTable dsNhanvienthamdinh = new DataTable();
             DataTable dsNhomKPI = new DataTable();
             string sqlDVT = "select * from donvitinh";
-            string sqlNhomKPI = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id";
+            //string sqlNhomKPI = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id";
+            string sqlNhomKPI = "select nhom_kpi.*, loaimaubsc.loai_ten from nhom_kpi, loaimaubsc where nhom_kpi.loaimaubsc_id = loaimaubsc.loai_id and nhom_kpi.hienthi = 1 order by nhom_kpi.thutuhienthi";
             string szOutput = "";
 
             string sql = "select kpi.kpi_id, kpo.kpo_id, kpi.kpi_ten as name, bscdv.donvitinh, bscdv.trongso, kpi.nhom_kpi, nhom_kpi.ten_nhom, kpo.kpo_ten ";
@@ -300,7 +304,7 @@ namespace VNPT_BSC.BSC
                 szOutput += "<td class='text-center'><input type='text' class='form-control cls_tytrong' id='tytrong_" + dtKPIDuocGiao.Rows[i]["kpi_id"].ToString() + "' size='2' value='" + dtKPIDuocGiao.Rows[i]["trongso"].ToString() + "' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
 
                 szOutput += "<td class='text-center'>";
-                szOutput += "<select class='form-control' id='nhom_kpi_" + dtKPIDuocGiao.Rows[i]["kpi_id"].ToString() + "' name='cboNhomKPI' data-nhom-id='" + dtKPIDuocGiao.Rows[i]["nhom_kpi"].ToString() + "'>";
+                szOutput += "<select style='width: 100% !important;' class='form-control' id='nhom_kpi_" + dtKPIDuocGiao.Rows[i]["kpi_id"].ToString() + "' name='cboNhomKPI' data-nhom-id='" + dtKPIDuocGiao.Rows[i]["nhom_kpi"].ToString() + "'>";
                 for (int nNhom = 0; nNhom < dsNhomKPI.Rows.Count; nNhom++)
                 {
                     string szSelect = "";

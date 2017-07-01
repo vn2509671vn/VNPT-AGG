@@ -74,7 +74,7 @@ namespace VNPT_BSC.BSC
                 szThang = thang.ToString();
             }
 
-            string sqlBSC = "select dv.donvi_ten, (bsc.tongdiem_bsc/" + tongsothang + ") as diem ";
+            string sqlBSC = "select dv.donvi_ten, (sum(bsc.tongdiem_bsc)/" + tongsothang + ") as diem ";
             sqlBSC += "from tmp_tongbsc_donvi bsc, donvi dv ";
             sqlBSC += "where bsc.id_donvi = dv.donvi_id ";
             sqlBSC += "and bsc.thang in (" + szThang + ") ";
@@ -84,7 +84,7 @@ namespace VNPT_BSC.BSC
                 sqlBSC += "and dv.donvi_id = '" + donvi + "' ";
             }
 
-            //sqlBSC += "group by dv.donvi_ten ";
+            sqlBSC += "group by dv.donvi_ten ";
             sqlBSC += "order by diem DESC";
 
             try

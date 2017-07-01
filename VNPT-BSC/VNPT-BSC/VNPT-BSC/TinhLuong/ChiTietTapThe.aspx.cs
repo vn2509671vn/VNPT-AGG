@@ -33,7 +33,7 @@ namespace VNPT_BSC.TinhLuong
         public static DataTable chitiet(int nhom, int thang, int nam) {
             DataTable dtResult = new DataTable();
             Connection cn = new Connection();
-            string sql = "select nv.ma_nhanvien, nv.ten_nhanvien, nv.hesoluong, nv.luong_duytri as tienluong, bl.heso_bacluong, chamcong.ngaycong_bhxh, chitiet.*, (chitiet.luong_duytri + chitiet.luong_p3 + chitiet.luong_phattrien_tb) as luongphanphoi, (chitiet.luong_duytri + chitiet.luong_p3 + chitiet.luong_phattrien_tb - chitiet.bhtn - chitiet.bhxh - chitiet.bhyt) as luongtong ";
+            string sql = "select nv.ma_nhanvien, nv.ten_nhanvien, nv.hesoluong, nv.luongcoban as tienluong, bl.heso_bacluong, chamcong.ngaycong_bhxh, chitiet.*, (chitiet.luong_duytri + chitiet.luong_p3 + chitiet.luong_phattrien_tb) as luongphanphoi, (chitiet.luong_duytri + chitiet.luong_p3 + chitiet.luong_phattrien_tb - chitiet.bhtn - chitiet.bhxh - chitiet.bhyt) as luongtong ";
             sql += "from qlns_bangluong_chitiet chitiet, qlns_nhanvien nv, qlns_chamcong chamcong, qlns_bacluong bl ";
             sql += "where chitiet.thang = '" + thang + "' ";
             sql += "and chitiet.nam = '" + nam + "' ";

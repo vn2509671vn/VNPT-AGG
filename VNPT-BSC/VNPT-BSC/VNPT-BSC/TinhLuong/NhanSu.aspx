@@ -31,6 +31,7 @@
             </div>
             <div class="panel-body">
                 <div class="col-md-12 col-xs-12 table-responsive">
+                    <a class="btn btn-success btn-xl fix-label-margin-top" href="ThemNhanSu.aspx">Thêm nhân viên</a>
                     <table id="table-nhansu" class="table table-striped table-bordered table-full-width" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -42,12 +43,10 @@
                                 <th class="text-center min-width-72">Bậc lương</th>
                                 <th class="text-center">Số TK</th>
                                 <th class="text-center">Hệ số lương</th>
-                                <th class="text-center">Lương duy trì</th>
-                                <th class="text-center">Lương P3</th>
+                                <th class="text-center">Lương cơ bản</th>
                                 <th class="text-center">Ngày vào ngành</th>
                                 <th class="text-center">Chính thức</th>
                                 <th class="text-center">Đảng viên</th>
-                                <th class="text-center">Nghỉ thai sản</th>
                                 <th class="text-center">Tác vụ</th>
                             </tr>
                         </thead>
@@ -62,20 +61,14 @@
                                    string bacluong = dtNhanVien.Rows[i]["id_bacluong"].ToString();
                                    string so_tk = dtNhanVien.Rows[i]["sotaikhoan"].ToString();
                                    string hesoluong = dtNhanVien.Rows[i]["hesoluong"].ToString();
-                                   string luong_p3 = dtNhanVien.Rows[i]["luong_p3"].ToString();
-                                   string luong_duytri = dtNhanVien.Rows[i]["luong_duytri"].ToString();
+                                   string luongcoban = dtNhanVien.Rows[i]["luongcoban"].ToString();
                                    string chinhthuc = dtNhanVien.Rows[i]["chinhthuc"].ToString();
                                    string ngaykyhd = dtNhanVien.Rows[i]["ngaykyhd"].ToString();
                                    string szChinhThuc = "";
                                    if (Convert.ToBoolean(chinhthuc)) {
                                        szChinhThuc = "checked";
                                    }
-                                   string thaisan = dtNhanVien.Rows[i]["thaisan"].ToString();
-                                   string szThaiSan = "";
-                                   if (Convert.ToBoolean(thaisan))
-                                   {
-                                       szThaiSan = "checked";
-                                   }
+                                  
                                    string dangvien = dtNhanVien.Rows[i]["dangvien"].ToString();
                                    string szDangVien = "";
                                    if (Convert.ToBoolean(dangvien))
@@ -152,15 +145,23 @@
                                 </td>
                                 <td><input class="form-control min-width-150" type="text" id="stk_<%=id %>" value="<%=so_tk %>"/></td>
                                 <td><input class="form-control cls-hesoluong" type="number" min="0" id="hesoluong_<%=id %>" value="<%=hesoluong %>"/></td>
-                                <td class="text-center" id="luong_duytri_<%=id %>"><%=luong_duytri %></td>
-                                <td class="text-center" id="luong_p3_<%=id %>"><%=luong_p3 %></td>
+                                <td class="text-center" id="luongcoban_<%=id %>"><%=luongcoban %></td>
                                 <td><input id="ngaykyhd_<%=id %>" class="date-picker form-control col-md-7 col-xs-12 ngaykyhd min-width-130" required="required" type="text" value="<%=ngaykyhd %>"/></td>
                                 <td><input class="form-control" type="checkbox"  id="chinhthuc_<%=id %>" <%=szChinhThuc %>/></td>
                                 <td><input class="form-control" type="checkbox"  id="dangvien_<%=id %>" <%=szDangVien %>/></td>
-                                <td><input class="form-control" type="checkbox"  id="thaisan_<%=id %>" <%=szThaiSan %>/></td>
-                                <td class="text-center min-width-150">
-                                    <a class="btn btn-warning btn-xs btn-kiemnhiem" data-target="#KiemNhiem" data-toggle="modal">Kiêm Nhiệm</a>
-                                    <a class="btn btn-primary btn-xs btn-action">Lưu</a>
+                                <td class="text-center">
+                                    <div class="dropdown">
+                                      <button class="btn btn-default dropdown-toggle btn-xs" type="button" id="dropdownMenu<%=id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Chọn
+                                        <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu<%=id %>">
+                                        <li><a href="CapNhatNhanSu.aspx?user=<%=id %>">Thông tin khác</a></li>
+                                        <li><a class="btn-kiemnhiem" data-target="#KiemNhiem" data-toggle="modal">Kiêm Nhiệm</a></li>
+                                        <li><a class="btn-del">Nghỉ việc</a></li>
+                                        <li><a class="btn-action">Lưu</a></li>
+                                      </ul>
+                                    </div>
                                 </td>
                             </tr>
                             <% } %>
@@ -191,7 +192,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -223,7 +223,7 @@
             var szOption = "";
             for (var i = 0; i < arrBacLuong.length; i++) {
                 if (chucdanh == arrBacLuong[i].id_chucdanh) {
-                    szOption += "<option value='" + arrBacLuong[i].id + "'>" + arrBacLuong[i].ten_bacluong + "</option>";
+                    szOption += "<option value='" + arrBacLuong[i].id + "'> Bậc " + arrBacLuong[i].ten_bacluong + "</option>";
                 }
             }
 
@@ -234,10 +234,8 @@
             var id_nv = $(this).closest("tr").attr("data-id");
             var value = $(this).val();
             if (!isNaN(value)) {
-                var p3 = 1150000 * value;
-                var duytri = 3500000 * value;
-                $("#luong_p3_" + id_nv).text(p3);
-                $("#luong_duytri_" + id_nv).text(duytri);
+                var coban = 3500000 * value;
+                $("#luongcoban_" + id_nv).text(coban);
             }
         });
 
@@ -251,7 +249,6 @@
             var hesoluong = $("#hesoluong_" + id_nv).val();
             var chinhthuc = $("#chinhthuc_" + id_nv).is(":checked");
             var dangvien = $("#dangvien_" + id_nv).is(":checked");
-            var thaisan = $("#thaisan_" + id_nv).is(":checked");
 
             var requestData = {
                 id_nv: id_nv,
@@ -262,8 +259,7 @@
                 stk: stk,
                 hesoluong: hesoluong,
                 chinhthuc: chinhthuc,
-                dangvien: dangvien,
-                thaisan: thaisan
+                dangvien: dangvien
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({
@@ -283,6 +279,36 @@
                     }
                     else {
                         swal("Error!!!", "Lưu không thành công!!!", "error");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
+        });
+
+        $(document).on('click', '.btn-del', function () {
+            var id_nv = $(this).closest("tr").attr("data-id");
+
+            var requestData = {
+                id_nv: id_nv
+            };
+            var szRequest = JSON.stringify(requestData);
+            $.ajax({
+                type: "POST",
+                url: "NhanSu.aspx/delNV",
+                data: szRequest,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var output = result.d;
+                    if (output) {
+                        swal({
+                            title: "Duyệt nghỉ việc thành công!!",
+                            text: "",
+                            type: "success"
+                        });
+                    }
+                    else {
+                        swal("Error!!!", "Duyệt nghỉ việc không thành công!!!", "error");
                     }
                 },
                 error: function (msg) { alert(msg.d); }

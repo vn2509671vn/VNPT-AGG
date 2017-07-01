@@ -63,7 +63,7 @@ namespace VNPT_BSC.BSC
             sqlBSC += "and kpi.kpi_thuoc_kpo = kpo.kpo_id ";
             sqlBSC += "and bsc.bscduocgiao != '' ";
             sqlBSC += "and bsc.nhom_kpi = nhom_kpi.id ";
-            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' and bsc.nguoitao = '" + nguoitao + "' and bsc.maubsc = '" + loaiMauBSC + "' ORDER BY bsc.nhom_kpi ASC";
+            sqlBSC += "and bsc.thang = '" + thang + "' and bsc.nam = '" + nam + "' and bsc.nguoitao = '" + nguoitao + "' and bsc.maubsc = '" + loaiMauBSC + "' ORDER BY nhom_kpi.thutuhienthi ASC";
             try
             {
                 gridData = cnBSC.XemDL(sqlBSC);
@@ -331,8 +331,8 @@ namespace VNPT_BSC.BSC
                     cnData.ThucThiDL(sqlInsertGiaoBSC);
                     for (int i = 0; i < kpi_detail.Length; i++)
                     {
-                        string sqlInsertBSCDV = "insert into bsc_nhanvien(nhanviengiao, nhanviennhan, thang, nam, kpi, nhanvienthamdinh, donvitinh, trongso, kehoach, thuchien, thamdinh, trangthaithamdinh, loaimau, nhom_kpi) ";
-                        sqlInsertBSCDV += "values('" + nhanviengiao + "', '" + id_nhanviennhan + "', '" + thang + "', '" + nam + "', '" + Convert.ToInt32(kpi_detail[i].kpi_id) + "', '" + kpi_detail[i].nhanvienthamdinh + "','" + kpi_detail[i].dvt + "', '" + Convert.ToInt32(kpi_detail[i].tytrong) + "', '" + kpi_detail[i].kehoach + "', 0, 0, 0, '" + loaimau + "', '" + kpi_detail[i].nhom_kpi_id + "')";
+                        string sqlInsertBSCDV = "insert into bsc_nhanvien(nhanviengiao, nhanviennhan, thang, nam, kpi, nhanvienthamdinh, donvitinh, trongso, kehoach, thuchien, thamdinh, trangthaithamdinh, loaimau, nhom_kpi, donvi) ";
+                        sqlInsertBSCDV += "values('" + nhanviengiao + "', '" + id_nhanviennhan + "', '" + thang + "', '" + nam + "', '" + Convert.ToInt32(kpi_detail[i].kpi_id) + "', '" + kpi_detail[i].nhanvienthamdinh + "','" + kpi_detail[i].dvt + "', '" + Convert.ToInt32(kpi_detail[i].tytrong) + "', '" + kpi_detail[i].kehoach + "', 0, 0, 0, '" + loaimau + "', '" + kpi_detail[i].nhom_kpi_id + "', '" + donvi + "')";
                         try
                         {
                             cnData.ThucThiDL(sqlInsertBSCDV);
@@ -366,8 +366,8 @@ namespace VNPT_BSC.BSC
 
                 for (int i = 0; i < kpi_detail.Length; i++)
                 {
-                    string sqlInsertBSCDV = "insert into bsc_nhanvien(nhanviengiao, nhanviennhan, thang, nam, kpi, nhanvienthamdinh, donvitinh, trongso, kehoach, thuchien, thamdinh, trangthaithamdinh, loaimau, nhom_kpi) ";
-                    sqlInsertBSCDV += "values('" + nhanviengiao + "', '" + id_nhanviennhan + "', '" + thang + "', '" + nam + "', '" + Convert.ToInt32(kpi_detail[i].kpi_id) + "', '" + kpi_detail[i].nhanvienthamdinh + "', '" + kpi_detail[i].dvt + "', '" + Convert.ToInt32(kpi_detail[i].tytrong) + "', '" + kpi_detail[i].kehoach + "', 0, 0, 0, '" + loaimau + "', '" + kpi_detail[i].nhom_kpi_id + "')";
+                    string sqlInsertBSCDV = "insert into bsc_nhanvien(nhanviengiao, nhanviennhan, thang, nam, kpi, nhanvienthamdinh, donvitinh, trongso, kehoach, thuchien, thamdinh, trangthaithamdinh, loaimau, nhom_kpi, donvi) ";
+                    sqlInsertBSCDV += "values('" + nhanviengiao + "', '" + id_nhanviennhan + "', '" + thang + "', '" + nam + "', '" + Convert.ToInt32(kpi_detail[i].kpi_id) + "', '" + kpi_detail[i].nhanvienthamdinh + "', '" + kpi_detail[i].dvt + "', '" + Convert.ToInt32(kpi_detail[i].tytrong) + "', '" + kpi_detail[i].kehoach + "', 0, 0, 0, '" + loaimau + "', '" + kpi_detail[i].nhom_kpi_id + "', '" + donvi + "')";
                     try
                     {
                         cnData.ThucThiDL(sqlInsertBSCDV);

@@ -27,7 +27,16 @@
     <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">GIAO BSC CHO NHÂN VIÊN</h3>
+            GIAO BSC CHO NHÂN VIÊN
+            <% if (donvi == 17){ %>
+            <div class="pull-right">
+                <div class="btn-group">
+                    <a class="btn btn-warning btn-xs" href="PhanPhoiBSCNhanVien_GianTiepLXN.aspx">
+                        Khối gián tiếp
+                    </a>
+                </div>
+            </div>
+            <% } %>
           </div>
           <div class="panel-body">
               <div class="col-md-12 col-xs-12 form-horizontal">
@@ -35,21 +44,35 @@
                     <label class="control-label col-sm-3">Thời gian:</label>
                     <div class="col-sm-6 form-inline">
                         <select class="form-control" id="month" onchange="changeInputData()">
-                            <% for(int nMonth = 1; nMonth <= 12; nMonth++){ %>
-                                <option><%= nMonth %></option>
+                            <% for(int nMonth = 1; nMonth <= 12; nMonth++){
+                                   string selectOption = "";
+                                   int month = Convert.ToInt32(DateTime.Now.ToString("MM"));
+                                   if (nMonth == month)
+                                   {
+                                       selectOption = "selected";
+                                   }
+                             %>
+                                <option <%=selectOption %>><%= nMonth %></option>
                             <% } %>
                         </select>
                         <select class="form-control" id="year" onchange="changeInputData()">
-                            <% for(int nYear = 2016; nYear <= 2100; nYear++){ %>
-                                <option><%= nYear %></option>
+                            <% for(int nYear = 2016; nYear <= 2100; nYear++){
+                                   string selectOption = "";
+                                   int date = Convert.ToInt32(DateTime.Now.ToString("yyyy"));
+                                   if (nYear == date)
+                                   {
+                                       selectOption = "selected";
+                                   }
+                            %>
+                                <option <%=selectOption %>><%= nYear %></option>
                             <% } %>
                         </select>
-                        <a class="btn btn-warning" id="getCurrentDate">Hiện tại</a>
+                        <%--<a class="btn btn-warning" id="getCurrentDate">Hiện tại</a>--%>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3">Nhân viên nhận:</label>
-                    <div class="col-sm-8">
+                    <div class="col-sm-3">
                         <input type="text" class="form-control" list="danhsachnhanvien" size="50" id="nhanviennhan"/>
                         <datalist id="danhsachnhanvien">
                             <% for(int i = 0; i < dtNhanVien.Rows.Count; i++){ %>

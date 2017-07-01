@@ -40,7 +40,7 @@
             <div class="pull-right">
                 <div class="btn-group">
                     <a class="btn btn-warning btn-xs" href="NghiemThuBSCDonVi.aspx">
-                        Back
+                        <i class="fa fa-reply" aria-hidden="true"></i>
                     </a>
                 </div>
             </div>

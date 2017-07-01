@@ -73,6 +73,12 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-sm-3">Chỉ xem KPI được chọn:</label>
+                    <div class="col-sm-4 form-inline" style="padding-top: 5px">
+                        <input type='checkbox' id='checkGomGon'/>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-md-3">Danh sách KPI:</label>
                     <%--<div class="col-sm-8">
                         <% for(int i = 0; i < dtKPI.Rows.Count; i++){ %>
@@ -87,16 +93,20 @@
                                 <thead>
                                   <tr>
                                     <th class='text-center'><input type="checkbox" id="checkall-kpi"/></th>
+                                    <th class='text-center'>STT</th>
                                     <th class='text-center'>KPI</th>
                                     <th class='text-center'>KPO</th>
+                                    <th class='text-center'>Nhóm KPI</th>
                                     <th class='text-center'>ĐVT</th>
                                     <th class='text-center'>Tỷ trọng (%)</th>
                                     <th class='text-center'>Đơn vị thẩm định</th>
                                   </tr>
                                   <tr id="thSearch">
                                     <th></th>
+                                    <th></th>
                                     <th data-filter="1">KPI</th>
-                                    <th data-filter="1">KPO</th>
+                                    <th data-filter="2">KPO</th>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -106,9 +116,22 @@
                                     <% for(int i = 0; i < dtKPI.Rows.Count; i++){ %>
                                         <tr data-id="<%=dtKPI.Rows[i]["kpi_id"].ToString() %>">
                                           <td class='text-center'><input name="checkbox-kpi" id='kpi_id_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' type="checkbox" value="<%=dtKPI.Rows[i]["kpi_id"].ToString() %>" /></td>
+                                          <td class='text-center'><input type="text" class='form-control' onkeypress='return onlyNumbers(event.charCode || event.keyCode);' id='stt_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' size="2"/></td>
                                           <td class="min-width-130"><strong><%=dtKPI.Rows[i]["name"].ToString() %></strong></td>
-                                          <td><strong><%=dtKPI.Rows[i]["kpo_ten"].ToString() %></strong></td>
+                                          <td class="max-width-100"><strong><%=dtKPI.Rows[i]["kpo_ten"].ToString() %></strong></td>
                                           <%--<td class='text-center'><input type="text" class='form-control' id='dvt_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' size="5"/></td>--%>
+                                          <!-- Dropdown Nhóm KPI -->
+                                          <td class='text-center min-width-200'>
+                                              <select style="width: 100% !important;" class='form-control' id='nhom_kpi_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>' name="cboNhomKPI">
+                                                <%for (int nNhom = 0; nNhom < dtNhomKPI.Rows.Count; nNhom++)
+                                                  {
+                                                      string nhom_id = dtNhomKPI.Rows[nNhom]["id"].ToString();
+                                                      string nhom_name = dtNhomKPI.Rows[nNhom]["ten_nhom"].ToString();
+                                                %>
+                                                    <option value='<%=nhom_id %>'><%= nhom_name %></option>
+                                                <%} %>
+                                            </select>
+                                          </td>
                                           <!-- Dropdown Đơn vị tính -->
                                           <td class='text-center'>
                                               <select class='form-control' id='dvt_<%=dtKPI.Rows[i]["kpi_id"].ToString() %>'>
@@ -148,6 +171,8 @@
 <script type="text/javascript">
     var nguoitao = '<%= nguoitao%>';
     function fillData(month, year) {
+        $("#checkGomGon").prop("checked", false);
+
         $("input[type=text]").each(function () {
             $(this).val("");
         });
@@ -190,15 +215,36 @@
                         var tytrong = arrKPI[i].tytrong;
                         var donvitinh = arrKPI[i].donvitinh;
                         var donvithamdinh = arrKPI[i].donvithamdinh;
+                        var nhom_kpi = arrKPI[i].nhom_kpi;
+                        var stt = arrKPI[i].stt;
                         $(":checkbox[value='" + KPI_ID + "']").prop("checked", "true");
                         $("#dvt_" + KPI_ID).val(donvitinh);
                         $("#tytrong_" + KPI_ID).val(tytrong);
                         $("#dvtd_" + KPI_ID).val(donvithamdinh);
+                        $("#nhom_kpi_" + KPI_ID).val(nhom_kpi);
+                        $("#stt_" + KPI_ID).val(stt);
                     }
                 },
                 error: function (msg) { alert(msg.d); }
             });
         }, 2000);
+    }
+
+    function gomGonKPIDaChon() {
+        var gomgon = $("#checkGomGon").is(":checked");
+        if (gomgon) {
+            $("input[name=checkbox-kpi]").each(function () {
+                var checked = $(this).is(":checked");
+                if (!checked) {
+                    $(this).closest("tr").addClass("cus_hide");
+                }
+            });
+        }
+        else {
+            $("input[name=checkbox-kpi]").each(function () {
+                $(this).closest("tr").removeClass("cus_hide");
+            });
+        }
     }
 
     $(document).ready(function () {
@@ -249,6 +295,8 @@
                 
                 var dvt = $("#dvt_" + kpi_id).val();
                 var dvtd = $("#dvtd_" + kpi_id).val();
+                var nhom_kpi = $("#nhom_kpi_" + kpi_id).val();
+                var stt = $("#stt_" + kpi_id).val();
                 var isChecked = $("#kpi_id_" + kpi_id).is(":checked");
                 if (isChecked == true) {
                     totalTyTrong += parseInt(tytrong);
@@ -256,7 +304,9 @@
                         kpi_id: kpi_id,
                         tytrong: tytrong,
                         dvt: dvt,
-                        dvtd: dvtd
+                        dvtd: dvtd,
+                        nhom_kpi: nhom_kpi,
+                        stt: stt
                     });
                 }
             });
@@ -323,8 +373,11 @@
         $('#danhsachKPI thead tr#thSearch th').each(function () {
             var title = $(this).text();
             var isFilter = $(this).attr("data-filter");
-            if (isFilter) {
-                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+            if (isFilter == 1) {
+                $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
+            }
+            else if (isFilter == 2) {
+                $(this).html('<input type="text" class="form-control max-width-100" placeholder="Search ' + title + '" />');
             }
         });
 
@@ -346,6 +399,10 @@
                         .draw();
                 }
             });
+        });
+
+        $("#checkGomGon").change(function () {
+            gomGonKPIDaChon();
         });
     });
 </script>

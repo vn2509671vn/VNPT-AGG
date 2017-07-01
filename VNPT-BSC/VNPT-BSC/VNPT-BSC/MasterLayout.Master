@@ -68,13 +68,13 @@
                   <% if (userID == 196){ %>
                   <li class="qlns"><a><i class="fa fa-users"></i> Nhân Sự <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="/TinhLuong/DiemBSCNV.aspx"> Điểm BSC </a></li>
-                      <li><a href="/TinhLuong/PhatTrienThueBao.aspx"> Phát Triển TB </a></li>
                       <li><a href="/TinhLuong/BacLuong.aspx"> Bậc Lương </a></li>
                       <li><a href="/TinhLuong/KiemNhiem.aspx"> Chức Vụ Kiêm Nhiệm </a></li>
                       <li><a href="/TinhLuong/NhanSu.aspx"> Nhân Sự </a></li>
-                      <li><a href="/TinhLuong/TinhLuong.aspx"> Tính Lương </a></li>
+                      <li><a href="/TinhLuong/DiemBSCNV.aspx"> Điểm BSC </a></li>
                       <li><a href="/TinhLuong/ChiTietTapThe.aspx"> Lương Tổng Hợp (3PS) </a></li>
+                      <li><a href="/TinhLuong/TinhLuong.aspx"> Tính Lương </a></li>
+                      <li><a href="/TinhLuong/TuDongCapNhatBacLuong.aspx"> Cập Nhật Bậc Lương </a></li>
                     </ul>
                   </li>
                   <% } %>
@@ -132,13 +132,15 @@
                   </li>
                   <li class="thongke"><a><i class="fa fa-line-chart"></i> Thống Kê Báo Cáo <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
+                      <li id="luongpttb"><a href="/BSC/LuongPTTB.aspx">Lương PTTB</a></li>
+                      <li id="ctvpttb"><a href="/BSC/CTV_PTTB.aspx">CTV PTTB</a></li>
                       <li id="danhsach_bsc_dagiao_thuctrang"><a href="/BSC/DanhSachBSCDaGiao_ThucTrang.aspx">Số liệu BSC trên Vmos</a></li>
                       <li id="danhsach_bscnv_dagiao_thuctrang"><a href="/BSC/DanhSachBSCNVDaGiao_ThucTrang.aspx">Số liệu BSC nhân viên trên PTTB</a></li>
                       <li id="danhsach_bsc_dagiao_thamdinh"><a href="/BSC/DanhSachBSCDaGiao_ThamDinh.aspx">Số liệu BSC được thẩm định</a></li>
-                      <li id="danhsach_bsc_dagiao"><a href="/BSC/DanhSachBSCDaGiao.aspx">Danh Sách BSC/KPI Đơn Vị</a></li>
-                      <li id="danhsach_bscnv_dagiao"><a href="/BSC/DanhSachBSCNVDaGiao.aspx">Danh Sách BSC/KPI Nhân Viên</a></li>
-                      <li id="ketqua_nghiemthu_dv"><a href="/BSC/KetQuaNghiemThuDV.aspx">Kết Quả Nghiệm Thu BSC Đơn Vị</a></li>
-                      <li id="xephang_bsc"><a href="/BSC/XepHangBSC.aspx">Danh Sách Xếp Hạng</a></li>
+                      <li id="danhsach_bsc_dagiao"><a href="/BSC/DanhSachBSCDaGiao.aspx">BSC/KPI đơn vị</a></li>
+                      <li id="danhsach_bscnv_dagiao"><a href="/BSC/DanhSachBSCNVDaGiao.aspx">BSC/KPI nhân viên</a></li>
+                      <li id="ketqua_nghiemthu_dv"><a href="/BSC/KetQuaNghiemThuDV.aspx">Kết quả nghiệm thu BSC đơn vị</a></li>
+                      <li id="xephang_bsc"><a href="/BSC/XepHangBSC.aspx">Xếp hạng đơn vị</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -336,6 +338,8 @@
         $(".thongke > ul > li#danhsach_bsc_dagiao").show();
         $(".thongke > ul > li#ketqua_nghiemthu_dv").show();
         $(".thongke > ul > li#xephang_bsc").show();
+        $(".thongke > ul > li#luongpttb").show();
+        $(".thongke > ul > li#ctvpttb").show();
 
         // Chức năng dành riêng cho ban giám đốc và chị Uyên và anh Hùng
         <%if (userDonVi == 2 || userID == 185 || userID == 195){%>

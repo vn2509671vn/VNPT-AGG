@@ -90,7 +90,24 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        //$("#table-chitiet").DataTable();
+        $("#table-chitiet").DataTable({
+            "bLengthChange": false,
+            "bPaginate": false,
+            "bSort": false,
+            "dom": 'Bfrtip',
+                    "buttons": [
+                        {
+                            extend: 'excelHtml5',
+                            title: 'Chi tiết BSC <%=ten_nhanvien %>'
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            title: 'Chi tiết BSC <%=ten_nhanvien %>',
+                            orientation: 'landscape',
+                            pageSize: 'LEGAL'
+                        }
+        ]
+        });
     });
 </script>
 </asp:Content>

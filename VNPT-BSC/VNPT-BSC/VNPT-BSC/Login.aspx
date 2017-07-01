@@ -22,6 +22,7 @@
                     <h3 class="panel-title" style="text-align:center">ĐĂNG NHẬP HỆ THỐNG</h3>
                 </div>
                 <div class="panel-body">
+                    <%--<h3 style="color: red">Hệ thống bảo trì để cập nhật BSC theo quy chế mới. Dự kiến bảo trì hoàn tất lúc 17h 13/06/2017</h3>--%>
                     <div style="margin-bottom: 10px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="Tên đăng nhập">

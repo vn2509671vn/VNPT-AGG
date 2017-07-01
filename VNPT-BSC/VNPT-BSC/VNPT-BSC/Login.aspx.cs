@@ -75,6 +75,7 @@ namespace VNPT_BSC
                     nv.nhanvien_donvi_id = Convert.ToInt32(dt.Rows[0]["nhanvien_donvi"].ToString());
                     //objp.Session.SetCurrentUser(nv);
                     HttpContext.Current.Session["nhanvien"] = nv;
+                    HttpContext.Current.Session.Timeout = 90;
 
                     dtChucVu = getListChucVu(nv.nhanvien_id);
                     int numChucVu = dtChucVu.Rows.Count;

@@ -21,6 +21,7 @@ namespace VNPT_BSC.BSC
         public DataTable dtDVT;
         public DataTable dtDVTD;
         public static DataTable dtMauBSC;
+        public static DataTable dtNhomKPI = new DataTable();
 
         public static int nguoitao;
         public class kpiDetail
@@ -29,6 +30,23 @@ namespace VNPT_BSC.BSC
             public int tytrong { get; set; }
             public int dvt { get; set; }
             public int dvtd { get; set; }
+            public int nhom_kpi { get; set; }
+            public int stt { get; set; }
+        }
+
+        private DataTable getNhomKPI()
+        {
+            DataTable dtresult = new DataTable();
+            string sql = "select * from nhom_kpi where loaimaubsc_id = 1 and hienthi = 1 order by thutuhienthi asc";
+            try
+            {
+                dtresult = cn.XemDL(sql);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dtresult;
         }
 
         /*List loại mẫu bsc*/
@@ -167,6 +185,8 @@ namespace VNPT_BSC.BSC
                     arrKPI[i].Add("tytrong", dtKPI.Rows[i]["tytrong"].ToString());
                     arrKPI[i].Add("donvitinh", dtKPI.Rows[i]["donvitinh"].ToString());
                     arrKPI[i].Add("donvithamdinh", dtKPI.Rows[i]["donvithamdinh"].ToString());
+                    arrKPI[i].Add("nhom_kpi", dtKPI.Rows[i]["nhom_kpi"].ToString());
+                    arrKPI[i].Add("stt", dtKPI.Rows[i]["stt"].ToString());
                 }
             }
             return arrKPI;
@@ -196,8 +216,10 @@ namespace VNPT_BSC.BSC
                     int tytrong = arrKPI_ID[i].tytrong;
                     int dvt = arrKPI_ID[i].dvt;
                     int dvtd = arrKPI_ID[i].dvtd;
+                    int nhom_kpi = arrKPI_ID[i].nhom_kpi;
+                    int stt = arrKPI_ID[i].stt;
                     string curDate = DateTime.Now.ToString("yyyy-MM-dd");
-                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, nguoitao, bscduocgiao, ngaytao, donvitinh, tytrong, donvithamdinh, maubsc) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '" + nguoitao + "', '" + "" + "', '" + curDate + "', '" + dvt + "', '" + tytrong + "', '" + dvtd + "', '" + loaiMauBSC + "')";
+                    sqlInsertNewData = "insert into danhsachbsc(thang, nam, kpi_id, nguoitao, bscduocgiao, ngaytao, donvitinh, tytrong, donvithamdinh, maubsc, nhom_kpi, stt) values('" + monthAprove + "', '" + yearAprove + "', '" + kpi_id + "', '" + nguoitao + "', '" + "" + "', '" + curDate + "', '" + dvt + "', '" + tytrong + "', '" + dvtd + "', '" + loaiMauBSC + "', '" + nhom_kpi + "', '" + stt + "')";
                     try
                     {
                         cnDanhSachBSC.ThucThiDL(sqlInsertNewData);
@@ -264,6 +286,8 @@ namespace VNPT_BSC.BSC
                     /*Get list MauBSC*/
                     dtMauBSC = new DataTable();
                     dtMauBSC = dsMauBSC();
+
+                    dtNhomKPI = getNhomKPI();
                 }
                 catch {
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");

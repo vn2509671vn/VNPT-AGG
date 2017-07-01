@@ -46,8 +46,9 @@ namespace VNPT_BSC.TinhLuong
             return dtResult;
         }
 
-        public static decimal tbBSCDonVi(string thang, int nam, int id_donvi) {
-            decimal dResult = 0;
+        public static double tbBSCDonVi(string thang, int nam, int id_donvi)
+        {
+            double dResult = 0;
             Connection cn = new Connection();
             DataTable tmp = new DataTable();
             string sql = "select sum(tongdiem_bsc)/3 as diem from tmp_tongbsc_donvi ";
@@ -64,7 +65,7 @@ namespace VNPT_BSC.TinhLuong
 
             if (tmp.Rows.Count > 0) {
                 if (tmp.Rows[0][0].ToString() != "") {
-                    dResult = Convert.ToDecimal(tmp.Rows[0][0].ToString());
+                    dResult = Convert.ToDouble(tmp.Rows[0][0].ToString());
                 }
             }
 
@@ -81,7 +82,7 @@ namespace VNPT_BSC.TinhLuong
             sql += "and nhom.id not in (17,18,19) ";
             sql += "and nv.donvi = '" + id_donvi + "' ";
             sql += "and nv.chinhthuc = 1 ";
-            sql += "order by tb_bsc DESC";
+            sql += "order by cast(nv.ngaykyhd as date), tb_bsc DESC";
 
             try
             {
@@ -154,7 +155,7 @@ namespace VNPT_BSC.TinhLuong
             // CẬp nhật bậc lương cho các nhân viên không thuộc nhóm trưởng phòng, giám đốc (not in 17, 18, 19)
             for (int nIndex = 0; nIndex < dtDonvi.Rows.Count; nIndex++) { 
                 int id_donvi = Convert.ToInt32(dtDonvi.Rows[nIndex]["id"].ToString());
-                decimal tbDiemBSCDonVi = tbBSCDonVi(szThang, nam, id_donvi);
+                double tbDiemBSCDonVi = tbBSCDonVi(szThang, nam, id_donvi);
                 DataTable dtNhanVienTheoDonVi = new DataTable();
                 DateTime ngayvaonganh = new DateTime();
                 DateTime ngayxet = new DateTime();
@@ -165,7 +166,7 @@ namespace VNPT_BSC.TinhLuong
                 tongso_nhanvien = dtNhanVienTheoDonVi.Rows.Count;
                 
 
-                if (tbDiemBSCDonVi < 98) { 
+                if (tbDiemBSCDonVi < 0.98) { 
                     // 10% bậc 4, 60% bậc 3, 30% bậc 2
                     for (int nIndexNV = 0; nIndexNV < dtNhanVienTheoDonVi.Rows.Count; nIndexNV++) { 
                         int tmpSl = nIndexNV + 1;
@@ -181,7 +182,7 @@ namespace VNPT_BSC.TinhLuong
                             {
                                 bac = 4;
                             }
-                            else if (tmpSl <= Convert.ToInt32(tongso_nhanvien * 0.7))
+                            else if (tmpSl <= (Convert.ToInt32(tongso_nhanvien * 0.6) + Convert.ToInt32(tongso_nhanvien * 0.1)))
                             {
                                 bac = 3;
                             }
@@ -197,7 +198,7 @@ namespace VNPT_BSC.TinhLuong
                         CapNhatBacNhanVien(id_nhanvien, id_chucdanh, bac);
                     }
                 }
-                else if (tbDiemBSCDonVi < 100) { 
+                else if (tbDiemBSCDonVi < 1) { 
                     // 20% bậc 4, 60% bậc 3, 20% bậc 2
                     for (int nIndexNV = 0; nIndexNV < dtNhanVienTheoDonVi.Rows.Count; nIndexNV++)
                     {
@@ -214,7 +215,7 @@ namespace VNPT_BSC.TinhLuong
                             {
                                 bac = 4;
                             }
-                            else if (tmpSl <= Convert.ToInt32(tongso_nhanvien * 0.8))
+                            else if (tmpSl <= (Convert.ToInt32(tongso_nhanvien * 0.6) + Convert.ToInt32(tongso_nhanvien * 0.2)))
                             {
                                 bac = 3;
                             }
@@ -231,7 +232,7 @@ namespace VNPT_BSC.TinhLuong
                         CapNhatBacNhanVien(id_nhanvien, id_chucdanh, bac);
                     }
                 }
-                else if (tbDiemBSCDonVi >= 100) { 
+                else if (tbDiemBSCDonVi >= 1) { 
                     // 30% bậc 4, 70% bậc 3
                     for (int nIndexNV = 0; nIndexNV < dtNhanVienTheoDonVi.Rows.Count; nIndexNV++)
                     {
@@ -266,21 +267,28 @@ namespace VNPT_BSC.TinhLuong
             for (int nIndexNV = 0; nIndexNV < dtNhanVienThuocNhomQuanLy.Rows.Count; nIndexNV++) {
                 int id_nv = Convert.ToInt32(dtNhanVienThuocNhomQuanLy.Rows[nIndexNV]["id"].ToString());
                 int id_chucdanh = Convert.ToInt32(dtNhanVienThuocNhomQuanLy.Rows[nIndexNV]["chucdanh"].ToString());
-                decimal diembsc = Convert.ToDecimal(dtNhanVienThuocNhomQuanLy.Rows[nIndexNV]["tb_bsc"].ToString());
+                double diembsc = Convert.ToDouble(dtNhanVienThuocNhomQuanLy.Rows[nIndexNV]["tb_bsc"].ToString());
                 int bac = 0;
-                if (diembsc < 98) {
+                if (diembsc < 0.98) {
                     bac = 2;
                 }
-                else if (diembsc < 100) {
+                else if (diembsc < 1) {
                     bac = 3;
                 }
-                else if (diembsc >= 100) {
+                else if (diembsc >= 1) {
                     bac = 4;
+                }
+
+                if (id_chucdanh == 51) {
+                    bac = 4;
+                }
+                else if (id_chucdanh == 50) {
+                    bac = 5;
                 }
                 CapNhatBacNhanVien(id_nv, id_chucdanh, bac);
             }
 
-            string sqlbsc = "select nhom.ten_nhom, nv.ten_nhanvien, cd.ten_chucdanh, (N'Bậc ' + CAST(bl.ten_bacluong as char)) as ten_bl, bl.heso_bacluong ";
+            string sqlbsc = "select nhom.ten_nhom, nv.ma_nhanvien, nv.ten_nhanvien, cd.ten_chucdanh, (N'Bậc ' + CAST(bl.ten_bacluong as char)) as ten_bl, bl.heso_bacluong ";
             sqlbsc += "from qlns_nhanvien nv, qlns_nhom_donvi nhom, qlns_chucdanh cd, qlns_bacluong bl ";
             sqlbsc += "where nv.chucdanh = cd.id ";
             sqlbsc += "and nv.id_nhom_donvi = nhom.id ";
@@ -303,6 +311,7 @@ namespace VNPT_BSC.TinhLuong
             arrOutput += "<thead>";
             arrOutput += "<tr>";
             arrOutput += "<th class='text-center'>Nhóm</th>";
+            arrOutput += "<th class='text-center'>MNV</th>";
             arrOutput += "<th class='text-center'>Nhân viên</th>";
             arrOutput += "<th class='text-center'>Chức danh</th>";
             arrOutput += "<th class='text-center'>Bậc lương</th>";
@@ -312,7 +321,7 @@ namespace VNPT_BSC.TinhLuong
             arrOutput += "<tbody>";
             if (gridData.Rows.Count <= 0)
             {
-                arrOutput += "<tr><td colspan='5' class='text-center'>No item</td></tr>";
+                arrOutput += "<tr><td colspan='6' class='text-center'>No item</td></tr>";
             }
             else
             {
@@ -320,6 +329,7 @@ namespace VNPT_BSC.TinhLuong
                 {
                     arrOutput += "<tr>";
                     arrOutput += "<td>" + gridData.Rows[nKPI]["ten_nhom"].ToString() + "</td>";
+                    arrOutput += "<td>" + gridData.Rows[nKPI]["ma_nhanvien"].ToString() + "</td>";
                     arrOutput += "<td><strong>" + gridData.Rows[nKPI]["ten_nhanvien"].ToString() + "</strong></td>";
                     arrOutput += "<td>" + gridData.Rows[nKPI]["ten_chucdanh"].ToString() + "</td>";
                     arrOutput += "<td style='text-align: center'><strong>" + gridData.Rows[nKPI]["ten_bl"].ToString() + "</strong></td>";

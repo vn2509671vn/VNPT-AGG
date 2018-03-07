@@ -175,12 +175,12 @@ namespace VNPT_BSC.BSC
                     if (nhanvien == null || !nFindResult)
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                        Response.Write("<script>window.location.href='../index.aspx';</script>");
                     }
                     //donvigiao = nhanvien.nhanvien_donvi_id.ToString();
                 }
                 catch {
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
             //}
         }

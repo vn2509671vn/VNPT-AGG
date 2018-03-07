@@ -163,13 +163,14 @@
         /*Hide button*/
         $("#updateGiaoStatus").hide();
         $("#updateHuyGiaoStatus").hide();
-
+        var loaimau = $("#loaimaubsc").val();
         var requestData = {
             id_nv_giao: id_nv_giao,
             nv_nhan: nv_nhan,
             thang: thang,
             nam: nam,
-            donvi: donvi
+            donvi: donvi,
+            loaimau: loaimau
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
@@ -261,12 +262,15 @@
     }
 
     function getBSCByOldMonth(id_nv_giao, nv_nhan, thang, nam, donvi) {
+        var loaimau = $("#loaimaubsc").val();
+
         var requestData = {
             id_nv_giao: id_nv_giao,
             nv_nhan: nv_nhan,
             thang: thang,
             nam: nam,
-            donvi: donvi
+            donvi: donvi,
+            loaimau: loaimau
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
@@ -526,7 +530,8 @@
                 thang: thang,
                 nam: nam,
                 loaimaubsc: loaimaubsc,
-                kpi_detail: kpi_detail
+                kpi_detail: kpi_detail,
+                donvi: donvi
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({
@@ -624,7 +629,8 @@
                 thang: thang,
                 nam: nam,
                 loaimaubsc: loaimaubsc,
-                kpi_detail: kpi_detail
+                kpi_detail: kpi_detail,
+                donvi: donvi
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({

@@ -14,9 +14,9 @@ namespace VNPT_BSC.TinhLuong
 {
     public partial class ThemNhanSu : System.Web.UI.Page
     {
-        public static DataTable dtDonvi = new DataTable();
-        public static DataTable dtChucdanh = new DataTable();
-        public static DataTable dtNhomDonvi = new DataTable();
+        public  DataTable dtDonvi = new DataTable();
+        public  DataTable dtChucdanh = new DataTable();
+        public  DataTable dtNhomDonvi = new DataTable();
 
         private DataTable getDonVi() {
             Connection cn = new Connection();

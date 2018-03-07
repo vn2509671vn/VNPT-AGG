@@ -16,14 +16,14 @@ namespace VNPT_BSC
 {
     public partial class MasterLayout : System.Web.UI.MasterPage
     {
-        public static int chucvu;
-        public static List<int> quyenHeThong = new List<int>();
-        public static JavaScriptSerializer javaSerial = new JavaScriptSerializer();
-        public static string userName = "";
-        public static int userID = 0;
-        public static int userDonVi = 0;
-        public static DataTable dtPhanHoiGiao = new DataTable();
-        public static DataTable dtPhanHoiThamDinh = new DataTable();
+        public int chucvu;
+        public List<int> quyenToanHeThong = new List<int>();
+        public JavaScriptSerializer javaSerial = new JavaScriptSerializer();
+        public string userName = "";
+        public int userID = 0;
+        public int userDonVi = 0;
+        public DataTable dtPhanHoiGiao = new DataTable();
+        public DataTable dtPhanHoiThamDinh = new DataTable();
 
         private static DataTable getPhanHoiGiao() {
             Connection cn = new Connection();
@@ -104,7 +104,7 @@ namespace VNPT_BSC
             //quyenHeThong = Session.GetRole();
 
             tmpNhanvien = (Nhanvien)Session["nhanvien"];
-            quyenHeThong = (List<int>)Session["quyenhethong"];
+            quyenToanHeThong = (List<int>)Session["quyenhethong"];
 
             if (tmpNhanvien == null)
             {

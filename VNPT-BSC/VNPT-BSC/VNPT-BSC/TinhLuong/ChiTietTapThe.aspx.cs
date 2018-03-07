@@ -14,7 +14,7 @@ namespace VNPT_BSC.TinhLuong
 {
     public partial class ChiTietTapThe : System.Web.UI.Page
     {
-        public static string thang, nam;
+        public string thang, nam;
 
         public static DataTable listNhom() {
             DataTable dtResult = new DataTable();
@@ -33,16 +33,12 @@ namespace VNPT_BSC.TinhLuong
         public static DataTable chitiet(int nhom, int thang, int nam) {
             DataTable dtResult = new DataTable();
             Connection cn = new Connection();
-            string sql = "select nv.ma_nhanvien, nv.ten_nhanvien, nv.hesoluong, nv.luongcoban as tienluong, bl.heso_bacluong, chamcong.ngaycong_bhxh, chitiet.*, (chitiet.luong_duytri + chitiet.luong_p3 + chitiet.luong_phattrien_tb) as luongphanphoi, (chitiet.luong_duytri + chitiet.luong_p3 + chitiet.luong_phattrien_tb - chitiet.bhtn - chitiet.bhxh - chitiet.bhyt) as luongtong ";
-            sql += "from qlns_bangluong_chitiet chitiet, qlns_nhanvien nv, qlns_chamcong chamcong, qlns_bacluong bl ";
-            sql += "where chitiet.thang = '" + thang + "' ";
-            sql += "and chitiet.nam = '" + nam + "' ";
-            sql += "and chitiet.nhanvien = nv.id ";
-            sql += "and chitiet.nhanvien = chamcong.nhanvien ";
-            sql += "and chamcong.thang = chitiet.thang ";
-            sql += "and chamcong.nam = chitiet.nam ";
-            sql += "and nv.id_bacluong = bl.id ";
-            sql += "and nv.id_nhom_donvi = '" + nhom + "' ";
+            string timekey = nam.ToString() + thang.ToString("00");
+            string sql = "select nv.ma_nhanvien, chitiet.ten_nhanvien, chitiet.heso_lcb, isnull(chitiet.luong_coban,0) as luong_coban, isnull(chitiet.diem_p1,0) as diem_p1, isnull(chitiet.heso_bsc,0) as heso_bsc, isnull(chitiet.luong_3ps,0) as luong_3ps, isnull(chitiet.luong_pttb,0) as luong_pttb, isnull(chitiet.luong_congthem,0) as luong_congthem, (isnull(chitiet.luong_3ps,0) + isnull(chitiet.luong_pttb,0) + isnull(chitiet.luong_congthem,0)) as luongphanphoi ";
+            sql += "from qlns_luong_tonghop_3ps chitiet, qlns_nhanvien nv ";
+            sql += "where chitiet.timekey = '" + timekey + "' ";
+            sql += "and chitiet.id_nhanvien = nv.id ";
+            sql += "and chitiet.id_nhom = '" + nhom + "' ";
             sql += "order by nv.ma_nhanvien asc";
             try
             {
@@ -67,15 +63,14 @@ namespace VNPT_BSC.TinhLuong
             outputHTML += "<th class='no-sort text-center'>STT</th>";
             outputHTML += "<th class='no-sort text-center'>MNV</th>";
             outputHTML += "<th class='no-sort text-center'>Họ và Tên</th>";
-            outputHTML += "<th class='no-sort text-center'>Ngày công</th>";
             outputHTML += "<th class='no-sort text-center'>Hệ số</th>";
             outputHTML += "<th class='no-sort text-center'>Tiền lương</th>";
             outputHTML += "<th class='no-sort text-center'>Điểm P1</th>";
             outputHTML += "<th class='no-sort text-center'>Hệ số BSC</th>";
-            outputHTML += "<th class='no-sort text-center'>Lương duy trì</th>";
             outputHTML += "<th class='no-sort text-center'>Lương P3</th>";
             outputHTML += "<th class='no-sort text-center'>Lương PTTB/Lương Thu cước</th>";
-            outputHTML += "<th class='no-sort text-center'>Tổng cộng lương phân phối</th>";
+            outputHTML += "<th class='no-sort text-center'>Lương cộng thêm</th>";
+            outputHTML += "<th class='no-sort text-center'>Tổng lương phân phối</th>";
             outputHTML += "<th class='no-sort text-center'>BHTN</th>";
             outputHTML += "<th class='no-sort text-center'>BHXH</th>";
             outputHTML += "<th class='no-sort text-center'>BHYT</th>";
@@ -103,38 +98,40 @@ namespace VNPT_BSC.TinhLuong
                 outputHTML += "<td></td>";
                 outputHTML += "<td></td>";
                 outputHTML += "<td></td>";
-                outputHTML += "<td></td>";
                 outputHTML += "</tr>";
 
-                double tongluongphanphoi = 0;
-                double tongluongduytri = 0;
                 double tongluongp3 = 0;
                 double tongluongpttb = 0;
+                double tongluongcongthem = 0;
+                double tongluongphanphoi = 0;
                 double tongluongdatrubh = 0;
                 for (int nChiTiet = 0; nChiTiet < dtChiTiet.Rows.Count; nChiTiet++) {
-                    tongluongduytri += Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_duytri"].ToString());
-                    tongluongp3 += Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_p3"].ToString());
-                    tongluongpttb += Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_phattrien_tb"].ToString());
-                    tongluongphanphoi += Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luongphanphoi"].ToString());
-                    tongluongdatrubh += Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luongtong"].ToString());
+                    tongluongp3 += Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_3ps"].ToString());
+                    tongluongpttb += Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_pttb"].ToString());
+                    tongluongcongthem += Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_congthem"].ToString());
+                    tongluongphanphoi = tongluongp3 + tongluongpttb + tongluongcongthem;
+                    double bhtn = Math.Round((Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_coban"].ToString()) * 0.01), 0);
+                    double bhxh = Math.Round((Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_coban"].ToString()) * 0.08), 0);
+                    double bhyt = Math.Round((Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_coban"].ToString()) * 0.015), 0);
+                    double luongdatru = Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luongphanphoi"].ToString()) - bhtn - bhxh - bhyt;
+                    tongluongdatrubh += luongdatru;
 
                     outputHTML += "<tr>";
                     outputHTML += "<td style='text-align: center;'><strong>" + (nNhom + 1) + "." + (nChiTiet + 1) + "</strong></td>";
                     outputHTML += "<td style='text-align: center;'><strong>" + dtChiTiet.Rows[nChiTiet]["ma_nhanvien"].ToString() + "</strong></td>";
                     outputHTML += "<td class='min-width-130'><strong>" + dtChiTiet.Rows[nChiTiet]["ten_nhanvien"].ToString() + "</strong></td>";
-                    outputHTML += "<td style='text-align: center;'>" + dtChiTiet.Rows[nChiTiet]["ngaycong_bhxh"].ToString() + "</td>";
-                    outputHTML += "<td style='text-align: center;'>" + dtChiTiet.Rows[nChiTiet]["hesoluong"].ToString() + "</td>";
-                    outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["tienluong"].ToString())) + "</td>";
-                    outputHTML += "<td style='text-align: center;'>" + dtChiTiet.Rows[nChiTiet]["heso_bacluong"].ToString() + "</td>";
+                    outputHTML += "<td style='text-align: center;'>" + dtChiTiet.Rows[nChiTiet]["heso_lcb"].ToString() + "</td>";
+                    outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_coban"].ToString())) + "</td>";
+                    outputHTML += "<td style='text-align: center;'>" + dtChiTiet.Rows[nChiTiet]["diem_p1"].ToString() + "</td>";
                     outputHTML += "<td style='text-align: center;'>" + dtChiTiet.Rows[nChiTiet]["heso_bsc"].ToString() + "</td>";
-                    outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_duytri"].ToString())) + "</td>";
-                    outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_p3"].ToString())) + "</td>";
-                    outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_phattrien_tb"].ToString())) + "</td>";
+                    outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_3ps"].ToString())) + "</td>";
+                    outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_pttb"].ToString())) + "</td>";
+                    outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luong_congthem"].ToString())) + "</td>";
                     outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luongphanphoi"].ToString())) + "</td>";
-                    outputHTML += "<td style='text-align: center;'>" + dtChiTiet.Rows[nChiTiet]["bhtn"].ToString() + "</td>";
-                    outputHTML += "<td style='text-align: center;'>" + dtChiTiet.Rows[nChiTiet]["bhxh"].ToString() + "</td>";
-                    outputHTML += "<td style='text-align: center;'>" + dtChiTiet.Rows[nChiTiet]["bhyt"].ToString() + "</td>";
-                    outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", Convert.ToDouble(dtChiTiet.Rows[nChiTiet]["luongtong"].ToString())) + "</td>";
+                    outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", bhtn) + "</td>";
+                    outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", bhxh) + "</td>";
+                    outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", bhyt) + "</td>";
+                    outputHTML += "<td style='text-align: center;'>" + String.Format("{0:0,0}", luongdatru) + "</td>";
                     outputHTML += "</tr>";
                 }
                 outputHTML += "<tr>";
@@ -145,10 +142,9 @@ namespace VNPT_BSC.TinhLuong
                 outputHTML += "<td style='text-align: center;'></td>";
                 outputHTML += "<td style='text-align: center;'></td>";
                 outputHTML += "<td style='text-align: center;'></td>";
-                outputHTML += "<td style='text-align: center;'></td>";
-                outputHTML += "<td style='text-align: center;'><strong>" + String.Format("{0:0,0}", tongluongduytri) + "</strong></td>";
                 outputHTML += "<td style='text-align: center;'><strong>" + String.Format("{0:0,0}", tongluongp3) + "</strong></td>";
                 outputHTML += "<td style='text-align: center;'><strong>" + String.Format("{0:0,0}", tongluongpttb) + "</strong></td>";
+                outputHTML += "<td style='text-align: center;'><strong>" + String.Format("{0:0,0}", tongluongcongthem) + "</strong></td>";
                 outputHTML += "<td style='text-align: center;'><strong>" + String.Format("{0:0,0}", tongluongphanphoi) + "</strong></td>";
                 outputHTML += "<td style='text-align: center;'></td>";
                 outputHTML += "<td style='text-align: center;'></td>";

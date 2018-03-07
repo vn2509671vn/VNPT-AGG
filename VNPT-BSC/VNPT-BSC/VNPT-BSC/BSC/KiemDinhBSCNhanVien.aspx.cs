@@ -14,7 +14,7 @@ namespace VNPT_BSC.BSC
 {
     public partial class KiemDinhBSCNhanVien : System.Web.UI.Page
     {
-        public static string nhanvienkiemdinh;
+        public string nhanvienkiemdinh;
 
         [WebMethod]
         public static Dictionary<String, String> loadBSCByYear(int thang, int nam, int nhanvienkiemdinh)
@@ -145,13 +145,13 @@ namespace VNPT_BSC.BSC
                     if (nhanvien == null || !nFindResult)
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                        Response.Write("<script>window.location.href='../index.aspx';</script>");
                     }
 
                     nhanvienkiemdinh = nhanvien.nhanvien_id.ToString();
                 }
                 catch {
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
             //}
         }

@@ -14,7 +14,7 @@ namespace VNPT_BSC.TinhLuong
 {
     public partial class KiemNhiem : System.Web.UI.Page
     {
-        public static DataTable dtChucVuKN = new DataTable();
+        public DataTable dtChucVuKN = new DataTable();
 
         public static DataTable getListChucVuKN()
         {

@@ -14,7 +14,8 @@ namespace VNPT_BSC.BSC
 {
     public partial class ThongKeTrungBinhDiemBSCNV : System.Web.UI.Page
     {
-        public static DataTable dtDonVi = new DataTable();
+        public DataTable dtDonVi = new DataTable();
+        public string thoigiancapnhat; 
 
         public static DataTable dsDonVi() {
             DataTable tmp = new DataTable();
@@ -29,6 +30,28 @@ namespace VNPT_BSC.BSC
             }
 
             return tmp;
+        }
+
+        public static string getThoiGianCapNhatNV()
+        {
+            DataTable tmp = new DataTable();
+            Connection cn = new Connection();
+            string sql = "select top 1 thang, nam from tmp_tongbsc_nhanvien group by thang, nam order by nam, thang desc";
+            string szResult = "";
+            try
+            {
+                tmp = cn.XemDL(sql);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if (tmp.Rows.Count > 0)
+            {
+                szResult = tmp.Rows[0]["thang"] + "/" + tmp.Rows[0]["nam"];
+            }
+            return szResult;
         }
 
         [WebMethod]
@@ -65,6 +88,16 @@ namespace VNPT_BSC.BSC
                 {
                     szThang = "10,11,12";
                     tongsothang = 3;
+                }
+                else if (quy == 6)
+                {
+                    szThang = "1,2,3,4,5,6";
+                    tongsothang = 6;
+                }
+                else if (quy == 9)
+                {
+                    szThang = "1,2,3,4,5,6,7,8,9";
+                    tongsothang = 9;
                 }
             }
             else {
@@ -143,6 +176,25 @@ namespace VNPT_BSC.BSC
             return arrOutput;
         }
 
+        [WebMethod]
+        public static bool dongboDiem()
+        {
+            Connection cn = new Connection();
+            bool bResult = false;
+            string sql = "EXEC sp_dongbo_tongdiem_bsc_nhanvien_hangthang";
+            try
+            {
+                cn.ThucThiDL(sql);
+                bResult = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return bResult;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             this.Title = "Trung bình điểm BSC Nhân Viên";
@@ -162,12 +214,11 @@ namespace VNPT_BSC.BSC
                 if (nhanvien == null)
                 {
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
 
                 dtDonVi = dsDonVi();
-                string sql = "";
-                sql.ToString();
+                thoigiancapnhat = getThoiGianCapNhatNV();
             }
             catch (Exception ex)
             {

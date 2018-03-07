@@ -14,7 +14,7 @@ namespace VNPT_BSC.BSC
 {
     public partial class DanhSachBSCDaGiao_ThucTrang : System.Web.UI.Page
     {
-        public static DataTable dtMauBSC = new DataTable();
+        public DataTable dtMauBSC = new DataTable();
 
         /*List loại mẫu bsc*/
         private DataTable dsMauBSC()
@@ -101,13 +101,14 @@ namespace VNPT_BSC.BSC
             DataTable dsDetailByTimeAndKPI = new DataTable();
 
             string outputHTML = "";
-            string sqlDonViByTime = "select bsc_donvi.donvinhan, donvi.donvi_ma ";
+            string sqlDonViByTime = "select bsc_donvi.donvinhan, donvi.donvi_ma, donvi.thutu_hienthi ";
             sqlDonViByTime += "from bsc_donvi, donvi ";
             sqlDonViByTime += "where bsc_donvi.thang = '" + thang + "' ";
             sqlDonViByTime += "and bsc_donvi.nam = '" + nam + "' ";
             sqlDonViByTime += "and bsc_donvi.loaimau = '" + loaibsc + "' ";
             sqlDonViByTime += "and bsc_donvi.donvinhan = donvi.donvi_id ";
-            sqlDonViByTime += "group by bsc_donvi.donvinhan, donvi.donvi_ma ";
+            sqlDonViByTime += "group by bsc_donvi.donvinhan, donvi.donvi_ma, donvi.thutu_hienthi ";
+            sqlDonViByTime += "order by donvi.thutu_hienthi asc ";
 
             string sqlKPOByTime = "select kpo.kpo_id, kpo.kpo_ten ";
             sqlKPOByTime += "from kpo, kpi, bsc_donvi ";

@@ -466,6 +466,11 @@
                     });
                 });
 
+
+                $("#danhsachKhoKPI tbody tr").each(function(){
+                    $(this).removeClass("hide");
+                });
+
                 $("#danhsachKPIDuocGiao tbody tr").each(function () {
                     var kpi_id = $(this).attr("data-id");
                     $("#danhsachKhoKPI tbody tr[data-id='" + kpi_id + "']").addClass("hide");

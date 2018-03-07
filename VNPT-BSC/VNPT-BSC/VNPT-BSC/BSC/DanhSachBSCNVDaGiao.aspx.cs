@@ -14,8 +14,8 @@ namespace VNPT_BSC.BSC
 {
     public partial class DanhSachBSCNVDaGiao : System.Web.UI.Page
     {
-        public static DataTable dtMauBSC = new DataTable();
-        public static int nhanviengiao;
+        public  DataTable dtMauBSC = new DataTable();
+        public  int nhanviengiao;
         /*List loại mẫu bsc*/
         private DataTable dsMauBSC()
         {
@@ -88,7 +88,7 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static Dictionary<String, String> loadBSCByYear(int thang, int nam, int loaimaubsc)
+        public static Dictionary<String, String> loadBSCByYear(int thang, int nam, int loaimaubsc, int nhanviengiao)
         {
             Dictionary<String, String> dicOutput = new Dictionary<string, string>();
             Connection cnBSC = new Connection();
@@ -249,7 +249,7 @@ namespace VNPT_BSC.BSC
                 if (!nFindResult)
                 {
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
 
                 nhanviengiao = nhanvien.nhanvien_id;
@@ -257,7 +257,7 @@ namespace VNPT_BSC.BSC
             }
             catch
             {
-                Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                Response.Write("<script>window.location.href='../index.aspx';</script>");
             }
         }
     }

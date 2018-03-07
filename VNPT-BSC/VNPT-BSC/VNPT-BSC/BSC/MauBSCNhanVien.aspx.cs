@@ -15,17 +15,17 @@ namespace VNPT_BSC.BSC
     public partial class MauBSCNhanVien : System.Web.UI.Page
     {
         Connection cn = new Connection();
-        public static DataTable dsBSCDV = new DataTable();
-        public static DataTable dtKPI = new DataTable();
-        public static DataTable dtBSC = new DataTable();
-        public static DataTable dtBSCNam = new DataTable();
-        public static DataTable dtDVT = new DataTable();
-        public static DataTable dtNVTD = new DataTable();
-        public static DataTable dtMauBSC = new DataTable();
-        public static DataTable dtKhoKPI = new DataTable();
-        public static DataTable dtNhomKPI = new DataTable();
-        public static int nguoitao;
-        public static int donvinhan;
+        public DataTable dsBSCDV = new DataTable();
+        public DataTable dtKPI = new DataTable();
+        public DataTable dtBSC = new DataTable();
+        public DataTable dtBSCNam = new DataTable();
+        public DataTable dtDVT = new DataTable();
+        public DataTable dtNVTD = new DataTable();
+        public DataTable dtMauBSC = new DataTable();
+        public DataTable dtKhoKPI = new DataTable();
+        public DataTable dtNhomKPI = new DataTable();
+        public int nguoitao;
+        public int donvinhan;
         public class kpiDetail
         {
             public int kpi_id { get; set; }
@@ -39,7 +39,7 @@ namespace VNPT_BSC.BSC
         private DataTable dsMauBSC()
         {
             DataTable dsMauBSC = new DataTable();
-            string sqlMauBSC = "select * from loaimaubsc where loai_id not in (1,2,3)";
+            string sqlMauBSC = "select * from loaimaubsc where loai_id not in (1,2,3,8,9,16) order by loai_id desc";
             try
             {
                 dsMauBSC = cn.XemDL(sqlMauBSC);
@@ -107,7 +107,7 @@ namespace VNPT_BSC.BSC
         private DataTable dsBSCDuocGiao(int donvinhan)
         {
             DataTable dsBSC = new DataTable();
-            string sqlBSCDuocGiao = "select top 24 thang,nam from giaobscdonvi where donvinhan = '" + donvinhan + "' and trangthaigiao = 1 and trangthainhan = 1 group by thang, nam order by nam,thang DESC";
+            string sqlBSCDuocGiao = "select top 24 thang,nam from giaobscdonvi where donvinhan = '" + donvinhan + "' and trangthaigiao = 1 and trangthainhan = 1 group by thang, nam order by nam DESC";
             try
             {
                 dsBSC = cn.XemDL(sqlBSCDuocGiao);
@@ -444,7 +444,7 @@ namespace VNPT_BSC.BSC
                     if (nhanvien == null || !nFindResult)
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                        Response.Write("<script>window.location.href='../index.aspx';</script>");
                     }
                     donvinhan = nhanvien.nhanvien_donvi_id;
                     nguoitao = nhanvien.nhanvien_id;
@@ -460,7 +460,7 @@ namespace VNPT_BSC.BSC
                     dtNhomKPI = getNhomKPI();
                 }
                 catch {
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
             //}
         }

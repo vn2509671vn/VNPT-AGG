@@ -14,21 +14,37 @@ namespace VNPT_BSC.BSC
 {
     public partial class XepHangBSCNV : System.Web.UI.Page
     {
-        public static int donvi;
+        public int id_nhanvien;
+
+        private static string getDonvi(string thang, string nam, string id_nhanvien) {
+            Connection cn = new Connection();
+            DataTable tmp = new DataTable();
+            string sql = "select ISNULL(donvi,0) from bsc_nhanvien where thang = '" + thang + "' and nam = '" + nam + "' and (nhanviennhan ='" + id_nhanvien + "' or nhanviengiao ='" + id_nhanvien + "') group by donvi";
+            try
+            {
+                tmp = cn.XemDL(sql);
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+
+            return tmp.Rows[0][0].ToString();
+        }
 
         [WebMethod]
-        public static string loadBSC(int thang, int nam, int donvi)
+        public static string loadBSC(int thang, int nam, int id_nhanvien)
         {
             Connection cnBSC = new Connection();
             DataTable gridData = new DataTable();
             DataTable gridDataTTKD = new DataTable();
+            string donvi = getDonvi(thang.ToString().Trim(), nam.ToString().Trim(), id_nhanvien.ToString().Trim());
 
             string sqlBSC = "select nv.nhanvien_hoten, sum(bsc.diem_kpi) as diem ";
             sqlBSC += "from bsc_nhanvien bsc, nhanvien nv ";
             sqlBSC += "where bsc.nhanviennhan = nv.nhanvien_id ";
             sqlBSC += "and bsc.thang = '" + thang + "' ";
             sqlBSC += "and bsc.nam = '" + nam + "' ";
-            sqlBSC += "and nv.nhanvien_donvi = '" + donvi + "' ";
+            sqlBSC += "and bsc.donvi = '" + donvi + "' ";
             sqlBSC += "group by nv.nhanvien_hoten ";
             sqlBSC += "order by diem DESC";
 
@@ -103,7 +119,7 @@ namespace VNPT_BSC.BSC
                     Response.Write("<script>window.location.href='../Login.aspx';</script>");
                 }
 
-                donvi = nhanvien.nhanvien_donvi_id;
+                id_nhanvien = nhanvien.nhanvien_id;
             }
             catch (Exception ex)
             {

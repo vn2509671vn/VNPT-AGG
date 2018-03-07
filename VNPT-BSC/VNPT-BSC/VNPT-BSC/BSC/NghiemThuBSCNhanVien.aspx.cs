@@ -14,7 +14,7 @@ namespace VNPT_BSC.BSC
 {
     public partial class NghiemThuBSCNhanVien : System.Web.UI.Page
     {
-        public static string nhanviengiao;
+        public string nhanviengiao;
 
         /*Lấy danh sách BSC được giao theo năm*/
         [WebMethod]
@@ -147,13 +147,13 @@ namespace VNPT_BSC.BSC
                     if (nhanvien == null || !nFindResult)
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                        Response.Write("<script>window.location.href='../index.aspx';</script>");
                     }
 
                     nhanviengiao = nhanvien.nhanvien_id.ToString();
                 }
                 catch {
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
             //}
         }

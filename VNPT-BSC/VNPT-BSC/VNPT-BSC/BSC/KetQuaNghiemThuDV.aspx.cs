@@ -17,7 +17,7 @@ namespace VNPT_BSC.BSC
 {
     public partial class KetQuanNghiemThuDV : System.Web.UI.Page
     {
-        public static string donvinhan, ten_dvn;
+        public string donvinhan, ten_dvn;
 
         [WebMethod]
         public static string loadBSCByYear(int donvinhan, int thang, int nam)
@@ -148,7 +148,7 @@ namespace VNPT_BSC.BSC
                     if (nhanvien == null)
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                        Response.Write("<script>window.location.href='../index.aspx';</script>");
                     }
 
                     donvinhan = nhanvien.nhanvien_donvi_id.ToString();
@@ -156,7 +156,7 @@ namespace VNPT_BSC.BSC
                 }
                 catch
                 {
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
             //}
         }

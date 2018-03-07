@@ -14,9 +14,9 @@ namespace VNPT_BSC.BSC
 {
     public partial class XuatMauBSCNV : System.Web.UI.Page
     {
-        public static int nguoitao_id;
-        public static DataTable dtMauBSC = new DataTable();
-        public static DataTable dtNhanVien = new DataTable();
+        public int nguoitao_id;
+        public DataTable dtMauBSC = new DataTable();
+        public DataTable dtNhanVien = new DataTable();
         /*List loại mẫu bsc*/
         private DataTable dsMauBSC()
         {
@@ -200,7 +200,7 @@ namespace VNPT_BSC.BSC
                 if (nhanvien == null || !nFindResult)
                 {
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
 
                 nguoitao_id = nhanvien.nhanvien_id;
@@ -210,7 +210,7 @@ namespace VNPT_BSC.BSC
             }
             catch
             {
-                Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                Response.Write("<script>window.location.href='../index.aspx';</script>");
             }
         }
     }

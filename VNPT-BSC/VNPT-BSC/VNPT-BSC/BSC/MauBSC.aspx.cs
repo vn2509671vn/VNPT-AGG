@@ -20,10 +20,10 @@ namespace VNPT_BSC.BSC
         public DataTable dtBSCNam;
         public DataTable dtDVT;
         public DataTable dtDVTD;
-        public static DataTable dtMauBSC;
-        public static DataTable dtNhomKPI = new DataTable();
+        public DataTable dtMauBSC;
+        public DataTable dtNhomKPI = new DataTable();
 
-        public static int nguoitao;
+        public int nguoitao;
         public class kpiDetail
         {
             public int kpi_id { get; set; }
@@ -259,7 +259,7 @@ namespace VNPT_BSC.BSC
                     if (nhanvien == null || !nFindResult)
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                        Response.Write("<script>window.location.href='../index.aspx';</script>");
                     }
                     nguoitao = nhanvien.nhanvien_id;
 
@@ -290,7 +290,7 @@ namespace VNPT_BSC.BSC
                     dtNhomKPI = getNhomKPI();
                 }
                 catch {
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
             //}
         }

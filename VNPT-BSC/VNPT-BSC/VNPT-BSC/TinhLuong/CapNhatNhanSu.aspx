@@ -70,6 +70,7 @@
         </div>
     </div>
 <script type="text/javascript">
+    var id_nhansu = '<%=id_nhansu%>';
     $(document).ready(function () {
         $("#luuChung").click(function () {
             var cmnd = $("input[name=cmnd]").val();
@@ -90,7 +91,8 @@
                 cmnd: cmnd,
                 manv: manv,
                 hoten: hoten,
-                ngaykyhd: ngaykyhd
+                ngaykyhd: ngaykyhd,
+                id_nhansu: id_nhansu
             };
 
             var szRequest = JSON.stringify(requestData);

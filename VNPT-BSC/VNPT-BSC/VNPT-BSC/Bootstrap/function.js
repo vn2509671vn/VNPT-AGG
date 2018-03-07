@@ -281,7 +281,7 @@ function Export_NghiemThuBSCNV_ToExcel(table, nhanviennhan_ma, nhanviennhan_ten,
 }
 
 // Export to excel danh sách chi tiết CTV PTTB
-function ExportToExcel_CTV_PTTB_TongHop(table, sheetName, month, year) {
+function ExportToExcel_CTV_PTTB_TongHop(table, sheetName, month, year, socongvan) {
     var uri = 'data:application/vnd.ms-excel;base64,';
     var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>';
     var base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) };
@@ -297,30 +297,30 @@ function ExportToExcel_CTV_PTTB_TongHop(table, sheetName, month, year) {
     template += '<tr>';
     template += '<th rowspan="4" colspan="3" style="text-align: center">TỔNG CÔNG TY<BR> DỊCH VỤ VIỄN THÔNG<BR> TRUNG TÂM<BR> KINH DOANH VNPT - AN GIANG </th>';
     template += '<th></th>';
-    template += '<th colspan="3" style="text-align: center">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM </th>';
+    template += '<th colspan="4" style="text-align: center">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM </th>';
     template += '</tr>';
 
     template += '<tr>';
     template += '<th></th>';
-    template += '<th colspan="3" style="text-align: center">Độc lập - Tự do - Hạnh phúc </th>';
+    template += '<th colspan="4" style="text-align: center">Độc lập - Tự do - Hạnh phúc </th>';
     template += '</tr>';
 
     template += '<tr></tr><tr></tr>';
 
     template += '<tr>';
-    template += '<th colspan="7" style="text-align: center"><h2>DANH SÁCH TỔNG HỢP CTV PHÁT TRIỂN TB TRẢ TRƯỚC<h2></th>';
+    template += '<th colspan="8" style="text-align: center"><h2>DANH SÁCH TỔNG HỢP CTV PHÁT TRIỂN TB TRẢ TRƯỚC<h2></th>';
     template += '</tr>';
 
     template += '<tr>';
-    template += '<th colspan="7" style="text-align: center">PHÒNG BÁN HÀNG ' + sheetName.toUpperCase() + '</th>';
+    template += '<th colspan="8" style="text-align: center">PHÒNG BÁN HÀNG ' + sheetName.toUpperCase() + '</th>';
     template += '</tr>';
 
     template += '<tr>';
-    template += '<th colspan="7" style="text-align: center"> Tháng ' + month + ' ' + "/" + ' ' + year + '</th>';
+    template += '<th colspan="8" style="text-align: center"> Tháng ' + month + ' ' + "/" + ' ' + year + '</th>';
     template += '</tr>';
 
     template += '<tr>';
-    template += '<th colspan="7" style="text-align: center"><i>(Ban hành kèm theo số CV ....../TTKD AGG-ĐHNV của Giám đốc Trung tâm kinh doanh VNPT An Giang)</i></th>';
+    template += '<th colspan="8" style="text-align: center"><i>(Ban hành kèm theo số CV ' + socongvan + '/TTKD AGG-ĐHNV của Giám đốc Trung tâm kinh doanh VNPT An Giang)</i></th>';
     template += '</tr>';
 
     template += '</thead>';
@@ -336,9 +336,11 @@ function ExportToExcel_CTV_PTTB_TongHop(table, sheetName, month, year) {
     template += '<tr>';
     template += '<th></th>';
     template += '<th style="text-align: center">LẬP BIỂU</th>';
-    template += '<th></th><th></th><th></th>';
+    template += '<th></th><th></th><th></th><th></th>';
     template += '<th style="text-align: center">GIÁM ĐỐC</th>';
     template += '</tr>';
+    template += '<tr></tr><tr></tr><tr></tr>';
+    template += '<tr><th style="text-align: center" colspan="3">Hoàng Minh Hiển</th></tr>';
     template += '</body></html>';
     //return window.location.href = uri + base64(format(template, ctx));
     var dataUri = uri + base64(format(template, ctx));
@@ -346,7 +348,7 @@ function ExportToExcel_CTV_PTTB_TongHop(table, sheetName, month, year) {
 };
 
 // Export to excel danh sách chi tiết CTV PTTB
-function ExportToExcel_CTV_PTTB_ChiTiet(table, sheetName, month, year) {
+function ExportToExcel_CTV_PTTB_ChiTiet(table, sheetName, month, year, socongvan) {
     var uri = 'data:application/vnd.ms-excel;base64,';
     var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>';
     var base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) };
@@ -362,30 +364,30 @@ function ExportToExcel_CTV_PTTB_ChiTiet(table, sheetName, month, year) {
     template += '<tr>';
     template += '<th rowspan="4" colspan="3" style="text-align: center">TỔNG CÔNG TY<BR> DỊCH VỤ VIỄN THÔNG<BR> TRUNG TÂM<BR> KINH DOANH VNPT - AN GIANG </th>';
     template += '<th></th><th></th>';
-    template += '<th colspan="3" style="text-align: center">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM </th>';
+    template += '<th colspan="4" style="text-align: center">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM </th>';
     template += '</tr>';
 
     template += '<tr>';
     template += '<th></th><th></th>';
-    template += '<th colspan="3" style="text-align: center">Độc lập - Tự do - Hạnh phúc </th>';
+    template += '<th colspan="4" style="text-align: center">Độc lập - Tự do - Hạnh phúc </th>';
     template += '</tr>';
 
     template += '<tr></tr><tr></tr>';
 
     template += '<tr>';
-    template += '<th colspan="8" style="text-align: center"><h2>DANH SÁCH CHI TIẾT CTV PHÁT TRIỂN TB TRẢ TRƯỚC<h2></th>';
+    template += '<th colspan="9" style="text-align: center"><h2>DANH SÁCH CHI TIẾT CTV PHÁT TRIỂN TB TRẢ TRƯỚC<h2></th>';
     template += '</tr>';
 
     template += '<tr>';
-    template += '<th colspan="8" style="text-align: center">PHÒNG BÁN HÀNG ' + sheetName.toUpperCase() + '</th>';
+    template += '<th colspan="9" style="text-align: center">PHÒNG BÁN HÀNG ' + sheetName.toUpperCase() + '</th>';
     template += '</tr>';
 
     template += '<tr>';
-    template += '<th colspan="8" style="text-align: center"> Tháng ' + month + ' ' + "/" + ' ' + year + '</th>';
+    template += '<th colspan="9" style="text-align: center"> Tháng ' + month + ' ' + "/" + ' ' + year + '</th>';
     template += '</tr>';
 
     template += '<tr>';
-    template += '<th colspan="8" style="text-align: center"><i>(Ban hành kèm theo số CV ....../TTKD AGG-ĐHNV của Giám đốc Trung tâm kinh doanh VNPT An Giang)</i></th>';
+    template += '<th colspan="9" style="text-align: center"><i>(Ban hành kèm theo số CV ' + socongvan + '/TTKD AGG-ĐHNV của Giám đốc Trung tâm kinh doanh VNPT An Giang)</i></th>';
     template += '</tr>';
 
     template += '</thead>';
@@ -399,11 +401,12 @@ function ExportToExcel_CTV_PTTB_ChiTiet(table, sheetName, month, year) {
     template += '<thead>';
     template += '<tr></tr>';
     template += '<tr>';
-    template += '<th></th>';
-    template += '<th style="text-align: center">LẬP BIỂU</th>';
-    template += '<th></th><th></th><th></th><th></th><th></th>';
-    template += '<th style="text-align: center">GIÁM ĐỐC</th>';
+    template += '<th style="text-align: center" colspan="3">LẬP BIỂU</th>';
+    template += '<th></th><th></th><th></th>';
+    template += '<th style="text-align: center" colspan="3">GIÁM ĐỐC</th>';
     template += '</tr>';
+    template += '<tr></tr><tr></tr><tr></tr>';
+    template += '<tr><th style="text-align: center" colspan="3">Hoàng Minh Hiển</th></tr>';
     template += '</body></html>';
     //return window.location.href = uri + base64(format(template, ctx));
     var dataUri = uri + base64(format(template, ctx));
@@ -441,3 +444,15 @@ function groupByThreeCol(array, col, col2, col3, value) {
     });
     return r;
 };
+
+function dynamicSort(property) {
+    var sortOrder = 1;
+    if (property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a, b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}

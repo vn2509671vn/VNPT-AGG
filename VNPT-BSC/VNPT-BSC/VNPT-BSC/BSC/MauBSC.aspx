@@ -25,7 +25,7 @@
     <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">MẪU CHỈ TIÊU BSC/KPI</h3>
+            <h3 class="panel-title">MẪU BSC/KPI DÀNH CHO LÃNH ĐẠO PBH</h3>
           </div>
           <div class="panel-body">
             <div class="col-md-2 padding-right-10 col-xs-12">

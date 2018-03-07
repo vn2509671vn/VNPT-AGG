@@ -15,11 +15,11 @@ namespace VNPT_BSC.BSC
     public partial class PhanPhoiBSCDonVi : System.Web.UI.Page
     {
         Connection cn = new Connection();
-        public static int donvichuquan;
-        public static DataTable dtDonvi = new DataTable();
-        public static DataTable dtFullDV = new DataTable();
-        public static DataTable dtBSC = new DataTable();
-        public static DataTable dtDVT = new DataTable();
+        public int donvichuquan;
+        public DataTable dtDonvi = new DataTable();
+        public DataTable dtFullDV = new DataTable();
+        public DataTable dtBSC = new DataTable();
+        public DataTable dtDVT = new DataTable();
         public class kpiDetail {
             public int kpi_id { get; set; }
             public int tytrong { get; set; }
@@ -27,10 +27,10 @@ namespace VNPT_BSC.BSC
             public float kehoach { get; set; }
             public int donvithamdinh { get; set; }
         }
-        public static string valDonvigiao = "";
-        public static string valDonvinhan = "";
-        public static string valThang = "";
-        public static string valNam = "";
+        public string valDonvigiao = "";
+        public string valDonvinhan = "";
+        public string valThang = "";
+        public string valNam = "";
 
         /*List đơn vị tính*/
         private DataTable dsDVT()
@@ -531,7 +531,7 @@ namespace VNPT_BSC.BSC
                 if (nhanvien == null || !nFindResult)
                 {
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
 
                 donvichuquan = nhanvien.nhanvien_donvi_id;
@@ -563,7 +563,7 @@ namespace VNPT_BSC.BSC
             }
             catch (Exception ex)
             {
-                Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                Response.Write("<script>window.location.href='../index.aspx';</script>");
             }
         }
     }

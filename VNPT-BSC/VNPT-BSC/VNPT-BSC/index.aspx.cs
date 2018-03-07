@@ -19,10 +19,10 @@ namespace VNPT_BSC
         public DataTable dtkpiindex;
         public DataTable dtthamdinhindex;
         public DataTable dtbscdonviindex;
-        public static int donvi_id;
-        public static int nhanvien_id;
-        public static DataTable dtnhanvien_kpi = new DataTable();
-        public static DataTable dtkpi = new DataTable();
+        public  int donvi_id;
+        public  int nhanvien_id;
+        public  DataTable dtnhanvien_kpi = new DataTable();
+        public  DataTable dtkpi = new DataTable();
 
         
 

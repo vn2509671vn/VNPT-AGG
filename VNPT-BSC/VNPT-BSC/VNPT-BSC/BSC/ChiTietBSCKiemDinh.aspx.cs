@@ -14,7 +14,7 @@ namespace VNPT_BSC.BSC
 {
     public partial class ChiTietBSCKiemDinh : System.Web.UI.Page
     {
-        public static string donvigiao, donvinhan, donvithamdinh, thang, nam;
+        public string donvigiao, donvinhan, donvithamdinh, thang, nam;
         public class kpiDetail
         {
             public int kpi_id { get; set; }
@@ -199,7 +199,7 @@ namespace VNPT_BSC.BSC
             string szMsgContent = "BSC cua don vi da duoc tham dinh!!! Ban vui long vao kiem tra lai.";
             bool isSuccess = false;
 
-            string sqlGiaoBSC = "update bsc_donvi set trangthaithamdinh = 1 where donvigiao = '" + donvigiao + "' and donvinhan = '" + donvinhan + "' and thang = '" + thang + "' and nam = '" + nam + "' and donvithamdinh = '" + donvithamdinh + "'";
+            string sqlGiaoBSC = "update bsc_donvi set trangthaithamdinh = 1, thoigian_thamdinh = GETDATE() where donvigiao = '" + donvigiao + "' and donvinhan = '" + donvinhan + "' and thang = '" + thang + "' and nam = '" + nam + "' and donvithamdinh = '" + donvithamdinh + "'";
             try
             {
                 cnNhanBSC.ThucThiDL(sqlGiaoBSC);
@@ -222,12 +222,12 @@ namespace VNPT_BSC.BSC
             {
                 for (int i = 0; i < kpi_detail.Length; i++)
                 {
-                    string sqlInsertBSCDV = "update bsc_donvi set thamdinh = '" + kpi_detail[i].thamdinh + "' ";
+                    string sqlInsertBSCDV = "update bsc_donvi set thamdinh = '" + kpi_detail[i].thamdinh + "', thoigian_thamdinh = GETDATE() ";
                     sqlInsertBSCDV += "where donvigiao = '" + donvigiao + "' ";
                     sqlInsertBSCDV += "and donvinhan = '" + donvinhan + "' ";
                     sqlInsertBSCDV += "and thang = '" + thang + "' ";
                     sqlInsertBSCDV += "and nam = '" + nam + "' ";
-                    sqlInsertBSCDV += "and kpi = '" + kpi_detail[i].kpi_id + "'";
+                    sqlInsertBSCDV += "and kpi = '" + kpi_detail[i].kpi_id + "' ";
                     //sqlInsertBSCDV += "EXEC sp_ketquathuchien @thang = '" + thang + "',@nam = '" + nam + "', @donvigiao = '" + donvigiao + "', @donvinhan = '" + donvinhan + "', @kpi_id = '" + kpi_detail[i].kpi_id + "'";
                     try
                     {
@@ -304,11 +304,11 @@ namespace VNPT_BSC.BSC
                     if (donvigiao == null || donvinhan == null || thang == null || nam == null || donvithamdinh == null || nhanvien.nhanvien_donvi_id != Convert.ToInt32(donvithamdinh))
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                        Response.Write("<script>window.location.href='../index.aspx';</script>");
                     }
                 }
                 catch {
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
             //}
         }

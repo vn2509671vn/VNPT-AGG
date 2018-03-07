@@ -14,12 +14,12 @@ namespace VNPT_BSC.TinhLuong
 {
     public partial class NhanSu : System.Web.UI.Page
     {
-        public static DataTable dtBacLuong = new DataTable();
-        public static DataTable dtChucDanh = new DataTable();
-        public static DataTable dtDonvi = new DataTable();
-        public static DataTable dtNhomDonvi = new DataTable();
-        public static DataTable dtNhanVien = new DataTable();
-        public static DataTable dtKiemNhiem = new DataTable();
+        public DataTable dtBacLuong = new DataTable();
+        public DataTable dtChucDanh = new DataTable();
+        public  DataTable dtDonvi = new DataTable();
+        public  DataTable dtNhomDonvi = new DataTable();
+        public  DataTable dtNhanVien = new DataTable();
+        public  DataTable dtKiemNhiem = new DataTable();
 
         public static DataTable getListKiemNhiem() {
             Connection cn = new Connection();

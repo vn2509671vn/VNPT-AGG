@@ -66,11 +66,11 @@
     </div>
 
 <script type="text/javascript">
-    function loadBSC(month, year, donvi) {
+    function loadBSC(month, year, id_nhanvien) {
         var requestData = {
             thang: month,
             nam: year,
-            donvi: donvi
+            id_nhanvien: id_nhanvien
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({
@@ -90,22 +90,22 @@
     }
 
     $(document).ready(function () {
-        var donvi = '<%=donvi%>';
+        var id_nhanvien = '<%=id_nhanvien%>';
         // Load grid lần đầu
-        loadBSC($("#month").val(), $("#year").val(), donvi);
+        loadBSC($("#month").val(), $("#year").val(), id_nhanvien);
 
         // Load grid khi năm thay đổi
         $("#year").change(function () {
             var thang = $("#month").val();
             var nam = $(this).val();
-            loadBSC(thang, nam, donvi);
+            loadBSC(thang, nam, id_nhanvien);
         });
 
         // Load grid khi tháng thay đổi
         $("#month").change(function () {
             var nam = $("#year").val();
             var thang = $(this).val();
-            loadBSC(thang, nam, donvi);
+            loadBSC(thang, nam, id_nhanvien);
         });
     });
 </script>

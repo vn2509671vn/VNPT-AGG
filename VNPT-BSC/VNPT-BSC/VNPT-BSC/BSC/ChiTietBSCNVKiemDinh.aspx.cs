@@ -14,11 +14,12 @@ namespace VNPT_BSC.BSC
 {
     public partial class ChiTietBSCNVKiemDinh : System.Web.UI.Page
     {
-        public static string nhanviengiao, nhanviennhan, nhanvienthamdinh, thang, nam;
+        public string nhanviengiao, nhanviennhan, nhanvienthamdinh, thang, nam;
         public class kpiDetail
         {
             public int kpi_id { get; set; }
             public float thamdinh { get; set; }
+            public string ghichu_thamdinh { get; set; }
         }
 
         [WebMethod]
@@ -33,7 +34,7 @@ namespace VNPT_BSC.BSC
             /*Lấy danh sách BSC từ bảng bsc_nhanvien*/
             DataTable gridData = new DataTable();
             string outputHTML = "";
-            string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, dvt.dvt_ten as donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh, bsc.trangthaithamdinh, bsc.ghichu, nhom_kpi.id as nhom, bsc.diem_kpi ";
+            string sqlBSC = "select bsc.thang, bsc.nam, kpi.kpi_id, kpi.kpi_ten, kpo.kpo_id, kpo.kpo_ten, dvt.dvt_ten as donvitinh, bsc.trongso, bsc.kehoach, bsc.thuchien, bsc.thamdinh, bsc.trangthaithamdinh, bsc.ghichu, nhom_kpi.id as nhom, bsc.diem_kpi, bsc.ghichu_thamdinh ";
             sqlBSC += "from bsc_nhanvien bsc, kpi, kpo, nhanvien nvgiao, nhanvien nvnhan, donvitinh dvt, nhom_kpi ";
             sqlBSC += "where bsc.kpi = kpi.kpi_id ";
             sqlBSC += "and bsc.donvitinh = dvt.dvt_id ";
@@ -66,12 +67,13 @@ namespace VNPT_BSC.BSC
             outputHTML += "<th class='text-center'>Thực hiện</th>";
             outputHTML += "<th class='text-center'>Thẩm định</th>";
             outputHTML += "<th class='text-center'>T/gian giao</th>";
+            outputHTML += "<th class='text-center'>Lý do thẩm định</th>";
             outputHTML += "</tr>";
             outputHTML += "</thead>";
             outputHTML += "<tbody>";
             if (gridData.Rows.Count <= 0)
             {
-                outputHTML += "<tr><td colspan='8' class='text-center'>No item</td></tr>";
+                //outputHTML += "<tr><td colspan='9' class='text-center'>No item</td></tr>";
             }
             else
             {
@@ -99,6 +101,7 @@ namespace VNPT_BSC.BSC
                     outputHTML += "<td class='text-center'><strong>" + gridData.Rows[nKPI]["thuchien"].ToString() + "</strong></td>";
                     outputHTML += "<td class='text-center'><input type='text' class='form-control' name='thamdinh' id='thamdinh_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "' size='2' value='" + gridData.Rows[nKPI]["thamdinh"].ToString() + "' onkeypress='return onlyNumbers(event.charCode || event.keyCode);'/></td>";
                     outputHTML += "<td><textarea>" + gridData.Rows[nKPI]["ghichu"].ToString() + "</textarea></td>";
+                    outputHTML += "<td><textarea id='ghichu_thamdinh_" + gridData.Rows[nKPI]["kpi_id"].ToString() + "'>" + gridData.Rows[nKPI]["ghichu_thamdinh"].ToString() + "</textarea></td>";
                     outputHTML += "</tr>";
                 }
                 outputHTML += "<tr data-id='999999'>";
@@ -109,6 +112,7 @@ namespace VNPT_BSC.BSC
                 outputHTML += "<td></td>";
                 outputHTML += "<td></td>";
                 outputHTML += "<td style='text-align: center;'><strong class='red-900'>" + String.Format("{0:0.####}", tongdiem_diem_kpi) + "</strong></td>";
+                outputHTML += "<td></td>";
                 outputHTML += "<td></td>";
                 outputHTML += "</tr>";
             }
@@ -181,7 +185,7 @@ namespace VNPT_BSC.BSC
             string szMsgContent = "BSC cua ban da duoc tham dinh!!! Ban vui long vao kiem tra.";
             bool isSuccess = false;
 
-            string sqlGiaoBSC = "update bsc_nhanvien set trangthaithamdinh = '" + trangthaithamdinh + "' where nhanviengiao = '" + nhanviengiao + "' and nhanviennhan = '" + nhanviennhan + "' and thang = '" + thang + "' and nam = '" + nam + "' and nhanvienthamdinh = '" + nhanvienthamdinh + "'";
+            string sqlGiaoBSC = "update bsc_nhanvien set trangthaithamdinh = '" + trangthaithamdinh + "', thoigian_thamdinh = GETDATE() where nhanviengiao = '" + nhanviengiao + "' and nhanviennhan = '" + nhanviennhan + "' and thang = '" + thang + "' and nam = '" + nam + "' and nhanvienthamdinh = '" + nhanvienthamdinh + "'";
             try
             {
                 cnNhanBSC.ThucThiDL(sqlGiaoBSC);
@@ -206,12 +210,13 @@ namespace VNPT_BSC.BSC
             {
                 for (int i = 0; i < kpi_detail.Length; i++)
                 {
-                    string sqlInsertBSCDV = "update bsc_nhanvien set thamdinh = '" + kpi_detail[i].thamdinh + "' ";
+                    string sqlInsertBSCDV = "update bsc_nhanvien set thamdinh = '" + kpi_detail[i].thamdinh + "', ghichu_thamdinh = N'" + kpi_detail[i].ghichu_thamdinh + "', thoigian_thamdinh = GETDATE() ";
                     sqlInsertBSCDV += "where nhanviengiao = '" + nhanviengiao + "' ";
                     sqlInsertBSCDV += "and nhanviennhan = '" + nhanviennhan + "' ";
                     sqlInsertBSCDV += "and thang = '" + thang + "' ";
                     sqlInsertBSCDV += "and nam = '" + nam + "' ";
-                    sqlInsertBSCDV += "and kpi = '" + kpi_detail[i].kpi_id + "'";
+                    sqlInsertBSCDV += "and kpi = '" + kpi_detail[i].kpi_id + "' ";
+
                     try
                     {
                         cnData.ThucThiDL(sqlInsertBSCDV);
@@ -251,11 +256,11 @@ namespace VNPT_BSC.BSC
                     if (nhanviengiao == null || nhanviennhan == null || thang == null || nam == null || nhanvienthamdinh == null || nhanvien.nhanvien_id != Convert.ToInt32(nhanvienthamdinh))
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                        Response.Write("<script>window.location.href='../index.aspx';</script>");
                     }
                 }
                 catch {
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
             //}
         }

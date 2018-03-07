@@ -68,7 +68,11 @@
                                    if (Convert.ToBoolean(chinhthuc)) {
                                        szChinhThuc = "checked";
                                    }
-                                  
+
+                                   if (bacluong == "") {
+                                       bacluong = "0";
+                                   }
+                                   
                                    string dangvien = dtNhanVien.Rows[i]["dangvien"].ToString();
                                    string szDangVien = "";
                                    if (Convert.ToBoolean(dangvien))

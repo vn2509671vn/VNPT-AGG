@@ -14,7 +14,7 @@ namespace VNPT_BSC.BSC
 {
     public partial class ChiTietBSCNhan : System.Web.UI.Page
     {
-        public static string donvigiao, donvinhan, thang, nam;
+        public string donvigiao, donvinhan, thang, nam;
         public class kpiDetail
         {
             public int kpi_id { get; set; }
@@ -536,11 +536,11 @@ namespace VNPT_BSC.BSC
                     if (donvigiao == null || donvinhan == null || thang == null || nam == null || nhanvien.nhanvien_donvi_id != Convert.ToInt32(donvinhan))
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                        Response.Write("<script>window.location.href='../index.aspx';</script>");
                     }
                 }
                 catch {
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
             //}
         }

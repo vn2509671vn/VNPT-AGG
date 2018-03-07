@@ -314,6 +314,7 @@
             string ten_kpi = dtKPI.Rows[i]["kpi_ten"].ToString();
             string id = dtKPI.Rows[i]["kpi_id"].ToString();
             string id_nhom = dtKPI.Rows[i]["nhom_kpi"].ToString();
+            ten_kpi = ten_kpi.Replace("\n", "\\n");
         %>
         arrResult.push({
             data: '<%=id%>',
@@ -464,7 +465,7 @@
                     nhom_kpi_ten: nhom_kpi_ten,
                     nhom_kpi_tytrong: nhom_kpi_tytrong,
                     ghichu: ghichu,
-                    stt: stt
+                    stt: stt                    
                 });
             });
 
@@ -497,7 +498,8 @@
                 nhanviennhan: nhanviennhan,
                 thang: thang,
                 nam: nam,
-                kpi_detail: kpi_detail
+                kpi_detail: kpi_detail,
+                donvi: donvi
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({
@@ -594,7 +596,8 @@
                 nhanviennhan: nhanviennhan,
                 thang: thang,
                 nam: nam,
-                kpi_detail: kpi_detail
+                kpi_detail: kpi_detail,
+                donvi: donvi
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({

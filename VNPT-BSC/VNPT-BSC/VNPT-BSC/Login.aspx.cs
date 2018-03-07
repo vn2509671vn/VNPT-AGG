@@ -14,9 +14,7 @@ using System.Web.Script.Services;
 namespace VNPT_BSC
 {
     public partial class Login : System.Web.UI.Page
-    {
-        public static List<int> quyenHeThong = new List<int>();
-        
+    {        
         private static DataTable getQuyenByChucVuID(int chucvu_id)
         {
             Connection cn = new Connection();
@@ -58,9 +56,9 @@ namespace VNPT_BSC
             DataTable dt = new DataTable();
             DataTable dtQuyen = new DataTable();
             DataTable dtChucVu = new DataTable();
+            List<int> quyenHeThong = new List<int>();
 
             bool output = false;
-            quyenHeThong.Clear();
             string sqlllogin = "";
             sqlllogin = "select * from nhanvien a, donvi b where a.nhanvien_taikhoan = '" + idApprove + "' and a.nhanvien_matkhau = '" + passApprove + "' and a.nhanvien_donvi = b.donvi_id";
             try
@@ -75,7 +73,7 @@ namespace VNPT_BSC
                     nv.nhanvien_donvi_id = Convert.ToInt32(dt.Rows[0]["nhanvien_donvi"].ToString());
                     //objp.Session.SetCurrentUser(nv);
                     HttpContext.Current.Session["nhanvien"] = nv;
-                    HttpContext.Current.Session.Timeout = 90;
+                    
 
                     dtChucVu = getListChucVu(nv.nhanvien_id);
                     int numChucVu = dtChucVu.Rows.Count;
@@ -99,6 +97,7 @@ namespace VNPT_BSC
                     
                     //objp.Session.SetRole(quyenHeThong);
                     HttpContext.Current.Session["quyenhethong"] = quyenHeThong;
+                    HttpContext.Current.Session.Timeout = 90;
                 }
                 else{
                     output = false;
@@ -115,6 +114,11 @@ namespace VNPT_BSC
         protected void Page_Load(object sender, EventArgs e)
         {
             this.Title = "Đăng nhập";
+            Nhanvien nhanvien = new Nhanvien();
+            nhanvien = (Nhanvien)Session["nhanvien"];
+            if (nhanvien != null) {
+                Response.Write("<script>window.location.href='../index.aspx';</script>");
+            }
         }
     }
 }

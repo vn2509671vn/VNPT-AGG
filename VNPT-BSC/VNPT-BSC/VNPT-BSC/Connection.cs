@@ -18,7 +18,7 @@ namespace VNPT_BSC
                 if (cn.State == 0)
                 {
                     //cn.ConnectionString = @"Data Source=10.94.30.4;Initial Catalog=PortalVNPT;User ID=portal; Password = portal!123;Integrated Security=True";
-                    cn.ConnectionString = @"Data Source=10.94.34.106;Initial Catalog=VNPT;Persist Security Info=True;User ID=sa; Password = 123";
+                    cn.ConnectionString = @"Data Source=10.94.34.106;Initial Catalog=VNPT;Persist Security Info=True;User ID=sa; Password = 123;Connection Timeout=60";
                     cn.Open();
                 }
             }

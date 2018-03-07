@@ -30,10 +30,10 @@
 
                     <div style="margin-bottom: 10px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                        <input id="login-password" type="password" class="form-control" name="password" placeholder="Mật khẩu">
+                        <input id="login-password" type="password" class="form-control" name="password" placeholder="Mật khẩu" value="">
                     </div>
                    
-                        <a id="btn-login"  class="btn btn-success col-sm-12">Login  </a>
+                    <a id="btn-login"  class="btn btn-success col-sm-12">Login  </a>
                    
                 </div>
             </div>

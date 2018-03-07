@@ -14,8 +14,8 @@ namespace VNPT_BSC.TinhLuong
 {
     public partial class ChamCong : System.Web.UI.Page
     {
-        public static DataTable dtBacLuong = new DataTable();
-        public static DataTable dtChucDanh = new DataTable();
+        public DataTable dtBacLuong = new DataTable();
+        public DataTable dtChucDanh = new DataTable();
         public static DataTable getListBacLuong() {
             Connection cn = new Connection();
             DataTable tmp = new DataTable();

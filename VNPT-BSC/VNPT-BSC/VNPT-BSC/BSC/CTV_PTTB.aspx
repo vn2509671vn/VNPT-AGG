@@ -37,6 +37,7 @@
               </div>
               
               <div class="col-md-12 col-xs-12 form-horizontal">
+                <input type="hidden" id="socongvan" class="form-control" value="......" />
                 <div class="form-group">
                     <label class="control-label col-sm-4">Lọc theo tháng/năm:</label>
                     <div class="col-sm-6 form-inline">
@@ -82,6 +83,10 @@
                             <option value="0" selected="selected">Tất cả</option>
                             <option value="2">Cộng tác viên</option>
                             <option value="3">Giao dịch viên</option>
+                            <option value="7">Thu cước</option>
+                            <option value="11">CTV KD</option>
+                            <option value="12">CTV PTTB</option>
+                            <option value="13">CTV Tay Trong</option>
                             <%--<option value="4">Điểm ủy quyền</option>--%>
                         </select>
                     </div>
@@ -111,7 +116,8 @@
         var donvi = $("#donvi").val();
         var kieuhienthi = $("#kieuhienthi").val();
         var nhomctv = $("#nhomctv").val();
-        
+        var socongvan = $("#socongvan").val();
+
         var requestData = {
             donvi: donvi,
             thang: thang,
@@ -131,17 +137,17 @@
                 $("#gridBSC").html(output);
                 $("#table-kpi").DataTable({
                     "bPaginate": true,
-                    "lengthMenu": [500],
+                    "lengthMenu": [1500],
                     "dom": 'LBfrtip',
                     "buttons": [
                         {
                             text: 'Excel',
                             action: function (e, dt, node, config) {
                                 if (kieuhienthi == 2) {
-                                    ExportToExcel_CTV_PTTB_TongHop('table-kpi', $("#donvi option:selected").text(), thang, nam);
+                                    ExportToExcel_CTV_PTTB_TongHop('table-kpi', $("#donvi option:selected").text(), thang, nam, socongvan);
                                 }
                                 else {
-                                    ExportToExcel_CTV_PTTB_ChiTiet('table-kpi', $("#donvi option:selected").text(), thang, nam);
+                                    ExportToExcel_CTV_PTTB_ChiTiet('table-kpi', $("#donvi option:selected").text(), thang, nam, socongvan);
                                 }
                             }
                         }

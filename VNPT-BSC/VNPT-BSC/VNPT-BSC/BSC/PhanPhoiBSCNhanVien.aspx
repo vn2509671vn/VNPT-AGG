@@ -424,7 +424,8 @@
                 thang: thang,
                 nam: nam,
                 kpi_detail: kpi_detail,
-                loaimau: loaimau
+                loaimau: loaimau,
+                donvi: donvi
             };
             var szRequest = JSON.stringify(requestData);
             $.ajax({

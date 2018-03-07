@@ -14,7 +14,7 @@ namespace VNPT_BSC.TinhLuong
 {
     public partial class TinhLuong : System.Web.UI.Page
     {
-        public static DataTable dtNhanVien = new DataTable();
+        public  DataTable dtNhanVien = new DataTable();
         public class xepHang
         {
             public int donvi_id { get; set; }

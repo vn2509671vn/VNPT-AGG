@@ -59,21 +59,42 @@
               <div class="menu_section">
                 <ul class="nav side-menu">
                   <li><a href="/index.aspx"><i class="fa fa-home"></i> Trang Chủ </a></li>
-                  <% if (userID == 195 || userID == 196)
-                     { %>
-                  <li><a href="/BSC/DanhSachBSCTatCaNV.aspx"><i class="fa fa-list"></i> Kiểm Tra Giao BSC/KPI </a></li>
-                  <li><a href="/BSC/ThongKeTrungBinhDiemBSCDV.aspx"><i class="fa fa-area-chart"></i> TKê ĐTB BSC/KPI ĐV </a></li>
-                  <li><a href="/BSC/ThongKeTrungBinhDiemBSCNV.aspx"><i class="fa fa-area-chart"></i> TKê ĐTB BSC/KPI NV </a></li>
-                  <% } %>
+                  <%--<li><a><i class="fa fa-heart"></i> Ứng dụng nghiệp vụ <span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                          <li><a href="/QRCode/Test_QR_Code.aspx"> Test QR Code </a></li>
+                          <li><a href="/QRCode/ConvertImageToPDF.aspx"> Chuyển hình sang PDF </a></li>
+                      </ul>
+                  </li>--%>
+                  <%--<li><a><i class="fa fa-edit"></i> Đơn hàng <span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                          <li><a href="/Donhang/TraCuu_DonHang.aspx"> Tra cứu </a></li>
+                          <li><a href="/Donhang/Tao_DonHang.aspx"> Tạo đơn hàng </a></li>
+                          <li><a href="/Donhang/PhanPhoi_DonHang.aspx"> Phân phối đơn hàng </a></li>
+                          <li><a href="/Donhang/XuLy_DonHang.aspx"> Xử lý đơn hàng </a></li>
+                      </ul>
+                  </li>--%>
+                  <li><a><i class="fa fa-list"></i> K.Tra Giao BSC/KPI <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="/BSC/DanhSachBSCTatCaDV.aspx"> Đơn vị</a></li>
+                        <li><a href="/BSC/DanhSachBSCTatCaNV.aspx"> Nhân viên </a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-area-chart"></i> TKê ĐTB BSC/KPI <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="/BSC/ThongKeTrungBinhDiemBSCDV.aspx">Đơn vị</a></li>
+                        <li><a href="/BSC/ThongKeTrungBinhDiemBSCNV.aspx">Nhân viên </a></li>
+                    </ul>
+                  </li>
                   <% if (userID == 196){ %>
                   <li class="qlns"><a><i class="fa fa-users"></i> Nhân Sự <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
+                      <li><a href="/TinhLuong/ImportNhanVien_TinhLuong.aspx"> Import nhân viên </a></li>
+                      <li><a href="/TinhLuong/TinhLuongTheoBuoc.aspx"> Tính Lương </a></li>
                       <li><a href="/TinhLuong/BacLuong.aspx"> Bậc Lương </a></li>
                       <li><a href="/TinhLuong/KiemNhiem.aspx"> Chức Vụ Kiêm Nhiệm </a></li>
                       <li><a href="/TinhLuong/NhanSu.aspx"> Nhân Sự </a></li>
                       <li><a href="/TinhLuong/DiemBSCNV.aspx"> Điểm BSC </a></li>
                       <li><a href="/TinhLuong/ChiTietTapThe.aspx"> Lương Tổng Hợp (3PS) </a></li>
-                      <li><a href="/TinhLuong/TinhLuong.aspx"> Tính Lương </a></li>
                       <li><a href="/TinhLuong/TuDongCapNhatBacLuong.aspx"> Cập Nhật Bậc Lương </a></li>
                     </ul>
                   </li>
@@ -100,25 +121,39 @@
                     <ul class="nav child_menu">
                       <li class="cls-bsc" id="maubsc_donvi"><a href="/BSC/MauBSC.aspx">Mẫu BSC/KPI</a></li>
                       <li class="cls-bsc" id="xuatmaubsc_donvi"><a href="/BSC/XuatMauBSC.aspx">Xuất Mẫu BSC/KPI</a></li>
-                      <li class="cls-bsc" id="import_bsc"><a href="/BSC/ImportBSC.aspx">Import BSC/KPI</a></li>
-                      <li class="cls-bsc" id="phanphoibsc_donvi"><a href="/BSC/PhanPhoiBSCDonVi.aspx">Phân Phối BSC/KPI</a></li>
+                      <li class="cls-bsc" id="xuatmaubsc_pbh"><a href="/BSC/XuatMauBSC_PBH.aspx">Xuất Mẫu LĐ PBH</a></li>
+                      <li class="cls-bsc" id="import_bsc"><a href="/BSC/ImportBSC.aspx">Giao KPI bằng File</a></li>
+                      <li class="cls-bsc" id="import_bsc_pbh"><a href="/BSC/ImportBSC_LDPBH.aspx">Giao LĐ PBH bằng File</a></li>
+                      <li class="cls-bsc" id="phanphoibsc_donvi"><a href="/BSC/PhanPhoiBSCDonVi.aspx">Phân Phối KPI</a></li>
                       <li class="cls-bsc" id="nhanbsc_donvi"><a href="/BSC/NhanBSCDonVi.aspx">Nhận BSC/KPI</a></li>
-                      <li class="cls-bsc" id="kiemdinhbsc_donvi"><a href="/BSC/KiemDinhBSCDonVi.aspx">Kiểm Định BSC/KPI</a></li>
-                      <li class="cls-bsc" id="nghiemthubsc_donvi"><a href="/BSC/NghiemThuBSCDonVi.aspx">Nghiệm Thu BSC/KPI</a></li>
+                      <li class="cls-bsc" id="kiemdinhbsc_donvi"><a href="/BSC/KiemDinhBSCDonVi.aspx">Kiểm Định KPI</a></li>
+                      <li class="cls-bsc" id="kiemdinhbsc_donvi_file"><a href="/BSC/ImportThamDinhBSC.aspx">Kiểm Định KPI bằng File</a></li>
+                      <li class="cls-bsc" id="nghiemthubsc_donvi"><a href="/BSC/NghiemThuBSCDonVi.aspx">Nghiệm Thu KPI</a></li>
                     </ul>
                   </li>
                   <li class="qlybsc_nv"><a><i class="fa fa-users"></i> Quản Lý BSC/KPI NV <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li class="cls-bsc" id="maubsc_nhanvien"><a href="/BSC/MauBSCNhanVien.aspx">Mẫu BSC/KPI</a></li>
                       <li class="cls-bsc" id="xuat_maubsc_nhanvien"><a href="/BSC/XuatMauBSCNV.aspx">Xuất Mẫu BSC/KPI</a></li>
-                      <li class="cls-bsc" id="import_maubsc_nhanvien"><a href="/BSC/ImportBSCNV.aspx">Import BSC/KPI</a></li>
-                      <li class="cls-bsc" id="phanphoibsc_nhanvien"><a href="/BSC/PhanPhoiBSCNhanVien.aspx">Phân Phối BSC/KPI</a></li>
-                      <li class="cls-bsc" id="phanphoibsc_nhanvien_PBCN"><a href="/BSC/PhanPhoiBSCNhanVien_Tmp.aspx">Phân Phối BSC/KPI</a></li>
+                      <li class="cls-bsc" id="import_maubsc_nhanvien"><a href="/BSC/ImportBSCNV.aspx">Giao KPI bằng File</a></li>
+                      <li class="cls-bsc" id="phanphoibsc_nhanvien"><a href="/BSC/PhanPhoiBSCNhanVien.aspx">Phân Phối KPI</a></li>
+                      <li class="cls-bsc" id="phanphoibsc_nhanvien_PBCN"><a href="/BSC/PhanPhoiBSCNhanVien_Tmp.aspx">Phân Phối KPI</a></li>
+                      <li class="cls-bsc" id="phanphoibsc_pgd"><a href="/BSC/PhanPhoiBSCNhanVien_PGD.aspx">Phân Phối KPI PGĐ</a></li>
                       <li class="cls-bsc" id="nhanbsc_nhanvien"><a href="/BSC/NhanBSCNhanVien.aspx">Nhận BSC/KPI</a></li>
-                      <li class="cls-bsc" id="kiemdinhbsc_nhanvien"><a href="/BSC/KiemDinhBSCNhanVien.aspx">Kiểm Định BSC/KPI</a></li>
-                      <li class="cls-bsc" id="nghiemthubsc_nhanvien"><a href="/BSC/NghiemThuBSCNhanVien.aspx">Nghiệm Thu BSC/KPI</a></li>
+                      <li class="cls-bsc" id="kiemdinhbsc_nhanvien"><a href="/BSC/KiemDinhBSCNhanVien.aspx">Kiểm Định KPI</a></li>
+                      <li class="cls-bsc" id="nghiemthubsc_nhanvien"><a href="/BSC/NghiemThuBSCNhanVien.aspx">Nghiệm Thu KPI</a></li>
                       <li class="cls-bsc" id="xephang_nhanvien"><a href="/BSC/XepHangBSCNV.aspx">Xếp Hạng</a></li>
                     </ul>
+                  </li>
+                  <li><a><i class="fa fa-edit"></i> Phân bổ thuê bao <span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                          <li><a href="/BSC/MauThueBao_PBH.aspx"> Dữ liệu PBH </a></li>
+                          <li><a href="/BSC/Phan_TB_Tu_PBH.aspx"> PBH phân TB </a></li>
+                          <%if (userDonVi == 13){%>
+                            <li><a href="/BSC/MauThueBao_DHNV.aspx"> Dữ liệu ĐHNV </a></li>
+                            <li><a href="/BSC/Phan_TB_Tu_DHNV.aspx"> ĐHNV phân TB </a></li>
+                          <% } %>
+                      </ul>
                   </li>
                   <li class="admin"><a><i class="fa fa-user-secret"></i> Admin <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -132,11 +167,16 @@
                   </li>
                   <li class="thongke"><a><i class="fa fa-line-chart"></i> Thống Kê Báo Cáo <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
+                    <%if (userDonVi == 1 || userDonVi == 2 || userDonVi == 13){%>
                       <li id="luongpttb"><a href="/BSC/LuongPTTB.aspx">Lương PTTB</a></li>
                       <li id="ctvpttb"><a href="/BSC/CTV_PTTB.aspx">CTV PTTB</a></li>
-                      <li id="danhsach_bsc_dagiao_thuctrang"><a href="/BSC/DanhSachBSCDaGiao_ThucTrang.aspx">Số liệu BSC trên Vmos</a></li>
+                      <li id="luongvas"><a href="/BSC/Luong_Vasdealer.aspx">Lương Vas NVKD/CTV</a></li>
+                      <li id="tylethucuoc"><a href="/BSC/TyLeThuCuoc.aspx">Tỷ Lệ Thu Cước</a></li>
+                    <% } %>
+                      <%--<li id="luong3ps"><a href="/BSC/Luong3PS.aspx">Lương tổng hợp 3PS</a></li>--%>
+                      <%--<li id="danhsach_bsc_dagiao_thuctrang"><a href="/BSC/DanhSachBSCDaGiao_ThucTrang.aspx">Số liệu BSC trên Vmos</a></li>
                       <li id="danhsach_bscnv_dagiao_thuctrang"><a href="/BSC/DanhSachBSCNVDaGiao_ThucTrang.aspx">Số liệu BSC nhân viên trên PTTB</a></li>
-                      <li id="danhsach_bsc_dagiao_thamdinh"><a href="/BSC/DanhSachBSCDaGiao_ThamDinh.aspx">Số liệu BSC được thẩm định</a></li>
+                      <li id="danhsach_bsc_dagiao_thamdinh"><a href="/BSC/DanhSachBSCDaGiao_ThamDinh.aspx">Số liệu BSC được thẩm định</a></li>--%>
                       <li id="danhsach_bsc_dagiao"><a href="/BSC/DanhSachBSCDaGiao.aspx">BSC/KPI đơn vị</a></li>
                       <li id="danhsach_bscnv_dagiao"><a href="/BSC/DanhSachBSCNVDaGiao.aspx">BSC/KPI nhân viên</a></li>
                       <li id="ketqua_nghiemthu_dv"><a href="/BSC/KetQuaNghiemThuDV.aspx">Kết quả nghiệm thu BSC đơn vị</a></li>
@@ -316,7 +356,7 @@
   </body>
 </html>
 <script type="text/javascript">
-    var quyenHeThong = <%= javaSerial.Serialize(quyenHeThong)%>
+    var quyenToanHeThong = <%= javaSerial.Serialize(quyenToanHeThong)%>
     $(document).ready(function () {
         //$(".qlns > ul > li").hide();
         $(".admin > ul > li").hide();
@@ -340,6 +380,9 @@
         $(".thongke > ul > li#xephang_bsc").show();
         $(".thongke > ul > li#luongpttb").show();
         $(".thongke > ul > li#ctvpttb").show();
+        $(".thongke > ul > li#luongvas").show();
+        $(".thongke > ul > li#tylethucuoc").show();
+        $(".thongke > ul > li#luong3ps").show();
 
         // Chức năng dành riêng cho ban giám đốc và chị Uyên và anh Hùng
         <%if (userDonVi == 2 || userID == 185 || userID == 195){%>
@@ -347,8 +390,8 @@
         $(".thongke > ul > li#danhsach_bsc_dagiao_thamdinh").show();
         <%}%>
 
-        for (var nIndex = 0; nIndex < quyenHeThong.length; nIndex++) {
-            var quyen = quyenHeThong[nIndex];
+        for (var nIndex = 0; nIndex < quyenToanHeThong.length; nIndex++) {
+            var quyen = quyenToanHeThong[nIndex];
             // Chuyên viên bsc
             if (quyen == 2) {
                 $(".danhmucbsc").show();
@@ -358,7 +401,9 @@
                 $(".danhmucbsc > ul > li#liDVT").show();
                 $(".qlybsc_dv > ul > li#maubsc_donvi").show();
                 $(".qlybsc_dv > ul > li#xuatmaubsc_donvi").show();
+                $(".qlybsc_dv > ul > li#xuatmaubsc_pbh").show();
                 $(".qlybsc_dv > ul > li#import_bsc").show();
+                $(".qlybsc_dv > ul > li#import_bsc_pbh").show();
                 $(".qlybsc_dv > ul > li#phanphoibsc_donvi").show();
                 $(".qlybsc_dv > ul > li#nghiemthubsc_donvi").show();
                 $("#phanhoiGiao").show();
@@ -369,11 +414,13 @@
                 $(".qlybsc_dv").show();
                 $(".qlybsc_dv > ul > li#nhanbsc_donvi").show();
                 $(".qlybsc_dv > ul > li#kiemdinhbsc_donvi").show();
+                $(".qlybsc_dv > ul > li#kiemdinhbsc_donvi_file").show();
                 $(".qlybsc_dv > ul > li#nghiemthubsc_donvi").show();
                 $(".qlybsc_nv > ul > li#maubsc_nhanvien").show();
                 $(".qlybsc_nv > ul > li#xuat_maubsc_nhanvien").show();
                 $(".qlybsc_nv > ul > li#import_maubsc_nhanvien").show();
                 $(".qlybsc_nv > ul > li#phanphoibsc_nhanvien").show();
+                $(".qlybsc_nv > ul > li#phanphoibsc_pgd").show();
                 $(".qlybsc_nv > ul > li#kiemdinhbsc_nhanvien").show();
                 $(".qlybsc_nv > ul > li#nghiemthubsc_nhanvien").show();
                 $(".thongke > ul > li#danhsach_bscnv_dagiao").show();
@@ -384,10 +431,10 @@
                 $(".danhmucbsc > ul > li#liKPI_PhongBanCN").show();
                 $(".qlybsc_nv > ul > li#phanphoibsc_nhanvien_PBCN").show();
                 $("#phanphoibsc_nhanvien").hide();
+                $("#phanphoibsc_pgd").hide();
                 $("#maubsc_nhanvien").hide();
                 $("#xuat_maubsc_nhanvien").hide();
                 $("#import_maubsc_nhanvien").hide();
-                $("#phanphoibsc_nhanvien").hide();
                 $("#danhsach_bscnv_dagiao").hide();
                 $("#danhsach_bscnv_dagiao_thuctrang").hide();
                 <%}%>

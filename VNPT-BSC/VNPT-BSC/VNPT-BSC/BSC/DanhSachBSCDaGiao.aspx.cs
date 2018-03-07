@@ -14,7 +14,7 @@ namespace VNPT_BSC.BSC
 {
     public partial class DanhSachBSCDaGiao : System.Web.UI.Page
     {
-        public static DataTable dtMauBSC = new DataTable();
+        public DataTable dtMauBSC = new DataTable();
 
         /*List loại mẫu bsc*/
         private DataTable dsMauBSC()
@@ -71,7 +71,7 @@ namespace VNPT_BSC.BSC
         {
             Connection cnBSC = new Connection();
             DataTable dsDetailByTimeAndKPI = new DataTable();
-            string sqlDetailByTimeAndKPI = "select donvinhan, kehoach ";
+            string sqlDetailByTimeAndKPI = "select donvinhan, ROUND(kehoach,4) as kehoach ";
             sqlDetailByTimeAndKPI += "from bsc_donvi ";
             sqlDetailByTimeAndKPI += "where thang = '" + thang + "' ";
             sqlDetailByTimeAndKPI += "and nam = '" + nam + "' ";

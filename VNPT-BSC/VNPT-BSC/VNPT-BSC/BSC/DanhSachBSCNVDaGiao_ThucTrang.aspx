@@ -77,12 +77,14 @@
     </div>
 
 <script type="text/javascript">
+    var nhanviengiao = '<%=nhanviengiao%>';
     function loadBSCByYear(month, year, loaimaubsc) {
         var ten_mau = $("#loaiMauBSC option:selected").text();
         var requestData = {
             thang: month,
             nam: year,
-            loaimaubsc: loaimaubsc
+            loaimaubsc: loaimaubsc,
+            nhanviengiao: nhanviengiao
         };
         var szRequest = JSON.stringify(requestData);
         $.ajax({

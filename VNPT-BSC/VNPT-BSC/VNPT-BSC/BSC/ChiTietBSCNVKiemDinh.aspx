@@ -328,7 +328,10 @@
                 if (kpi_id == 999999) {
                     return;
                 }
+
                 var thamdinh = $("#thamdinh_" + kpi_id).val();
+                var ghichu_thamdinh = $("#ghichu_thamdinh_" + kpi_id).val();
+
                 if (isNaN(thamdinh)) {
                     swal("Error!", "Sai định dạng kiểu chữ số!!!", "error");
                     errFormatNumber = true;
@@ -339,7 +342,8 @@
                 }
                 kpi_detail.push({
                     kpi_id: kpi_id,
-                    thamdinh: thamdinh
+                    thamdinh: thamdinh,
+                    ghichu_thamdinh: ghichu_thamdinh
                 });
             });
 
@@ -354,6 +358,7 @@
                 nam: nam,
                 kpi_detail: kpi_detail
             };
+
             var szRequest = JSON.stringify(requestData);
             $.ajax({
                 type: "POST",

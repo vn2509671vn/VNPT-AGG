@@ -29,6 +29,7 @@
             <h3 class="panel-title">Trung bình điểm BSC nhân viên</h3>
           </div>
           <div class="panel-body">
+              <h4 class="text-center red-color">Dữ liệu được cập nhật tới <%=thoigiancapnhat %> --- [ <a id="btnDongBo" class="btn btn-xs btn-success">Đồng bộ tới hiện tại</a>] ---</h4>
               <div class="col-md-12 col-xs-12 form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-4">Đơn vị:</label>
@@ -68,6 +69,8 @@
                             <option value="2">II</option>
                             <option value="3">III</option>
                             <option value="4">IV</option>
+                            <option value="6">6 tháng đầu năm</option>
+                            <option value="9">9 tháng đầu năm</option>
                         </select>
                     </div>
                 </div>
@@ -186,8 +189,18 @@
                     szOption += "<option value='" + i + "'>" + i + "</option>";
                 }
             }
-            else {
+            else if (quy == 4) {
                 for (var i = 10; i <= 12; i++) {
+                    szOption += "<option value='" + i + "'>" + i + "</option>";
+                }
+            }
+            else if (quy == 6) {
+                for (var i = 1; i <= 6; i++) {
+                    szOption += "<option value='" + i + "'>" + i + "</option>";
+                }
+            }
+            else if (quy == 9) {
+                for (var i = 1; i <= 9; i++) {
                     szOption += "<option value='" + i + "'>" + i + "</option>";
                 }
             }
@@ -203,6 +216,26 @@
 
         $("#loainhanvien").change(function () {
             loadBSC();
+        });
+
+        $("#btnDongBo").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "ThongKeTrungBinhDiemBSCNV.aspx/dongboDiem",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var output = result.d;
+                    if (output == true) {
+                        alert("Đồng bộ thành công!");
+                        window.location.reload();
+                    }
+                    else {
+                        alert("Đồng bộ thất bại!");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
         });
     });
 </script>

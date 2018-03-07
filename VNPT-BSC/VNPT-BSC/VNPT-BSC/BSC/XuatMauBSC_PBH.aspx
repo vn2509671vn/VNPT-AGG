@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="PhatTrienThueBao.aspx.cs" Inherits="VNPT_BSC.TinhLuong.PhatTrienThueBao" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterLayout.Master" AutoEventWireup="true" CodeBehind="XuatMauBSC_PBH.aspx.cs" Inherits="VNPT_BSC.BSC.XuatMauBSC_PBH" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../Bootstrap/thangtgm_custom.css" rel="stylesheet" />
     <script src="../Bootstrap/jquery.js"></script>
@@ -26,12 +26,13 @@
     <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">Số lượng phát triển TB</h3>
+            <h3 class="panel-title">XUẤT MẪU BSC/KPI LÃNH ĐẠO PBH</h3>
           </div>
           <div class="panel-body">
               <div class="col-md-12 col-xs-12 form-horizontal">
-                <div class="form-group">
-                    <label class="control-label col-sm-6">Lọc theo tháng/năm:</label>
+                <h4 class="red-color">Có thể phân rã thành nhiều KPI từ [KPI không có mã] với tổng trọng số 10%</h4>
+                <%--<div class="form-group">
+                    <label class="control-label col-md-6">Lọc theo tháng/năm:</label>
                     <div class="col-sm-6 form-inline">
                         <select class="form-control" id="month">
                             <% for(int i = 1; i <= 12; i++){ 
@@ -56,9 +57,9 @@
                             <% } %>
                         </select>
                     </div>
-                </div>
+                </div>--%>
               </div>
-              <div class="col-md-12 col-xs-12" id="gridBSC">
+              <div class="col-md-12 col-xs-12" id="gridData">
 
               </div>
           </div>
@@ -66,37 +67,32 @@
     </div>
 
 <script type="text/javascript">
-    function loadBSC(month, year) {
-        var requestData = {
-            thang: month,
-            nam: year
-        };
-        var szRequest = JSON.stringify(requestData);
+    function loadData() {
         $.ajax({
             type: "POST",
-            url: "PhatTrienThueBao.aspx/loadTB",
-            data: szRequest,
+            url: "XuatMauBSC_PBH.aspx/loadData",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (result) {
                 var output = result.d;
+                var gridData = output.gridData;
 
-                $("#gridBSC").html(output);
-                $("#table-kpi").DataTable({
-                    "pageLength": 100,
+                $("#gridData").html(gridData);
+                $("#table-data").DataTable({
+                    "order": [],
+                    "pageLength": 50,
                     "dom": 'Bfrtip',
                     "buttons": [
                         {
                             extend: 'excelHtml5',
-                            title: 'Phát triển TB ' + month + "-" + year
-                        },
-                        {
-                            extend: 'pdfHtml5',
-                            title: 'Phát triển TB ' + month + "-" + year,
-                            orientation: 'landscape',
-                            pageSize: 'LEGAL'
+                            text: 'Xuất file',
+                            title: 'Giao BSC/KPI LĐ PBH'
                         }
-                    ]
+                    ],
+                    "columnDefs": [{
+                        "targets": 'no-sort',
+                        "orderable": false,
+                    }]
                 });
             },
             error: function (msg) { alert(msg.d); }
@@ -105,21 +101,7 @@
 
     $(document).ready(function () {
         // Load grid lần đầu
-        loadBSC($("#month").val(), $("#year").val());
-
-        // Load grid khi năm thay đổi
-        $("#year").change(function () {
-            var thang = $("#month").val();
-            var nam = $(this).val();
-            loadBSC(thang, nam);
-        });
-
-        // Load grid khi tháng thay đổi
-        $("#month").change(function () {
-            var nam = $("#year").val();
-            var thang = $(this).val();
-            loadBSC(thang, nam);
-        });
+        loadData();
     });
 </script>
 </asp:Content>

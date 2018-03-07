@@ -107,3 +107,7 @@ tr > td > input.form-control {
     color: red !important;
     font-weight: 900;
 }
+
+.bold {
+    font-weight: bold;
+}

@@ -14,8 +14,8 @@ namespace VNPT_BSC.TinhLuong
 {
     public partial class CapNhatNhanSu : System.Web.UI.Page
     {
-        public static string id_nhansu;
-        public static DataTable userInfo = new DataTable();
+        public string id_nhansu;
+        public DataTable userInfo = new DataTable();
 
         public static DataTable getUser(string id_nhansu) {
             DataTable tmp = new DataTable();
@@ -32,7 +32,8 @@ namespace VNPT_BSC.TinhLuong
         }
 
         [WebMethod]
-        public static Dictionary<String, String> luuThongTin(string cmnd, string manv, string hoten, string ngaykyhd) {
+        public static Dictionary<String, String> luuThongTin(string cmnd, string manv, string hoten, string ngaykyhd, string id_nhansu)
+        {
             Dictionary<string, string> dicResult = new Dictionary<string, string>();
             Connection cn = new Connection();
             DataTable tmp = new DataTable();

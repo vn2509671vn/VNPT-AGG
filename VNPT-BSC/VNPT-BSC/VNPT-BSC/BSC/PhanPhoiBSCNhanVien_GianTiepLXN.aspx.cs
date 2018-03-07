@@ -15,13 +15,13 @@ namespace VNPT_BSC.BSC
     public partial class PhanPhoiBSCNhanVien_PBCN : System.Web.UI.Page
     {
         Connection cn = new Connection();
-        public static int nhanvienquanly;
-        public static int donvi;
-        public static DataTable dtNhanVien = new DataTable();
-        public static DataTable dtKPI = new DataTable();
-        public static DataTable dtDVT = new DataTable();
-        public static DataTable dtNhomKPI = new DataTable();
-        public static DataTable dtLoaiMauBSC = new DataTable();
+        public int nhanvienquanly;
+        public int donvi;
+        public  DataTable dtNhanVien = new DataTable();
+        public  DataTable dtKPI = new DataTable();
+        public  DataTable dtDVT = new DataTable();
+        public  DataTable dtNhomKPI = new DataTable();
+        public  DataTable dtLoaiMauBSC = new DataTable();
 
         public class kpiDetail
         {
@@ -61,7 +61,6 @@ namespace VNPT_BSC.BSC
             try
             {
                 dsNhomKPI = cn.XemDL(sqlNhomKPI);
-                dtNhomKPI = cn.XemDL(sqlNhomKPI);
             }
             catch (Exception ex)
             {
@@ -106,7 +105,7 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static Dictionary<String, String> loadBSCByCondition(int id_nv_giao, string nv_nhan, int thang, int nam, int donvi)
+        public static Dictionary<String, String> loadBSCByCondition(int id_nv_giao, string nv_nhan, int thang, int nam, int donvi, int loaimau)
         {
             //string[] arrOutput = {};
             Dictionary<String, String> dicOutput = new Dictionary<String, String>(); // Lưu bảng BSC (gridBSC), đơn vị thẩm định, trạng thái giao, trạng thái nhận, trạng thái thẩm định
@@ -115,6 +114,8 @@ namespace VNPT_BSC.BSC
             DataTable gridData = new DataTable();
             DataTable dsDonvitinh = new DataTable();
             DataTable dsNhanvienthamdinh = new DataTable();
+            DataTable dataNhomKPI = new DataTable();
+
             string sqlDVT = "select * from donvitinh";
             string sqlNVTD = "select nhanvien.* from nhanvien, nhanvien_chucvu where nhanvien.nhanvien_id = nhanvien_chucvu.nhanvien_id and nhanvien_chucvu.chucvu_id in (3,5) and nhanvien.nhanvien_donvi = '" + donvi + "'";
 
@@ -140,6 +141,7 @@ namespace VNPT_BSC.BSC
                 gridData = cnBSC.XemDL(sqlBSC);
                 dsDonvitinh = cnBSC.XemDL(sqlDVT);
                 dsNhanvienthamdinh = cnBSC.XemDL(sqlNVTD);
+                dataNhomKPI = dsNhomKPI(loaimau);
             }
             catch (Exception ex)
             {
@@ -214,16 +216,16 @@ namespace VNPT_BSC.BSC
 
                     outputHTML += "<td class='text-center'>";
                     outputHTML += "<select class='form-control' name='nhom_kpi' id='nhom_kpi_" + stt + "'>";
-                    for (int nIndex = 0; nIndex < dtNhomKPI.Rows.Count; nIndex++)
+                    for (int nIndex = 0; nIndex < dataNhomKPI.Rows.Count; nIndex++)
                     {
                         string szSelected = "";
-                        int id_nhom = Convert.ToInt32(dtNhomKPI.Rows[nIndex]["id"].ToString());
-                        int tytrong_nhom = Convert.ToInt32(dtNhomKPI.Rows[nIndex]["tytrong"].ToString());
+                        int id_nhom = Convert.ToInt32(dataNhomKPI.Rows[nIndex]["id"].ToString());
+                        int tytrong_nhom = Convert.ToInt32(dataNhomKPI.Rows[nIndex]["tytrong"].ToString());
                         if (id_nhom == Convert.ToInt32(nhom_kpi_id))
                         {
                             szSelected = "selected";
                         }
-                        outputHTML += "<option data-tytrong-nhom='" + tytrong_nhom + "' value='" + id_nhom + "' " + szSelected + ">" + dtNhomKPI.Rows[nIndex]["ten_nhom"] + "</option>";
+                        outputHTML += "<option data-tytrong-nhom='" + tytrong_nhom + "' value='" + id_nhom + "' " + szSelected + ">" + dataNhomKPI.Rows[nIndex]["ten_nhom"] + "</option>";
                     }
                     outputHTML += "</select>";
                     outputHTML += "</td>";
@@ -261,7 +263,7 @@ namespace VNPT_BSC.BSC
         }
 
         [WebMethod]
-        public static bool saveData(int nhanviengiao, string nhanviennhan, int thang, int nam, int loaimaubsc, kpiDetail[] kpi_detail)
+        public static bool saveData(int nhanviengiao, string nhanviennhan, int thang, int nam, int loaimaubsc, kpiDetail[] kpi_detail, int donvi)
         {
             bool isSuccess = false;
             Connection cnData = new Connection();
@@ -421,12 +423,24 @@ namespace VNPT_BSC.BSC
         private static int getNhanVienID(string taikhoan)
         {
             int id_nhanviennhan = 0;
-            for (int nIndex = 0; nIndex < dtNhanVien.Rows.Count; nIndex++)
+            Connection conn = new Connection();
+            DataTable tmp = new DataTable();
+            string sql = "select * from nhanvien where nhanvien_taikhoan = '" + taikhoan + "'";
+            try
             {
-                string taikhoanTmp = dtNhanVien.Rows[nIndex]["nhanvien_taikhoan"].ToString().Trim();
+                tmp = conn.XemDL(sql);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            for (int nIndex = 0; nIndex < tmp.Rows.Count; nIndex++)
+            {
+                string taikhoanTmp = tmp.Rows[nIndex]["nhanvien_taikhoan"].ToString().Trim();
                 if (taikhoanTmp == taikhoan.Trim())
                 {
-                    id_nhanviennhan = Convert.ToInt32(dtNhanVien.Rows[nIndex]["nhanvien_id"].ToString().Trim());
+                    id_nhanviennhan = Convert.ToInt32(tmp.Rows[nIndex]["nhanvien_id"].ToString().Trim());
                     break;
                 }
             }
@@ -436,12 +450,24 @@ namespace VNPT_BSC.BSC
         private static string getNhanVienName(string taikhoan)
         {
             string ten_nhanviennhan = "";
-            for (int nIndex = 0; nIndex < dtNhanVien.Rows.Count; nIndex++)
+            Connection conn = new Connection();
+            DataTable tmp = new DataTable();
+            string sql = "select * from nhanvien where nhanvien_taikhoan = '" + taikhoan + "'";
+            try
             {
-                string taikhoanTmp = dtNhanVien.Rows[nIndex]["nhanvien_taikhoan"].ToString().Trim();
+                tmp = conn.XemDL(sql);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            for (int nIndex = 0; nIndex < tmp.Rows.Count; nIndex++)
+            {
+                string taikhoanTmp = tmp.Rows[nIndex]["nhanvien_taikhoan"].ToString().Trim();
                 if (taikhoanTmp == taikhoan.Trim())
                 {
-                    ten_nhanviennhan = dtNhanVien.Rows[nIndex]["nhanvien_hoten"].ToString().Trim();
+                    ten_nhanviennhan = tmp.Rows[nIndex]["nhanvien_hoten"].ToString().Trim();
                     break;
                 }
             }
@@ -514,16 +540,16 @@ namespace VNPT_BSC.BSC
                 /*Kiểm tra nếu không có quyền giao bsc nhân viên (id của quyền là 3) thì đẩy ra trang đăng nhập*/
                 nFindResult = quyenHeThong.Contains(3);
 
-                if (nhanvien == null || !nFindResult)
+                if (!nFindResult)
                 {
                     Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
 
                 nhanvienquanly = nhanvien.nhanvien_id;
                 donvi = nhanvien.nhanvien_donvi_id;
 
-                string sqlDanhSachNhanVien = "select * from nhanvien where nhanvien_donvi = '" + donvi + "'";
+                string sqlDanhSachNhanVien = "select * from nhanvien where nhanvien_donvi = '" + donvi + "' and nhanvien_chucdanh not in (1,2)";
                 dtNhanVien = cn.XemDL(sqlDanhSachNhanVien);
                 dtKPI = dsKPI(nhanvienquanly);
                 dtDVT = dsDVT();
@@ -531,7 +557,7 @@ namespace VNPT_BSC.BSC
             }
             catch (Exception ex)
             {
-                Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                Response.Write("<script>window.location.href='../index.aspx';</script>");
             }
         }
     }

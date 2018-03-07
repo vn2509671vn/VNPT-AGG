@@ -29,6 +29,7 @@
             <h3 class="panel-title">Trung binh điểm BSC đơn vị</h3>
           </div>
           <div class="panel-body">
+              <h4 class="text-center red-color">Dữ liệu được cập nhật tới <%=thoigiancapnhat %> --- [ <a id="btnDongBo" class="btn btn-xs btn-success">Đồng bộ tới hiện tại</a>] ---</h4>
               <div class="col-md-12 col-xs-12 form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-4">Đơn vị:</label>
@@ -187,6 +188,26 @@
 
         $("#donvi").change(function () {
             loadBSC();
+        });
+
+        $("#btnDongBo").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "ThongKeTrungBinhDiemBSCDV.aspx/dongboDiem",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var output = result.d;
+                    if (output == true) {
+                        alert("Đồng bộ thành công!");
+                        window.location.reload();
+                    }
+                    else {
+                        alert("Đồng bộ thất bại!");
+                    }
+                },
+                error: function (msg) { alert(msg.d); }
+            });
         });
     });
 </script>

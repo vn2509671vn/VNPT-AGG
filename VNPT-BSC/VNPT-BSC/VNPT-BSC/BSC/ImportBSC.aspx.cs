@@ -18,8 +18,8 @@ namespace VNPT_BSC.BSC
     public partial class ImportBSC : System.Web.UI.Page
     {
         Connection cn = new Connection();
-        public static int gDonvigiao;
-        public static int gNguoitao;
+        public int gDonvigiao;
+        public int gNguoitao;
 
         /*List loại mẫu bsc*/
         private DataTable dsMauBSC()
@@ -197,33 +197,7 @@ namespace VNPT_BSC.BSC
         {
             this.Title = "Import BSC";
             if (!IsPostBack) {
-                Nhanvien nhanvien = new Nhanvien();
-                DataTable dtDonvi = new DataTable();
-                DataTable dtChuyenVienBSC = new DataTable();
                 DataTable dtMauBSC = new DataTable();
-
-                //nhanvien = Session.GetCurrentUser();
-                nhanvien = (Nhanvien)Session["nhanvien"];
-
-                // Khai báo các biến cho việc kiểm tra quyền
-                List<int> quyenHeThong = new List<int>();
-                bool nFindResult = false;
-                //quyenHeThong = Session.GetRole();
-                quyenHeThong = (List<int>)Session["quyenhethong"];
-
-                /*Kiểm tra nếu không có quyền giao bsc đơn vị (id của quyền là 2) thì đẩy ra trang đăng nhập*/
-                nFindResult = quyenHeThong.Contains(2);
-
-                if (nhanvien == null || !nFindResult)
-                {
-                    Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
-                }
-
-                gDonvigiao = nhanvien.nhanvien_donvi_id;
-                gNguoitao = nhanvien.nhanvien_id;
-                dtDonvi = getListDV();
-                dtChuyenVienBSC = getChuyenVienBSC();
                 dtMauBSC = dsMauBSC();
 
                 DropDownListLoaiMauBSC.DataSource = dtMauBSC;
@@ -231,6 +205,33 @@ namespace VNPT_BSC.BSC
                 DropDownListLoaiMauBSC.DataValueField = "loai_id";
                 DropDownListLoaiMauBSC.DataBind();
             }
+
+            Nhanvien nhanvien = new Nhanvien();
+            DataTable dtDonvi = new DataTable();
+            DataTable dtChuyenVienBSC = new DataTable();
+
+            //nhanvien = Session.GetCurrentUser();
+            nhanvien = (Nhanvien)Session["nhanvien"];
+
+            // Khai báo các biến cho việc kiểm tra quyền
+            List<int> quyenHeThong = new List<int>();
+            bool nFindResult = false;
+            //quyenHeThong = Session.GetRole();
+            quyenHeThong = (List<int>)Session["quyenhethong"];
+
+            /*Kiểm tra nếu không có quyền giao bsc đơn vị (id của quyền là 2) thì đẩy ra trang đăng nhập*/
+            nFindResult = quyenHeThong.Contains(2);
+
+            if (!nFindResult)
+            {
+                Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
+                Response.Write("<script>window.location.href='../index.aspx';</script>");
+            }
+
+            gDonvigiao = nhanvien.nhanvien_donvi_id;
+            gNguoitao = nhanvien.nhanvien_id;
+            dtDonvi = getListDV();
+            dtChuyenVienBSC = getChuyenVienBSC();
         }
 
         protected void btnUpload_Click(object sender, EventArgs e)

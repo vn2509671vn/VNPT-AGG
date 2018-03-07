@@ -14,7 +14,7 @@ namespace VNPT_BSC.BSC
 {
     public partial class NhanBSCDonVi : System.Web.UI.Page
     {
-        public static string donvinhan;
+        public string donvinhan;
         /*Lấy danh sách BSC được giao theo năm*/
         [WebMethod]
         public static Dictionary<String, String> loadBSCByYear(int nam, int donvinhan) {
@@ -144,13 +144,13 @@ namespace VNPT_BSC.BSC
                     if (nhanvien == null || !nFindResult)
                     {
                         Response.Write("<script>alert('Bạn không được quyền truy cập vào trang này. Vui lòng đăng nhập lại!!!')</script>");
-                        Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                        Response.Write("<script>window.location.href='../index.aspx';</script>");
                     }
 
                     donvinhan = nhanvien.nhanvien_donvi_id.ToString();
                 }
                 catch {
-                    Response.Write("<script>window.location.href='../Login.aspx';</script>");
+                    Response.Write("<script>window.location.href='../index.aspx';</script>");
                 }
             //}
             

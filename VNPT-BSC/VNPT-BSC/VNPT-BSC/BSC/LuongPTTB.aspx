@@ -26,7 +26,7 @@
     <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">Số lượng phát triển TB</h3>
+            <h3 class="panel-title">Lương PTTB</h3>
           </div>
           <div class="panel-body">
               <div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;">
@@ -36,6 +36,7 @@
                 </p>
               </div>
               <div class="col-md-12 col-xs-12 form-horizontal">
+                <%--<h4 class="text-center red-color">Lưu ý: Lương PTTB của khối gián tiếp đang tạm tính, tất cả dữ liệu sẽ chốt sau ngày 15 hằng tháng</h4>--%>
                 <div class="form-group">
                     <label class="control-label col-sm-4">Lọc theo tháng/năm:</label>
                     <div class="col-sm-6 form-inline">
@@ -91,8 +92,8 @@
                             <option value="1" selected="selected">Tất cả</option>
                             <option value="2">[Khối trực tiếp] Nhân viên</option>
                             <option value="3">[Khối trực tiếp] Lãnh đạo</option>
-                            <option value="4">[Khối gián tiếp] Nhân viên</option>
-                            <option value="5">[Khối gián tiếp] Lãnh đạo</option>
+                            <%--<option value="4">[Khối gián tiếp] Nhân viên</option>
+                            <option value="5">[Khối gián tiếp] Lãnh đạo</option>--%>
                         </select>
                     </div>
                 </div>
@@ -105,6 +106,7 @@
     </div>
 
 <script type="text/javascript">
+
     function loadTB() {
         var thang = $("#month").val();
         var nam = $("#year").val();
@@ -136,7 +138,22 @@
                     "buttons": [
                         {
                             extend: 'excelHtml5',
-                            title: 'Lương phát triển TB ' + thang + "-" + nam
+                            title: 'Lương phát triển TB ' + thang + "-" + nam,
+                            exportOptions: {
+                                format: {
+                                    body: function (data, columnIndex) {
+                                        if (columnIndex === 4 || columnIndex === 5 || columnIndex === 6) {
+                                            return data.replace(/[,]/g, '');
+                                        }
+                                        else {
+                                            return data;
+                                        }
+                                        //return columnIndex === 6 ?
+                                        //    data.replace(/[,]/g, '') :
+                                        //    data;
+                                    }
+                                }
+                            }
                         },
                         {
                             extend: 'pdfHtml5',
@@ -152,6 +169,19 @@
     }
 
     $(document).ready(function () {
+        var buttonCommon = {
+            exportOptions: {
+                format: {
+                    body: function (data, row, column, node) {
+                        // Strip $ from salary column to make it numeric
+                        return column === 6 ?
+                            data.replace(/,/g, '') :
+                            data;
+                    }
+                }
+            }
+        };
+
         // Load grid lần đầu
         loadTB();
 
